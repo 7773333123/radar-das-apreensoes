@@ -76,16 +76,23 @@ def carregar_fontes_extras():
     return saida
 
 
-def selecionar_rodizio(itens, limite, data_referencia):
-    """Alterna consultas entre execuções diárias, com ordem determinística."""
+def selecionar_rodizio(itens, limite, cursor):
+    """Percorre a lista continuamente, sem pular blocos entre execuções."""
     if not itens or limite <= 0:
-        return []
-    # Rotação por blocos: percorre a lista inteira antes de reiniciar.
-    blocos = (len(itens) + limite - 1) // limite
-    bloco = data_referencia.toordinal() % blocos
-    inicio = bloco * limite
-    return itens[inicio:inicio + limite]
+        return [], 0
+    inicio = int(cursor) % len(itens)
+    quantidade = min(limite, len(itens))
+    selecionados = [itens[(inicio + i) % len(itens)] for i in range(quantidade)]
+    proximo = (inicio + quantidade) % len(itens)
+    return selecionados, proximo
 
+
+def carregar_estado():
+    """Recupera cursores sem modificar as notícias existentes."""
+    if not ARQUIVO.exists():
+        return {}
+    dados = json.loads(ARQUIVO.read_text(encoding='utf-8'))
+    return dados if isinstance(dados, dict) else {}
 
 
 def ler_existentes():
@@ -227,7 +234,10 @@ def executar():
         parser.error('Os limites de consultas não podem ser negativos')
     if args.historico and (args.ano is None or not 2020 <= args.ano <= ano_atual):
         parser.error('Informe --ano entre 2020 e o ano atual')
+    estado_anterior = carregar_estado()
     existentes = ler_existentes()
+    proximo_estado = estado_anterior.get('rodizio_estados_proximo', 0)
+    proxima_fonte = estado_anterior.get('rodizio_fontes_proximo', 0)
     registros, duplicadas_anteriores = deduplicar(existentes)
     print(f'Duplicatas já existentes descartadas: {duplicadas_anteriores}')
     consultas = []
@@ -247,10 +257,12 @@ def executar():
             consultas.append((f'{TERMOS_APREENSAO} site:{dominio} when:7d', None))
         # Três blocos rotativos de nove estados cobrem os 27 estados/DF
         # ao longo de três execuções diárias, sem gerar centenas de buscas.
-        for uf in selecionar_rodizio(ESTADOS, args.limite_estados, hoje):
+        estados_selecionados, proximo_estado = selecionar_rodizio(ESTADOS, args.limite_estados, proximo_estado)
+        for uf in estados_selecionados:
             consultas.append((f'{TERMOS_APREENSAO} "{uf}" polícia when:7d', None))
         extras = carregar_fontes_extras()
-        for fonte in selecionar_rodizio(extras, args.limite_fontes, hoje):
+        fontes_selecionadas, proxima_fonte = selecionar_rodizio(extras, args.limite_fontes, proxima_fonte)
+        for fonte in fontes_selecionadas:
             consultas.append((f'{TERMOS_APREENSAO} site:{fonte["dominio"]} when:7d', None))
         print(f'Meta: {META_FONTES} fontes; extras cadastradas: {len(extras)}; consultadas nesta execução: {min(len(extras), args.limite_fontes)}')
     novos = 0
@@ -271,10 +283,16 @@ def executar():
     novos = len(noticias) - len(registros)
     print(f'Duplicatas detectadas nesta execução: {descartadas}')
     noticias.sort(key=lambda n: n.get('data_iso') or data_iso(n.get('data_publicacao', '')), reverse=True)
-    resultado = {'atualizado_em': datetime.now(timezone.utc).isoformat(), 'total': len(noticias), 'noticias': noticias}
+    resultado = {
+        'atualizado_em': datetime.now(timezone.utc).isoformat(),
+        'total': len(noticias), 'noticias': noticias,
+        'rodizio_estados_proximo': proximo_estado,
+        'rodizio_fontes_proximo': proxima_fonte,
+    }
     temporario = ARQUIVO.with_suffix('.json.tmp')
     temporario.write_text(json.dumps(resultado, ensure_ascii=False, indent=2), encoding='utf-8')
     temporario.replace(ARQUIVO)
+    print(f'Rodízio: próximo estado {proximo_estado}; próxima fonte {proxima_fonte}.')
     print(f'Concluído: {novos} novas; {len(noticias)} no acervo; {erros} consultas falharam.')
 
 
