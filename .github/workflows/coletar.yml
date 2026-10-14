@@ -4,8 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       ano_historico:
-        description: 'Ano para importar (2020 em diante). Deixe vazio para atualização normal.'
+        description: 'Ano historico para coleta opcional (deixe vazio para coleta normal)'
         required: false
+        default: ''
         type: string
   schedule:
     - cron: '17 * * * *'
@@ -20,14 +21,15 @@ concurrency:
 jobs:
   coletar:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
     steps:
       - name: Baixar repositorio
         uses: actions/checkout@v4
+
       - name: Preparar Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
       - name: Coletar noticias
         env:
           ANO_HISTORICO: ${{ inputs.ano_historico || '' }}
@@ -41,13 +43,17 @@ jobs:
           else
             python coletor.py
           fi
-      - name: Salvar noticias no repositorio
+
+      - name: Analisar noticias e gerar estatisticas
+        run: python analisar_noticias.py
+
+      - name: Salvar noticias e analise no repositorio
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add noticias.json
+          git add noticias.json analise_nacional.json
           if ! git diff --cached --quiet; then
-            git commit -m 'Atualizar noticias automaticamente'
+            git commit -m 'Atualizar noticias e estatisticas automaticamente'
             git pull --rebase
             git push
           fi
