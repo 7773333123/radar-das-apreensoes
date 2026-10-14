@@ -76,6 +76,71 @@ def carregar_fontes_extras():
     return saida
 
 
+# UF é atribuída apenas por evidência explícita; não pela consulta que encontrou a notícia.
+NOMES_ESTADOS = {
+    'AC': 'Acre', 'AL': 'Alagoas', 'AP': 'Amapá', 'AM': 'Amazonas',
+    'BA': 'Bahia', 'CE': 'Ceará', 'DF': 'Distrito Federal', 'ES': 'Espírito Santo',
+    'GO': 'Goiás', 'MA': 'Maranhão', 'MT': 'Mato Grosso',
+    'MS': 'Mato Grosso do Sul', 'MG': 'Minas Gerais', 'PA': 'Pará',
+    'PB': 'Paraíba', 'PR': 'Paraná', 'PE': 'Pernambuco', 'PI': 'Piauí',
+    'RJ': 'Rio de Janeiro', 'RN': 'Rio Grande do Norte',
+    'RS': 'Rio Grande do Sul', 'RO': 'Rondônia', 'RR': 'Roraima',
+    'SC': 'Santa Catarina', 'SP': 'São Paulo', 'SE': 'Sergipe',
+    'TO': 'Tocantins',
+}
+
+
+def inferir_uf(noticia, fontes=None):
+    """Identifica a UF somente quando há evidência geográfica inequívoca.
+
+    Não usa a UF da consulta RSS: notícias nacionais podem surgir em buscas locais.
+    """
+    atual = str(noticia.get('uf') or '').strip().upper()
+    if atual in ESTADOS:
+        return atual
+    titulo = texto_normalizado(noticia.get('titulo') or noticia.get('t') or '')
+    fonte = texto_normalizado(noticia.get('fonte') or '')
+    candidatos = set()
+    # O nome por extenso no título é evidência mais forte que siglas isoladas.
+    for uf, nome in NOMES_ESTADOS.items():
+        nome_normal = texto_normalizado(nome)
+        if re.search(r'(?<!\w)' + re.escape(nome_normal) + r'(?!\w)', titulo):
+            candidatos.add(uf)
+    # Padrão explícito de localidade: 'em Curitiba (PR)', 'Maringá/PR'.
+    for match in re.finditer(r'(?<![a-zA-Z])(?:\(|/| - )([A-Z]{2})\)?(?![a-zA-Z])',
+                             str(noticia.get('titulo') or '')):
+        if match.group(1) in ESTADOS:
+            candidatos.add(match.group(1))
+    # Nome institucional estadual também identifica o estado de atuação.
+    for uf, nome in NOMES_ESTADOS.items():
+        if re.search(r'\b(?:policia civil|policia militar|policia cientifica|policia penal|'
+                     r'policia rodoviaria estadual|secretaria de seguranca publica) (?:do|da|de) '
+                     + re.escape(texto_normalizado(nome)) + r'\b', titulo + ' ' + fonte):
+            candidatos.add(uf)
+    # Fontes oficiais estaduais cadastradas: domínio de origem do RSS (source url).
+    dominio_fonte = (noticia.get('dominio_fonte') or '').lower()
+    if dominio_fonte:
+        for item in (fontes or []):
+            dominio = item['dominio'].lower()
+            if item.get('uf') and (dominio_fonte == dominio or dominio_fonte.endswith('.' + dominio)):
+                candidatos.add(item['uf'])
+    return next(iter(candidatos)) if len(candidatos) == 1 else ''
+
+
+def preencher_ufs(itens, fontes):
+    alteradas = 0
+    for noticia in itens:
+        if not isinstance(noticia, dict):
+            continue
+        if str(noticia.get('uf') or '').upper() in ESTADOS:
+            continue
+        uf = inferir_uf(noticia, fontes)
+        if uf:
+            noticia['uf'] = uf
+            alteradas += 1
+    return alteradas
+
+
 def selecionar_rodizio(itens, limite, cursor):
     """Percorre a lista continuamente, sem pular blocos entre execuções."""
     if not itens or limite <= 0:
@@ -124,10 +189,13 @@ def coletar(query, categoria=None):
         titulo = (item.findtext('title') or '').strip()
         url = (item.findtext('link') or '').strip()
         data = (item.findtext('pubDate') or '').strip()
-        fonte = (item.findtext('source') or 'Google Notícias').strip()
+        fonte_elemento = item.find('source')
+        fonte = ((fonte_elemento.text if fonte_elemento is not None else None) or 'Google Notícias').strip()
         if not titulo or not url:
             continue
         noticia = {'titulo': titulo, 'url': url, 'data_publicacao': data, 'fonte': fonte}
+        if fonte_elemento is not None and fonte_elemento.get('url'):
+            noticia['dominio_fonte'] = urllib.parse.urlsplit(fonte_elemento.get('url')).hostname or ''
         if categoria:
             noticia['categoria'] = categoria
         iso = data_iso(data)
@@ -239,6 +307,7 @@ def executar():
     proximo_estado = estado_anterior.get('rodizio_estados_proximo', 0)
     proxima_fonte = estado_anterior.get('rodizio_fontes_proximo', 0)
     registros, duplicadas_anteriores = deduplicar(existentes)
+    extras = carregar_fontes_extras()
     print(f'Duplicatas já existentes descartadas: {duplicadas_anteriores}')
     consultas = []
     if args.historico:
@@ -260,7 +329,6 @@ def executar():
         estados_selecionados, proximo_estado = selecionar_rodizio(ESTADOS, args.limite_estados, proximo_estado)
         for uf in estados_selecionados:
             consultas.append((f'{TERMOS_APREENSAO} "{uf}" polícia when:7d', None))
-        extras = carregar_fontes_extras()
         fontes_selecionadas, proxima_fonte = selecionar_rodizio(extras, args.limite_fontes, proxima_fonte)
         for fonte in fontes_selecionadas:
             consultas.append((f'{TERMOS_APREENSAO} site:{fonte["dominio"]} when:7d', None))
@@ -281,6 +349,8 @@ def executar():
         raise RuntimeError('Todas as consultas falharam; arquivo preservado')
     noticias, descartadas = deduplicar(registros + recebidas)
     novos = len(noticias) - len(registros)
+    ufs_preenchidas = preencher_ufs(noticias, extras)
+    print(f'UF identificada com segurança em {ufs_preenchidas} notícias sem UF.')
     print(f'Duplicatas detectadas nesta execução: {descartadas}')
     noticias.sort(key=lambda n: n.get('data_iso') or data_iso(n.get('data_publicacao', '')), reverse=True)
     resultado = {
