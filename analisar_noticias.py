@@ -14,14 +14,14 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
 CATEGORIES = {
-    'Drogas e entorpecentes': [r'\bdrogas?\b', r'\btrafic', r'\bcocain', r'\bmaconha\b', r'\bcrack\b', r'\bentorpecent', r'\bhaxixe\b', r'\becstasy\b'],
-    'Armas e munições': [r'\barmas?\b', r'\bfuzis?\b', r'\bfuzil\b', r'\bpistolas?\b', r'\brevolver', r'\bmunic', r'\bexplosiv', r'\barmamento'],
-    'Contrabando e descaminho': [r'\bcontraband', r'\bdescaminho\b', r'\bcigarros?\b', r'\baduaneir', r'\bmercadorias? irregulares?\b'],
-    'Veículos': [r'\bveiculos?\b', r'\bcarros?\b', r'\bautomove', r'\bcaminh', r'\bmotociclet', r'\bembarcac', r'\baeronave'],
-    'Dinheiro e valores': [r'\bdinheiro\b', r'\bouro\b', r'\bjoias?\b', r'\bnumerario\b', r'\bvalores apreendid'],
-    'Crimes ambientais': [r'\bambiental', r'\bmadeira ilegal\b', r'\banimais? silvestres?\b', r'\bpesca ilegal\b', r'\bpescado\b', r'\bminerio', r'\bdesmatamento\b'],
-    'Medicamentos e produtos': [r'\bmedicamento', r'\bremedios?\b', r'\banabolizante', r'\bproduto falsificad', r'\bproduto proibido'],
-    'Operações patrimoniais': [r'\bbloqueio de bens\b', r'\bsequestro de bens\b', r'\bpatrimonio\b', r'\blavagem de dinheiro\b'],
+    'Drogas e entorpecentes': [r'\bdrogas?\b', r'\btrafic', r'\bcocain', r'\bmaconha\b', r'\bcrack\b', r'\bentorpecent', r'\bhaxixe\b', r'\becstasy\b', r'\bskunk\b', r'\bketamina\b', r'\bmetanfetamina\b', r'\bentorpecentes?\b', r'\btabletes? de droga', r'\bporcoes? de droga'],
+    'Armas e munições': [r'\barmas?\b', r'\bfuzis?\b', r'\bfuzil\b', r'\bpistolas?\b', r'\brevolver', r'\bmunic', r'\bexplosiv', r'\barmamento', r'\bcalibre\b', r'\bcarregadores? de (?:arma|pistola|fuzil)', r'\bespingardas?\b'],
+    'Contrabando e descaminho': [r'\bcontraband', r'\bdescaminho\b', r'\bcigarros?\b', r'\baduaneir', r'\bmercadorias? irregulares?\b', r'\bprodutos? sem nota fiscal\b', r'\bmercadorias? estrangeiras?\b'],
+    'Veículos': [r'\bveiculos?\b', r'\bcarros?\b', r'\bautomove', r'\bcaminh', r'\bmotociclet', r'\bembarcac', r'\baeronave', r'\bmotociclos?\b', r'\bautomoveis?\b', r'\btratores?\b'],
+    'Dinheiro e valores': [r'\bdinheiro\b', r'\bouro\b', r'\bjoias?\b', r'\bnumerario\b', r'\bvalores apreendid', r'\bcedulas?\b', r'\bquantia em especie\b', r'\bmoeda estrangeira\b'],
+    'Crimes ambientais': [r'\bambiental', r'\bmadeira ilegal\b', r'\banimais? silvestres?\b', r'\bpesca ilegal\b', r'\bpescado\b', r'\bminerio', r'\bdesmatamento\b', r'\bgarimpo ilegal\b', r'\baves silvestres?\b', r'\bmadeiras? nativas?\b'],
+    'Medicamentos e produtos': [r'\bmedicamento', r'\bremedios?\b', r'\banabolizante', r'\bproduto falsificad', r'\bproduto proibido', r'\bcosmeticos? irregulares?\b', r'\bprodutos? falsificados?\b'],
+    'Operações patrimoniais': [r'\bbloqueio de bens\b', r'\bsequestro de bens\b', r'\bpatrimonio\b', r'\blavagem de dinheiro\b', r'\bindisponibilidade de bens\b', r'\bbens bloqueados?\b', r'\bconfisco de bens\b'],
 }
 UFS = set('AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO'.split())
 
@@ -31,7 +31,20 @@ def fold(value):
 
 
 def parse_date(value):
-    v = str(value or '')[:10]
+    v = str(value or '').strip()
+    if not v:
+        return None
+    try:
+        return dt.date.fromisoformat(v[:10])
+    except ValueError:
+        pass
+    # Datas RSS chegam no formato 'Wed, 14 Oct 2026 12:00:00 GMT'.
+    try:
+        from email.utils import parsedate_to_datetime
+        return parsedate_to_datetime(v).date()
+    except (TypeError, ValueError, IndexError, OverflowError):
+        pass
+    v = v[:10]
     for fmt in ('%Y-%m-%d', '%d/%m/%Y'):
         try:
             return dt.datetime.strptime(v, fmt).date()
@@ -52,6 +65,8 @@ def main():
     states = collections.Counter()
     months = collections.Counter()
     sources = set()
+    years = collections.Counter()
+    without_date = 0
     enriched = []
     for n in items:
         if not isinstance(n, dict):
@@ -67,9 +82,13 @@ def main():
         uf = str(n.get('uf') or n.get('estado') or '').upper().strip()
         if uf in UFS:
             states[uf] += 1
-        date = parse_date(n.get('data_publicacao') or n.get('data') or n.get('date'))
+        date = (parse_date(n.get('data_iso')) or parse_date(n.get('data_publicacao'))
+                or parse_date(n.get('data')) or parse_date(n.get('date')))
         if date:
             months[date.strftime('%Y-%m')] += 1
+            years[str(date.year)] += 1
+        else:
+            without_date += 1
         source = str(n.get('fonte') or n.get('source') or '').strip()
         if source:
             sources.add(source)
@@ -84,6 +103,8 @@ def main():
         'noticias_por_categoria': dict(counts.most_common()),
         'noticias_por_uf_explicita': dict(states.most_common()),
         'noticias_por_mes': dict(sorted(months.items())),
+        'noticias_por_ano': dict(sorted(years.items())),
+        'noticias_sem_data_valida': without_date,
         'classificacoes': enriched,
     }
     target = BASE / 'analise_nacional.json'
