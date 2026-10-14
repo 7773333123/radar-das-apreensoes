@@ -7,6 +7,8 @@ Uso:
 import argparse
 import json
 import re
+import unicodedata
+from difflib import SequenceMatcher
 import time
 import urllib.parse
 import urllib.request
@@ -29,6 +31,61 @@ FONTES = {
     'Receita Federal': 'gov.br/receitafederal',
 }
 ESTADOS = 'AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO'.split()
+# As consultas estaduais cobrem os 27 entes federativos, inclusive ocorrências
+# publicadas por polícias civil, militar, penal, científica e guardas municipais.
+TIPOS_ORGAOS = [
+    'polícia civil', 'polícia militar', 'polícia penal',
+    'polícia científica', 'guarda municipal', 'bombeiros',
+    'secretaria segurança pública', 'Receita Federal',
+]
+TERMOS_APREENSAO = '(apreensão OR apreende OR apreendido OR contrabando OR tráfico)'
+FONTES_EXTRAS = Path('fontes.json')
+META_FONTES = 10000
+# Cadastro de domínios é distinto de consultas por execução.
+
+
+
+def carregar_fontes_extras():
+    """Lê até milhares de fontes cadastradas em fontes.json, sem inventar domínios.
+
+    Formato: {"fontes": [{"nome": "...", "dominio": "exemplo.gov.br", "uf": "PR"}]}
+    Domínios devem ser cadastrados e verificados antes de entrar na lista.
+    """
+    if not FONTES_EXTRAS.exists():
+        return []
+    dados = json.loads(FONTES_EXTRAS.read_text(encoding='utf-8'))
+    itens = dados.get('fontes', []) if isinstance(dados, dict) else dados
+    if not isinstance(itens, list):
+        raise ValueError('fontes.json deve conter uma lista de fontes')
+    saida = []
+    vistos = set()
+    for item in itens:
+        if not isinstance(item, dict):
+            continue
+        dominio = str(item.get('dominio', '')).strip().lower()
+        dominio = re.sub(r'^https?://', '', dominio).split('/')[0].split(':')[0]
+        uf = str(item.get('uf', '')).strip().upper()
+        if not re.fullmatch(r'[a-z0-9][a-z0-9.-]*\.[a-z]{2,}', dominio):
+            continue
+        if uf and uf not in ESTADOS:
+            continue
+        if dominio in vistos:
+            continue
+        vistos.add(dominio)
+        saida.append({'dominio': dominio, 'uf': uf, 'nome': str(item.get('nome', dominio))})
+    return saida
+
+
+def selecionar_rodizio(itens, limite, data_referencia):
+    """Alterna consultas entre execuções diárias, com ordem determinística."""
+    if not itens or limite <= 0:
+        return []
+    # Rotação por blocos: percorre a lista inteira antes de reiniciar.
+    blocos = (len(itens) + limite - 1) // limite
+    bloco = data_referencia.toordinal() % blocos
+    inicio = bloco * limite
+    return itens[inicio:inicio + limite]
+
 
 
 def ler_existentes():
@@ -73,23 +130,106 @@ def coletar(query, categoria=None):
     return saida
 
 
-def chave(n):
-    # URLs Google News podem variar; normalizar título e fonte reduz duplicações.
-    titulo = re.sub(r'\W+', ' ', str(n.get('titulo', '')).lower()).strip()
-    fonte = re.sub(r'\W+', ' ', str(n.get('fonte', '')).lower()).strip()
-    return (titulo, fonte) if titulo else ('url', n.get('url', ''))
+def texto_normalizado(valor):
+    valor = unicodedata.normalize('NFKD', str(valor or '').casefold())
+    valor = ''.join(c for c in valor if not unicodedata.combining(c))
+    return re.sub(r'[^a-z0-9]+', ' ', valor).strip()
+
+
+def titulo_base(n):
+    titulo = str(n.get('titulo') or n.get('t') or '')
+    fonte = str(n.get('fonte') or '')
+    # O Google News costuma acrescentar o nome do veículo ao título.
+    if fonte and titulo.casefold().endswith(' - ' + fonte.casefold()):
+        titulo = titulo[:-(len(fonte) + 3)]
+    return texto_normalizado(titulo)
+
+
+def url_base(n):
+    url = str(n.get('url') or '').strip()
+    try:
+        p = urllib.parse.urlsplit(url)
+        dominio = (p.hostname or '').lower().removeprefix('www.')
+        caminho = p.path.rstrip('/')
+        # Evitar parâmetros de rastreamento na identidade da notícia.
+        params = urllib.parse.parse_qsl(p.query, keep_blank_values=True)
+        params = [(k, v) for k, v in params if not k.lower().startswith('utm_') and k.lower() not in {'fbclid','gclid','oc'}]
+        return dominio + caminho + ('?' + urllib.parse.urlencode(sorted(params)) if params else '')
+    except ValueError:
+        return url
+
+
+def dia_publicacao(n):
+    data = str(n.get('data_iso') or '')
+    if not data:
+        data = data_iso(n.get('data_publicacao', ''))
+    return data[:10]
+
+
+def mesma_materia(a, b):
+    if url_base(a) and url_base(a) == url_base(b):
+        return True
+    ta, tb = titulo_base(a), titulo_base(b)
+    if not ta or not tb:
+        return False
+    da, db = dia_publicacao(a), dia_publicacao(b)
+    # Não misturar ocorrências diferentes apenas porque têm manchetes parecidas.
+    if da and db:
+        try:
+            if abs((datetime.fromisoformat(da) - datetime.fromisoformat(db)).days) > 2:
+                return False
+        except ValueError:
+            pass
+    if ta == tb:
+        return True
+    # Semelhança muito alta: retira republicações com pequenas variações.
+    return len(ta) >= 55 and len(tb) >= 55 and SequenceMatcher(None, ta, tb).ratio() >= 0.96
+
+
+def deduplicar(itens):
+    # Primeiro por URL e manchete exata; depois compara apenas candidatos
+    # com início de título semelhante, evitando comparação global quadrática.
+    unicos = []
+    urls = set()
+    indices = {}
+    descartadas = 0
+    for n in itens:
+        if not isinstance(n, dict):
+            continue
+        u = url_base(n)
+        t = titulo_base(n)
+        dia = dia_publicacao(n)
+        if u and u in urls:
+            descartadas += 1
+            continue
+        prefixo = ' '.join(t.split()[:4])
+        candidatos = indices.get(prefixo, [])
+        if any(mesma_materia(n, unicos[i]) for i in candidatos):
+            descartadas += 1
+            continue
+        unicos.append(n)
+        if u:
+            urls.add(u)
+        indices.setdefault(prefixo, []).append(len(unicos)-1)
+    return unicos, descartadas
 
 
 def executar():
     parser = argparse.ArgumentParser()
     parser.add_argument('--historico', action='store_true', help='Busca mês a mês em um ano específico')
     parser.add_argument('--ano', type=int, help='Ano histórico de 2020 até o atual')
+    parser.add_argument('--limite-fontes', type=int, default=24, help='Fontes extras consultadas por execução (padrão: 24)')
+    parser.add_argument('--limite-estados', type=int, default=9, help='Estados consultados por execução (padrão: 9)')
     args = parser.parse_args()
-    ano_atual = datetime.now(timezone.utc).year
+    hoje = datetime.now(timezone.utc)
+    ano_atual = hoje.year
+    if args.limite_fontes < 0 or args.limite_estados < 0:
+        parser.error('Os limites de consultas não podem ser negativos')
     if args.historico and (args.ano is None or not 2020 <= args.ano <= ano_atual):
         parser.error('Informe --ano entre 2020 e o ano atual')
     existentes = ler_existentes()
-    registros = {chave(n): n for n in existentes if isinstance(n, dict)}
+    registros, duplicadas_anteriores = deduplicar(existentes)
+    print(f'Duplicatas já existentes descartadas: {duplicadas_anteriores}')
     consultas = []
     if args.historico:
         # Uma execução por ano, para não sobrecarregar a fonte.
@@ -104,26 +244,32 @@ def executar():
         for categoria, termos in TEMAS.items():
             consultas.append((termos + ' Brasil when:7d', categoria))
         for nome, dominio in FONTES.items():
-            consultas.append((f'(apreensão OR apreende OR operação) site:{dominio} when:7d', None))
+            consultas.append((f'{TERMOS_APREENSAO} site:{dominio} when:7d', None))
+        # Três blocos rotativos de nove estados cobrem os 27 estados/DF
+        # ao longo de três execuções diárias, sem gerar centenas de buscas.
+        for uf in selecionar_rodizio(ESTADOS, args.limite_estados, hoje):
+            consultas.append((f'{TERMOS_APREENSAO} "{uf}" polícia when:7d', None))
+        extras = carregar_fontes_extras()
+        for fonte in selecionar_rodizio(extras, args.limite_fontes, hoje):
+            consultas.append((f'{TERMOS_APREENSAO} site:{fonte["dominio"]} when:7d', None))
+        print(f'Meta: {META_FONTES} fontes; extras cadastradas: {len(extras)}; consultadas nesta execução: {min(len(extras), args.limite_fontes)}')
     novos = 0
     erros = 0
+    recebidas = []
     for i, (consulta, categoria) in enumerate(consultas, 1):
         try:
             itens = coletar(consulta, categoria)
-            for noticia in itens:
-                identificador = chave(noticia)
-                if identificador not in registros:
-                    registros[identificador] = noticia
-                    novos += 1
+            recebidas.extend(itens)
             print(f'Consulta {i}/{len(consultas)}: {len(itens)} resultados, {novos} novos acumulados')
         except (OSError, ET.ParseError, ValueError) as exc:
             erros += 1
             print(f'AVISO: consulta {i} falhou: {exc}')
-        if args.historico:
-            time.sleep(1.5)
+        time.sleep(1.5 if args.historico else 0.5)
     if erros == len(consultas):
         raise RuntimeError('Todas as consultas falharam; arquivo preservado')
-    noticias = list(registros.values())
+    noticias, descartadas = deduplicar(registros + recebidas)
+    novos = len(noticias) - len(registros)
+    print(f'Duplicatas detectadas nesta execução: {descartadas}')
     noticias.sort(key=lambda n: n.get('data_iso') or data_iso(n.get('data_publicacao', '')), reverse=True)
     resultado = {'atualizado_em': datetime.now(timezone.utc).isoformat(), 'total': len(noticias), 'noticias': noticias}
     temporario = ARQUIVO.with_suffix('.json.tmp')
