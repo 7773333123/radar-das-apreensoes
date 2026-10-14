@@ -2,7 +2,7 @@
   "projeto": "Radar das Apreensões",
   "objetivo_fontes": 10000,
   "escopo": "Brasil",
-  "observacao": "Cinco domínios oficiais com páginas de notícias verificadas. gov.br agrega diversos órgãos e conta como um domínio no coletor atual. Os demais órgãos permanecem em planejamento, não ativos.",
+  "observacao": "Domínios cadastrados com páginas de notícias identificadas. Cadastro de domínio não garante RSS, cobertura integral ou atribuição geográfica de todas as matérias. Os órgãos em planejamento não são fontes ativas.",
   "fontes": [
     {
       "nome": "Portais federais gov.br (PF, PRF, Receita Federal e Ibama)",
@@ -28,6 +28,21 @@
       "nome": "Polícia Militar de Santa Catarina",
       "dominio": "pm.sc.gov.br",
       "uf": "SC"
+    },
+    {
+      "nome": "Polícia Civil de São Paulo",
+      "dominio": "policiacivil.sp.gov.br",
+      "uf": "SP"
+    },
+    {
+      "nome": "Secretaria da Segurança Pública da Bahia",
+      "dominio": "ba.gov.br",
+      "uf": "BA"
+    },
+    {
+      "nome": "Ministério Público de Minas Gerais",
+      "dominio": "mpmg.mp.br",
+      "uf": "MG"
     }
   ],
   "orgaos_federais_prioritarios": [
