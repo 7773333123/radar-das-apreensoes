@@ -1,0 +1,968 @@
+{
+  "projeto": "Radar das Apreensões",
+  "objetivo_fontes": 10000,
+  "escopo": "Brasil",
+  "observacao": "Somente fontes com dominio conferido devem entrar em fontes. Os órgãos em planejamento não são fontes verificadas.",
+  "fontes": [],
+  "orgaos_federais_prioritarios": [
+    {
+      "nome": "Polícia Federal",
+      "portal": "https://www.gov.br/pf/pt-br/assuntos/noticias/"
+    },
+    {
+      "nome": "Polícia Rodoviária Federal",
+      "portal": "https://www.gov.br/prf/pt-br/noticias/"
+    },
+    {
+      "nome": "Receita Federal",
+      "portal": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias"
+    }
+  ],
+  "orgaos_estaduais_a_verificar": [
+    {
+      "uf": "AC",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AC",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AC",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AC",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AC",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AC",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AC",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AL",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AL",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AL",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AL",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AL",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AL",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AL",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AP",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AP",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AP",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AP",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AP",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AP",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AP",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AM",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AM",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AM",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AM",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AM",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AM",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "AM",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "BA",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "BA",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "BA",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "BA",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "BA",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "BA",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "BA",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "CE",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "CE",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "CE",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "CE",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "CE",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "CE",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "CE",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "DF",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "DF",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "DF",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "DF",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "DF",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "DF",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "DF",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "ES",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "ES",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "ES",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "ES",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "ES",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "ES",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "ES",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "GO",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "GO",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "GO",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "GO",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "GO",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "GO",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "GO",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MA",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MA",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MA",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MA",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MA",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MA",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MA",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MT",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MT",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MT",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MT",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MT",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MT",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MT",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MS",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MS",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MS",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MS",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MS",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MS",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MS",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MG",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MG",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MG",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MG",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MG",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MG",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "MG",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PA",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PA",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PA",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PA",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PA",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PA",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PA",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PB",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PB",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PB",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PB",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PB",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PB",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PB",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PR",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PR",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PR",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PR",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PR",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PR",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PR",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PE",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PE",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PE",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PE",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PE",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PE",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PE",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PI",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PI",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PI",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PI",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PI",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PI",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "PI",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RJ",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RJ",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RJ",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RJ",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RJ",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RJ",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RJ",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RN",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RN",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RN",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RN",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RN",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RN",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RN",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RS",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RS",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RS",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RS",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RS",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RS",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RS",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RO",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RO",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RO",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RO",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RO",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RO",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RO",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RR",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RR",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RR",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RR",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RR",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RR",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "RR",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SC",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SC",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SC",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SC",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SC",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SC",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SC",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SP",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SP",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SP",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SP",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SP",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SP",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SP",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SE",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SE",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SE",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SE",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SE",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SE",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "SE",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "TO",
+      "tipo": "Polícia Civil",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "TO",
+      "tipo": "Polícia Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "TO",
+      "tipo": "Polícia Penal",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "TO",
+      "tipo": "Polícia Científica / Perícia Oficial",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "TO",
+      "tipo": "Secretaria de Segurança Pública",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "TO",
+      "tipo": "Corpo de Bombeiros Militar",
+      "status": "pendente de verificar domínio e feed"
+    },
+    {
+      "uf": "TO",
+      "tipo": "Guardas Municipais",
+      "status": "pendente de verificar domínio e feed"
+    }
+  ]
+}
