@@ -1,23 +1,23 @@
 {
-  "gerado_em_utc": "2026-10-14T23:36:41.987301+00:00",
+  "gerado_em_utc": "2026-10-14T23:40:36.343311+00:00",
   "metodologia": "Classificação por regras textuais; não utiliza modelo de IA generativa.",
   "aviso": "Contagens de notícias, NÃO de apreensões ou operações únicas. Categorias podem se sobrepor.",
-  "noticias_analisadas": 2301,
+  "noticias_analisadas": 2308,
   "fontes_distintas_informadas": 663,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 1146,
-    "Não classificada": 646,
-    "Armas e munições": 426,
-    "Dinheiro e valores": 153,
-    "Veículos": 152,
+    "Drogas e entorpecentes": 1165,
+    "Não classificada": 621,
+    "Armas e munições": 436,
+    "Dinheiro e valores": 157,
+    "Veículos": 153,
     "Operações patrimoniais": 107,
-    "Outras apreensões": 57,
-    "Contrabando e descaminho": 50,
-    "Medicamentos e produtos": 34,
-    "Crimes ambientais": 19
+    "Outras apreensões": 56,
+    "Contrabando e descaminho": 51,
+    "Medicamentos e produtos": 35,
+    "Crimes ambientais": 27
   },
   "noticias_por_uf_explicita": {
-    "BA": 127,
+    "BA": 129,
     "PA": 108,
     "PR": 59,
     "CE": 33,
@@ -44,7 +44,68 @@
     "RN": 1,
     "RS": 1
   },
-  "noticias_por_mes": {},
+  "noticias_por_mes": {
+    "2019-09": 1,
+    "2020-01": 38,
+    "2020-02": 42,
+    "2020-03": 34,
+    "2020-04": 35,
+    "2020-05": 44,
+    "2020-06": 55,
+    "2020-07": 65,
+    "2020-08": 66,
+    "2020-09": 70,
+    "2020-10": 66,
+    "2020-11": 54,
+    "2020-12": 48,
+    "2021-01": 2,
+    "2022-12": 1,
+    "2023-01": 6,
+    "2023-02": 1,
+    "2023-03": 3,
+    "2023-04": 2,
+    "2023-06": 3,
+    "2023-07": 5,
+    "2023-08": 2,
+    "2023-09": 2,
+    "2023-11": 2,
+    "2023-12": 1,
+    "2024-01": 2,
+    "2024-02": 3,
+    "2024-05": 1,
+    "2024-06": 1,
+    "2024-07": 3,
+    "2024-08": 4,
+    "2024-09": 2,
+    "2024-10": 6,
+    "2024-11": 6,
+    "2024-12": 1,
+    "2025-06": 1,
+    "2025-07": 8,
+    "2025-08": 1,
+    "2025-09": 3,
+    "2025-10": 2,
+    "2025-11": 1,
+    "2026-03": 2,
+    "2026-04": 2,
+    "2026-05": 5,
+    "2026-06": 15,
+    "2026-07": 24,
+    "2026-08": 24,
+    "2026-09": 20,
+    "2026-10": 1523
+  },
+  "noticias_por_ano": {
+    "2019": 1,
+    "2020": 617,
+    "2021": 2,
+    "2022": 1,
+    "2023": 27,
+    "2024": 29,
+    "2025": 16,
+    "2026": 1615
+  },
+  "noticias_sem_data_valida": 0,
   "classificacoes": [
     {
       "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxNODFfdC1VTGtyWVZ2VVMzTzhjWDhxYlJCbDdGaW5rWFc3MU5kX1lIbWxIRE1EemNxQTBsMGN3RkpUOHR0QkFnRmhXMDVrZkRuYlpVTXc2MmFvSlJwdEFvNDJVVHR6VnVMdzl6aThWRWdnc1dMQWFmdEVNUl9DSWowVUJYMEFiMk91b1A3Vm91NVRSTkd2emRuVF9rZWowWUdmLXhEbGZnRjg5U0RWNUVvSHJudW9iYXBoVVAwN3pzWXEydzE2d0owdWhaTUstT2lMZ0Y3aTRfZjNMQUI3RV9QM0NKY0FOSU5FUHc?oc=5",
@@ -64,9 +125,33 @@
       "revisao_humana_recomendada": true
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPalI2Ynk5Y29jUVZtM1hmUm5FRTE4dkttN1J2aGJjbGVJeTAtVjNpV0trdW8tVkFfOWc4RHFIaGM2NjBLQzk2cVYtdERqbFZLS3phMkh6TW1GVjZJajI5Mkp0T0xqc0FhbUZ3WDhza3ZJSW9KUUFZUTVWY2xnVzBOTTlzVUFMSEtsYUt3RnVaazY0Z1NkS3RCOWtRUGdoanBy?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "classificacao": "regras_textuais",
+      "revisao_humana_recomendada": true
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOZExGVUlEWUpuVXJPeWY4bkZLZDBXWkhWMlBEaTNYS2RJaTFMNnFlVlp4MlRSWm1sdDRlYXV5N2lRRElrOWFqdm9iQ2h2WkVuY21jMmo4YzZpc1U1SjFHalA3eU9TSU8yQ0FZbUh4ZTZmUzgwN0l5SW85TVZ0S19BSGljaV9zWW5XWDlCWGF3aHE3bXhpRU5ncTN1ZjdZYlF5ekVMMnF5MzE?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "classificacao": "regras_textuais",
+      "revisao_humana_recomendada": true
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOVFJhb3pGbmplV202VDRfQ3hQUm43b0QwWFN5d3A5SXNJRS10elc3M2pxU3BZNUJaVkRnOTU5ajRveTRIcks4dHZMbXRKckhDNjV2N3ZOdWxXMk1uMkFQWUREZEpDYW1SNC14akJLU2xsa0ttaGoxUElSMG9GcDg5cnVqeGhUOS1QTUt4VnpNa3pnRDNTNzNzbG9sZTk2dXd2djE3YUt4aUdyRVFZZ0R1N0taRk9vUEpOV2YyQ0hn?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
+      ],
+      "classificacao": "regras_textuais",
+      "revisao_humana_recomendada": true
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQZXRxWFlzMXVHZ1ZsQ0hWUWVSUG96MmxlX0xFM0h6SnlYOXJiRmNsWDVhUXVSZk9JODJoaWczZVhXWkdzQVJuTDJtUHoyZFRKbG5GZmlNZ1VUbTJzZnFXcFB5UUlFejhma1JvYkttX0k4dUl1dFpkVjYwQjJZdTVvRzFlODJ3MUxZRWJZR1paM3ItWGstQ29fSlo5aFhIWlRDSW5qQmVYalZ4S3ZscXgxS3FUVDZxVjZVbDlqSFZ6V0dhQ3Z6X2x5eFplamlKR29fc05YaE5sSmMzSU5G0gHcAUFVX3lxTFBldHFYWXMxdUdnVmxDSFZRZVJQb3oybGVfTEUzSHpKeVg5cmJGY2xYNWFRdVJmT0k4MmhpZzNlWFdaR3NBUm5MMm1QejJkVEpsbkZmaU1nVVRtMnNmcVdwUHlRSUV6OGZrUm9iS21fSTh1SXV0WmRWNjBCMll1NW9HMWU4MncxTFlFYllHWlozci1Yay1Db19KWjloWEhaVENJbmpCZVhqVnhLdmxxeDFLcVRUNnFWNlVsOWpIVnpXR2FDdnpfbHl4WmVqaUpHb19zTlhoTmxKYzNJTkY?oc=5",
+      "categorias_sugeridas": [
+        "Outras apreensões"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -938,6 +1023,14 @@
       "revisao_humana_recomendada": true
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQMTN4OV93enNPZEhZNHhGSnFMdXo0VEtCUzI5VS1mWTZua2tDM2pkVl9UZWhnSHN6MkdsbUV4dk02RzA3RzlDa2ViRHBFMW5TV0Z3c2d4VzljZlBSdnhEQjVTVjJXT2pXdmhOd0xfejN2MzZJS2JqNTF4VGw5UGphQkxFZUhYRXBzWHd1T2xJY1MxcThxcGNGYXFKSUNnMUY2MGJuZDUyTTFyTHphSWlsNGNCRUJBd1hwVXM5bDZxbGVFR3ZNdkpzU1FCSFE?oc=5",
+      "categorias_sugeridas": [
+        "Veículos"
+      ],
+      "classificacao": "regras_textuais",
+      "revisao_humana_recomendada": true
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOc2pmNjRQX05aT1lUY0l5MUhVc2xSSFdoODVCamlkTDM5ZlhTRHhhdnlLRmF6Ujc0NVE4ZmlLOGRzYzdpeXc5WG45ZEIycnh4bVR3ZTlTNDZHdVpIVmhkU1MzS0xGdzdPNjVybzVZNUhMd1I3dEtRZy1jQlNnOEduNTV1cWZ6aTNFUkI3Y25ucUxlMWYyTjV1UWdFTjg3Ui1uVkxZbHVoRkREMkk3c3htMk9yMFFyS2drUjBtcFVRR2NRb2REY3c?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -964,7 +1057,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPNG9MdGVzTGRCNFYyT2pPbjVUaXNaVVhoa3hmXzNEWlNfY1VtR0JOLWp4UnVnWlpsQXBaV1VaZGV2SF9wZUl1YzlzeUgtX1psSDZHb0d4dW5aa0hYVW5UQW5RUmJIZXFQOWIzX2o3dk1yVmtKZFp6QTRnZ2VMSTZUelJRcE1aOVhwRkQxRUNZcE4?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -1020,7 +1113,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQVkR1dEVaWlJ6MUdZdWtPX2pEVnZvM3ZXZDhhUHFiMlNMZV9IQzNFXzBLTVNpUVk2Mk1ZVHNhbXFja29hZGRnamRZSV9Fbkc2UTkzTFVfcDYzMGlpR0NVN3Nnd0xPTVdlQWNFLWN5NDNzMFZ0cUZhMjlUSHJjS0lvSXVRSGtfUWlKSndaV2JxMFNrSEROMXBaTk9wQmdOZHg4bzhHWDl3eFV3SFROUUNFRnNCMnl0THFoaTR5aTFQR3QxX1RURU5WeFN3?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -1800,7 +1893,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxOWGVHNDNqcHI1eW5zVlQxS3FBSUlkallnWTN2WVg0UW0zNm9Ld3N3Mm9XX3VpR0NORnJQb1BoZkZ5a1h2Y3BPMXJNOUhSb3dhUE1pU3ZKeDY1aWVwUF9OQ3ZYMnEyZFpWYUl5V2hVbTZXeVZKU05HTzZzYV9rTXpSeGg5Ukl5RUcyXy1iNXI3ZXZkd0VQOFdRNTU1UmE2V0tRQW52MTQ1Skd1YjBxQkVrQjF0aExFamg2eVBwYTdTNHUwa3prYllPeEt1SDlXWFJ6dWpKdA?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -2941,7 +3034,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxQcHFrOHBVMVRJOGt1bTdnclQwOS1SZEJBN0VnWkV6ZVpHb2lMdGlTWXV6X1owZkVfeFg3TExMN1psQ0VjWHFvN2VBYlBTQWl0RVNqb1pneWFkN3BGX0tNcFI5M0FZRHVwNkcwLUdidXVlVWxDVjV1czliOGk2cDd6TktCRWhOLUtFZ1F6cXBwTmh4TUNzTjFYZnQ3OWYwR0hfUGRZcmpmc2xMaWhGZGljOUZ6elB1Qm1INTFWS193bGZQcG1qaDVpRGpTQWxWY2M5MWFIQUs2b1U?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -3318,7 +3411,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxQeDUydlhxZU9sQzRWcG93QzFMVGZSc0g2endPRXZsaWRCRldfREFFNGsxX19SYTE2Ny1wUWpQMktIRXlyYTlaSGJNN3IxSHJPTEdhM1lIMHdiT3BRQnNZQ1pFQUE4QVVoSUQ0eXJOWWpjbG81LW1wWmcwQ25GWmRncjlONXRLZ21WYlRhcnhHUHNCcFBqNTdTUWdpMlNZeURzZVhDb1lGSlRrWllnVjg4THZvOGE5di1FRDkteWNRMUw2b3BBQkZ3R3dVbU11N2VGcFJFdm0zSTc3bGxaNzNWRTBkWG5xSElJb3gtbERTTHByeEJIdGV5eUgxSUpYWllHendyU0QwV0h3NTBPeWpuR9IBnwJBVV95cUxNd2dSaVhJTjZmWmktbndJbFFhbnMtNEd1Y05abXNYdGdpem13TDBWZGhJWmFXQzhRYVBJOHktcjR0YndGd1N5VE5YMFFRZHV3bWx2VGRYaDFwZ3N4NEhOMnptTVFUYjFGLWZTSFZTOTFyc0tBaGdjeXpDLW5ZWTQzeTdqeXNjX3JsZmdKVXE4c01JUVZZcm50ZlY5OUNFRWd3V0FXNDZpcXpuUFpBY0RUSVFYeHJsLU9fak0tMDNsdlZ5WUFwcVRNbWxVNHNpZ3JPYkxNQ2NybEJjQmZWOXFpdmRZQmNkNlllQWtjcXd0aDdaOGtfRUR5WkRkbUpXRzl1VDJKaVdOVENCclZQMzljQzBIVjVyM0NtRDBSOTZybw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -4157,7 +4250,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNN1BEWjBlU3poY25YTlpmWC05SzZxSlg3cnFGU1R5dXpWbWZ5VEVFckUyaHVQNy1YU0VkLTdLUURXTFJDZU9VRjFuZ3RpeHNkZEFtMi1ldy1SNkV5YnR5QmlPVGYwamJQSlZfLW5tSkJCWFVlRmhXZEVQakhvM2FTYy16SkxQd2dZeVEwVU9OVXVxNjZPcmhvS2RzWTNBRHJ4OWxxM2Y5bFk5MXBfTEp5WWNOelk?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -4793,6 +4886,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMikgJBVV95cUxQTmcwekpCOGlOSlZTcnJrQ3NOVGI0OUFJaG5XZWxMenVoOEJvakRzVXo3TXpzeng5MXhubXZ0S2JyY1ZhZTd0aXhVVzhOU1drNmF4NEJya2w4OHFkRV9rUG5FQlpCSkI5eWRPRHNncGZqblZ6S21BSnI2cnVIWXFpVUNkcHZOekIxVzc2a3oteV9qZGhqcVN5aHFTRkNtdzRNV3VvYzZIT3JscWwzcEc2MzFjZmd3bUMwM1VFQ2RScXlZblRwMzlVVE5obFV2WnpZYVE1TmxaWDVuVjY0UUFRaHNfazVGaEtZanJYc0Z3dkhBS3VPS3dVMDZCT2FqdVc4ZVMwZnZqb2lYczlEN1Zvd1J3?oc=5",
       "categorias_sugeridas": [
+        "Armas e munições",
         "Crimes ambientais"
       ],
       "classificacao": "regras_textuais",
@@ -5734,7 +5828,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxOR3RocFNjTkRIWmJxdnk4TXN2SUJFNldJM0ZvV1JNMzg0TzZPWlBQV3psa2FKMUpsWG4xRy14U3l4NlN4Yjg5TXBIYVlxbkwwZVluMkgyejRTdzlCbDEwcEpjSGpVNEhFSWt0eG9YWVowUFB6YjhjSmlScG0yMnUxZFl2UktOV1VpaTRnMDc0VEQ0dElNeDMtM2Y1dVFLWGhtLVlTdlNyVXZuUU1zNS1iZTFtTHJDNHZ4OEJSQUJjSXh6LXJkTENNMGRBbkV4Sk1HYmY5RFpuSWRZSVEtWEVpelBDb2sta2ZGRWRNSVRYMUphb1UtWExJZGRLSE1SZmtPMWfSAYICQVVfeXFMTkd0aHBTY05ESFpicXZ5OE1zdklCRTZXSTNGb1dSTTM4NE82T1pQUFd6bGthSjFKbFhuMUcteFN5eDZTeGI4OU1wSGFZcW5MMGVZbjJIMno0U3c5QmwxMHBKY0hqVTRIRUlrdHhvWFlaMFBQemI4Y0ppUnBtMjJ1MWRZdlJLTldVaWk0ZzA3NFRENHRJTXgzLTNmNXVRS1hobS1ZU3ZTclV2blFNczUtYmUxbUxyQzR2eDhCUkFCY0l4ei1yZExDTTBkQW5FeEpNR2JmOURabklkWUlRLVhFaXpQQ29rLWtmRkVkTUlUWDFKYW9VLVhMSWRkS0hNUmZrTzFn?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -5791,7 +5885,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQeVJuLUFFNm01aXh1dHJ1UjloZmVxQThNY2lwNDBZUHBuZlZ1SE9JQW5PaWNLTUZYSUlVZ09zZVZFdWFRVG9FQWxkR21hejJJODU0bUJSMWJGX2FwVlo2UDF4WUcyOGs4SWk4N2NFNWFMRUFFMUNraVlLTVpXcGZwdXB4TlJCN2tVT29FVlFVN0czanlaVXkzT21hN3ByZjRqc2VDS0U3a3NiU0c0QUMyUEFYWkZidFpDcHpmd0JB?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -5807,7 +5901,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxPdnlCaTBrMUFjajA1dGs0ZEZXcWo4TncxNGhwVTEwTDhNOUFNQ1J2UGlRZHduQU8zLV9NTFlZc3dxc2NIeDl2TTBZME5WZUJUMkFISk1EZ19uQ3BSRER2anQ0d3E1SHVzSW10N3hYUm1JNVh3ajVSQU5nMl9fcVhmVkR1WXBQVWJwRnNWMkhpX1hVV1lCVnh6elUtWWt0eWNpclllOWZycktzV2JIN1g5VFNGanpIYWRBd1dhTFlxaDJwRzVPbUtZZk41eUxrckYtemxCek9sR3hMbmfSAeoBQVVfeXFMTm1kQzdLMVNzYW9qZzNWREg0OEktSWY3VXFiV0J6YWJMZ09pc0xURGZjMWRaVUllRkRuN1ZnZWNpRHo2N3ZnOG0tcEZaQlNJeGZiVW1wTF9yWGRpdUFKR1Z5YVUxbjh3aktkYjY3UzA0Y3hKTkdHd2dGTGhta3FEMUJydjQzdkdHb042SkZSak16Z0ttckRMb0Rsak5Bd3lzQ0Q5eG40RTV0Ukd5RkNRYXVVVFNFMzRHS0dybnpOWUpqZWFLOUlKU3M1cm1NX3ZHVGZycW1OYXJzelA1b1VMeW5UQmJZcWh5V0RR?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -5823,7 +5917,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNTzJ6dWJ3bGlGdVVaWDc5azdfMDNiU1R0VEctQm1YSDkyR0JaMmppei1HTjdFZXJmVVBoMFZ6NVZ5d05IRjNLWFFLQk1DYllIdUt0NVcwaHlFeGprTXBaZzJZOGZHWVUzbVVUc1B0OUJENG8yWG93T095bnE4T3Z6dFp4dUpuZGlsYlE1b0tEQS0wZw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -5847,7 +5941,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOUkNTYWVHcHU2WW9nZDN6akVDbjJmYjd1anFjWDQ0QXNrbE5KeVIxdU96N2tmOGRHanVlc1FuYXFrcnZBTmxMdEpVbmtQWFREU2pnZWdsNmRLS0hDRlRHWkFSc09TTXhsZ0d4OXROWkpwd29IZTY2ZWhJbE1OcExvZHhReWstbjYydUJkOWFqazVoUXNrZWhOcmhkVmdZWV9zU084cXVVQ1F5Rk50a0pQMjdEcU5sdEp3?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -6111,7 +6205,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxOQXJ0cW9GRU4wQkxwbmRIWXRuY2V3Zl9VNlRVZjhYWm1Jams5WXRVZkRSQ3RZRXBhLVdsZXZFMi1aeHAyN043SFhUSlpWakdlb3lHMVBLMVU5c05vRnQtZ2V6UWhyXzRFVGhvaENYYUY1Y25xNzd2Z3padDJ6NWRZM1NIVkQtZ0t3d2c0WTg2UjVVQVZTY3dYYy00VkgzaHduZUsydGtjNlBDVXc1b2kwdWRtUVlJTmtvckdfNlRmeEJwZVVnZzdaVWo3VEZJb3Z4bDVJR0k2NGRXSG9lR01EUDZRN0tBSHpSNEHSAfgBQVVfeXFMTU13MDRwa25KbnFTbnh4aGJZQkp5R3Fqdk1VWHVPeHc1LWMwNW56SUZKakk2Um85eXhFdmQ0c0FvRzZGTFI4TU1PdC1TQjlBRUYtMUJBRzJGM0NhVDZBOXVWT2hYSHZDNkZZbVppX2Rxd3lqUGZBRDVIeGowdTRrNS1PRDNHZ0s0ckZwUTJVWWR4bFdpNURTV2UySnpCMk5wRTBlTEd2bkhpa3FuRENORU90LXpDVGhTa000QnlBdmUyS05NMjBfRmVlSjVPNHNDOU9rQlloSS1oaU15VlhvdGVNenZVMlRhUVFDT3Bjd3c0dFBkbHhHOE0?oc=5",
       "categorias_sugeridas": [
-        "Outras apreensões"
+        "Armas e munições"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -6744,7 +6838,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMikwJBVV95cUxPRGRpNlZuLWlST0FWX1RRNm5tcWVJMXFWdHFLdmNFci1qRi1hTDFKeVdWNHdlZHV2X01GcWgzVExNTzF1cVhVcWdCSFVRWjVfSXlvWE9vR1VHNVVfZnhEckVaSm05UGRQbmRmLWhTOFl2QkVXc0ttdnNlN19Eam5EQjk2TkVqX0hINXduYWJvLXVaM2s3ZV9BcXhNTHJSVjFDSWxSWDNMYXI3em9BQS14OFExb0d0UDJCZE5XZnBzUW5DR1gzQUp0VlRUMlRaeGkyM2phZ1VOblN6OFBVRFRhcll1ZFJCX3lyb0JNSmNBQ1VBUS1vQU5GLWtqUVdyQUlJYzNEZU8yTGkyYUJfU0V0dXZQTQ?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Crimes ambientais"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -6953,7 +7048,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQcWg1enlQUnRmTnVFY2JHTW50QTBZRXFuR2JNTmRYZG5kUW15LUt3WGZDZWVNb2VJRllxZG1NbFpudVZfa1k4c3NyQWxBcFczWFNEaXpST0ZjdmhpN05iY1E4OTJ2bGlXemU2dGM0aHM2WWlpZ01LN0xDX1l5dkdRT2hZYUE1SDdsSmppc1JJMTVFZFhNUnFIcTZ0UW95NTJhd29FQTJuTDJmQ2UyVlBHVTJNdXhYOHZnRnNpdlAwY09YR2MyYlU2TExYMFfSAdIBQVVfeXFMUFZtT0pOLU5SZ0NmTXB1ckt4dlB6N1R6a0RJMWhqcS1DWEtjekxTbDY0UUU4ZkVRNTFsT1NpMkUwZGplWUxpS3lyUXY2OU9uWHExLXBMajY3eWZGUWQ5b2NmbGNVTUZwS0UtRVpxWGdKLUxzTks1SnRHeUg1NXo1N004cUxXUlBsempsSGtVNmRPU1FrUWZWRGEtMGk1NTcyNjI4QldGNDFzMUhOV19OYTdOdmhoTHlsR1hoVU1kSjVMUkpIa3pQeE1tVG91MlV5M3d3?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Crimes ambientais"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -6970,7 +7065,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPOWxzb1g1YXZ6a2w3ckVEQWh5Q2hnOGM1amk4X2Z6aDlzU3ZzekVUYTViUER0RXkyakY3VjFEU2pKQTlvZm43Y1lZb0xXRHdIUXE0Zl80TXRjMVRmblJ6OGcwdFhlV1M5dzRCVUo0WnFKZGt3MFRvdzFVaW9za0xjWHdkZW13bUpmcndCeVppRkpTSUk3Nkx4alpBNGxmMWZvMExMUGphTUJrMTZFNFVrZ3drdGVnSldPNFhDYWVxNEI?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Crimes ambientais"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -7148,7 +7244,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNSWc0Y29OU3IwMFZGUW5fdWpBT1ZCZy1pNlNNeGFrdGtZdWlqTzZ0ckdpZjhqVV85Wlh2UkpENXdBSVJyRmhPMElXMllmWGNGVjJXY1dhZDRDN1VhUjltSE1JSWVxUTkzTWJyRl9fX0xYZTRabjB2YWNQdW1PM1FCLTJUVEFaY3hyY0hkdmdMRHRCY0F4QTZzV3Qyc3hPUjEzTGppX0trekJxbDFZVGdVWGFB?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Crimes ambientais"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -7362,7 +7458,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNWW1vM3hxTklQUnNIOWRjRVNSQ3FBOVkxekhkT0FxSkNFSExsZ3duSlFVVkUwY3FFbzV3ejFfLUdhQ3pBdXhtaFdJd0RxYU0yQk12ajB4UVJ0WHVwUHd2YUs2cHBfU3NTZDhCVFBabm05aDZ0S0VoTUoydVpOd3BvaUVMRE5sTjQ0eGN6OHFoaDAwV3BnR2kydkZB?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Crimes ambientais"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -8925,7 +9021,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQcGNQRkhDM0Nvb0RFcmdlQ2lCQzNweTlic3UyQjU1N19PdUpWVVBhdFVBV0EwWU15ZjRFaTVjYmpZMWJvMFE1c3l4ekgzZmR4aFhJUUwxeHk1b1NERjBuajczRWd6QlhocWQtWm5HMmJnNFMwVWNPYjlqTmhGRkt0SnZfVEZCT1JhakFHR3NkMUVPeW5heEFYbXFQRl96aE1lV2ZZVjV3VjdjX0hsaVlZdmF1dF81UWx0RE51TnJfeENOMmpQakJB?oc=5",
       "categorias_sugeridas": [
-        "Dinheiro e valores"
+        "Dinheiro e valores",
+        "Crimes ambientais"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -9045,7 +9142,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNN3h6R1VBOG5IZzNpU0UtSTYzZDhwbDhXVGdoTENlS0hISEw0Z3ZhQXBmOFZUTFdldzhOVDJ3TEg5NFRNQ3F0U2RMRTByS3pweDU0ZHdYNTZLQmNCTFJTeE8wS1gyQzRzRmtKdFhSaXAtYXlCbWxlVXVGNUhkQl9aQXZfYVB0RTZpdGZLcVZ5ZGtPRFhCSnB3eFJnVVNDUzlTVC1HUEZfLTlUWHJKZFZndGoyX1diRWg2RzBqMDJPSQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -9967,6 +10064,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPaHpVVmlDSFFnRWpwTndVR3l2U0Y0MzluT1pFdXc3T3VOOS15YXY3YVJsWVM1YUoyOGtWY1hxZVgzcHVTTXlUZ05iM1Q1SjFDTFYtdnJybDcyQXhUQ21CR3VCdlhnZDNwdGl6OVJRWTZVOHFHdDkyZnhOcWhUR2oxczlqZ1VaSjVrdmdzel9vUjBWOVc2dGh3VzB5NUxzWlU2VVVCdVRhWkJiS1NVaHFTSUpWT2xKUXJOa3VSaw?oc=5",
       "categorias_sugeridas": [
+        "Drogas e entorpecentes",
         "Armas e munições"
       ],
       "classificacao": "regras_textuais",
@@ -10007,7 +10105,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxNcXp0ZjhTSGN3bDFzNzVURXl1SXZON2pmQm1FNzNNbmU3dmh6SjBtT2thdXE2b3M4eGJyc2lyc1ZwSlZVSzd2amtwVVFYaXE4S3BCdjc0ZW11UTdweGNNR0tuazNqUF93WVdxWWYxbm9ibUtsU01FWWlsaTh5MjFzUloxdw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Dinheiro e valores"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -10068,7 +10166,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBfTVpaejNjU2xWTjRDM25rVWV1bzFPVjVzMWU2QkJUcVFQOVFFSTcxbEd5RDNISU9oUFpLWjJRNHF0MVhJOXkwTDZjYw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -10207,7 +10305,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQVjgwUkRYdjJKbWMwTE9qVmR0Q0pyMGdyZGlpaFZIR1RUODlPNUl5eG9GMnByYWNTeS0xYXBFbF8zclNTcVNMUUxaZlRKTk5PbHVCd2JhSGhNcHpjdWs2TGpKTnFyZXo5U1o3TWVpQmZrem1xdlhwdXJvcHRCMmw5SFZiSzhiaTJxWGpFWDM2U2ZUVExlczFMb2l1Ynk4ZzZiQ1hZNzdCRHk?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Dinheiro e valores"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -10666,7 +10764,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOWE5nWVVhUGVScDlrNnE3d3B5VmsxTzRNaFJIcGJsVUVZXzZPamFUUjJ2bVhLMHBxa3J3b25SclNfZlJkYU90Y1daeWN2V0RlbDFFVWpVSVBNWXo5cXpLNmE2Z1k3LXB6RVE1RzBjTTdJSk1aQklZcWtmSVpyMmtiRXZna9IBkgFBVV95cUxPNWxvbFUwWU8wVnFFNEpyWjl4NFFjTUtXNF9xa1FGM0hoTENIRWNrdWZHZTZtT1d6QkFlS2NnNEFCNFFONmFGLVNFZU0wcVVQMlRZTlFXc0RUV1A2VGczLUpOSnVUOEpWZlBESDI5dlFPb0c2R2MtQl9VWEl2R29IbXpBdlBwTEgyMUxBRzhMdHV6QQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -10788,7 +10886,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxNY2NycjVxY3JJdmhsTjNNWDRpd1pYU1JMaWlJUWx4ZzVNNXRKRmpralRBdHIyb0s4NFVnZE1fQVlsbURuLXVDa1BRU0VwVUtKcy1UWENvdEctdEYxWGhOcHJjRXdjdF9sNjNQVVNUaUVKTnZvdk1XMXlkNkVjRWE1MEZjNDBOUVNDbFdUUEM2SWZ4R2dkWXhCbjNpLVpFeTRkWmwtSURNWExoMDNzS0VlTV9OUUhoR3E5RmFFWVZ1UXdqUWUxSUdiUnBFTkU2dw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Crimes ambientais"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -11682,6 +11780,16 @@
       "revisao_humana_recomendada": true
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOdFZhZW5kOHN5MHV0YVg5ajVPLVBKNlUxNi01UGVyTEFWRENGOHExNjUzWFlFLTRlXzdNR1poSjJYM29qQXBJb1hPVWhRTnMxbklKVVZINlJWVHVPWk9zaTJHSmQ5dElnNXdLTW1TbG53WE4zYUMxTGtnUXh4aElHeE04WkV4Q0hfMlFCQzF4NVVXNWhwV0Fhckw4blRVc0tHeHdMakFmUEVwSHdSelVBNnJfd0Zad0ROS0JkMEhkOFk0UUtlTVQzZHFsNlMyZ9IB3AFBVV95cUxPMWlpeDJrekZ6UE04WUJhZlU1QXBnWW5zajcxTHJzQ1RfdHpQdW9LX0NxYmJGd2JNcDBRdVV4T0x0MXZBU1p6ci04bzEwRDVUMHdCa2ZmM3pQak9ZcVpycVVTeDBkRUUxcjJISGxoN3hxTk5aVnB3T25TNllDWXhZY05NWmtsNzJ2ZzdSSnBkVlMxX3MxaE5YTlI3MFMzRlVldEJXa3lhOTd2c19pXzhnYndRTUJZMUdCdXZlbVNLMHpqblppYnpLT0RqTC1vTXZPa2JBS1JpT1Y3VkJN?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições",
+        "Dinheiro e valores"
+      ],
+      "classificacao": "regras_textuais",
+      "revisao_humana_recomendada": true
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxPbHM4Yktsd0stYmhQaVRHWjhYS0QzYjFiNkRQMWNzSGFadVZpSFQ3TFR1RWlvbVZZWDVRbUMtM0JRVnViQ1BtbXhKMUhiMjJKbnUxV3JSVlpaalRRcFJxWElId2ZCQnZISFNtQllUQkQ5aTlFUWFqZEw5UTI5MVNId1M5aUFhS0NYVWE4djNubEhjVWdjQ3F1QlNXSWxiYk1kcHVlMnNRbzJaT05CdERuZHltSTdtRmdMY3kwTkFwN1VKLWJYUFkwUjE4T3VteWRrYm1oT2wtNUVRUzJpX1d1Vjg2amHSAeoBQVVfeXFMUE1vX0FsMHJmQy1kRGN0Y1RCLTFpa1YyM1ZieDQ2M0p2YXVKcm5Kcmwtby1DakVTMUpoemVILWtEdGFjeVBvTWY0ay01WE1vQTJXVmhHcUpBZG5PN1VRLVRyOG9Fc3plUV9KS0ZpUTZ5bG40S3pTeUxZQjY3WnBlNEdud2swRVhIbkZZR0JKenV2R1FJOUNaWWQ4Mm1tN2ZqRzVMbmMxQ3JZV0M2UnNMMGU4d1BuRWNsQ0R4TDMtZjlNLVFiYmstMzYtMUFacTVBYnMyTU5Ea21IRS1HYWwyMUIwOTZkaVRGaFNR?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -12519,6 +12627,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPMHR6ZVZiSXN0QU9YMUZCNm81c1BjQlM4c0lBbkN2bHVCalFyS1ozd3JuSm9PQkU4RkVqR2x2X085QU85Z0wwZHRWNFQyTm1kSFB0bmpuaC00eVNxdmE5cDg3UDFwckVPZU9zam9ZSGNSWVk4SmFNR3I1OUVhbTdpb3RSVzFyTUdWeVdCdEp6WWc3dXI2eEtXN2FrWV9oSG9LR3oyMkNOMA?oc=5",
       "categorias_sugeridas": [
+        "Drogas e entorpecentes",
         "Veículos"
       ],
       "classificacao": "regras_textuais",
@@ -12591,6 +12700,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQV1FQM3h2TEVnUWR6QUcwSHRjeUNKVzdqd0Y3NFN6cVBhZXkzLWd5c1d4em41enNUZkpRM1g0Vi0wdDlHNW1fVVFzVy1oMXVYR3JrQm5MckhCTGVwSGxYUTQzT0puREdQMHNhVk9xa2Z3SjA0RExtVm1Cck03VGp3ME1zc19mVm1TRWVuMXRFMVc4dkh0WDk2d0s1UVUxa1hVdGhUR3Y4VjhfUEY3Tmo1Sl9YTHZhZTRp?oc=5",
       "categorias_sugeridas": [
+        "Drogas e entorpecentes",
         "Armas e munições"
       ],
       "classificacao": "regras_textuais",
@@ -13030,7 +13140,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMikwJBVV95cUxQLUUzc0ctMUVzcHJZZHNlT0VFQkd3VWk1WlZxV3U3TGZtOWtBQ2VzUG9rWk5RWGdXUHZIc3V5cW9LUVdHSmtteTFZeENxaWZBaDJXQjZSbEZhMXJPdWI4ejJUOUdkYmV4cjc5ODA5UXFiSHdTb1BHMHBiZTVSNERSS3pfOEp3TXhiWkFHNjdqZWdNaDUyT3p2UWQtdVg3UkVSLTJZSGlHanUtU1FHSU1IUU1OQnc4dXBTY05HTldhZHMyWnhqVG96aHZDaGItN01fWTdpRmstVjlhSWs3NzRlOW42SDJyVmxvaExxYlRBeGFOY3Yzd05fOVYwYjlFM2hocTlFR0x2STQ3eXRtZlVwMFUwSdIBogJBVV95cUxQZWlzQm5NeW5Zc3NPSEpfLUs1RGFIckdlbml2R0lKM3lJS3dxM09lNUg1Q25hM2htSVVGdWR4dUt1UkYzZGI2UU5kYnVtbjdKQzcyU0dzRHB4ZjFnVEhCeGpya2RVOEhheTlvSWtUYVBuZS05TlR2OEdYVTNfWW9YWnFwaEZSWFBNRDRvUFJnR1BZY0lKQTg5N3E4c0dqY1NpUUJOd2ZKeUtnOGdzX1NmaGgzZUI3cUxlNDdGZkpLRFUtNmlSS2lGRjg3LUV4VTM0MXQ4dTFNM2RtWWhOdjRPMDZvZ2dsS24zcThpcm1DbUpIYmZhcmlzWnR0VTBkcU5OUTJzR1owREl6SUt1dTloNENsa25GdDIybVpVZ3pqYW1WZw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Medicamentos e produtos"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -13241,6 +13351,14 @@
       "revisao_humana_recomendada": true
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPSE5ZYnZMWEhHd1I3cldsS0NmWkRVdnhhQUhnanNVcHN2ZXlPY2V2ZkkxRDFLSll3M1EzbHMyVnFFcDJjSnB2TFZ3b29sVFpzbDQ2Q1ByeDRxdGRyNHNGS0dyM0FldGZ4b25VWUtDWGJzaFJmSml1ejlsdFlLci1lcjhJQVBqQTJTLUtjMmlWT0R0YTNRV3ZR?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "classificacao": "regras_textuais",
+      "revisao_humana_recomendada": true
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5TdWl1U1Z6TnBudEJRb1ZTNGZoSkowbFdnR3ZqOVFaVFh1Z0VLY0J1NGtScllNMHRTZU1YOFVXYmI5ckZ1U2QzdmFCQVVvNXVsekhBMjhFekNMaUl1QjZnc2hoVThsQmNrQVJwM3B4R0R5VTQ?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -13261,6 +13379,14 @@
       "categorias_sugeridas": [
         "Drogas e entorpecentes",
         "Armas e munições"
+      ],
+      "classificacao": "regras_textuais",
+      "revisao_humana_recomendada": true
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQekRSOTJVUlphSEd4eGRTaVVNWl9vSk45RXJpUTFfMEJ5SGRUYjZzcGlDZ0pISHZvZ0dBRHdIdnBZb19PTThCY3VnSFpVbVJsRV9PTHM0NXl3WkVWN1F3blNqeUQ0SEJfTS1IdmlNd3lzUHcxMXRkMzNBVHFjNVhlMQ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -13308,7 +13434,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOb1BlUF92WDcxNGNjNEtNX2xPNmxKUHJ4bmpHbURBWmxDaU1IVTZob2R1ajZfbVpMbVZkTVlwWjhUUlZ5NUJieUxrT3hKclpObW0yX2NuSDNoQzlfTncteDNhLUxnYkhTZHp1NXVsdXBJcWlyQk1tamVRT1QxVkRVUQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -13412,7 +13538,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBuMndWcWcxNTNFb05odTRQV3BQc2tNQ0s3X0l1R2xDekU4VHFna09SUVcxdWVQa0lFemg2NVhnSl8xZ1pDbTZ1ZjYwMWpmQWxaemU0QUhsRC1NaHVmTG9PUG5JUm4ya2NjWjdzb09hUUt2UjBC?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Dinheiro e valores"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -14062,7 +14188,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxPMy1vWFh0ZVg3a3ItdE5nOTB1cHNJR0dfLXpfMUFScjl0aDJBN0NyVU1LOTY2TEh0Tk1KUVpDQTQyWV9fWUVFbzQzbnd0NFBEMkxoYzJoWTQzSGliOUwwR0FrVXNKRWhPcjB1TUFmeEdZeWxPMVRjbW1uekpjVHF5X1NqNGkxbklBd3duLU85dFRyclliVzZzYWI0b1RpdGVHLV9Ld1lUWnI4SURKNzdWZWRuZEd2b1dUVV9waENZQkZiU2tfNkNud2ZpMnVXbG9HMDJ2ZjVkVmZTZlNnMmNZZ043QmpOUEJzdFV3YlJHaw?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Crimes ambientais"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -16057,7 +16184,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNQ0w1T1kwTVpIZHdTM0EyaERWV3R6TERXNVQ3ZWNDQklPTW5XSUNsWG1kM2duX2Ezb09PdjFKT2xjRzd3MndkVDhzbFBXOVgyU3p0QU1RVmJ4REFyMFhIMFA5QkJ5dF96cDBPOGhQTm9MRldPMUt1dGpKOXNBSmtUSVh3VVBxUmV3WVNlTXQ5enZHc3BNMlhVdDRjdm95OVXSAaQBQVVfeXFMTUNYSkFXMk9EQnVidC1WUGI0dVYxTUcySk1fWUllTHo1ckF1S0lfZ3E0MU9BUDVJakNYdWxNQnNDNEVMUklhRnNjNjBlVE5RTTNDTlhQSEtzM3o4WWNZMVFWdXdRXzB3YzhsYmlNLVhyTmI5N2JGcWlJZTlzVXhIQjRLTXpLVVFUb2s3MUZ5LWxReVNJOXRaN1ZpTTRZZjVCVHlQRF8?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -16331,7 +16458,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPMjdpVnhFZzlqdUVfLTNQZE5MUkxxRXNiUFB3amR6S2xXLUZLOWpRcGY3aWVBSFJsY2d0RTI3enpTZzB2aDllNTdRUEc1bFJwTnNTUXc3TUNlRFh4M1hKd3JuZURmQmtlTk5ka08zcDBTOEw1RkJfWXdGU2dRd0twMDdlSU9KcVM1YzV0YzJKZw?oc=5",
       "categorias_sugeridas": [
-        "Outras apreensões"
+        "Armas e munições"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -17523,7 +17650,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxPdWtSTUQ0ZW40ODEyaXpDNTY4UUhRLWpPWWNLdVNrVEd3YzNWVEpIT0RwazB1NTZjcTF2VWQzd2FwcWRramgyMklWYnlKWVlfTGptTEE5aDVrQ3B1dHJxYlBSdndXSmtHZ056NURYd2U5djB5QWVvYTZFZmlPeldJcVRSb2M2NUo5VnhsZmhUYV9hdGRjejNoRkJ6dXFVSHNTS2ZMWFh3RWFjeUNFaGFLQktNX1Rma1pMU1MxdkRsZ25OSFZZWHV0NHdidDh4MlEwNS1hUWVSMzhRb2lRT3V2VEZfbTFLZnVpTC10QlRoeTjSAfYBQVVfeXFMTU0tNmgtZEJKTVBsUC02dHdINzFYZWt6aGQ3MzFJRHZoN0dkRTV1bU0wd3hCRUVQWlJNWVU4b0VYWGgxZ0dJemtUNHNBTnJKT3JEV1ZUTmk5MTRDamQ3SG92SEkzNktUZnktUE0xWlZvT1kycnlBbWRnZktIRm9STV80dTNXWHd2V0RYRlozdEgtRU9Tb2gtT19lVkdLV2s3Tk01eDQxUjFLU0tXZWdzNXRSM2tZeDM1cnVHSHJ4TmdjVjA5UWZfWWpESnRQV3lfS1h6MVVXdUdiRUNzbllVZmtCZ2ZpLWdjdWlCSDY2dFJmU1hZMUNn?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "classificacao": "regras_textuais",
       "revisao_humana_recomendada": true
@@ -18112,6 +18239,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQc0FXRE9tbDF6RFdETnRGRzdFYW95VWdLX09wQUl2YTY0Q3R1aS10Y0ZxVk1CYW9Eakc3Mjc2Z2tROVhuelVncXg3M19XaGRfMDJ3LXFfRklIakh5Z0h3ZExhRlR3bnNmdEk1bnFfa2ljZE9TTGJPa0R1YndDYTdhNGpkSUJ2WG1BN2xpYzhrOWdVQVhhSW1nNGNfRzNDVXZKSTZWLWVLa1dzZ1ZqaUxVTVVkMnNMU2tWakZsU3dzcGlRZXgxQmFwbjFfaFQ3UkxOUG5nYjJn?oc=5",
       "categorias_sugeridas": [
+        "Armas e munições",
         "Veículos"
       ],
       "classificacao": "regras_textuais",
