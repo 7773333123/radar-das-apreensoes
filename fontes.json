@@ -2,8 +2,34 @@
   "projeto": "Radar das Apreensões",
   "objetivo_fontes": 10000,
   "escopo": "Brasil",
-  "observacao": "Somente fontes com dominio conferido devem entrar em fontes. Os órgãos em planejamento não são fontes verificadas.",
-  "fontes": [],
+  "observacao": "Cinco domínios oficiais com páginas de notícias verificadas. gov.br agrega diversos órgãos e conta como um domínio no coletor atual. Os demais órgãos permanecem em planejamento, não ativos.",
+  "fontes": [
+    {
+      "nome": "Portais federais gov.br (PF, PRF, Receita Federal e Ibama)",
+      "dominio": "gov.br",
+      "uf": ""
+    },
+    {
+      "nome": "Polícia Civil do Paraná",
+      "dominio": "policiacivil.pr.gov.br",
+      "uf": "PR"
+    },
+    {
+      "nome": "Polícia Militar do Paraná",
+      "dominio": "pmpr.pr.gov.br",
+      "uf": "PR"
+    },
+    {
+      "nome": "Polícia Civil de Santa Catarina",
+      "dominio": "pc.sc.gov.br",
+      "uf": "SC"
+    },
+    {
+      "nome": "Polícia Militar de Santa Catarina",
+      "dominio": "pm.sc.gov.br",
+      "uf": "SC"
+    }
+  ],
   "orgaos_federais_prioritarios": [
     {
       "nome": "Polícia Federal",
