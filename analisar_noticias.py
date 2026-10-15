@@ -11,21 +11,23 @@ from html.parser import HTMLParser
 import json
 import re
 import time
+import ipaddress
+import socket
 import unicodedata
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 from urllib.request import Request, urlopen
 from email.utils import parsedate_to_datetime
 
 BASE = Path(__file__).resolve().parent
 UFS = set('AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO'.split())
 PATTERNS = {
- 'Drogas e entorpecentes': [r'\bcocain',r'\bmaconha',r'\bcrack\b',r'\bhaxixe',r'\bentorpecent',r'\bmetanfetamin',r'\becstasy',r'\bskunk',r'\bcannabis',r'\bheroina',r'\bketamina',r'\bdrogas?\b',r'\btrafico de drogas?\b'],
- 'Armas e munições': [r'\bfuzis?\b',r'\bpistolas?\b',r'\brevolver',r'\bespingard',r'\bmunic',r'\bcartuchos?\b',r'\barmas?\b',r'\barmas? de fogo\b',r'\bexplosivos?\b',r'\barmamento'],
+ 'Drogas e entorpecentes': [r'\bcocain',r'\bmaconha',r'\bcrack\b',r'\bhaxixe',r'\bentorpecent',r'\bmetanfetamin',r'\becstasy',r'\bskunk',r'\bcannabis',r'\bheroina',r'\bketamina',r'\bdrogas?\b',r'\btrafico de drogas?\b',r'\bporcoes? de (?:cocaina|maconha|crack)\b',r'\bsubstancias? entorpecentes?\b'],
+ 'Armas e munições': [r'\bfuzis?\b',r'\bpistolas?\b',r'\brevolver',r'\bespingard',r'\bmunic',r'\bcartuchos?\b',r'\barmas?\b',r'\barmas? de fogo\b',r'\bexplosivos?\b',r'\barmamento',r'\bcalibre\s*(?:9\s*mm|12|38|40|380)\b'],
  'Contrabando e descaminho': [r'\bcontraband',r'\bdescaminho',r'\bcigarros?\b',r'\bmercadorias? sem nota',r'\bmercadorias? irregulares?',r'\bimportac[aã]o irregular',r'\bprodutos? contrabandead'],
- 'Veículos': [r'\bveiculos? apreendid',r'\bcarros? apreendid',r'\bautomoveis? apreendid',r'\bcaminh(?:ao|oes) apreendid',r'\bmotociclet\w* apreendid',r'\bembarcac\w* apreendid',r'\baeronave\w* apreendid',r'\bveiculos? roubad',r'\bveiculos? recuperad'],
- 'Dinheiro e valores': [r'\bdinheiro apreendid',r'\b(?:apreendid\w*|confiscad\w*|retid\w*)\s+(?:r\$\s*)?\d+[\d.,]*\s*(?:mil|milhoes?)?\s*(?:reais|em dinheiro)',r'\br\$\s*\d+[\d.,]*\s*(?:mil|milhoes?)?\s*(?:apreendid\w*|confiscad\w*)',r'\bvalores? apreendid',r'\bquantia em especie',r'\bnumerario',r'\bcedulas? apreendid',r'\bouro apreendid',r'\bjoias? apreendid',r'\breais? em especie'],
- 'Crimes ambientais': [r'\bmadeira ilegal',r'\bmadeira apreendid',r'\banimais? silvestres?',r'\bfauna silvestre',r'\bpesca ilegal',r'\bpescado apreendid',r'\bminerio apreendid',r'\bgarimpo ilegal',r'\bdesmatamento ilegal',r'\baves? silvestres?'],
+ 'Veículos': [r'\bveiculos? apreendid',r'\bcarros? apreendid',r'\bautomoveis? apreendid',r'\bcaminh(?:ao|oes) apreendid',r'\bmotociclet\w* apreendid',r'\bembarcac\w* apreendid',r'\baeronave\w* apreendid',r'\bveiculos? roubad',r'\bveiculos? recuperad',r'\b(?:apreendid|recuperad|retid)\w*[^.!?]{0,45}\b(?:veiculos?|carros?|motos?|caminhoes?|embarcacoes?)\b'],
+ 'Dinheiro e valores': [r'\bdinheiro apreendid',r'\b(?:apreendid\w*|confiscad\w*|retid\w*)\s+(?:r\$\s*)?\d+[\d.,]*\s*(?:mil|milhoes?)?\s*(?:reais|em dinheiro)',r'\br\$\s*\d+[\d.,]*\s*(?:mil|milhoes?)?\s*(?:apreendid\w*|confiscad\w*)',r'\bvalores? apreendid',r'\bquantia em especie',r'\bnumerario',r'\bcedulas? apreendid',r'\bouro apreendid',r'\bjoias? apreendid',r'\breais? em especie',r'\b(?:dinheiro|cedulas?|numerario)\b[^.!?]{0,55}\b(?:apreendid|confiscad|retid)\w*'],
+ 'Crimes ambientais': [r'\bmadeira ilegal',r'\bmadeira apreendid',r'\banimais? silvestres?',r'\bfauna silvestre',r'\bpesca ilegal',r'\bpescado apreendid',r'\bminerio apreendid',r'\bgarimpo ilegal',r'\bdesmatamento ilegal',r'\baves? silvestres?',r'\b(?:apreendid|resgatad)\w*[^.!?]{0,45}\b(?:madeira|animais?|pescado|aves?)\b'],
  'Medicamentos e produtos': [r'\bmedicamentos? irregulares?',r'\bcanetas? emagrecedoras?',r'\bmedicamentos? apreendid',r'\bremedios? apreendid',r'\banabolizantes?',r'\bprodutos? falsificad',r'\bprodutos? proibid',r'\bcosmeticos? irregulares?'],
  'Operações patrimoniais': [r'\bbloqueio de bens',r'\bbens bloqueados?',r'\bsequestro de bens',r'\bindisponibilidade de bens',r'\bconfisco de bens',r'\bbens sequestrados?',r'\bbloqueio judicial de',r'\bbens confiscados?'],
 }
@@ -81,7 +83,12 @@ def fetch_article(url,timeout=5):
  try:
   u=urlparse(url)
   if u.scheme not in ('https','http') or not u.hostname: return '', 'url_invalida'
-  if u.hostname.lower() in ('localhost','127.0.0.1','0.0.0.0') or u.hostname.lower().endswith(('.local','.internal')): return '', 'url_restrita'
+  host=u.hostname.lower()
+  if host in ('localhost','0.0.0.0') or host.endswith(('.local','.internal')):return '', 'url_restrita'
+  try:
+   addresses=socket.getaddrinfo(host,None)
+   if any(not ipaddress.ip_address(addr[4][0]).is_global for addr in addresses):return '', 'url_restrita'
+  except OSError:return '', 'acesso_indisponivel'
   req=Request(url,headers={'User-Agent':'RadarApreensoes/1.0 (pesquisa de noticias; contato via fonte original)','Accept':'text/html'})
   with urlopen(req,timeout=timeout) as response:
    if 'html' not in response.headers.get('Content-Type','').lower():return '', 'nao_html'
@@ -238,7 +245,7 @@ def main():
  raw=json.loads(path.read_text(encoding='utf-8'))
  items=raw if isinstance(raw,list) else raw.get('noticias',[])
  if not isinstance(items,list):raise SystemExit('Formato inesperado de noticias.json')
- counts=collections.Counter();multi=0;states=collections.Counter();months=collections.Counter();years=collections.Counter();sources=set();missing_date=0;read_count=0;details=[];pending=0;review=collections.Counter();quant_totals=collections.defaultdict(float);quant_count=0
+ counts=collections.Counter();multi=0;states=collections.Counter();months=collections.Counter();years=collections.Counter();sources=set();missing_date=0;read_count=0;read_status=collections.Counter();details=[];pending=0;review=collections.Counter();quant_totals=collections.defaultdict(float);quant_count=0
  for n in items:
   if not isinstance(n,dict):continue
   title=str(n.get('titulo') or n.get('t') or '')
@@ -254,6 +261,7 @@ def main():
    if url:
     read_count+=1
     content,status=fetch_article(url)
+    read_status[status]+=1
     if content:
      new_labels,evidence=classify(' '.join((title,desc,content)))
      labels=combined_labels(labels,new_labels)
@@ -277,6 +285,10 @@ def main():
   n['categorias_identificadas']=labels
   n['status_revisao']='pendente_evidencia' if labels==[UNCLASSIFIED] else ('outras_apreensoes_a_revisar' if labels==[OTHER] else 'classificacao_automatica')
   review[n['status_revisao']]+=1
+  previous_evidence=n.get('evidencias_classificacao') or {}
+  if isinstance(previous_evidence,dict):
+   for key,excerpts in previous_evidence.items():
+    if key in labels and key not in evidence:evidence[key]=excerpts
   n['evidencias_classificacao']=evidence
   n['metodo_classificacao']='regras_textuais_com_leitura_opcional'
   n['revisao_humana_recomendada']=True
@@ -297,8 +309,8 @@ def main():
  'noticias_multicategoria':multi,'noticias_com_quantidades':sum(bool(n.get('itens_quantificados')) for n in items if isinstance(n,dict)),'noticias_analisadas':len(details),'fontes_distintas_informadas':len(sources),
  'noticias_por_categoria':dict(counts.most_common()),'noticias_por_uf_explicita':dict(states.most_common()),
  'noticias_por_mes':dict(sorted(months.items())),'noticias_por_ano':dict(sorted(years.items())),
- 'status_processamento':dict(review),'noticias_sem_data_valida':missing_date,'noticias_sem_classificacao':pending,'noticias_pendentes_revisao':pending,
- 'leituras_externas_tentadas':read_count,'classificacoes':details,
+ 'status_processamento':dict(review),'status_leitura_fonte':dict(collections.Counter(str(n.get('leitura_fonte_status') or 'nao_tentada') for n in items if isinstance(n,dict))),'noticias_sem_data_valida':missing_date,'noticias_sem_classificacao':pending,'noticias_pendentes_revisao':pending,
+ 'leituras_externas_tentadas':read_count,'resultados_leituras_externas':dict(read_status),'classificacoes':details,
  'quantificacao':{'itens_extraidos':quant_count,'totais_preliminares':[{'categoria':k[0],'material':k[1],'unidade':k[2],'quantidade':round(v,4)} for k,v in sorted(quant_totals.items())], 'aviso':'Totais preliminares por notícia, sem deduplicação entre matérias sobre a mesma operação. Não são totais oficiais; requerem revisão.'}}
  # Gera arquivos temporários e substitui somente depois de concluir o processamento.
  out=BASE/'analise_nacional.json'
@@ -306,6 +318,6 @@ def main():
  ptmp.write_text(json.dumps(raw,ensure_ascii=False,indent=2),encoding='utf-8')
  otmp.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
  ptmp.replace(path);otmp.replace(out)
- print(f'Analisadas {len(details)} notícias; {pending} não classificadas; {multi} multicategoria; {quant_count} registros quantitativos; {read_count} leituras externas tentadas; revisão: {dict(review)}.')
+ print(f'Analisadas {len(details)} notícias; {pending} não classificadas; {multi} multicategoria; {quant_count} registros quantitativos; {read_count} leituras externas tentadas; acessos: {dict(read_status)}; revisão: {dict(review)}.')
 
 if __name__=='__main__':main()
