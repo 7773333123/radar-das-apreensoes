@@ -1,23 +1,23 @@
 {
-  "gerado_em_utc": "2026-10-15T03:37:45.634246+00:00",
+  "gerado_em_utc": "2026-10-15T03:43:28.099838+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "materia_sem_informacao_quantitativa": 2452,
-    "pendente_verificacao_apreensao": 1281,
-    "com_informacao_quantitativa": 373
+    "com_informacao_quantitativa": 374,
+    "materia_sem_informacao_quantitativa": 2457,
+    "pendente_verificacao_apreensao": 1283
   },
-  "materias_sem_informacao_quantitativa": 2452,
+  "materias_sem_informacao_quantitativa": 2457,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
   "noticias_multicategoria": 509,
-  "noticias_com_quantidades": 373,
-  "noticias_analisadas": 4106,
-  "fontes_distintas_informadas": 860,
+  "noticias_com_quantidades": 374,
+  "noticias_analisadas": 4114,
+  "fontes_distintas_informadas": 862,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 1712,
+    "Drogas e entorpecentes": 1717,
     "Armas e munições": 1140,
     "Contrabando e descaminho": 266,
-    "Dinheiro e valores": 131,
+    "Dinheiro e valores": 132,
     "Veículos": 36,
     "Medicamentos e produtos": 33,
     "Crimes ambientais": 22,
@@ -31,7 +31,7 @@
     "CE": 47,
     "SP": 43,
     "PI": 38,
-    "MA": 36,
+    "MA": 37,
     "RO": 29,
     "PB": 25,
     "PE": 25,
@@ -125,7 +125,7 @@
     "2026-07": 34,
     "2026-08": 46,
     "2026-09": 33,
-    "2026-10": 1628
+    "2026-10": 1636
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -136,20 +136,20 @@
     "2023": 29,
     "2024": 32,
     "2025": 16,
-    "2026": 1765
+    "2026": 1773
   },
   "status_processamento": {
-    "classificacao_automatica": 2808,
-    "pendente_evidencia": 1281,
+    "classificacao_automatica": 2814,
+    "pendente_evidencia": 1283,
     "outras_apreensoes_a_revisar": 17
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 4050,
+    "aguardando_url_original": 4058,
     "lida": 56
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 1281,
-  "noticias_pendentes_revisao": 1281,
+  "noticias_sem_classificacao": 1283,
+  "noticias_pendentes_revisao": 1283,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 2,
   "leituras_pendentes": 0,
@@ -157,6 +157,14 @@
     "lida": 2
   },
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMilAJBVV95cUxOYXNmZWgwRGJhZklKcmFMMWd3dFFGYnpjRXRaMnNwaS02NWhmREtrUXo2MkdGWkRBUndpOU9HSy1iLWkyalRMOE16eWVualE3Y1k4RHI4ODZVQ1hVQjdPMnllSFZDay1pVE5YNWRranhDcDlfWTlrSkxtS1NJS3BIRnF0dGJhbzJGc2o1V0FQR1dmZXBRb3BUUVA3Tlo2NTMyR3M1aE1pd0cxY1g3WHV6aXlNNFhkVWRWQUlNWUd2YklsNG5FWTFtTHF6ZzVNbFhGT1NvRkFkZzN0Yk9tcUplUnA0UmxKblF4SmUtZXY3ZkZxRXktbGFRb194ZFgtWmU0bkFsd0ItX1BoT0FrakJKcTJzVE0?oc=5",
+      "categorias_sugeridas": [
+        "Dinheiro e valores"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxObWlVb3Vnb1NLc0FDYjJHakVnMjNmcWRmbDEzMGMxUHpnakJMX0theThsVF80elgzYnBKaFFrd1plVy1CZXdRbndndHhwbUxYcXJ2NnhQd2lTYi1hN3hwazJ2aXZWMlZmbXJZREVsV0QtLUVSRVVmczdYN01MUlRRUkVfc2U1bHl3Mk9wVWhsS0I3LVl5QUVpZVNzMXNwZEpDWGFCeG13OGl0UE5ycEFIVWtXc0UyY1pZNXFNS3hvMVBoNFVYQzhpNzN6R2txbUxIVFhhWHYzZ3I?oc=5",
       "categorias_sugeridas": [
@@ -388,6 +396,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiwAJBVV95cUxNS2hfZkhuOE82NGQybVRqWFBYVUF0UklRc3pwMVFrOTVNaVk0Y0hfMnFpbGVWdjVQUlVNelZWd3Q0bWhmWWFRaTdBek13QmtHa2lRRjRFcHdfQ1hpMHBhWGxnbDFhZVFDRU9PS2tkem1MZHVMTHNKcFNydkg4blk1VzdIbnM1SXBSY1VrYU8ya3FNaWF4OVJQdnZXaDM4SFdVRlNfX00zNVM3VGJUSDE4dkdTZzZVcGlqeW5xcXVqQUJ3X3hGa1hYWUthUDFpa3lRd0NIQ0JkVzNYa3BJQ1JUZDJVRGxBZmRZdXdYZHBXSkhyTGhkSlBGdTFCcUIzcVItOGdmeThTbi14Z3pwTGZWQkJUM3UxajNNOEJza1B2TVJqRnlUcnFZMTl3bUJCa3R5NTJZdmtXRVFuZG93MjA1OQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiR0FVX3lxTE5ucm51Y3BkZk81SXE5NFBpY1YwR092T0M4UzdFVVNpY05WZzJkRy1OTHNuZHlfd0xiVHowbWloYzd4MGQ2cG1v?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -523,6 +539,19 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNcWVfV3hQN2ZPbXVkRUpVOTN2S1d1LU0zRl9zVnNJcjJkTVIyLVNidGRkR043N2swR1g3aWZ6bVREMGZyMWZrdlQySVRoUnpfMjN5TjBUOHZPMk9xa0ttWGpzeGtIZk1MUmw4Q2FFNG00UktGOUJiRmtUb3U2TEJEMkNEVHJmWlpONUJxMFlKdFFUSHBjem9MU2tRZVNjdkpEZjl5VWV4YTJtUTdLMlk3X2xGLVJyNkVBT3g1cmctbTJXNGdwX2NF?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "guarda civil metropolitana prende homem por trafico de drogas no centro de campo grande - maracaju speed",
+          "guarda civil metropolitana prende homem por trafico de drogas no centro de campo grande - maracaju speed"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxQZ2RFNUNDN05aa3h1akxkVzAwcWFJLU1Ta3pmcDFqZGY3eUJkX0ZsS19pTHJzMHh1THh1WF8tUW1WVi1XRlB3Y0hVdU8wTzViZ19JdWNlU0tqdFkxM21EWmltSVdRbTZnVmdmWXpNS1N0NTd6ZEtPRFVTcFV0WUZGcXB3bjg2RFU4WG5FZ3MtYlpoWjZ1T0wxd2NLbE1sLURfVlVQUC1xdTRMNWZQRTJQb1FPSUE0VVJXZkltdkZ4dFFTYk5GWDFMNkthWTE2QjYtQTFQdHNYYlVkQWJaOHhFUEluSWZidEFlMU10WUZyRFA?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -597,6 +626,30 @@
         "Drogas e entorpecentes": [
           "policia prende 20 criminosos em operacao contra trafico de drogas no interior de sp - bra1.com.br",
           "policia prende 20 criminosos em operacao contra trafico de drogas no interior de sp - bra1.com.br"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOeHMwY2s3bl9XSG90STJSX2NFV3RCQlp4Nkw3cWJPLUxLUjdoYkc0MDFEVmVJcG9GV3ZfSVptbGNCU21WZE9Ld1JnaUNxMTBETmtfdFBVbktPMGVEZ09wc0h5LTJUNWVtMTZhUVJvTVhzUGxrQmdhaWtva25pTjBjTVRUOVNyYjVVdE83OW1nWm5uYVFqV2h3a2RHYWVwQS1qamZ6NE1HTFBjLURaaUR3R1RSMHhfVTREN19J?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "cm prende sete homens por trafico e apreende mais de 6 mil porcoes de drogas em guarulhos - guarulhosweb"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPaHBxR0p2RUZLSVhvYzl4d0daQ0VUcV90YXlUV205bjhySzhYcUt1YXZENWlYSnlDRWlob3lJdGZBWlBNem1oRkN0bWJnV21PdjZDeEo0TzJjUEp2TkYxbFpHRGxueXgtLUtia0xRZGo5ejdJSndlb0laelFTYXNuUWtxREN6eU8zR3FGaGMtZ2IxcEp6X3Qzakh0cDNraUwwaGY2b25WZjh3MFkwRkpJZmgySUpuT1k?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "gcm prende sete homens por trafico e apreende quase 8 mil porcoes de drogas em guarulhos - gazeta news guarulhos"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -2112,6 +2165,19 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQVVlaU2NEclFScnA1WHo3d09fS2dFZTlQQndMX1RoZ0pIaUkwVFo0UEVyWGFMNlNLa0VCU1dxN0hCWjdOb3pQeWNxN0w3Rml1ZE0tSmFYMEt2UVZ6c21PZzZ1enJoTnktZV9IZmk5MVdidFpCVzRSZ1ZGLWVoSXlma2RiUmwwdzA5UFE1QkM5anhaSkpqNEItR251N1NibFpjcTNRYWtzcWYweGR0WURzM1VBTzU0NGJqRGt6d0NTTU1RY3MxTlE?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "quatro suspeitos de trafico de drogas sao presos durante operacao em jequie e salvador - acorda cidade",
+          "quatro suspeitos de trafico de drogas sao presos durante operacao em jequie e salvador - acorda cidade"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -6840,6 +6906,14 @@
       "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNQ09FOEJCbm9sdUFZMXpfZmZmN0xOM3V2bmRuZ0NJaVFvUElGNTBpdnhpREZxQkR4YzRfVm5qUlpJOWhoYmlpS1ZUbGpkc0hNeDJwWmVWMUFwQ19nTTFERS1tSDZPdVJabjZrcEVGMk9Xb0h2UnZvTFRFV2FLXzdhNTFyTDhlZktBamtDXzFIdGd3OGhzTzZIM3lnd1NCVG5PSXNvc29jQXhJeHhleGVsV0lZUXpmQQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOUXZDNTd4VWwyQkJPUjFYNnlkcklEM3dJQm5SSmJKVHlRRHV5OHE4LU54RXAyekhoNGYwZTdQNlBjUEhna2h1VGJBWi1lb0ljbGVXQ3ViV0ZFOE9ROGZqeFRUalZXWmNWSFdSRTVEYnl5UGE5MS03SFRIbk9MSW1PTVpEQVRjeTFfTElZRVVkSTZGX0dwcjVQc0tVVkFaWUFIQklQSWt5M0tLZEQ4YVBnUmtRSG9hVzlrMzhxMHRQc0ZxY2JNS0N2OVYwQQ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
@@ -11614,6 +11688,14 @@
           "arinenses negociam propina com policiais para liberar 10 toneladas de maconha no rj, mas sao absolvidos por trafico - nsc total"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxONkxvVkY4bVpVcEhjRDJFUHBPSHdVQXBlRVctU1N3cU9ZcFdDN1RiTHJyN0tPd1lZVnlHTHpBbkJUSG1RNnJsdDlzdlNlSEE1MG1KQmYtWENNOTdmTkU3SkJKRF9rWG5iYXpSOER6anBtTWFEZGFNMFhvTTRDSUNZeDUwbHFPSmNmXzZSTjRBb21WeXNybTNNeDhOZ2hQYVAwcUZqZGRkbVFNZmNHTlR5VmplMzFzaUFtaUVtTy0ta3lDYm9HbzlodUt2TUdsd3JRd2I0d2gySk9MTkVENzNnSTlxZVc4UUY0eTNHM3h6bnRmeXAtUXc?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -45276,7 +45358,7 @@
     }
   ],
   "quantificacao": {
-    "itens_extraidos": 405,
+    "itens_extraidos": 406,
     "totais_preliminares": [
       {
         "categoria": "Armas e munições",
@@ -45324,7 +45406,7 @@
         "categoria": "Dinheiro e valores",
         "material": "Dinheiro em reais",
         "unidade": "BRL",
-        "quantidade": 4335253238.0
+        "quantidade": 4335253816.0
       },
       {
         "categoria": "Drogas e entorpecentes",
