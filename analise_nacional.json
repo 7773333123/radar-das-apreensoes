@@ -1,26 +1,26 @@
 {
-  "gerado_em_utc": "2026-10-15T01:41:03.920615+00:00",
+  "gerado_em_utc": "2026-10-15T02:09:30.729253+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "materia_sem_informacao_quantitativa": 1214,
-    "pendente_verificacao_apreensao": 919,
+    "materia_sem_informacao_quantitativa": 1215,
+    "pendente_verificacao_apreensao": 921,
     "com_informacao_quantitativa": 237
   },
-  "materias_sem_informacao_quantitativa": 1214,
+  "materias_sem_informacao_quantitativa": 1215,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
-  "noticias_multicategoria": 251,
+  "noticias_multicategoria": 252,
   "noticias_com_quantidades": 237,
-  "noticias_analisadas": 2370,
-  "fontes_distintas_informadas": 668,
+  "noticias_analisadas": 2373,
+  "fontes_distintas_informadas": 671,
   "noticias_por_categoria": {
     "Drogas e entorpecentes": 970,
-    "Armas e munições": 491,
+    "Armas e munições": 492,
     "Contrabando e descaminho": 92,
     "Dinheiro e valores": 80,
     "Medicamentos e produtos": 24,
     "Veículos": 23,
-    "Crimes ambientais": 17,
+    "Crimes ambientais": 18,
     "Outras apreensões": 11,
     "Operações patrimoniais": 1
   },
@@ -102,7 +102,7 @@
     "2026-07": 24,
     "2026-08": 24,
     "2026-09": 20,
-    "2026-10": 1579
+    "2026-10": 1582
   },
   "noticias_por_ano": {
     "2019": 1,
@@ -112,19 +112,19 @@
     "2023": 29,
     "2024": 32,
     "2025": 16,
-    "2026": 1671
+    "2026": 1674
   },
   "status_processamento": {
-    "classificacao_automatica": 1440,
-    "pendente_evidencia": 919,
+    "classificacao_automatica": 1441,
+    "pendente_evidencia": 921,
     "outras_apreensoes_a_revisar": 11
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 2370
+    "aguardando_url_original": 2373
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 919,
-  "noticias_pendentes_revisao": 919,
+  "noticias_sem_classificacao": 921,
+  "noticias_pendentes_revisao": 921,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
@@ -572,6 +572,22 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi_gFBVV95cUxOS05EMkRCNk9PRjhIOGhUVUN4eUplNlZFNGxGSjFhU0NnMHpPVFFtc0J1NzRteFl3MF9lTFlZZExQOE93clRWTGJSNEtiXzRKYzhDdjBzX2FnS3RnUnBIcjAxMk96bTZTd2pIRnc3VFh4a0t0YnRtcFFydlFlQUFJUklWOEFOUnZ6YmRzVUFjaDk3VEluTUh4V2hyMXVWbF8zTmtVR2tCcWRfWjRwUHY4aV9aWWFkbjhLOURvNmxGZFZSajNxaDhfeW80dXNSNmRQRkdlTFZMSFpoRVp3Q1dJX3dVVzV0dXpTcDY5Vm44LWJoSldWWTB6M2dfaTVmZw?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Crimes ambientais"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "a ambiental prende cinco por trafico de animais silvestres e apreende arma em ubatuba; araras estavam em caixa de papelao - radar litoral"
+        ],
+        "Crimes ambientais": [
+          "policia ambiental prende cinco por trafico de animais silvestres e apreende arma em ubatuba; araras estavam em caixa de papelao - radar litoral"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOTmhmSmktN3B0Q1lzd2E5bVdIdVc3RWNBdlVmOHhTcHVtR19hc2VDeTJTdmdpZHZjRXlOd2dZaEJIZjd2TlptTzJYT0dvNDV5VWszUV9KVWdWOGpyY0V0bGR1bS1oV3JfSUhlei1meTRJcEJEZ09PZFBwaEsxZzc0dWkxNl9TNkVVdjBzTzBBdkxZSlE0bmZaMk53X3lvS3g4M1BVaGxpV1U4MUlfVXZYOFhsS1VoeFZ2TXItSU1MZXFVX0JTNjFldzlB?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -663,6 +679,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxPVFctVERIeE9hNmUyOE9FbzdLbW0zZElXV1N0bGhiV2hCSnlhRWxoVVo4NTFWOVVHbkxQNUhRQzFEeGpGYVFXUjhFX2JnMDhCYmcwMUplOFZwX2ZJSk9CWkx4bXR6c281di1wMk9HaDM3ampNdmQyV0hMVkF1a3dXNDctbFlVZUdxbndva0NTT05vYnRiakRNa2tSVnYzYkpNSFBxMndqMWNfUTBSM0hGSFNBcTJnbHlTcEc4Y2l4WHlUYzhvemFhVGVB?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNODYxTWk1dVB6ZDA4ZjhEZUtVc0ljWEdaVUE5NkNCOWI0azRXaE9obWFZRnNnSHRQbVRINHJJNEdWMWMtN0FJMFFINUVhMEdPaGluWUFteWRyZnprbFAwcUFCXzNhS3lIZWRzNlI1bWs5QXNCd1dFWkw3OVgzdU0wOWEtY3RMYlJMSkpxTmJieEc4eGticnMyNTVaOXAzRzJpcmIyc3UxbmJWam1XUDJiM1N0a3BCSVVtcDZIeWtsSW5mZm8wOVMwV2pB?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -5706,6 +5730,14 @@
           "‘vovo do crime’ e detida com cocaina, municoes e carregador de pistola em manaus - am post"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE1KWlJ0MVE0UmJYZ0RfbVdlNWhaOHNTZjBNQTJWMHBtVXZhLTAydzdBc1ZncEVaZlFPMFdiM0V1RWpXOFRXQ0VCU3BhSWRuSG92TXI2U1dTd0ZkcGtfQksyUGxVc2JtWEJHWmJlZ0Z4bUFEQQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
