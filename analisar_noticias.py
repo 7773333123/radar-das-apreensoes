@@ -62,42 +62,98 @@ def date_of(n):
 
 
 class PageText(HTMLParser):
+ """Extrai parágrafos de article/main e metadados sem misturar menus."""
  def __init__(self):
-  super().__init__();self.parts=[];self.ignore=0;self.title='';self.meta='';self.in_title=False
+  super().__init__(convert_charrefs=True)
+  self.parts=[];self.focus=[];self.meta=[];self.title=[]
+  self.stack=[];self.hidden=0;self.article_depth=0;self.title_depth=0
+  self.jsonld=[];self.in_jsonld=False
  def handle_starttag(self,tag,attrs):
-  d=dict(attrs)
-  if tag in ('script','style','nav','footer','header','aside','noscript','svg'): self.ignore+=1
-  if tag=='title': self.in_title=True
-  if tag=='meta' and d.get('name','').lower() in ('description','twitter:description') or tag=='meta' and d.get('property','').lower()=='og:description':
-   self.meta=d.get('content','') or self.meta
+  d=dict(attrs);tag=tag.lower()
+  if tag=='meta':
+   name=(d.get('name') or d.get('property') or '').lower()
+   if name in ('description','og:description','twitter:description'):
+    self.meta.append(d.get('content',''))
+  if tag=='script' and d.get('type','').lower()=='application/ld+json':
+   self.in_jsonld=True;self.jsonld.append('');return
+  if tag in ('script','style','nav','footer','header','aside','noscript','svg','form'):
+   self.hidden+=1
+  if tag in ('article','main'):self.article_depth+=1
+  if tag=='title':self.title_depth+=1
+  self.stack.append(tag)
  def handle_endtag(self,tag):
-  if tag in ('script','style','nav','footer','header','aside','noscript','svg') and self.ignore: self.ignore-=1
-  if tag=='title':self.in_title=False
+  tag=tag.lower()
+  if tag=='script' and self.in_jsonld:self.in_jsonld=False;return
+  if tag in self.stack:
+   # Recover from malformed HTML; decrement only elements actually popped.
+   idx=len(self.stack)-1-self.stack[::-1].index(tag)
+   for t in self.stack[idx:]:
+    if t in ('script','style','nav','footer','header','aside','noscript','svg','form'):self.hidden=max(0,self.hidden-1)
+    if t in ('article','main'):self.article_depth=max(0,self.article_depth-1)
+    if t=='title':self.title_depth=max(0,self.title_depth-1)
+   self.stack=self.stack[:idx]
  def handle_data(self,data):
-  if self.in_title:self.title+=data
-  if not self.ignore and data.strip():self.parts.append(data.strip())
+  if self.in_jsonld:
+   self.jsonld[-1]+=data;return
+  if self.title_depth:self.title.append(data.strip())
+  if self.hidden or len(data.strip())<3:return
+  data=' '.join(data.split())
+  self.parts.append(data)
+  if self.article_depth:self.focus.append(data)
+ def article_text(self):
+  candidates=[' '.join(self.focus),' '.join(self.parts)]
+  for raw in self.jsonld:
+   try: obj=json.loads(raw)
+   except (ValueError,TypeError):continue
+   def visit(o,depth=0):
+    if depth>10:return
+    if isinstance(o,list):
+     for v in o:yield from visit(v,depth+1)
+    elif isinstance(o,dict):
+     if isinstance(o.get('articleBody'),str):yield o['articleBody']
+     for v in o.values():yield from visit(v,depth+1)
+   candidates.extend(visit(obj))
+  # Prefer actual article body; a page's navigation text is not a full article.
+  candidates.sort(key=len,reverse=True)
+  body=max((c for c in candidates if len(c)>=30),key=len,default='')
+  return ' '.join(x for x in (' '.join(self.title),' '.join(self.meta),body) if x).strip()
 
 
-def fetch_article(url,timeout=5):
- """Tenta ler HTML público; não contorna bloqueios e não executa JS."""
+def fetch_article(url,timeout=8):
+ """Reads public HTML; returns text and an auditable failure reason."""
+ from urllib.error import HTTPError, URLError
  try:
   u=urlparse(url)
-  if u.scheme not in ('https','http') or not u.hostname: return '', 'url_invalida'
+  if u.scheme not in ('https','http') or not u.hostname:return '', 'url_invalida'
   host=u.hostname.lower()
   if host in ('localhost','0.0.0.0') or host.endswith(('.local','.internal')):return '', 'url_restrita'
   try:
    addresses=socket.getaddrinfo(host,None)
    if any(not ipaddress.ip_address(addr[4][0]).is_global for addr in addresses):return '', 'url_restrita'
-  except OSError:return '', 'acesso_indisponivel'
-  req=Request(url,headers={'User-Agent':'RadarApreensoes/1.0 (pesquisa de noticias; contato via fonte original)','Accept':'text/html'})
+  except OSError:return '', 'falha_dns'
+  req=Request(url,headers={'User-Agent':'Mozilla/5.0 (compatible; RadarDasApreensoes/1.0; news research)','Accept':'text/html,application/xhtml+xml','Accept-Language':'pt-BR,pt;q=0.9','Accept-Encoding':'identity'})
   with urlopen(req,timeout=timeout) as response:
+   final=urlparse(response.geturl())
+   if final.scheme not in ('http','https') or not final.hostname:return '', 'redirecionamento_invalido'
+   # Never read a redirected private network destination.
+   try:
+    ips=socket.getaddrinfo(final.hostname,None)
+    if any(not ipaddress.ip_address(addr[4][0]).is_global for addr in ips):return '', 'url_restrita'
+   except OSError:return '', 'falha_dns'
    if 'html' not in response.headers.get('Content-Type','').lower():return '', 'nao_html'
-   data=response.read(450_000)
+   data=response.read(750_000)
    charset=response.headers.get_content_charset() or 'utf-8'
    page=PageText();page.feed(data.decode(charset,errors='replace'))
-   txt=' '.join(page.parts)
-   return (' '.join((page.title,page.meta,txt))[:50000], 'lida') if len(txt)>250 else ('','texto_insuficiente')
- except Exception: return '', 'acesso_indisponivel'
+   txt=page.article_text()
+   if len(txt)<100:return '', 'texto_insuficiente'
+   f=fold(txt[:1500])
+   if any(term in f for term in ('enable javascript','habilite o javascript','access denied','acesso negado','verify you are human','captcha')) and len(txt)<1000:
+    return '', 'bloqueio_ou_javascript'
+   return txt[:50000], 'lida'
+ except HTTPError as e:return '', f'http_{e.code}'
+ except (TimeoutError,URLError) as e:return '', 'erro_rede_ou_timeout'
+ except (UnicodeError,ValueError):return '', 'erro_conteudo'
+ except Exception:return '', 'erro_inesperado'
 
 
 def previous_labels(n):
@@ -256,19 +312,22 @@ def main():
   status='dados_existentes'
   # Consulta uma única vez por execução apenas notícias sem categoria específica.
   # Reprocessa categorias a cada rodada; não sobrescreve dados originais.
-  if labels in ([UNCLASSIFIED],[OTHER]) and not args.sem_web and read_count<max(0,args.max_leituras) and (args.repetir_leituras or n.get('leitura_fonte_status') not in ('acesso_indisponivel','url_invalida','url_restrita','nao_html','texto_insuficiente','sem_evidencia_especifica')):
+  if labels in ([UNCLASSIFIED],[OTHER]) and not args.sem_web and read_count<max(0,args.max_leituras) and (args.repetir_leituras or n.get('leitura_fonte_versao')!='extrator_v2'):
    url=str(n.get('url') or n.get('link') or '')
    if url:
     read_count+=1
     content,status=fetch_article(url)
     read_status[status]+=1
+    n['leitura_fonte_versao']='extrator_v2'
     if content:
      new_labels,evidence=classify(' '.join((title,desc,content)))
      labels=combined_labels(labels,new_labels)
      if labels not in ([UNCLASSIFIED],[OTHER]):
-      n['texto_analisado_resumo']=content[:1200]
+      n['texto_analisado_resumo']=content[:20000]
       n['leitura_fonte_status']='lida'
-     else:n['leitura_fonte_status']='sem_evidencia_especifica'
+     else:
+      n['texto_analisado_resumo']=content[:20000]
+      n['leitura_fonte_status']='sem_evidencia_especifica'
     else:n['leitura_fonte_status']=status
   # Extrai quantidades apenas do texto efetivamente disponível; sem extrapolação.
   texto_quant=' '.join(dict.fromkeys(x for x in (title,desc,stored) if x))
@@ -310,7 +369,7 @@ def main():
  'noticias_por_categoria':dict(counts.most_common()),'noticias_por_uf_explicita':dict(states.most_common()),
  'noticias_por_mes':dict(sorted(months.items())),'noticias_por_ano':dict(sorted(years.items())),
  'status_processamento':dict(review),'status_leitura_fonte':dict(collections.Counter(str(n.get('leitura_fonte_status') or 'nao_tentada') for n in items if isinstance(n,dict))),'noticias_sem_data_valida':missing_date,'noticias_sem_classificacao':pending,'noticias_pendentes_revisao':pending,
- 'leituras_externas_tentadas':read_count,'resultados_leituras_externas':dict(read_status),'classificacoes':details,
+ 'versao_extrator':'extrator_v2','leituras_externas_tentadas':read_count,'resultados_leituras_externas':dict(read_status),'classificacoes':details,
  'quantificacao':{'itens_extraidos':quant_count,'totais_preliminares':[{'categoria':k[0],'material':k[1],'unidade':k[2],'quantidade':round(v,4)} for k,v in sorted(quant_totals.items())], 'aviso':'Totais preliminares por notícia, sem deduplicação entre matérias sobre a mesma operação. Não são totais oficiais; requerem revisão.'}}
  # Gera arquivos temporários e substitui somente depois de concluir o processamento.
  out=BASE/'analise_nacional.json'
