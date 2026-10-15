@@ -1,21 +1,21 @@
 {
-  "gerado_em_utc": "2026-10-15T04:42:33.835608+00:00",
+  "gerado_em_utc": "2026-10-15T05:43:01.201913+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
     "com_informacao_quantitativa": 375,
-    "materia_sem_informacao_quantitativa": 2460,
-    "pendente_verificacao_apreensao": 1284
+    "materia_sem_informacao_quantitativa": 2461,
+    "pendente_verificacao_apreensao": 1287
   },
-  "materias_sem_informacao_quantitativa": 2460,
+  "materias_sem_informacao_quantitativa": 2461,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
-  "noticias_multicategoria": 509,
+  "noticias_multicategoria": 510,
   "noticias_com_quantidades": 375,
-  "noticias_analisadas": 4119,
-  "fontes_distintas_informadas": 864,
+  "noticias_analisadas": 4123,
+  "fontes_distintas_informadas": 865,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 1719,
-    "Armas e munições": 1141,
+    "Drogas e entorpecentes": 1720,
+    "Armas e munições": 1142,
     "Contrabando e descaminho": 266,
     "Dinheiro e valores": 132,
     "Veículos": 36,
@@ -125,7 +125,7 @@
     "2026-07": 34,
     "2026-08": 46,
     "2026-09": 33,
-    "2026-10": 1640
+    "2026-10": 1644
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -136,20 +136,20 @@
     "2023": 29,
     "2024": 32,
     "2025": 17,
-    "2026": 1777
+    "2026": 1781
   },
   "status_processamento": {
-    "classificacao_automatica": 2818,
-    "pendente_evidencia": 1284,
+    "classificacao_automatica": 2819,
+    "pendente_evidencia": 1287,
     "outras_apreensoes_a_revisar": 17
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 4063,
+    "aguardando_url_original": 4067,
     "lida": 56
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 1284,
-  "noticias_pendentes_revisao": 1284,
+  "noticias_sem_classificacao": 1287,
+  "noticias_pendentes_revisao": 1287,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 2,
   "leituras_pendentes": 0,
@@ -4951,6 +4951,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQTU1fdFM3bE9PSFByY0dzZGxSTzk3NVlLcDB4MWNjMEQ2bG1xeVpzRm9JaXNPWXpUbFJTczVkZndfM0htQ1F0M0Y4Q2lCVmtsT3BlckJNbk4wNVhGOXVGbDd1RHNfdTl5QUY2R0s0RThxNWRCVUxUQ1NMQ2pTdUQ5VHNfRlNUVEVm?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQQVJsMzFaRWh0Y0RMTmQ3Rk1fOGIxd0xva0Y0ek45ZXlvUFdQZmdxcjNTRklISm1sRldrV3p5eGJQZGJ6WGhPUUpNTzJkbkJkTjN0b0E1bnR3YWd2YktQcVF6cnFwNUl1N1d3RVF0djhFSXc0eXFRYnlyZGdzVy02dkFLbWtMcWtMN3hRTzdLbEVCdUtaemVMaFpXU09hYWVZZ3Z2ZTd0TGJOb29oekpDZUFRbWJ3VDdkSFE?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -7177,6 +7185,22 @@
         "Armas e munições"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPM0FTMU5XN2V0cEVlWGpvMVFOOEdyODR5ZzNTTzBmMU5LUFpvV2daSExrZmh5RHlxYzhJZ3BKRGhDdm1tcHVfMnJnRnkxNFNNNVhNVWZoLVIyY1YxMEpiWC0xNy0tbF9sYktYMlNURGpYNU5nYUxhMXZpVHoxU25GbTlteFVOZkRETG1tOEFaaGtNYXZxclFtZU9qYWxzcEltX1hiX0thbmZmNEZaQzBBREhnckdsbWc3WE50UEY5d3V1UVV0VzRR?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "ulhamento tatico da bm termina com prisao em flagrante e apreensao de drogas e municoes - jornal a plateia"
+        ],
+        "Armas e munições": [
+          "tatico da bm termina com prisao em flagrante e apreensao de drogas e municoes - jornal a plateia"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -14637,6 +14661,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNckpTVEtZbXUwNEw4YnQzN1FnYlphdjZGUXBUTkhCWEZvTHlKV0xVTHpiMDhwNVhkV0J1V2ZOa0lQenN6dTRZY3FjdjhPdjJDUlhMRndzQjFHdFFtRHFhU1pQRHZIRHg1QWdpTGE1dE9DdjdmUlhLYVZNY3ZDb2Y0S1g1R0swLWJoU2k3Nk9WRWxFa3FYdWVyVlpBMGJYV2xFSjlXV2d0ZEstYV9jWXRsQmZOcVc1NXJQX3NDZ25n?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxPbVF5M0dXYWZ5T1hPTGNQelNETGxZVVlZTUNPZzltbXRRamtCWGlzUEtxdnUydmJVUmQ3LW1kZVVkMFlGbGowc240SGQ3Q01fTnhFRWFmaHFuLXJITmFfN2pLZXJVRXhLZ1FxN1piRWFjRjVsb3oyZXMtdHVWYXlMM3psZWVmbVExX2VwODhiLWdYanZ0MWlCcnRnQ2tuZmplUnJVZEpIZmJXUjJTdHdNYU9ZYl9qcl9raEFQbW50WVBrTTJHeGlJdEx5eVZDakViWlZLTmlIWFBiRGU3eWfSAeMBQVVfeXFMT2stZzRXOXlWd19OSkFvR0RwOUZMNURGNkhCQ3dVQ1kwXzlmcEtlM3VRUXB1N2lqeTFsTkdRdWVmRTBKaUszUDN0RUJSZzJDZnRNQUVtQTFMMXA5Zm9NdXJUZXlaM004dEpUbFBUeDA1TUJldHMzYndQcDViWHRRcXhBcDdIc0I1UG9ZcjRfNEZEM3VpbWZiM1lsM093V0ZPd3BpQW1sTGxyYUtFRlhYQU42YkJDSUQ5SEZrN1FQcXNCNmR0LTRRdVFvMnpTYkgtUHQtOFpxWjRZTTRIMjY3NklWMHc?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -15584,6 +15616,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxOU1lkaEZ5U3hGa3FYU3J3ZFd2aXNsQ3dfWUIwT25tSkdIVGNMaXdzNF8xZTlLZDBqYTdzWmZWQnFXbWpKWlpQcTd5VWpTREp2eU1zZWRiOVNLQWNDTFI0MFZJMWUtYmwxck9UbWlQVmNQbGNCTXU3Rl9XN2FXOE5PeEcydUF5Zm50OTZKU1FsUC1TTllUS3dIZ251UVVJUXY0MzFMYWNzR3VIME5QSDhGOXNteTFHQnhfOTFyMlRCbGNqRmZpbW9CaGlPRXJtTVMtX3FuMHRqcG9WbWxiMFBob2Q5RTM5Zw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQd0ZSWnNyM2xnSFRwQ2E3SWMtajRXZGE2TnUyUGlVZFNJVGo2b0RnS0lTY0dUTTJ3Rld5TmoybUJadDNnMjU2T29fZEEzbFBuYTJKQzZ5dTVXY3RiT2dPdEpndjE3Ynp5NkhIUUoxYVpjNjRfdU1kUGNGVGRJSHZhSXljeFJmVjdLN3UxZ3M0dFZLanM0ZmtOUEpKNTVRR0Z0bndVeXY5amZiNXdmMzkxR0pyX3hvYVVETGJiZU5tbW9MdGpZQ0tDRQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
