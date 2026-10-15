@@ -1,25 +1,27 @@
 {
-  "gerado_em_utc": "2026-10-15T00:11:06.624980+00:00",
+  "gerado_em_utc": "2026-10-15T00:29:42.879658+00:00",
   "metodologia": "Regras textuais e leitura opcional de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
-  "noticias_analisadas": 2330,
-  "fontes_distintas_informadas": 664,
+  "noticias_multicategoria": 247,
+  "noticias_com_quantidades": 235,
+  "noticias_analisadas": 2335,
+  "fontes_distintas_informadas": 666,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 932,
-    "Armas e munições": 424,
+    "Drogas e entorpecentes": 962,
+    "Armas e munições": 488,
+    "Contrabando e descaminho": 92,
     "Dinheiro e valores": 78,
-    "Contrabando e descaminho": 49,
     "Medicamentos e produtos": 23,
     "Veículos": 20,
     "Crimes ambientais": 17,
-    "Outras apreensões": 12,
+    "Outras apreensões": 11,
     "Operações patrimoniais": 1
   },
   "noticias_por_uf_explicita": {
     "BA": 134,
     "PA": 109,
     "PR": 59,
-    "CE": 33,
+    "CE": 34,
     "MA": 25,
     "RO": 25,
     "PE": 21,
@@ -93,7 +95,7 @@
     "2026-07": 24,
     "2026-08": 24,
     "2026-09": 20,
-    "2026-10": 1540
+    "2026-10": 1545
   },
   "noticias_por_ano": {
     "2019": 1,
@@ -103,13 +105,26 @@
     "2023": 28,
     "2024": 32,
     "2025": 16,
-    "2026": 1632
+    "2026": 1637
+  },
+  "status_processamento": {
+    "pendente_evidencia": 897,
+    "classificacao_automatica": 1427,
+    "outras_apreensoes_a_revisar": 11
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 991,
-  "noticias_pendentes_revisao": 991,
-  "leituras_externas_tentadas": 35,
+  "noticias_sem_classificacao": 897,
+  "noticias_pendentes_revisao": 897,
+  "leituras_externas_tentadas": 150,
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxON2F1UVh5eXpMNFFGYUpXR0NmelJ3Ui1PaFVYUGpERjRoMXVHM2tjdmFUcWZSWlZWRWJWUFhhakstUEhaeGVEbllwektPODdJa2NqN2hZY2JGWVA5SEdKZlpaNFp6TjlUMXBYYUNLZGU2bUZGSkZLVG8welozRmQ5bGNrMl90V0Qtay1WNGlOUnlPSkdEZ0YyMmFZLXgzU05zQ1dNa1pRVmRHOFU4bVNwX3ZNOXZLSTY3THdnckU4WHJRLTgyMHhiZEt5VXpINGItRDRr?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "texto_insuficiente"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNb2w0NllEUG5ZMGZhYW95RTQwMTFUT2lTdGNXRDNieGZSd0ROamt3aDgwQm9HWWZLY2dzMzJKYlpLOWgzSlFCNUU3RTQ5VHlZbm9rY0lCMjBzck5KUVQzcWx6S2FHT21YNmxwSHhuWXdwSTBBSmdtUzZVV01lcXc0QW80OUhfeHk2UXBtNGtOWQ?oc=5",
       "categorias_sugeridas": [
@@ -233,6 +248,18 @@
         "Drogas e entorpecentes": [
           "casal e preso por trafico de drogas em charqueadas - portaldenoticias.com.br",
           "casal e preso por trafico de drogas em charqueadas - portaldenoticias.com.br"
+        ]
+      },
+      "leitura_fonte_status": "nao_necessaria"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPVFR2Rlo2NHJWazZOckdlLVlycEluUzI2cERPRFYxY0RPR3p1NjJGTm41d0pFc29DbFpjLWxGTWpjM2RJaXEyU01lQ3pJQVIzUG5aY0xiNDZHTTcxR3lUOW56eFE4QXFua184eGU1aTI5eFB1aFplbmlIRXhPUk9FY3VYRVM5TGtKbTRhbDdKelRuS0VkNzhGMXFGckQyVl82Y2VGN3pSVQ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia civil apreende drogas e prende tres suspeitos em campinas - portal vv8"
         ]
       },
       "leitura_fonte_status": "nao_necessaria"
@@ -785,7 +812,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPc0lYT2JoTkJVTWJOdEVYTUtja3hOSnoxLU5jMUlVaUR3VFRIRGpuZEFPSUxqSWpzbTlMcVFYb0taY09MaU5ZZ01FbHBXWWtQbWpQTFllZXV1VFRaM2JwVDdQTWlOZG5kbUR5cXB3NlRnQkR1eTR2VFdUbXlUSEFtV285VzlsazlaT3ZsYXQzZVFNTjhLMmtWYk5iQzhNYVFsbWNmb29CbHUzMXFmNzQwTXVwSl9ZaGh6ZkNNVDlOVG51RUR1aDcw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "texto_insuficiente"
@@ -936,7 +963,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOWGNtYnhEUG1JcDR0bER0VG9Ca1cybGUwY0ZQNXFieHRxcmYyWFpQazNocFlPemFCQU5jd296b3lVVlJ0ZEluQ3I3bk1yUXN3Q3JjRTdVVFh3RG5uZHpvS3gyeEVOSHo2YTBTT2xaM0tad3VUd0tieVk2TzZsdDdkSjVVR0VKMUFEQ2o2OTNKaTcxVUhoemliRjFtSjBicXhicHlJWkZuX1UyT3Z3Q3V6Qjd6bm9LV1pTSi1EQXNuZ01MWGlEMzdV?oc=5",
@@ -957,7 +984,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPNmM3TWpjV2ZXbDY3dTNqMWF4cWJoMHN5MUo1TTRPRThRdnNRanV2eDliVXp5UC1nQ0FycmhVLUE3ZUhubWhCemV4LUd1aUVGd2JZbFFCa0J4aTZHU3FpMFlEcEtVQ1l4dFlzV25PZlZXb0FhQkxlZXl4N3lmLVl4aFlCc2hKeVBYLUVWNDFkMFNSeWxyY3BDNWVadE85RlY0eHc?oc=5",
@@ -1026,7 +1053,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQQVNwVXp3emFuUE9MdC0zQ3BiZmNGUUhZSjNNYTBheFNabzRmT1o0RGVUZThXYUJrRm1oZ0ZHTjFteDdmUXN3UFhmbnREbDZobGJXLUtQUmdnanVjU1ExTmJqdHVrNTFWd09lSTJmRjhSVTg2N0dqS1pycFNnTkd6ams2dUNEOFBjbnRxMUpINExzTnJ2ZFJwYmU5LXFkOUhRRU9WVGpuVWwxUDF3Y2pJd3d4NkxGaWR3STBqRA?oc=5",
@@ -1047,7 +1074,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPZnU3NDd4Nmdwb0tKWWlYUUtaN19YeVk3NE1faHRud1lNbEJkUGdvc1VIc1dHeW1NZzRZeXJ4MFFaN2xWVjQybnV1Nk9pM0tRMV9PaTNhRGtITDhRXzY5eXdpVE5mRkZZT0c0OUFkZTFTaEdwX3ItUUNzazM5V1Q2U2M4Mng5QXppbllyOFJCMkJuTDVMSElCWms1ZFVCTUs3N0FDb2hxWWMzUnQyb2fSAa4BQVVfeXFMT2Z1NzQ3eDZncG9LSllpWFFLWjdfWHlZNzRNX2h0bndZTWxCZFBnb3NVSHNXR3ltTWc0WXlyeDBRWjdsVlY0Mm51dTZPaTNLUTFfT2kzYURrSEw4UV82OXl3aVROZkZGWU9HNDlBZGUxU2hHcF9yLVFDc2szOVdUNlNjODJ4OUF6aW5ZcjhSQjJCbkw1TEhJQlprNWRVQk1LNzdBQ29ocVljM1J0Mm9n?oc=5",
@@ -1055,7 +1082,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOOGZIWFE3VEp1NWdoVUxVY0JNNzlUTFl0enA3TFRkT29jT0tJVHpTRGFuNWVveU1fa2dsYm5pNzhGLUJ1dXJrT1phRWNMYTcxYVpuNGw5UUhzN2JpSW9nbkxNTWpTUXcwV3d0dVFGb3FlNjNYemhkN1o5TXNER3hteGt0cTRyRk5BLU42M1BNbWVwTlNQekZGOUc4QXE0b043S1VON3JQLWo3VnRFQ0tsZ0ZiOFd0TkRPTFE1RHY5NNIBvwFBVV95cUxOOGZIWFE3VEp1NWdoVUxVY0JNNzlUTFl0enA3TFRkT29jT0tJVHpTRGFuNWVveU1fa2dsYm5pNzhGLUJ1dXJrT1phRWNMYTcxYVpuNGw5UUhzN2JpSW9nbkxNTWpTUXcwV3d0dVFGb3FlNjNYemhkN1o5TXNER3hteGt0cTRyRk5BLU42M1BNbWVwTlNQekZGOUc4QXE0b043S1VON3JQLWo3VnRFQ0tsZ0ZiOFd0TkRPTFE1RHY5NA?oc=5",
@@ -1063,7 +1090,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQWWNwMXdTVmw4Zm5mNUw2cDJLQWZ0cmZLTXFRTVZGRGc5bmJhaTdVT1o4X2pxQmtTSW9nZUJKMEwyNG5aS2IxejhxNUlIa0paLXFwMmgzVDBKdGRjeEYzM25fdVhxcVppbVJZeEFObU0telFWaXdlTldNQ0lfbXVDN1pDaWVNbkF3QVoyT0w2V2djWFhZWmFrZENmal9EUdIBngFBVV95cUxQWWNwMXdTVmw4Zm5mNUw2cDJLQWZ0cmZLTXFRTVZGRGc5bmJhaTdVT1o4X2pxQmtTSW9nZUJKMEwyNG5aS2IxejhxNUlIa0paLXFwMmgzVDBKdGRjeEYzM25fdVhxcVppbVJZeEFObU0telFWaXdlTldNQ0lfbXVDN1pDaWVNbkF3QVoyT0w2V2djWFhZWmFrZENmal9EUQ?oc=5",
@@ -1120,7 +1147,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE4xV3RwTVB2TzgxTWlJQlVTTzVYU0F2TWtVLVYxQ3lfUnA3QU9CMWF0UXY2N2FjdHhiLUh3aHI0ODg4MXFhUk42M0hJZ3F6MnZtRXBITTBhNkh4UUxEU2RoZGZB?oc=5",
@@ -1128,7 +1155,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxPOEZZZTEwWkNHOHhSU3BkN2kyX1ZKdUxiOEpueE9KQjVobkhCdmNKbkk2cUZvcEdZdVRZSmFLdzhIU3R1SUVqd0p4ZEVLVERJOTdpRTZvcmZreHMxTDlCQzJWZnk1d0kwLWQ0UHlUNnEzeTVVNU01MWhmQTJYWEpXSElzT0xxRHVkWjQtRnh0bl9HNGpzWWY4aDN5WVg4UEFhRnVOWGVJQ2RzYjEtUF9tcFNsZmpDRTlzOGhBYmlOa3VqbEM1MHU4TFRTd3g3VHJnMXdpamJZY3lFNnVqOFFQRUpXRTlTdWdid1lN?oc=5",
@@ -1136,7 +1163,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPN0l3NThwVjI0em91bUNfZXNJWGRHNVNOZ1dMRzkzSjZEQ3ZJeUJCQ2VlSk5KclhPYWZMVlZVTU1DR2Iwc1FtT0pJd1c1YUpNMFJtOXZwWDh4S0pic3o2bHU2amJiREJRaU9IWkkyWWJjZ18zYXpWM3FUTGtVMTNjT000ekR4UzFWMURDN2ZlRzAxME82MTJwZFFIX3VmMF9yaHZjQzBib1p3Tkk?oc=5",
@@ -1156,7 +1183,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNWFQ5RHZtRnpDSFRxWmozNGVwbmNjSW1LNmNhY1ItLS1oYldGa2VSMU1ER2dpc1RZTXVaclFNU1ZsdDNPcGFaZ3dJcktlTHBMRVc5OTRvd0pVcnJoaUY0dmk4Q0YyMzhpdTN1WWZyMjNPUndVbk8zRFQ3Z3NBNGdJS2xzR0FXOUNMUGJSNDJfb3VJMDZHSXktVThTdll1LXlfU3Y1QndfaGQtVEI5aVBVLWNwUUMwUVcxU1pteU9aN3F0VWYzWTVqU1ZMZGF3aTBtZ1Fr?oc=5",
@@ -1203,7 +1230,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxPNHUxbjJMWU44TnZLQU5qcnltU3hNQXFwRno2NzBWMm9IYi0wbUZjRU9pQXpyUm02RDRVTDY0eTFsa2ZldWhZRFVTNTd3VHd1SDJJa2liUlNER2tYd2NGbkwyZmpUSUhWeDBLTVQySEhNRWJmOHVBS0VOUXRzV0EybkdKaTJzR2REN1JFdUdqWFo4OS1qNEUzRnYyT2ZXUzl4Q29iamF0bHBLUFRLWjliVmxEU0M5dWpFOFpvdkdyXy1YRkN4QXU5YlV3cG1pdHVhVlZFeG9xLThDUWllQ3c?oc=5",
@@ -1211,7 +1238,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQSXpaZ3RKcVNudmIwVDREaEt3aWtVeTh5N202emxjUDFicTd5NHlqSHV5UnJ4ZTBjZXRQUVFGVTFoLWp0bjNwNjNpNmZodGstTHBaLXZRazJIU0k3Mkc5OEJVR252YUV5MmlwM3h1NjVxWTVOYk9WbmdLVjMtSmUwa0hYR2pFRl9NT1hRNjM3Uy00NzVTYnRmejU4TjZsNXVydklfc21naWVfN3N5YkVHS3NlUDFnT3JjWm5vTEoxQ0xxdlEyMkxpV05hektqdw?oc=5",
@@ -1219,7 +1246,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi1AJBVV95cUxPdGVMVERNUGpYUjFrSlBJRzJ4WXNONGlBOXl0a2VVQkczUXhvb2pWOEFuNDBVU2VYaFd2aWZ3Q180YXczNldXQTV3dFRidVZzNW5mNEZQUUNBZFhkT0xpXzBNWGhXTXhGVWUwdWVRN1lvOWtZSXdIemVTdG9iM2Y0bVRCZnNJSk9WSkVWblpFWnRpbW9IRkpXQmdPTV85cG9tcWlDQXE5WTB6bVJHMkZyMGEyVVJ0ZDQwWC1INktWZzNEcWs5eG5DdnBaemFiOURWaGIyTFp3OExGZ1d2X3hsV3BzRVVwQUhPU0MyaGJQLTlGS0kzNmUwelpuUnEzMEtENjYwOHlfeEVmUkM4alJLU1R5TEdfMFdOUVZzMV83dUMxZy1JNEJ0d2FqUENLalZrczZtckphMV9FVVNCU1hlMFFLU3pRTTVkS1hVT3RyY0s3NkdH?oc=5",
@@ -1227,7 +1254,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOZGh3NDJoZGl2SmJJMHRBb1NYZnFxbmEzTkdMbkFwN0pLSjBRc21Td0RkMTVLem9tenNSRlp0VDA4SDFsUk5jMzJ5WWlOQXl3UzkzMkcwOVdPcFJ1cG85NkthWmpHdVhUOFpsRl8xRlo0UTAwaGVtUEwxbk1hU0FQdzJoSVV6d01hVThfenN0dnR1RzZZeERGdHBzb2VUWmZJSXplTGlBLXZYUzZ6eFUxNG5kaHZ3M09mVjZ1SQ?oc=5",
@@ -1288,7 +1315,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMilgJBVV95cUxQVWJoZlNja3hOX3U3amtEcFNvVWZhdzlFS1lTcGp4eTBERE9uQTBkMjhVLXdWdTkxdzBvMXpaYVBNUlRGN0JJcGdMVXN2QXBkZjJsNXZ5anl4S0p4UzkyS0NLWHRDNExqem1raVVoemdtUFFwbEtZaHU0T1RaOWt4RUcyRXQ3eURQN29XUGJUZmRGMU9PaTNjQ2l0T3kwLTZoeThxWmVCNGRENEtPRFNLd2NRdXlyU1NJRl8zdVJJdW44QW9OQWtidl9UdmtzMUZhZjdheUhiUVlTczBhUVVqcm9yVEF3b2I2aFNVSGtQVXAwYndhNV9CNFZoN0Z4UXZ6SmtlbzlvWTlzTkdLSVhkOTlrLWl2UQ?oc=5",
@@ -1296,7 +1323,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPT1hBT2IzVlJmTGl4OVUwWUVMOGNORzZpMWF2WG0wX25LY3phTWE1dHVYMVNDYTlhMnJOanVqTDFhTXZ2enRYUHBxVGtDNGdVR3BkZjFQOTdfUU9jVVZqcVItWFNIYTlnQ2JNbk9sWDZ0Tm84V01DMGNoVE5taFBfV1ZERGhUVnBBWS1BR3hXdmlpRk8tdkdTS08zekpDR0d0Sy1iRHY1VGJNSWpKb3lsSk5lMC12REllTU5Bd2dUNlM5SXFEWDM1aF95NEtaWDQ?oc=5",
@@ -1328,7 +1355,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNQ2c0RE5VUDdQRmFzbXlCMjdMcjBUQ21nMTZsOVFDUXZ2SktQakE3dmItMU96VFhnd3EyT3FPN0dKeUp3QllfejMySU9zZXI1VTNqMXhYSzVoQVB3ZVBTWG9udTdrcnBHT0diZlVIUXpRaUNNa3JKZVZ3NFpfeWVDQ3pwTFhQTnZBbGN3T0t5LThtajBYNV9GbjN4NTZua0JDWFU1R2pWLU93X3oxSGtheWFCS2NfUlpzeUNkQTFrcw?oc=5",
@@ -1381,7 +1408,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQMTN4OV93enNPZEhZNHhGSnFMdXo0VEtCUzI5VS1mWTZua2tDM2pkVl9UZWhnSHN6MkdsbUV4dk02RzA3RzlDa2ViRHBFMW5TV0Z3c2d4VzljZlBSdnhEQjVTVjJXT2pXdmhOd0xfejN2MzZJS2JqNTF4VGw5UGphQkxFZUhYRXBzWHd1T2xJY1MxcThxcGNGYXFKSUNnMUY2MGJuZDUyTTFyTHphSWlsNGNCRUJBd1hwVXM5bDZxbGVFR3ZNdkpzU1FCSFE?oc=5",
@@ -1401,7 +1428,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPYWgwNzFEWDNUYmNkeklhTWdoM3RjQnQ5NHZVaUY4eHg0QWxKLThCMS1va000ZVF4cFVuVDBoZXZjR3hDVkcwUXQ3RUMyVE5yODhwT3NwSy1tai1xOWZISXFORGhjSUZURVg1bFpiQWVWaFdHS1kxY0xOVWNaM3dZYk9qSEc4T1FSOFlvOVd2M0FxN0xjWEZ5S08tTjhsU2pXRWdTWExfRkVOekhxQ0lzZzlDTjF5c21PSC1WSUhkRlhtU3dzd2Nv?oc=5",
@@ -1409,7 +1436,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxOUEFmc2hjM2w5RTR5ZXZQWVA2alNlTm5URV9xWkN3VmRSSld3OXRQWmZlNXp2NXFlT3RGZGNvYXlSQVFQenFZazVEaU9CUE9FSkQwbV9HR1M3eE5ScndaU210VnVaWWVBV2hGTGVzR0xvcU55c0p0eDJOQjc1ekdrckJHTWEwVmhIcURTMFU4UVd5Z283RlRNYlB5eW1YdlBjV1MtbGJSQXZPeC1ENG1tb0xkRFZsTFNqQkJFUXczOU5XWksyMno0LVRXUHZKUDJjMXpKUDJ5cHhKLUtT0gHrAUFVX3lxTE1qSmMxVDBrRXFsUzhIZGJMbzBXT1d5NThWWnp6Z2o5Q3Q0SzBvcFhzQ0ZEUGFudlJraUM4eFlBd0NXUGpxbHh4TktCNEQteHR3NGpDSWd5Q2ZQRnEwem96Y1hQNHJCd0k1UHdEemhaa3dEMlJoVkpmVDBqdlZ5b284Zk56c3pKRGJpYUlMQS1HREdwckc0UHUzTFV1dWhfMlNRcnV3Z0l0TlFUcmdtY1h3eW9YdWpxaWt1ZElzYzRQbEFWeVREZUE5akQxX2JjeDNWc0NvZkJ4Z2hLZVFVbnZVN2d0d195U3RMS28?oc=5",
@@ -1454,7 +1481,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxORjhGSmZyQXdtZXFSeWVkRU1uQ1B6YmRnRGRvMUNRWHZFclpvS19rdXR2RGhja0FhYjZtU0lVX01wM2ZvV0lSQ0pvdDVoVnlHOGZ1ZkE5Yjc2LXF3OFJ0MDlJcFViUHNyUTFCamVzMy16QjQ2ZzNHd1ZVczZrYnpSeFlXVzlJaTJ4NGF0ZDhuVTE3OUVsd3dlaF9ZN2Z3czRpNExqcUpkeVU0bHBTbjJQRFpaTlA3NGNjdk44dXUtU3dDdnlfR3RlR2lTUFB0N3N2WUlYbThiU3JROVVBT2RJ?oc=5",
@@ -1462,7 +1489,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPQ2Y5SnFiTkk4ZXFaYkdUT0NBSVpWUmRyd2VkM01MOGg4UnhJVjZXdlg0UERIMXkydTZObGlXZVFyYURJR01PYldRMWNISkphb2R6c1Y3SDJheDJwcXJpcHhHa0JlTk14RFJVZUVCYWRSMlhGeHRkelctUjBOSkJCSnZZcngwY0oyNXJOZldvdjZaYnRsN1puWEFrRktRc0ZGcWcyUDNxVEdoTFl4OTYtRE9KaUZZUQ?oc=5",
@@ -1490,7 +1517,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQVkR1dEVaWlJ6MUdZdWtPX2pEVnZvM3ZXZDhhUHFiMlNMZV9IQzNFXzBLTVNpUVk2Mk1ZVHNhbXFja29hZGRnamRZSV9Fbkc2UTkzTFVfcDYzMGlpR0NVN3Nnd0xPTVdlQWNFLWN5NDNzMFZ0cUZhMjlUSHJjS0lvSXVRSGtfUWlKSndaV2JxMFNrSEROMXBaTk9wQmdOZHg4bzhHWDl3eFV3SFROUUNFRnNCMnl0THFoaTR5aTFQR3QxX1RURU5WeFN3?oc=5",
@@ -1535,7 +1562,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNREg2RFVsbEhUbTZlazZnUzJrR1JyMUROQlBWY2N0NE1yQ2NiVmNBTXlKZGVaWEFGYTZCd1FQYlVxbVpZblZ0YnRtNVRsT0ZQQ2ZvX1dMTFlQdm9zMC03SVZyazhhS0MyUXVEa0xjdkxzaDRTaGlVVVpYdmdka2lhTGl4SDdKS2czWVFCWWxMWmFZbW9lOVN4ZUdjZFVNTkpnWGdYcEl4NFlxYjVoVVlXSG1UejBONDlId1h0YmdUV1ZIcmc?oc=5",
@@ -1636,7 +1663,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxORFRtMUV3QzB6NFUxMDFSQ3czV2p6R2U5STRNaWpSdlR6dm44N0xaMXplTG5WWkNORXREeE1CZlMxUEoyUHdoM0xtU1dmSHdlVXdfXzM4cm15dGlkNy00c3ZNVWtIZ2VveGMyQnJFdDBUMXY5Y1p5bkg0VXR4YUMxdkxhOVIwMW1qYUp3dGtQWllPQXIwMWw3VDlfUXhFdUlqMEJicm5BX2I1amYtSVBHaEtITVpkM2NZVV95bDhBZlZtWnRsRGlNUzFqVFFNYW9CQ3FRWmw4TThJNnl6cy1zMUpkOFlIYjZienFN0gH6AUFVX3lxTE9GZHF0dEFBZm53RkRJTjRvOWZGRWZ2TTVDM3dGV2wzNHpJY2JYN1pPSGMyNmtBcml3SDg5VGJBYnJxLW14bnJmeklGMmt4VUh2QVV3emZ0Y25ET2p3WVlxZmEtcFBGZHR0QVpWYmtadnRmcGt2anB3OHVtRkkzemxIMVc4Y2NuMDhtYmV2aG9NQUZVTHF5ajNPeFNkZDRES0lkWHhLMEhwalB5OExfZjdEZzBZUDUzUUdwMDNDR2VfcWV6eE0tbFNMZ2xfYnVQd09nOEtES2dicElzSnpvd3lVUk55QkxGWmNVZEk0ZzVPTUVSNjNVYU5xV3c?oc=5",
@@ -1678,7 +1705,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQM3NCcGNXNkx0dUlRVlZWNXItTFZlNzBKTXE4U1E0UGpxaGNYajlvNV9GajFjbjc1b0pEX1VQNDg0RjBlLXBLRGxKN3drcWhpNnRPTzNuSk9iWTNWZmFteWppUnRyZEZWSXZjNVlrcXpqNU1VekdwQk9YZTAzeXYyNFh5aHZRYkhxUkw4dXFGZHNQT1ZFRmFGa1hMSzRjR2tJRmZVa29qRzRjWERuSEM4Z3c5dDVqQ1FpYnF5a21TNEVvbGZXakRwY2dLbGdsOFR5ZmRqeHBn?oc=5",
@@ -1686,7 +1713,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQRTdPLVB3cTNoU282VWpGSTdmTjNuSFQxZmJBYV9keFdjUzZZR19CRjdpRi00UTZVZkF5N25WSzY2OExNNU1MeW5NZUZINWREaW1wOWZtNFgwSG5ZTkdJRFBOcnc1WmRwblc4RUsydU9iRXZyOUNaM2JoX0kyeEd1OFJYOTVHUHhLSjRZY3pEakFsY3lKdTM2VDBUVjJvcjQzZHF3TzJmbzVBYmxRQzh6dWtPb0pVZm9uMTdxVnRRdWNsLTZGSVhtbVZyTG44T0REa3JwWXhTRHMwZXgx0gHrAUFVX3lxTE5kWGYzWGxHOW9SWEFRbzFxVFZiMjEyYXJCTEFtcnFEQUhNb3hEMThld3ZfMF8yNXdDbWs4OXR5OHVqRWp3T2xzUzJibGlIdFg5enVSSzNnbDVhal9sNHRnWDhRbGZ6OTNMX0xJRFd6aE1ybHhXODJRTHdrdXRyYWt5cGxQQXRIcE9VWUFKOFF2cFNUY0EzdDRWUnVxWnJGRHJTRjNuZXROdXNQVFlGR3FKNk11bVhabk1HVkp2dWZsNTB5TWNNQmpabDZUcEN2cWdKbnpSekY3MUE0UHB1YU1ub0xuM1JXbWV1QmM?oc=5",
@@ -1706,7 +1733,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPZ3JQN1BycVVBcnZxd0V3dXhGWE9sZkpCWU5USlRTLXVvX3B0LUNPSnAyNEMzMUY0amJwQUlpSXpOd1RRczNBcmNNaC1GWXh4VHJQbjA3NnFxLUZ6TDJPaG9wQWlJSE5VYzNWdE1wQjdzaUxyUlJCcl9leE5TcHB5WUFlLS1MaUpaQlF5Y1M4dXoyVXNSdHhONE1qRkRtR3NDSlN4U2p3?oc=5",
@@ -1727,7 +1754,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxPV0ZIODNyS0ZvVEIzenBMdmpELWlhQ1RUYXZQRUdBTk1udXR5NFU2MmpjazVfLVlkSjZ4d1BQTG5ocmRMaDJEWWhZZkpUUi1tY1lwV3ROUHkwTmlnYllXZWZCSDZzTWwzeFFNUHd2SjQtckZPeU4yWjQ5MFZtQ2JhSHRPYXcxb3dYcHZjeklod2RqTEN0UTE1TThENUY4cGV5YWZNVGM5SEhCTE5Od1JwV0pXNzRGSnNlbjNNOUVHUXY2d1Rkbk9PbEprQlNrYVQ5My1pYkxzdFU?oc=5",
@@ -1764,7 +1791,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNLWxZMEQxeDZkU3VPWHI5TERfaUtheGxkR1pwLTJyR29hQ05uME5fU0k5dHRJWGVjLTFxZnVtaFN0TTNMMF9YOHpUVHVDSkpOSGw1UUowM0F4MEd3bGVCazlTTmZBR0VhbHJiR3ozNW5qTDB2eFJzYWZUZWhBZUpxUDNaWFp4Y3c2U1lmZEhRMExQMThzS1k0Rks5YTVSY3k0NHRDUUpiVkl5dnBybUMyellrSFFLWVQwUVFLeG5nbGw0eEc1?oc=5",
@@ -1780,7 +1807,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxPTWN3aWhSWk5Ib1BKRFNSUVllX0NXLXg3bXdMSU9DUmEzSjVYZTFKTkRuaXpmSklnTjZkQzFzSVhUQUxraDB0NW83dXZYQXdZdXBXR1NHVGw3UFhmOHgtenpJa05paWNmbXdLbHcwWkJGaWttTmZGc2JwcnFJM2lab3h3SjRMTDFIbDljT0VKbGxJSTNyT3I1ZmdQQmxSaUhDRU40eGlqYUc0WGFxZE9rcWJ1RVRMVVFVeGpiM3pPVWtrVWxRMGxMYXBMbkY2ZDNDRGZmWEpQa29HcU5iN0E?oc=5",
@@ -1788,7 +1815,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOaEF4QTA5emp3bmxoYWQ0M09jUnpXT1BmTlBWNUljcllldTNNLTZ5T1V5NUxBZlBRdFVRUEtLMXVsSmhqSUlGdXBWMHg2bTJ3YmZjTFlBSTV5SHQtZ1lMZWpzQUFLM1ppSUk3MzEyeHlwS1ZFM2NPRS1SYjBETU8tWVp5ZE9zSDBOSUQzTQ?oc=5",
@@ -1796,7 +1823,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQd2V6d3FBOG9jUDEyZXdVT2F4Yl95WEsteTJ4UVVmUnk0dFNLbWkyOEhaZnV4SzVDQ25wcXNkZzlQZmFPckxUa1V0QzJISXE4YmozVThEOTk5dGE0VE1tYndHWkc0Wmtyc3hYMXUtemY4VGVmZmstbnB2djBPTW53eDA4aE1IYkhUMU5zRmdNQ2oyamVxck1PUkpmelotMllLMVBhOHRsY2kyd0pNOHFqcER3b1JKeTZfeVltbzQ2U0w4dlhDMzVVZGZB?oc=5",
@@ -1804,7 +1831,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQZ0Q1SWFKU0J4d0Q4T19ubmd0MnJMUjRpODRjcFIxb0htOVJmUVdTbVNGaVB5ZHdMMXBNYVdBbzVXWGkyc1dnZk5mOGxaZUF1VDdVVXhXZmY2c3ljeFFRdHhubnFVeV94TG52VXQwVV84c202SHplU0VvdlhhaWF0TWlKaVFxdk9FNTBURlJJcmExbWJ2SW0wWnBnSmkzdFRQOU5COHV1V0tidWR5bnN0NzBLWTVReEctWE5xWjBrTEFfUnF6VmVCSUE0M053eDJtMHfSAeABQVVfeXFMTTF6M19heWRGUmtYZUZFNHFYTW9TRFpDdXE5MXVPS21Oc0ptZnpQRXd3TmRCdHBWU2pjZ0RqTkx5dms2Sm9HR2xLb1pKS00ybjFjczlkaHNKUVdaWVlRQzg1cnN4UGd4M1RFdTFkT0pHR01xU0ktRTNkYlZpR1F4NTh2NVlMZE90VTh4aDQyTFVPbXBJNEYwVWdoVFVhekVZZDZKcXhxSUtSbHFBY2tkUS1LdFBHdGl3VmNab3M3bVY2V25WT2NCN3pPQzhWT2xWT0I3cGY0YUp0cENWcEtCZm8?oc=5",
@@ -1812,7 +1839,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOMU8zU1ZaWllKcmFtN09CMHdDbC1uVW5xa2RoOVFsT3UwQXlkRkpzZzhObmlZc1M1S09pc256eGhGNDJqV2lvdnQ4VGMzRVZNOUxZU1pibDNYaXo4a2F2OGxGNUdJZWhScTR5dlAwV2ttcGVBSmFLMklOTjZ1Rk5rVXVwZ0VPM1puS0xvWl82QldtYllXLS1RMlVDbTZnVjcy?oc=5",
@@ -1846,7 +1873,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPRkxTbFNETGwtdnl3SERGWmJFZEpsRF9xRGROWUFPZVg5a2c5RkFrZjVNSTJIMFdIRDU3dk0zQy1tdWJpTUFkQnp1WllLVHkyZHJuR3FnOW9DSE54V1hHUHN2cGFYZThnRnBKUklyYnBmSWxpQWxnNFlYSEhvcnB5UXFKQkR3bjh3NXBaZ0lWMV9WYkZSbXVvQzBUUm5XbzBZWjE5THJZVVBKYlFETnFuUEFTX3pZVDJfbDE1SURlb0swMk5fODdYYUVtd3oxdXpRdEg5dW55YnNnX1JRdGRsZNIB5gFBVV95cUxOTW5pWGtUWFZUZ1U1eHJlNUlFZzZ4X1dtbER1Z3FUeF9vTmpxMVBid2ZzVzRSMlBscGE3RjhCWFFQMUZBU0JycXJjb1lPOFJKMENkUmRzdkdMVU9BYnVEMXpTald0MVpDZDhzNUpuYkxPVFpYdFd2aEpMc2llSVY1VXB2dGhvVXNqRnpFY3VTVDQ2dlNQdE5HV2d4NE5pRVJpNFZOY2dVSW5xdDE3RzRGdTRLaUxLQzRYUkNNdkQ0d0hBa2ljVDFuWUh5U2h2X29ndzlFYWo3aGQ0b2lmdjczN2VLbXV0UQ?oc=5",
@@ -1883,7 +1910,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOM3NMck04Q3hmZkpmS2hkQXRDSlV5S3NaOXlJYXJvenJSVngza1liN3dJN0VqelY0a0FWODhLT0dxZ2daNWY3dTBWQUxyLXlHdXZFaGJtLVhfVEpqM2NnN3FjZjZuaTZKYXdscXdIMjl5WjNlTXhBT0Z4UnhqX2ZldXcwZmpPUjBCOEU2bnBIczFJUTRyUnJ1QWxuZGtiVFV5S3ZEMXd5ZW1yckFHZGVuTTN5eW5JU3VUMlE?oc=5",
@@ -1903,7 +1930,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxON3VVWGJtX0FvandEdEtFaERWWmdiS0oxdVNrb0hoZ0ZxSHF6d2d4UWlWb3U5MWRQalFXU1J5emF6ZUxHVnpwTWxHdV9BZFFiTlB1cnJyelFNUWUwTDhzTFdyeXo4R2Z6eF9EN1VQUjhBTTF5ZzE2T3F0QlRRYmlBYWEyN0hNYjZlVm9xaGFPNkl6ZzJnZHJ4cXFkM3NWME9IdEUwa1RWTmU0aEE?oc=5",
@@ -1911,7 +1938,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxOcUpRQUw1aUdqTGRpd3NlRXNWNkQ4OEdBV25iT0ZwckptMWdzMUdyMW5oUXR5Wm5HakdUWHBZQzJkSk54V0VqdkdYLWRKMTBaOHRlR2lRdVc5MjMxQU9DU2hOdFhhSDZaaG9KWVVtQkN4RHFUWmNPVWZRdHFzSFZUWmtHNkVaRFl0ZHlJdzZucWRqRUlGTkI3LTZELUtGUmlyQmdObDhFY0xna001S1BUaVZzSzlaelZwdDFZWTZqN25PSHAy?oc=5",
@@ -1970,7 +1997,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMijAJBVV95cUxNWWJVRFYzdnRMRWppRUJmeWZCS2pTczAyVkk3cTlXblh0eTB4R0Q1NkVTQWcwUTFNMHo5MS0zejE1R2pORTlwM0c5dGkxaVpBRDMxM2xsU3p4aTRlOTdqN3NHY2tqUlpfc2lnaHNHbV9uRDVYTktJVzAzTlFEM0FMbm13NjdwYlJvWWMxUnRQVjFKNmtZYWd5VllQUnZvUHRwYkdtWkxXZ18yZ01hcDZwQ3dJSnotek84QUJyQU90bXc5V3R5clo4bGJaX1Vxc0FGZVZyOFNXTTdGYm1JbFh6Z2g4U3Z0YzdIaEtxbnRTWlhSU1picTNOLU5hbFdXMUxUVXdLZ0RrZ084QVQ4?oc=5",
@@ -1978,7 +2005,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPX25tdkpUR3ViU01oNnNXSmhkQ1RvdlZZeTVPM090bnctWGRFOHRzd24zWVNUMVZ1amladVR5VDNrUFdQVFBOTVkwaDAxejVqSzB3RUZEVVcyS2xlSjRHR1FzQ3d2ancyalhiM2wyWHZ4TEtZblpJaVA1ZFZ6QmRFTjFPRzVrNVA2eXQwUFc0WmxmaXRI?oc=5",
@@ -2002,7 +2029,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPX0JjTGw2NTBDQ3NqR1ppNnFRNGlOS1hLXzRjZndMVE81THhhQ1VfN2kwYWFYSzdETklFLXlRT2o2aXI3Sk5DQzloU211dmJqWjJaZkIxS0pzdng3NW5zMzJjbEFNYk5ZM1czY2FCajB5VGJ4N194YkFqcVNySVlGcXRzSVNiX19fNDEwc1F6Ulh5aWptZzlnay0xTU1IMGd3b3E4ZkxGU29Lbl9XS0lnM1d2eXNzQzVxZ0Q5R2JYRW5xbWhhT3lJTzEtOA?oc=5",
@@ -2036,7 +2063,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPMkVRN0FtUlhJdmZnWWwtY25rcGFyZ19LU0JXdUU3UDJhTmtuRTNrVnpoaVVsRnpMbkFydWNxR0Qzak4xcEpIRlVQeGhHN2w1MWZRTktuM3dNbV9xblRhR1JPamp1dXBERlhUT2swaEp0OVdiaUVRZjA1ektmTFFJOEQ2cVgyd3J1bmxBMnpodjNCcUZKcmJCSXNLUXN6QTVfMWJhbmJFZTdtTkZ5SUFaSGp1dzJiNWdGSUhlUWtZZw?oc=5",
@@ -2078,7 +2105,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQcFJoZnltTUhraXJrdDkzY3ZkTGVtVXd4akNsQ1VHSWlOUEJ0UnhKSHpaUld1NnMzV2xobnZ1cVJKOUdhR2RETmVQWngyTTVsLXFRZUNBRU5Sd0k2LVREQjhIMEktNy1HcGVKOTVISE83djdrWVdGaHZ3YzU0aklKaXBVOFRKLVZJdTRBTFNTM05nN3Jqei1ITGFOVWIzeFJkZnBuSjBDTk1OVmxPNnBvTlgwVjJfdUZXanI1N1B3?oc=5",
@@ -2099,7 +2126,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNQkFxa21UWDFGekNYOGJxTTlwMUFCRUp3enNDNm5TNGtwQTdpckxPN1RUVEdXeG9RekJJSnJSckRhS29IXzVXZk5Td1lqR1dPU2w5ZU9ZVWJwQjYzMnBHbDUzRTB3dEFJeVlZSHhzbWRMN0VjS2xOVVREYkdwM0l5T1hqWHpMTWJWbTFlU0xmLVRCdWtlZDJmZ1NoNDQxSWwtRkVqNVBjWEZuUUhLZFlMY0JB?oc=5",
@@ -2107,7 +2134,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMigwJBVV95cUxPYkF4R1lEcmtzYzJHYkw2M0lBUFpCQ2tEMGFmSzB1dEpyanItd25JcWtFMTByNVlLSVJKRlZEQ2hrZWl6V3dXYVI2dHkwRVNTZXF2Z2MyVi16VmwtVHdzX2N0SktOeE0xMWJ2UUQ0Q1NqUGpIWmxyMl9mbklHWXF4WFRLcjdtTFU1WDM1Sy1XSkN3Tlc0czQ3LUdIVnZXWnJQSXA1MTNTZjhubFpya2FoWDRYMU40eGRCWWVELU9LTlFyV3RXdjBlWHFzUzhlZWdRSU5Gb0NTOC1XejVsTUkwUXBPSl9EdGhabDlNeHFhbVpVVk50RjdmWHFPUHhoQllBM2pZ0gGSAkFVX3lxTE9vT05PSmJQQUxJdHp4dHRDY3NORXh5MmFuVHNKY0dQUmV6SFk0anhiMkFMS0Y2dzlscFh5U2RkQmtET0N1cUxxNThTeWR6Z1FBWnI3NGVYVHFkbUVUQVZvbElqVF8za3EwODNTZXBwbUtBYVd0YmVhRFF3YjZkVlVuaWRsajVUb1QyTWZHOFpLM2ItT2tXQmdaYldNRkJvQ1NiMzJWNDE5ZEtKdEFiQV9fS2s1N3lLWVJWTnh2WTZtREJYdlg5cFJRa2ozalZ5VDNVNFhZQjlvTFZpYnktSlc5eWR0aEJjRnZFRG9fWG5ER0FLeFpyVlYzUGxMbVMyUkltZ3hrLUFSY21NQ1NKSVhhOFE?oc=5",
@@ -2152,7 +2179,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOWXluVHN6V1ZNbjA1Y3FRZl85QV9ISFNIaUZlRTY5NlBOYTJfR095Q0Y2bjg4eVVhTVB6bUlHcEJTRFU0T0xPWEEydlktSVRtbWY1cng3ZE9aVWlQdUJRbHVDd29WQXRjR3BySlMzYjYzU0RTbVk5VUFHNmxCeUxwM1l4b3I3eWJmeVQwMFJpX2FNZnBCMEoyWUhfU1FRSmZmWkwzT21IbDdLbW5qSzZQSw?oc=5",
@@ -2173,7 +2200,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiQ0FVX3lxTE0yb3lWR2RrdGJmNTQ5OEpHM1FHMTh0dGNDb2I1NlNBMnh0LVVyb0ZlQWgxeGJaU3pKV2hyQmZyN05ndlE?oc=5",
@@ -2181,7 +2208,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxOM1FPUVlDdmd2VEM5MzNNR1BKMFBJR3VYOUY1WEdIY2lxNi1jYnJ5X21oYnVERzFoYzY3YmkzZ2dyd0JVSTc2RERVX0FNN3hEa0VPd3ZCMTJKTkQ0RUJNX29sODU2ZEhrM3hVV0IzeFE4UlEzQlUtSlc0THJYUEpZbGtVVnd3cmppSmdpcWlhTm5DU081bjhUWmhGTDZ0eGJ0bThTbkk0NndrY1FfRjNvQXEyMzhubXYzVFZLUEx4aHdMNVVpNlpRMFBRaEhwWEVpMWJEa3pjZFQ3Mlp2X1dVZTVrc2M?oc=5",
@@ -2213,7 +2240,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNaXl4dC1hOWltRjJUZ1BXTnRGbUgxSGFHUTNWVGxZZzQxRFNTTUhQcE1HRV9IVl9VaXBFWllOTUtQQmR1YUdnUU81YUlpSFVDdDZHMmU4STBuMVkwbzZuWVFfck5JeTY3Z1JxTFVfV2lSMkgtRDdUWlRyUjdlT1lFWjVhRzBXT3BBWk1GUkRKN1pUaERqTnpmQjJUZGpzcG5Ndkxld052ejFqSWtqN1hOano2bHZjRDhFQlVuYnoyb2o2NXZD?oc=5",
@@ -2235,7 +2262,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQZ0kyV09jOFZGNGFfNU8wSmIzaHdId3VyMFVVY0FwR3ZKUU9hZ2ZoSWVVRDlQYXVyTEdXZ1F4VnhzSmtmSjlOaFJIY1o3d2JTOXpuY0hsTDZzZkdmcWROeVl1TVY5bEFHYnh1dXM1TWluZG84V2pqOTBjdVZ4bkl2eU1mQkVCOVlDNTBqZUlmTQ?oc=5",
@@ -2243,7 +2270,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPUVozSWVZbEZ4MmhDZHZMeTVxaE15SW5SYzREZlFQVTl4UG9pM0l5UlJYaV95TF9VV21kWExhNmIzQUY4eTFVMEVUOTJkT3V6Z0JmY01CRThtVHpiX0FiTHM0ZzdxdURCTUE5LVl6WUdZMGVkbDh1aWwwLVR6cTBIb0FXWGdTT29wNG1GYnBXZ1NOTFRYUHFkTDlsdEk?oc=5",
@@ -2264,7 +2291,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxNTzhMZEhlSTNlZmFwTnVISjRPZ0FOcEhRMm5LNHFPWENXbDFlVkdmVlJZVFM0a2wzaWZwSThwVkVoZ1Nmc3VjdTFGSU9qWTlxSEdBR2g5dzYyYWNURVhFU2c3bkpmRFh6ZDk5djI0bENscFJ5M2p3Q2hBM1luLXRTaUFHRmR2RE9FNm12cE5PWlFITi05SVZ4WDl1TGV5MmE2cHFkMkRoQmtqN0N6U0M5WFk4bk11YkNlRUZHRUg1QlRHVDlpMzhfUXdGZDZBQUlRbnVSeGc5Qm0wbnB1MVRHdWJR?oc=5",
@@ -2296,7 +2323,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiQ0FVX3lxTFB4ZkkyRGpWYmhlQzZ2UDc5eDdwY1R5YkVrY0xwQkl0V3hYY2hNZUNrVldLVG51UnJjakVzZzE0UEFUOTA?oc=5",
@@ -2304,7 +2331,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNY1NIUnJVY0ZEbXNpcmY4MEdKVFZvT2lCSXNUbHVOWmU2cnlrVk9NYTFfc1Q3a1VYM2lqSy1yd3p4a3psbVN1a1ZLT2Z6VWpxS0RLel9xX2JxN0VQSnRSTDdrNmJmTXM5YlVWenk3cG9PQVJ1ZDQwSFBuUF9TRWFPZDNGb09wRndhVDRHNjVaYnF3MXhQazgzX0IyYWVjMlI0Nmo1anlCU25CcDFTZUMxejUtaW1LTFo0NVBqSlc2MXQxcHZCYklnQUQzQUJoT2Ru?oc=5",
@@ -2324,7 +2351,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOY2MyZy1QOHQyMU1UY0ZoOGNiLXpSTnFfZnNfUWtCS0s0Sno0MW5IdC1uekVyMExTVlFqeTl4amdybGlQckRUbUtYV0pzNzdoSnlPNDNORzZtckVrd0tueFZwLVhyMnJxZmpyU1lmYW5fLUdacXlvN18yT1hjekRndERpMWhVMVNKdXIyUjBkM3l4eUkxUjctZy1haUlDMmJDVHJJcjFETURic0g1a0ZwWkFLSkt0MGdlSDlhTDNXX1VPYVFwc2c?oc=5",
@@ -2332,7 +2359,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNR0h3bXNUc3RFZVNmRjZPWDhqZGZaVzB0c0p6d3ZKNnRWZ00za0hrLVh6X2F1T216aU5kV3pSNnNmSkFENUo1Q1VRY1N3a0FrY1dVUUowTkJMQmJURV8zMGZidVRUc1RNM2FKLU9oVmc3NU1qcV9OajdtdVo3QVdVS29EdnV6VW9oOFVCNkVkZWpjSU00emFEcWhUekpPVkhFdlh3djhqZVFIWFhuUnU1T2gyWTVmWk82cHhUYWJfRnE0T1BVSkE?oc=5",
@@ -2340,7 +2367,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOVC10TXgybDV6WG90SlNST0hwMnI2ZmFMMDl6enZpeVhuU3RqQTFHVlZyMlZGbmcxamFBcGQ5eF8tOWJLQjAzcW8wX2dxbWpmSVlocFppVndIbkNncWpVTUJwZ2pVa3I1bkhoUXVNc2dsci1XeXdheVBMTWllMXIxTF9td3VyMlNoVWlOOVViM19OaDVWRTJRLWlGUlNNYVFrZUtZZEtDczBSWUNlNEJfWXZSSVQtX29aTmxSaHl3?oc=5",
@@ -2356,7 +2383,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNUkNSWnhheTdFUVlBUk1IM2lRVTZzVTlqaW9uVEZvQm1TQXdRNW4zLTRfVS1GMGxWWW95OHpJbi1lV2U4VGk0MGFDWHBNSFVSNU1PdEdQWmNiR3M1SFJva19JRjJFT19yeGNCdTlEZDdXRWhQLTZmQy1heW9MeGFGM2c0YmlQYURueE12QVRqcnZKLURfSFJuYm5rckpIVzNGZ0x5bGVXS29uZV81M1R0cEJnaTRZemdoQ196cg?oc=5",
@@ -2364,7 +2391,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxQTDZhMnE0cm9vZURDeUJCTEVNN3otQm1MZEVMalktYWNQamg0OW1JNThXTjVTaTBWS0lBd3lOeTBYUlVwT2laelkzOS1Yd3VPVkJVRXdqNUlmWjNoUDRWamkzZTRjSkRTRDI2RU5XMWVOZURBRkhPRnlqVXBKN2NZR3IxQ0NOVUM5YW1yOExudHkwVEZ2QVZiWmNaTUcxNlo4R0htMFQ0Sk8zZkZKZ1AxNWpFLURvY05Tb3laU0JwRHlJTHJpOU5RYUwzdnJ4Rjg5WWI1MUFyaWwzQ3FXME5hdk1adk91QnZwcF9jY3J5YnpaTlFJdVU1Vnlvd2c?oc=5",
@@ -2372,7 +2399,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxQU2g4SFR2WnhSWk5DYnl1UzJWZkVqcHhIZ0VGNlNfYjhjdDVsWHRWWEFNMHFaM0J5MTNzX0ZHc2FMS2xwd3hYb0xGUy1oR1hsLVZrOGwtaVVBM2pUaEdmWm9IS3FvVUZGaUZEMFV5XzJOYTc0aDQ4NVRDUmwwQkt4d0RkWDNYeVJ4Vm0wdG9fMUlWQWktSTNNNFNIdEtzRk5xMlNIZXI3LXlST1h6ZkhtZ0JxUnE1NHZYUDFoSE1XOWd5M3dpRjNOX1hUZXhrSVduZ29PV3FrcHJKNG8yN25xRtIB7wFBVV95cUxNal9XRTJmeHcxZ0dzXy0tM2F3cy1YSkl4a0NMOFdBYXV3bkdPUDBqMnl4RFo5NjRQWlNWQ25jX2VLbFBCTXBYR3lPQl93MFNpd2w2eXNVbzVGUHFXOVQwSU52LUx2dW15WVl1NkxkS0JoeUN0d1Jud2s1Y0hyNkcwcGplWWM5UVdoOHNkd0tUQjE0TDA1OFFQckl6Z0d3ejhxY0JkNTY2eURBLXNCOHAyM0JHWUxLZVZIS0VWWFBhaVhwSGRKaWVPTDBBcWNZclA5a01RYTREUUx0UUlVU3BkYUVMSjZ2QmhSenBHQy1qdw?oc=5",
@@ -2393,7 +2420,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNQVEzalZVUDZneEJ0UzVycHlrWmpSdFBhZGRhcC1HRFNSbmQ4Zl8yNGREQUZ1dmVQLW5IbnFFNEZySUk4YWptdDhxNzJrckkyVTFSNmNCaGZKRHhjZ3JMNnlvalNfS0NGLWI0SmZiS3BsTnBUbGRMMXoyQ2xnN1NBbUw3MjBkMFNpUHNwUElpU2VzNzc0VS03WWJ1MmRqOXY5dUhEVzQ2RkV1Y0FkZld3QjRvQ0ZTWmpZaFE?oc=5",
@@ -2401,7 +2428,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxPZFVTa2hHOUdiakNJblRXWUFCbTdlYlM3MjhRUmp3VHByX0NSTzJhVWxhVlZ3TE9qOUo3QjFSeWs0X3BCYklCOVBHVURsekdSUFZlUm10eDJQWWc3SWhEZ2w4cWRWcVR2U3hkWHR4djh1NDZOR2FkdTRlZkdZTXhjZVU3a3VvS083Q1dITG9yZFFtVFVqY2l5Z2pWYmtjajVQTkgxaDdJaGtNMkF3N0t6TTZELWZ6bWhKeWluZHJQcFBfbERPd2E2LVlFZkNPQktoZHc3SmdpVEdqQUN3Rm1jQi1MVWlkTGR2N3BHdkw3SDFkVmFuTzIzZHFwOA?oc=5",
@@ -2409,7 +2436,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOc3oyenlwTVhGVHY2R1NVcVlnUlZpY0FoVUc2RWxRVXhUemxSWWVSVURfWWh4S1B0dm5GMy1SbEpndVU1a2FWbnZLSXVWX0JoOGJvR2JaOUdrdk41N3dNdHItRGlHT0NpYW5ZalVYN1QtWjVDbzkyU19hLUhIMTlfUnNQSjdXb0dlNFJEbnMyTzNuTXB0UkdjTlpPeG1wWFIyMkxqYmZ1NVhZYTl4b0c2LWRwVDdOckl5RklfZVN2YTRxdGdlNS1r?oc=5",
@@ -2417,7 +2444,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPOWRuLVBMd3dIZ0tpNHE3Q0kxSFk4LUU1WlV6ZzViWnJ1UlVTOWc4SnFHcWhCZGl4aWc0Q2NNM0ZMdzhQeFQtNFNGU2p5MXViUnBWOW5zZmxBdmxiU1BIdkQxQkZhUTRLc0JiekNUZ1A2NUpGbkd6M0FNZUo3a1FnUmVLWTg5eWVpdnlnbnh0TnMwUTFLeWFVZnRYZDJqd3U4RUtxbHpEakRxams0b2k5dnViVEhZdjFRWWRNWmxBcEp6RXN1czhORjZ3Vlo?oc=5",
@@ -2451,7 +2478,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQSEZPY2pvME5sSWNGeEt3NlBjQzIxZmtyNVJXajFQdVhwMjB3MWdWLU1IRWtTRHRfZnllTVlQMVl3clp5Y05jMDhlQTQ2ZFh0Z1pTdjZNMWp2cjQybjlsT0QxWGlITjRmQjAtTXRsRkZQVUh6TnktNkQ2UVlOZzdpRnJUNENDUHBnMU1fZlREVlZqY3NZU3FtQklDVnF5Vi1PbTA1MmN4Sy1XalZmcURraFRxYUEwWGgwVXFpRzFNTmNITEMyZEd0bFZhMWwxRnNqYWc?oc=5",
@@ -2472,7 +2499,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNc1NGemtfRFBaYVBzeEpiUklyUzlSclBNOWh2elJOMEdoVmZKWjBpLWFJT3JudHBVZUZ1bktuM3QzZkNtckc5WmpVU25vcl9lVUlFQmdwUDVDMVVVN0FSRmV0MjZPTVlRbFdhd280V3EzQW5PLUpVckp0eHFTN2x4eWxnMDNFSzR6dWRuMXp2M1FqOGd5MnFmdzVadG5aRUpnWFk1TU1TbHJWVG0t?oc=5",
@@ -2480,7 +2507,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxOWGVHNDNqcHI1eW5zVlQxS3FBSUlkallnWTN2WVg0UW0zNm9Ld3N3Mm9XX3VpR0NORnJQb1BoZkZ5a1h2Y3BPMXJNOUhSb3dhUE1pU3ZKeDY1aWVwUF9OQ3ZYMnEyZFpWYUl5V2hVbTZXeVZKU05HTzZzYV9rTXpSeGg5Ukl5RUcyXy1iNXI3ZXZkd0VQOFdRNTU1UmE2V0tRQW52MTQ1Skd1YjBxQkVrQjF0aExFamg2eVBwYTdTNHUwa3prYllPeEt1SDlXWFJ6dWpKdA?oc=5",
@@ -2525,7 +2552,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxORGRtYWlGaWpHQWVlUTVNWDdOXzQ0M1Y1ajFtY1BZZDZ5WmFlamN1cHJlU1Q3YUxEWWJvWENybmx0T09PRW9QVEZwaTh5bFJmUm10T3RNU2tjeXV2MkJRLWhITHA1RlFNemlrYzZuS1Y2UURBQURRN2d1cnE2NUJvakR0QlBuVnJKaGMzVTMwSVZXZ2hrQzZmNU0wVXJzVk5Rekc3ZjRR?oc=5",
@@ -2546,7 +2573,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQdVlVMmxtT0tfQVRTRW5DTlNtSHF2X2R5VEJXeDhSVW56RkIwNXdWcTBzY0gtOEtVMUxOR2dyMTBWcFRLM29YZFVPdlJ5OFY3MURJN1hNZXppTTRwalcxdzY1RnI5RDhJNW0yVzNNTlk3VVB4LWkzZTdfMWJCMXlCaGM5c1FNa3RUeUNJcnBseFdZR0pEb0JjVVJNQU1VR0tudFhkQjZfQmd3UzJ0ZzlJ?oc=5",
@@ -2571,7 +2598,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxOMENIT3hySXRTbk9GS1hkYWdMVFBlY21OaGxpb1M2ajFGenNReFNIRWZSdzFaZVRPYlUyaUFtWHdfeGpFWUhDZWlLR2hiZzVleG51Yk51a3hiR1hJdFBPdVhRb0tfMk1CeF9kcnVuR0VBVWFaeVkzblRtM0xaemhYVTc2aHRqNS1MTmNEWDVmSlgxVXg2WWhwVFZSX0RtUUVVSkVJUTRiM2pFY2lId25PYnI0N2xxZkZUakJoUlNrck5MalEza05qdnk5N21BQUoyQVZKelJoMnVDajhzOEcxUTZIQ24wYmdFb190dUdvTjNENmVm0gGDAkFVX3lxTE1ZYTJCUW9oVUtkU1hQdVlEN3Nab1QtYThLZlhKTjNJQ0JMQXFfNWxJOHVnOGljNVdYVjFFTVJtLXR2LVdZTVEwU20zVmd5amdwQU9DazVRbHdsWnByTEJFTUZyaFV5ZkllWVM0bmVkUTlHZk9fTmJYNWs3Mk1wemNDOUVBRkNEbkhwLTlyMHRLSk5aTUpUYXJobFpmVUEweERDV0ozQ0pNQVhoYzJ2Z1B1dWc3blZUalIwNVdvR1NWbEJnUEc2enQxWld5N2FCUkRteXpIbUxSVF9sTGhGN09VQkJPM290Tm5TYllzLUFYSVlEaHU3SjFPd3pCZnlwSXNlSFE?oc=5",
@@ -2579,7 +2606,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9XNlVpSlg1Ny1EOTZmRG5YNFdzakJSWGRoX1hzYVFiMmJMQ0RhZUV6N3Fqd0lqQ0gzRndNMFpSY05meTBJYmpZOXNnUzFVX19qeEYzRUFENXZfV1cxdXUzRGYzM1BNcEdZSXJsbldoM3JJTk1tb3lmTWJn?oc=5",
@@ -2624,7 +2651,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNNDNkMXQtODRFc2hvdGNhN3FuVnJiZHFXcDlUcGRXV21uMFVKbEF1NjRUd0wwbTJ4MjNidm1VcjBBamwwWTl2alR6ZFFMSXEwNG51V3B0emlnWE9xS29sN21ETF9pQjd4RkdjUWZPS1pIWFdFYUZYTk1wVXhJbmUxTl91RV9NSVBJNGZCa0tPaHk2eW02UjFUMEFBOHVQaXdfUGswV0VYVFl6WXBSNGtEMDJsaw?oc=5",
@@ -2640,7 +2667,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNVm50SzRYT3htV0NBUDJINmdpN1AwM1dZRnp6WmwyREVoSTVZamZ2aGd1ZE5Md2pMTUwyWmtBZ1FsV2N5NHY5eGJrd1d2MXR6SFB1dm1FMHdmbVp3S1pIcWNUZUxkVGxsUXFHYTJiMmhZaUo4VlZEU0d6TE5tV1NJVGo1WFoxc2NEWjZ4RmZ2UEF6dkFGZk42Rlk1bTM2aTJNa1U5QUVzSnNuNERjSUV2ZndPa3JrUnhKMVQ0U0NB0gG-AUFVX3lxTE1WbnRLNFhPeG1XQ0FQMkg2Z2k3UDAzV1lGenpabDJERWhJNVlqZnZoZ3VkTkx3akxNTDJaa0FnUWxXY3k0djl4Ymt3V3YxdHpIUHV2bUUwd2ZtWndLWkhxY1RlTGRUbGxRcUdhMmIyaFlpSjhWVkRTR3pMTm1XU0lUajVYWjFzY0RaNnhGZnZQQXp2QUZmTjZGWTVtMzZpMk1rVTlBRXNKc240RGNJRXZmd09rcmtSeEoxVDRTQ0E?oc=5",
@@ -2648,7 +2675,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNTkVuVVNqWnBTVnhXY3VwNXRPajBGNzRHcTU5ZE9kWHZVekg3OUk0ZXJHNjBvVWl5T084QS1kdGJKcFRwdlJKTFFIaHhlVFU2YkxwVGplVHVWTE1FbjJsaGNiZ3N0aG51T0s5QVdBQkEzLTNHaDdRQzFUczFSc1FkRHpPdkxuZS1JSVBRYUw4YUZKTmY0a3dSaEdXMFc0WFkwU3lGR1JpbVhkWF9BbTRIVi1vcTQ5NXNuVERLT012YWs2NjRiVTY2WjRfNA?oc=5",
@@ -2745,7 +2772,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxQUE5ldlRNZmh1UnQ2cF9oRlFtdVV1aGpUb2xESFpSbUhjMXBQbmItRTRmTXpRMGtpWGpfNUFxQXdGVmVxQ0ZINVllVmh3WEtKeXRUc040UlVHdHlyOHFVU3BYS296aGpPTmVZWjh0elg4dlVZOUpJQUNsUzB3OWpWczcxNnVxTDRfRXNKWGoxaXBvYUp5dHlXdFZKdk1DQzNZZXpMMFpNM2FCTWVsaW1vZ01aYjRQVHlHWlJ0RTYxNDg4U3UxSlliQndobWZhdlo3U3V3NVZQY1RLTm5pZm00UVQwcFJuMDYxY29lZUVFOA?oc=5",
@@ -2810,7 +2837,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxPMUFhMEIyRFJaRTF4dkRYb3pLbTUwOThjc3pYeGlSX0l4RWFJR1ViSU1SM1VrM2FaZ3NJZnYtc0E3Q2tGTmMtM1BGZGZrSHBtUDhMZjM4RS1OYURrRUNzNlllYWdCRHRHVFJhWUVqckJBaVNqa3BoS1dCVlRXVEhKNG12dHFOaGlMQ1pRSnF5eW9HTy1tQ3k2YWJYbUhsc3BVcFJka1pWaGNfdi1pR3NEcjhFTmxjRkJKYWdLSlJGeDJRbDZXQ2VfR3JLVW9lWE05a2JUd0QxNzR5WVQ4SmZEb3BhYmZmN3F5YkljTlRVY2ZBRGFRamc?oc=5",
@@ -2818,7 +2845,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxNNzI5RHR4b3g0cTdkMGJDdk9UbkNQTmwxWW8tT0ZOTkhPX3ZIRlJwVkktbWtpOGNGMkdZTk9Iakozc0JQbFBEZU02ZEgyU3E3ZndicUdrZlJURjVDQm9MaUtPVXM3cEpUdF9SbXFSdnFaTVlMZThyVzZDZG5UWDRJbnZicURUbm1oaUllcTMxSkpkWkNfLXU5UXNLdDhYMHl0Yzc1U0xzV21vUFQ5ZUozTWpVTkt4bnlOTGFfNTIyNl91c3pDNS0zOWNXeElfWThXWmVRTUhwVkNsdFRzZjlmdkt0TDLSAeQBQVVfeXFMTTcyOUR0eG94NHE3ZDBiQ3ZPVG5DUE5sMVlvLU9GTk5IT192SEZScFZJLW1raThjRjJHWU5PSGpKM3NCUGxQRGVNNmRIMlNxN2Z3YnFHa2ZSVEY1Q0JvTGlLT1VzN3BKVHRfUm1xUnZxWk1ZTGU4clc2Q2RuVFg0SW52YnFEVG5taGlJZXEzMUpKZFpDXy11OVFzS3Q4WDB5dGM3NVNMc1dtb1BUOWVKM01qVU5LeG55TkxhXzUyMjZfdXN6QzUtMzljV3hJX1k4V1plUU1IcFZDbHRUc2Y5ZnZLdEwy?oc=5",
@@ -2826,7 +2853,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxNcWc5cHVMMWh5VWJoV292VkhYTndEV0l0bFdScEN1SUJnSEJOcU5sWklZbUx1SVU3cXdtd3JLSXU2Tlg3Q2RlV3N0RnNMT3BVc3BBWmJ5c3lPcy1YcXpYZ251d1A0ZW9QdnVtYmJvNG9tTldzZ1ROeVloU0FXb21CWURsYmZmREtSQklDTzRzWnJiaUpWWDhDQ2FHSmVFRXZrSUY1djF2N2dDaTJsVlNVS3FvdlNEd2dOdWFFT2N3dVlQczhGTVFVbGVKQlNKMktmZlYtWXJhM1pJQkdoWVdzb051UQ?oc=5",
@@ -2859,7 +2886,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQcXpLRGZoOFFYbDM5VWlkMUxsaHI4amN0VDMtaDRwWkg1MzY2MDVEZjlic2ZfSlNsTzN2d3FZYlowbUxzVFpILUNEZE9pNER3M2FFdGxiek9iNzZ6bGQ0d015VnRackM3NEotMXBMWloxNmpfam1QV184bGN0NVpyeW8xNkw4RHQ5NmpxRWNVVzF5X3laU0dtZ1A3cE15Uzljc1FZSWJCeUxlSUtnOGY0MC1n0gG3AUFVX3lxTE9WWDlxODBJRXpac1ZmZUxIVDJkRmJWSDUxSnRoUlJQRDlCRU84NG5Qck01Uld3Z1JYYmVzbmwyQVRZWmRfdmZCUjAyVERmRTVHZDA3b0lfSC1IMEpFVkFaZ0FpRWx2Y1B3QnJjS2diaUttX3BQcDZEbGtBcFpjNHNySTd6NEdDY3hYcFZGTmlvcUZYQUNmMDNURXAzVGoyc2F6R1JzZVdnOEREenJJZHVlWlJBSnJPRQ?oc=5",
@@ -2904,7 +2931,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQb0dWYm8tRWdhZmlMbkFuWi0xTFVjT2Y3akJKQzV5TUEzTmpoQVI3Y3dGMWpnNzJrQXZycEpWN0c5eFF1Sk5JUFRSNVB4TmVEYldheG0zSFUxZVZVZEhVMmtnbkpRYUJNSWFyZ2F5eGc3akFkaUxTTzRESHNYdkhrMEdaQXpueGNHT0pJRWQ3d0p3aGprYTB4WGItNGtneEFKMkRYcHZfNHN0dEE?oc=5",
@@ -2928,7 +2955,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOWjNfbUtQSks0THNZbk5NaGtPYkJZLXZYTUxnWEtMOEU4V0paZzYzcGd6a0hiYWd0U29zMnEtVFJkTkhvQnV1WXJkZmp5WUo2b1ZPSWY0VUx1N3J5amJPMU92YUs1ekxwNU85YWZmX2FaVjRiVm8yMUlwRjN5bVI5X2ZUcGVHTEpWTkNtQjd2MC0zTm9LSXJXM29MQ0VWMWNablk0c01hOU9xaHo3M3UxZTJPalp1OWtpNm5oeVFDay1TQS1KbUdPc9IB0wFBVV95cUxNS1NnQ2ZFbklySklQdG53cFZyQ0ZrQTZuQng1YjVHemNycWFNX0J1NUE0Q1F2UFFXbldxU3ZjQjNaazV6QWpSRmRpbTkxUlpXZWVuYVNCdjhsTUZhZG01NFMxTjgwSEVqQi1Da0hBalR6eVVBYVJZa3dSTzNOUkdoanJRSk5CS09vY0ZyRnRsdDhjVXk4Z1E5bW5pZWtnYVZxYTdoUDBScmthbThBZjRWcDVuS3UxblpyLS1HcW5xREdxMEstTjJLdU5OeGFPRjZsQ0RN?oc=5",
@@ -2936,7 +2963,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxPdnVWc3kzaXVRcnhCWVJFNElSQXNUOUo0QzRISEJPRkVGbXdaRGdRclZmMXBlckhVdE5zV21va3lpVG1nTS1KVzYzQTA0c2VWbEZ0eTBHYUdCTS03N29hMk40VkVZM3FiLWYyUDRnYjU3VHNhLV80LXJhSTBEMUlaYkdzWXlmRF9ITzBLSURqaTlHOXBmQ2ZLVXFuSmJaY05KdkhvLWhwZDc0LXdOZnpPbDJ4a0lZVUNpSVVfUDZYX3pydFZsZ2hrcFB4cXdCZ0tvTnRwZA?oc=5",
@@ -2944,7 +2971,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPeVdpRmQzNS1fQWl2ZFZEcFRMY1JabHB4NzBqbzgwT2NyRDVjenJaRTFMc2p0MnR5Rk1qcDJGOC1yY3JvUmJkS2ZMN19UcXNxV1VzaWVlNzl6ZVg1cFJZSVVOTE5jV0xWVlVTNkZYYkRjb0JiQ0NfYjBqLS1kdUpUam1scDFNYWNHelo4cndVUTNfOUlkcUs5bDRFZGZGM3NjZUVGZmhrMGtpUzVEcVBoMw?oc=5",
@@ -2977,7 +3004,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxNay1pNDBpMVNTTERLNUY2cGVkQ0h6SkdZR1JwTHA3bXZ2WVltWEUwanBHeHQzSkxEWHlGR25tS19MMDhOVWVoRFh0SUFBYjNYY0F1dFdWUUg3Q09ZblE5Qlp3eDhORDh0YUhsMVRGaXVtc2pJWmVMLTVidkFMRVJ2VG5DX2ExeEhqU09aeHItcGZ2bjA1UElQNk5jTmdrWVdKTXBUVUxsTGxrX0YzREZfLUU4WXprQWJPUWp0bFJKVTZwY2JVOVZxdWpjckVHVE5qQVJMZk85T2JUX3BwWFN4RWdFWWtiSFBzb1FxUkZGb0VaVWRYZWdaai1BYms?oc=5",
@@ -3010,7 +3037,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE5WSG9jR3haRlh5Njh2MmNGa2xQLUswT052Q2VLLXBmNGFVV3M5TFdqUnRGcnNVSHFiMHpZQkdDREMyS1A5YkszbFFfbW41cWl5bnMxMmxmcHBSZ1ZuUElORGVESW1JalJLTDRmMHYtdTNVZlFEZ1ZyZHpB?oc=5",
@@ -3060,7 +3087,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxORWYzLUlqUzlySkRFQncxT2tpVXZEQURZNWp2RzRBQmhidEtZZHVOc3ViQWRWOTRnWmJrMXQybzJ5eWQtUS1rUlNiWHF1cHo1cGpNTFhaMk9FQ2pmbk1pNUJqbDU4QmtKbVE5NmVrbGxESTNROUJPN1MtMXZONjgxcW5LelQ2Tl95TkxYUmZKejRZeXI5cnhEQ25hWTI2Ql9hQUt6NXBveV9fQ1pJVzFnR1hR?oc=5",
@@ -3093,7 +3120,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOYzc1dlJvbGdvMERFcTZWOU5scXRwWXl4YTdXVktrMW9PVGl3dDMtNVlKVG53SnpFSkpPa3Z6RzRrS1pIYmhJOF9yRmdKZ19wSzRuMWE3cHVRZzVOVGFNYV9XUmt2YldnaHNTQTlsOThkd2MxdHFYa3NtQ3dDQWw3eUJ0UjMwaHhuSzdna2V4V1Bsb05MMTR3Z1ByR0t0blh3cTg4LVJjYUhOM25hTDB5bDBobXA?oc=5",
@@ -3101,7 +3128,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOMXFJdktsN3BKOWU1M3FaOWRadkNOY2ZQcFowQ3pOTmNHNnpNN05KYk4yS2RyN2NqNExhZ0hRaGVIZ3JoWDEwZlZBZ2RXMWhneGZ5c3Vtb2F1TTY4dEJWb1JKRkpsR1lPWnN0NG12T25QUFJpYkZhbXlSaHFVaE82a25tSDY?oc=5",
@@ -3109,7 +3136,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxORGgtaTV3MVBYQUZMMUNpZFl5UU5HZlFKbWpLbERMNldObHVtSVJ0eEI4Wk1ySDVfM0Q0Uko0Ukg0ZkNnbE9rTXBoSnEwN3pCOWxEZEl5VENuY1RubVl2V2hpN3hoT2FnOWZzSmhjVnBZSE9lZFdlblJadmFodms4UG9OMW05N3Rla1l1Q202WGhsNms4bFVTNEhsOWQzLXBjQk5kYk1LTG4zNS05aE1IQTVieHNGajBHRUpIeA?oc=5",
@@ -3202,7 +3229,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNWGNiUTRtdm92Mm1VX0hWS0lQWldVa0FETkJjY0RZTkVtT3hXTmRJLWpCZWZfZmFTeURoYzJrYXU0SzRvSUxIQmpQNGt6bldoNkt1MUlqbzg4SnNRdTYydUpwS0l3NGFIeE56cS1sTjdDUHJYZFVrWlJDYTRBZHhXZ3JEQWpJWThlV3FtcHFHZDdKMjVDT0dhb2tTSU5JWnVfTkc4Qg?oc=5",
@@ -3210,7 +3237,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNTnducV8tdzBidnlFTmVLdzFjaFFiajNpZk1Lb25MVkt4Z2ZFNkduaWZwTUNwVnlVVTJ2dTNmMmFWSzdYajJvS0FiVGM4UXl4S05Wb3JJSXFpSWNmTHlZdzNRVEhNU2NmUUx1TnhzRVh1Ri1BX0RTeXowdE5HelI0UUtldlI3QjZiR19JUTRvaDhNM0NVTm1LLVc1WW41a3dvcE1tU0dqVWUyT0s4VURVZWRWVlhneVUtalF0RzlDWllMRENQc2c?oc=5",
@@ -3256,7 +3283,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNaHBiUnVQckgtWE54UGR4d3lfNXJhUHd3R21HQU5ZT1NodXVsbHdha3ZOVlBaNXUwYnB5UjJkOVZjZVYwdm56TGtRMmp4NUw4WTlGXzg2WjNpMjdFQWp3aUJpcUEzQ3h1YmlLNVdRTWExa2d6dlZuWTZEMW1sRzU5Nmpxb3dyNlRNRFBUVkMtYnRSaGFxM3YzZWhKMW5iR190SkRBUXJXYVpHQTlobTNURmtJSk85cnJzVGNiaUhROFM?oc=5",
@@ -3264,7 +3291,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxObWxvbEJLcUtIS0F4MG9LZnVnb0VkUlVINXhBeTVwQS1Ld1JwcjZmN0Q4STQ1S3p3b1VHRFdyNk5iOVlDaW14M0lxOXYyRXhEUGxUWVJ2SU5QWXRGZFZtQngxaExoZjZMRWxrSjVqWHMzbUNaU01PdF9TYjJ2V2FQYXcxalh4TjFwbGJTbUNOelpBNmoxaTBFdEkxckFDTmZuWERMVlpQN0JEN3p0TG1ZSU5fMXNWTk1rUGpGM2xHa9IBzgFBVV95cUxNbVRkZDJXQzEyWHVsR0xXNkR0eFJfSmhSUG1lcTZ6ZlktMjFNV3BidlZoTDVEdWZtM0pyWmZfaDRvOFVhMXViTDdISWNQYWdWdFg4ejhBejhaRGoyZHRQX3cwOVpZQ2pURmotaDJHMi05WV9rdHR4UlNmUld0Ml92MjkzMklkY21MUk4yMm5Rc1YyVzlCVGJ3bEQyMjI2cmw3eWxXSFByZkNZTmJ3cHZWdWI2aXQyLXQ2MlkxT2hVcS1UUnZWLTBCemhzcEl6UQ?oc=5",
@@ -3297,7 +3324,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPYTE0aTg0ZERuekJTaWp1RFhDRUNOeHBsb2xmZTZXMFc5UHpRWFQwd0pvWmxXNUNQX2ZVYm1rOGlBOVhjWGhCajlIOHhyYnA2WURUNVRmcV9BMW9NV2tuV0w0QW1FUUNEazB4SC1QVFVSTlRxSE9HUlJGbTh2RG9LSGxZQTYxNnJkVk16Q1RyTDBnRC1qN2Uzbm43TQ?oc=5",
@@ -3323,7 +3350,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxNLWF1aWhjT2pSX3dCVFQ5RjFPbldXQVN4bnZ4Y2xTUHFkaVgyQkpoZUhTUlRWcUt5XzlrVjVaN2hnUkdnYmhHZEJsOWV3d1ZIQUdma2MwQkM1MFo1NEQ2VmZIU0szVzhybEw1QUlIdGlpd3lLOTl3VGphZ2pudzJjZnMwelNyU0Z2akNUM2tnOUotcUJSYTBEMWUzRzRJRDNBQ2RzSFJVeWJvTzhKcnBwMV81dTN1OGlVbklqZWpxcU42cUY1MUxMb1JqOVdzU2ZFWjlYbk5aeWNGZEdmSWo1S3hR?oc=5",
@@ -3344,7 +3371,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPVFZaOGtmc1lmRDZTSkRvYmFwb21aSnpNLVh5OXRQemN0V3poU0s3Y3ZxXzBneHNOQXp0RE1JQmdSNE5GbzJyYXdEeTVneE1YR0RlYWF5Vm1wM1RTdlI5b2tRcVBXbEpXa3AzMTFzYlFKLWpRQXR1OWxLbHUyTlpvbGJzWVhTVThQeGtBMnZoOHhQZXJMTm5BRE80V05XNFFXUFZCNEM3UFlCZEZUWTNfRDQzUkpzYlJWYW03NTl3RU9jS0NZc2xB?oc=5",
@@ -3378,7 +3405,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOQ2RIbHBzSjVNTGVFTDNvNnVFemVGQ2tPaGp6T3JPcHpqMDgzOEpHU2ZlbW95WjF6WHZTVFVUam9QTUVzSklVX29ZZTExQ1Jqbzk1Zy1zczdvTXNRclBmNm1aS0xuZU9pWG93MEZrUjctMENqUHZoSi15UXFET2hNV0FOSlh2UlRMaVF1eHpuZUk4LXplU1pyWnFUNjRIQTNBOGc1bjJpUGd4WG9ZcTFzbWRwVFfSAbQBQVVfeXFMTkNkSGxwc0o1TUxlRUwzbzZ1RXplRkNrT2hqek9yT3B6ajA4MzhKR1NmZW1veVoxelh2U1RVVGpvUE1Fc0pJVV9vWWUxMUNSam85NWctc3M3b01zUXJQZjZtWktMbmVPaVhvdzBGa1I3LTBDalB2aEoteVFxRE9oTVdBTkpYdlJUTGlRdXh6bmVJOC16ZVNaclpxVDY0SEEzQThnNW4yaVBneFhvWXExc21kcFRX?oc=5",
@@ -3398,7 +3425,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNR00xZW9uRzgtTzdsdTlaczZRNGV0WFBaYUFibHJNV0NianRBOXFtVDdOa1k3UnAyOXNCOVlPeERRWW9VS1VUYkthRVR2VWQyTmhSVnF1dklyNGRJMXN3V1VocG9kOWh2dVhFQ3hlNWdVTHRQWXJMM1ZwalI3anF3N0k5WjFxS1V0N0J5YjFKUGJaTTUxczgzZ1JLTUQycXV4VmN4cW54TWhSU0VXUTBVMGpxTmEwSWd6Z01VNlk1clVvdGJGT09ObWlB?oc=5",
@@ -3406,7 +3433,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxOVzZyNEt1TWh0Rm1WUGRFREhwbVdORzd2bFd0cUtyUEd0bGh6M2hKTnY1U3ZJSm1nV1lLXzRuOWNmb1kyN241TzBMckQ4bVY1U0RQQ1RGZy1Zb2x6RUZxRE9HN25ZbHNSbjRjMnVWS3gwbllET3A2ZDhoSGtJZHdEVEN3ZUI1S3lvWFRNWHZBOXlNd2tJc2RnTEtOOE5GUk02QVNIQlRyeW02ZHBibjNjMkNZbWhZRVlJX0JtRjVMODJpVGI5d1ktRl9vQjNsNWZPOTRHczVXazLSAecBQVVfeXFMTU5kcEUybVNtZXMzVDNHRzNELUFjT3pLYlJsVlJyZDFJRk1zUGJRM0ZFbUIyRmo2cjl1Y09sSy1lX19sSDlqVjdhRDBOZFZwdk9iNlQzN0JBTkZaeHhaRlh5ZGFYemQyclh6NjJwRWhqd2lhQ3ZJZnhTS2IzNTEyX2x2dU5VTy04c1pPYlNuWXd4T1pneVBNMlFEbFFETTlZeF94UTI1b19JSGZTUHNRNXVOODdDUHY4NkVYWnB3WEdBNVVDUUtKYkhNbVZJWWVGLUFPVDVfdUpGeHpWUXZzOXVfci1fRWFF?oc=5",
@@ -3427,7 +3454,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFB3S2VVcU1LSUtXdzJWcU1xMmlrMHllYWZsUU15Z3JjaWd1OThDMGQ5WHVZQmpadkhqQzBOc0RvU1RhRVBlaWQzUkJ5M195N2s5Y3UzNURGVW9aZVRkcEY1dktPSVZKc2plN3RTQzVOQmROSVVudEh3SHA4SQ?oc=5",
@@ -3459,7 +3486,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQUnV5RWE0cWpZaFQ0TnhCd2hjeVRCQmkwakI1ZEdkQ09PY2xYaFctTG4wS1FIdE43eXRRMVBYbmdUOVRFekRyM2RqbXZUbUROVTJHeGhncUd3dm0wUW1LbmNKd0RiUjkzTUhWcnEtYkpqT3hBTkdTQmllQkhXTXF5YndoQVFKZHJzbW1faEp5WHpBLWF0bGtXX2ZDcVFLSDQxYVNxLVZkUkEyVFFabDRVaTU2aWQ0bElHLUkwQ24tekFVSk8zZTVVadIBzgFBVV95cUxPT0c5cXZxRU9OWUItMl82UTNBVFFzUnZLZnBSQjM1dmhtOWtwZWdwR2JIZkNiZThiOXlZWTJGU0dpbnU1OGZyb3pibDhtTmxZWk1YYWFtVVhWWGdNS1J0MDROM2wwaDQ0QXEtb1ViMUFlZWQwYnBjOFVjVVlxdU9pcWhtVGlNYWpmMVQyTUVPSVFyTTFPMllxMjN0UHpRdC13eHNoYW1EMzJBTG5jUlQ3M1hZWVlhMEQ1SlM4VXhZcXlRWVRqRktmbWFmeUUyQQ?oc=5",
@@ -3467,7 +3494,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiigJBVV95cUxNNkp4OXp2N0ltWmp5YTdNRUtzbWVJVG9BdDNEN0FoMXV3VjNWTGlSS1RFNjQzNTZybTRycHBXSE1IR0NXZHJSbVJnMmNJYTlhbFBKeXF1MFU0SWVGdVBHUHRxa0o2eG5YdlRvdE5td3kxY3M0M0JZZklDb2VRNi0xYVBtUUgwSE5tV295ang3YnJuRnJHQ2RwZmpYT1dyUE1qX2UtY0Y5eWxUODhQZEh3SFNoMTEyaHcyTnRvNUg4V05BSGdGNjhxeFFPTm9VNFpnOVRvQVl1ZmVsN29BNFhKY3NIU0ttWDU1eHVkZWIzM0lXcVZYQVpuS2YxX0sxMzVCdDJEdXBwNmo2QdIBigJBVV95cUxNNkp4OXp2N0ltWmp5YTdNRUtzbWVJVG9BdDNEN0FoMXV3VjNWTGlSS1RFNjQzNTZybTRycHBXSE1IR0NXZHJSbVJnMmNJYTlhbFBKeXF1MFU0SWVGdVBHUHRxa0o2eG5YdlRvdE5td3kxY3M0M0JZZklDb2VRNi0xYVBtUUgwSE5tV295ang3YnJuRnJHQ2RwZmpYT1dyUE1qX2UtY0Y5eWxUODhQZEh3SFNoMTEyaHcyTnRvNUg4V05BSGdGNjhxeFFPTm9VNFpnOVRvQVl1ZmVsN29BNFhKY3NIU0ttWDU1eHVkZWIzM0lXcVZYQVpuS2YxX0sxMzVCdDJEdXBwNmo2QQ?oc=5",
@@ -3475,7 +3502,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxNbjV4ZUdGbnI4NU00eFJCbnhPTFVqbEt3MHVSYzFTTkJfWGdKUDAwcmh5SFdMamFoN3Rudi1DTEF5cEt5RWtUbkpjcUl4Z0Q1c21iWVJiNW1pX3hnX1gwZWVPcnF2RmdtcVM5elhQWWtpOGRaeHFqQUZ0MTlDNjk5eUVhOEgwbG1KS1pEQTlGZDF6dXowa2ZQYm52RGdwbHRiU3Y0M3RyN3VGT1U5WkYyUEhrU2NqeDhjSmY2RXNuYVE3b1dwNW5SWXgtWGJoR3QtNVlENnhKcTRURmV5a25YbExHTjNLT055bFNYODJ2bG9vSGN0UXprMw?oc=5",
@@ -3483,7 +3510,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOcEJhUnR0S2RpNWoyUXRQeG9nMVNuS3V6bW9HRHdtQ3l0TE90UzhqR3Zhc2RSeDB4cXl3dU9Cd1YyajdFMjMydzZ0cEViRFF5SG94cTVWc194UW01eGtQdkNiSmt6LVZ5UkwybnY0TkRqcndPOFdJMzZhVG1IRWtZYWVqSzQwWFdhNmFDM2FZV2p4Ukt5TFlXN29aX0NyTm9qTHprMmptZVNlcVgycU1JQ1RuSmNFOHZyY3dXRnltMWRNNnplTl9OQTZhNzg2QQ?oc=5",
@@ -3542,7 +3569,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxONEVCcEM0SFduZU5hWGJORGdzTTVqa19GQnFOMlMxd3RZUGlrUG5Hb0NKYnZWU0Fpd3ZiZS14bDI0R1hfM0NRYW5XZVk3TlpKQjc5aDYzVmlrSnRFYVhYdmFLVUd6RzhudXh5VU9aMVZVMy1WeTBYSVhZbC1Hc1dGd3hVVHFta2x5cm1SNEtiN0xEc25hNjJfOV85ZjR2d0VsbUNwVnBKd09zRk9yNnlhbTNSMWVnXzhCZEduM2piNXlnQnU1UUtmbEtHbGk1TjZ5VHdPR1RkblN6blU?oc=5",
@@ -3550,7 +3577,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOM3NZRGVETU5aYmZ4bWVKSDFjOERiY09aOUdWM3VhU19mNzlyN2ZSOHB5bTU2aGNzMWRoUE9wazBrRFhVRHBNYkpBSVRrNDVQSWJVRjBSZTRQRVNNRzRLR0FuZDZIOHgtRXNBdEdKZnRwallOaVc0N1FKdU9WdDZ5STRsSG5GX28zRzRjcjV1YkxYQjdzaDAxVGdRNUl3V1JZUjFxMXZvM0lvcWVrRjBuS0dsZG94TVFjbmc3MWJQS3cwQlZkWlprNnFFMlEtVjNkQ3lxU3JRdjg5QzhZSFVrb1REMWlMQ0d1?oc=5",
@@ -3575,7 +3602,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPc0FFRjJsaTBQSHhDeXlRcXluTDJKM2NYTi1pbWZvbnNuTTBucG9SZFhtOXhnM2R2aTh1LWhZMHc0eEMyZll1OHhRekNrZzBYQmJYbkxGalo5UVgyY1FLbjBpS2ZsYWhEZzd3akNqaTBuZHFROTVIcTZpQVN1RlZJeEROT2g2OFBiTVUwVUp4QWI2ejA?oc=5",
@@ -3596,7 +3623,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPUnc0aEhDX0dMY3VQdWFIRW1obkRqdE9Gb0RnQzZ3QzUwbWx1ckVka3VGRDNOOFUzTDJhS1V5ajdwQzh6WDFzYjQxMExHN1hSUzBzNnU0SWE2Yi1CWm5tOEViMEM0ZHlHMF9ISUhQY1JxX2VnNlhSUXhlWXRUUXFiYzNhR0EzMzFtT3JvMUY5aHBnQ1ZoYXdxNEFyU0k1MVJJamNuYnIwalJyTjFuOVRaVU5rWmE5TkpHblc0?oc=5",
@@ -3604,7 +3631,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxQZm42S0V4RkNJclI1bUlWU0JzYU1iS3V0NkRNZDNYY3YzWWF4OWhJYnNhWFFBQkdwYTc0aHdUdi0xM2N2WjFHYkc3YzZEM2d2dzZzclNFVlVQbWQtcVZha3JETVpBN2ZPSGNMdS16SVJ4NExWQm04RFlORm5JU3RxNGo5bkxHT3hCQTBVdzhqVHhzNVlmeDNwWXE4b2dENlVKcFRiSlB2cmY1TVRBM2pRMk50ZUE3Znl1TlFaWlY5MTJyTVA2MktYeEF2azd2XzQ?oc=5",
@@ -3661,7 +3688,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNS09iU2wyNV9tQ2I5UnlHYW5DNkM4eTQ1LUJlU1AwU2NIQXJubnA2bk5BX1p4ZzVjQTY3RmtvTWdLN19ILVpnTFd6bmV4elFyZFNXYkFUR1FnNk9VMkpKdC02ZW1iR05yZkRtdm5leW1xLXM1NUFyWXEzVUtTM3ZqSTNTR1RNWnBBLWJwMWk1N1FXd05KbENqUTBSWHkwazg0VVJ4SUQxcnZzUWxCc29TS1ZwMDg3SjhxQ2djVnVDWnZnbGI3d2JjNTIzcU93aE1BbU5r?oc=5",
@@ -3669,7 +3696,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxQcWphd2FpY19ESVJGUzBsSmI3SGhTR1lNdkdXUTdDeGN1ME9wOExzam56QS01bVBjT2NyaG9aN2JhVWxlOGI5amxQZmhlWURYcHB5TU1LcUVQdGJOeU1jdk1HdlZ3dzE3OHVEaDNOclRucjVFSlAtUVdYNGtJc0luaW04X1hzdlRpU0F4SWxJaVlLV3U2TVFCVVp6ZFFYM3g4SGR4RzRjQlJPTndFYkJZXzQzdFVjd1o4VHU1aWdXRm5xNDl3OHMwald0XzZPSVp6eXFmUXF0UHZRSlNSWU12LUl30gHcAUFVX3lxTE13VTRYX3FWNnpENlg3RU9feUtEQ0ZlemxBbHJIVmNrM0FCbWhmTE1xN2VtTDhLcVJYRWRGYWNHbmxKRWhBSWZKR1BwMk5ENnZuNFY2R3BCdUctVm00Vk15c2VNQW05cXJ2RkhDWFNxaldnTGRwTlk4eHJsNkdUTGJjOElCMWpIaG1semp0SVJpSWdrYUVTSzdRX2pTYmc0ME45MkVfWTdBMlI3T3hocGFDbXh4MnNSRmZWcVZqTzlSODVEby0ydzQtek1EWE9rcjJfMFpUWkZRMVM2U0g?oc=5",
@@ -3677,7 +3704,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPNGtvbVppMUtKbFdhQmZQV2FkT0pyVjZCUkFPMEloaFdiRWc3V3p5b2ZFajIzUUR2VmREOEI3cDZHVkx4QmsybHRlUFVrSlo5bnNuREhja1RqdjFGWGdXY1VmQmpqUnNrejk0YW9acFlUYzZ3ak56eUoxOGtaRF9OdEVBanlzZmdLei16Y2RyVF9iQ2dCdHh6MWxIZnpYN29qaEhHekNkQi1TdjNwVi1FNWRPVFlXZw?oc=5",
@@ -3722,7 +3749,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQNFE4b0laaUlES0dYSTRSdjVfQXgydDFoRXgtZ0lDQTBQeWRPZjNIT19GT0NpRHNOM0JhdTdaeTN0TWtWd0lrX2FqZE5HbnptZmpXdFF3ZHltamxHS1JPbVRINWRhLXJMVmNCaFpPRnZFbW02Szg0VEwwTzlQUFFNcU1WMnRWSmxMa2thY1lzSlYxcnZTSGFKVDZVSzFKOW80VVdlejNUN1NacHNBeWhyeGJrNjFPT3Z6aHg2TVNNejF6SFVG?oc=5",
@@ -3730,7 +3757,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMihwJBVV95cUxNT2ZUWW5yOFpGbG82eGF3a29SRTZtaU9JeU5XQnV0OFY5MXpkM09ZaDJiU3ZEVzczOWRVQlhtcThMZE50REtUYV9LaU9Yck1oTG1hSjRHUE0tdURwdDduTU5mOVpFWmd4MzNXRDc4WWpDWl94Q0tIZTJQWWNnUHNZRm15bzMyb0FVV3cwMnBKVGR0QVEwdFRmOE42M2FHQVZJN2loYXhMYkV0Ykw0aEF3QVlkWjJmejFMX0FkOVozbXpiZF9sX2IwT0FQcmwtTTdOc2VnTndKcGlyWmFHTWhzams4YWg0SEZQTjlicl9LMWJvTlBnZTBhMGcxcTdSQ2JMVnF3Q1hNYw?oc=5",
@@ -3738,7 +3765,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxOVlhlLUhBLW4zcmhyQUNUb3RZUFRIcmFfbGxvMlYwYmRhMk82UGR4QWx3VmxyUmdKZjE3QzlVRzR5V2IzRXhIaFBDd1F5QkdNaURfNm5mWkhWeHEwLUsxb3BjandWSDRRbm80T0lVekRVLWNFNFpzcU9IdUhyTmVMa1dXSHE0ekZyS2FZZW5Hb0dpU01sbkhhVVdQa2dCY2VIeEpPR3BZMzBWTHh0d1hqTE5rb25hSW1MVlNqWERlOVI3czBmVG96ZHFKZW1tOG0tbExyRTIwZ0xDUE5T?oc=5",
@@ -3746,7 +3773,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQMS1iYzZOLTZBNlBOcEh3NWxxNVMzcEFQMDZ3SHJEUXNueXI0ZVNuU0J5M2x2bmN1TmpOWEtMOGpvbGR5bGlIM2JaZ0dMV1JLa3IyRVpJdFJpRlpXODZKZXpsOUk4MFhIWmk4bnZMT0M0UmE0U3luaVdublhUUXZoZEF2Y0tkNG9Yb3c?oc=5",
@@ -3766,7 +3793,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxPTU1SZlZ1X1ZobDc5S21URktaV2JnQzZaVHpTT1Vxem5PU3JPUFlCWFJDMktKamdPVzJrYl9mQ0pCYjJsZWV3a0dwVDhsd3RueTRYSW8wSE85NUh0UHU5SEdYVE9iZFhRLWlndnBvNXh1T3hrcHNOOTJ2X1hBY0dxWmw3OVhUX2ROVGY0NWxlMVZXVWNPVzVVRFg1azFFbkF4Zlo2OVJyQUxaUjBDWVdCaUVBMTdwZXA1S0ltUGM0d2lIOVY5Y3pNZUt4dThfVlJPY2lPVFpIUHBxNkUzbjYwVHZYR2pSeXBFeTNFSFc1WC1vaHR1VlE?oc=5",
@@ -3774,7 +3801,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQNHZFSVZlSEtRaHJFYWU2ejFOOVhxdkMzdGVLUTZyWkRubGVfczJvOHdkSF9tX01fUlpXV2p6WDhuS2dZR0VyS3RuTWR2bUtpdWlCWEZsNXNDU3hBcXJhTTF0TW5TZFdtcFR5TnhzR3NRR2xhaWYzbHFUYjRzM3FOeXN3M1AzeXBqdHJZWm1XMFM3bmQ0OW93ajZKSDVDYnFmTkRtQXlqVDJSQXpSY09GbEUzd3VMbmtqQnFkZnZYM2JfN1k?oc=5",
@@ -3782,7 +3809,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQN3NfWlZVQ3lVVTNzVndwcEYxSllEc0F5ODU2VnFCbGtsWEpidWU3N3BMYllUMmo4N0NRS3MtNV9vZXZnR0F3dUxZeV8ycVNlSjMwQnpiNnBmWTBYeVc2Y2ZuMG1fT0V1cUI4SmpVaTB6Q3VCREdXcXljYkJiNWlPN2NhaG5DWWlETlJsMU5faUkwNjdSMkxSRG95WmJOQThQWUZ1LTBNYUVDMEtza0NtdHlzUkdsbk9xSVh1T1ZGR0w0MFlhRzlNblZjLTg?oc=5",
@@ -3803,7 +3830,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPM2VuMmdwU2FibS1mdDdGQzF0ZkcydmZvZTdBc1YxNTkybTR4RTBwS1BpcnFDNVpPTFAtN1U2SG45RFBxei1sbGU3VlVYRFc3UGFHYUpHNGxBTVQ2ajN6RG1WTmkwbUNuQ19FQ1lIdUprZkVhUDgzT0VfelZaOXFkY2lJOEVnTmk2TDVCdmhxaXJIYlNGU0duNWU5alhPYllpSjdBUEp4ZU5HZ2JURjNzckhtRzRUODJoZF83Q25aZHlBdVFyZzZR?oc=5",
@@ -3811,7 +3838,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNLS1fb0ZyWERoSlpXZkVYNENKYU5TNE1jcEZ2ZEc4dVU0c2xGdE1CV2ptYlJUX2N6QndJcnV4OC1SeThmckV0VlZLZWNxQ0dpWVN0UnZkN0d2VTJWejY0TUg0czVaYl90R3p2UVRRSDZBa1hETVFaR3FVUVVRMjVkbkpkZEZON3EwSDVKWE0yY29CV282d3Y1VDM3ZHV5WkRXZ21yMnlZMk9YbzdEMDU2bkp4MFhtMTVGYkVINlhJWGtYYlZzZ3VqaWRvcw?oc=5",
@@ -3819,7 +3846,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxNaGZ2UlhxNXlmQ1F0aHljN0Zna0hKNlJwRm5NdUJJQ0UwdV9Xa0RpLWZDMS1zMk16WlVUbkU2NWdQdEFRNHZqNzlGUlVpNmRIXzF4NWtsNXZhM1VJcHRtWjZ1aW5JUVFST3hobnRkN19JNkkzUzh5SjZPaHdIbThzejlJYzVSMldBQWVvcHAzY3NUWlZweWF0Tjg1ZG1FdTE1Qi00QU5SXzNWOG9OSTBFWTlMZW5SSnR5T2V3OEJCVEh2VUJfRjk0UVRJRFlDbTFOdUViR3pLeHNVekY5?oc=5",
@@ -3827,7 +3854,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPaUl3bHdSbS1LdTFRZndFb1BaNmRJOE9aTEpUbHlXaU5XTmRPc0hjQU10X0Rfcjg0UEJOZU43bzZ4RWVpRWM5bFJ4SzFxLTltNjZCTjlicFVpSkdXMUwwYVlSYkFjSkJWRmxFcUdQb1llOERMRVAtckhHQ1A4Z1p1MG92bnhYZnN6Y3lGc2ZiSnpKUE1xcWZtSXdyQ1BPbi1oeXZpSlY5S3IwbEdlSmUxWnhoZWhxWTRKamJlU0Utd1BkSGxmRXdsUw?oc=5",
@@ -3872,7 +3899,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxNQ3hRb0dIcHFkR3g3Yk1FT1F0cGNQQTJYR3J0Y0YwOGViWFdkdkVSam9xMDltNE5rQkw4STNmQ0NRTmwyMkd1SkFBZzRNRlNXOHNOQnpLeVZiWm1jeDFZUE5YcDU4VXhQaDJHVjlkeFhFRlVHY2ZrbFNDTjdlaENGUnJtS2l6QmFTYTlyNldUQUxDRlRTYWJBU0JkXzY1My1FcG9xNW9kWkRBQllMSkFCcWNyTXFqeDFEWkpKQVVSdzJLR2Q0endBU2s3a1Zfc1cySWVMVlZjdGFWZXotbXk4aXFBNA?oc=5",
@@ -3880,7 +3907,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxObmRkVlBQeFgxaXAxd2FhQ0VnX1hwZVdsRGpOdy11S2dzM25tYnNaUWNIX2pzQ2RvXy1oaGRHeEx1UEcyejZUMWtMQkV0N1pCZVFnRmVvR0ZuYUhpeTZ2X2NfWnVlUTVEYTdlTGZ2djV5WmJmVjA5YlJqa1FaUzlrd3lUMEdGYjh3VnJkVUJyY25vcnBiUVBFME1kUk9MdHJ6MFhKYU8ySEUwdVRmM3BIMUV3bUlFNzBveGNiZzJfSjQ3c3Q3cVBXVkdkaWt6enk4VE5JOTM1X25ITW9SX2twVw?oc=5",
@@ -3897,7 +3924,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxPLTAwQnB2dUhXc1U3a1RUaV9vQ0VIUWF1Y2x6SGVMX0pzX3o1Q0hKX09OVDV6REpmVF8wMDVJYmF5R0tNZnJQTW5RNTJqZ1djUHBJb2FlQzFvRjJzNmtUVTFYbWJ5OUV6Wnc0SVhMdEEyeFU3ZFFSdXI0ZkxpZS1lSnNqTDlWNFJCWTRlc2NBZ0RZci1GMmhBZFIwSzJtNXVVQVItX3R6MUZVd1Y1dTFxdU1BcnlOX1ZESEdPTmNvSVh3MUdScW9RM0dZeVlzNVVrNXVSbGEzMklrWG1kMnVEOGhSZ1JnZl9pQ28w?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -3908,7 +3935,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNVkJTNF9IUnYtYnFMdjFYak1lX2ZMYks5aVhxMnAyM3lnV1hYUDM5V3ZrUjQ4SkFwam14Rjl6UDRYbmRXMmNBRHd1b0YzOG4xbWJ3bGFYN0NPTlZvTC03TXpZUVpUcHJMcmNBWkx0TVdITUN6aU1BOTdqQ2Z0Y3NrQXBRdVkzeGFxRWxuZU4yLS14dkFoT2huOHlrZjBtSkpGazEzNFRIVmFLdlM5R0xIaS1PeTd3X0o4QWZGeEd1MWpSTU1FWDlaVVVVRQ?oc=5",
@@ -3928,7 +3955,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxQcHFrOHBVMVRJOGt1bTdnclQwOS1SZEJBN0VnWkV6ZVpHb2lMdGlTWXV6X1owZkVfeFg3TExMN1psQ0VjWHFvN2VBYlBTQWl0RVNqb1pneWFkN3BGX0tNcFI5M0FZRHVwNkcwLUdidXVlVWxDVjV1czliOGk2cDd6TktCRWhOLUtFZ1F6cXBwTmh4TUNzTjFYZnQ3OWYwR0hfUGRZcmpmc2xMaWhGZGljOUZ6elB1Qm1INTFWS193bGZQcG1qaDVpRGpTQWxWY2M5MWFIQUs2b1U?oc=5",
@@ -3948,7 +3975,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNZGVtUWoxeVB3SGpuamJqemgwUFBzalBrTUtMRkRGMDNyNU94eXdRcmpFbDN3QWZBalFNbndhOEN5dko4U0xVOUJydUVlaDFhcTJvbmFaX1JQaEtaaXZNbkEzSDFzdm54RUJKNU9YRXdIb0w0X3FPVndpRUZCcVJtWjV3UzVHaUNmdjlzM2RpOFJNbGtscm5GSDllbDZaYXNEQldZNnMwV215eU5xWHFqSXdybUpXVFJXLXBZTDdaOHo4WXRrYy05Y9IBzgFBVV95cUxQbU1wVFhScHdqM0txU1lrQVNPV1ZiU1o5RXBfTnNRWnZkOTZUSnFRNWRFRlRKM0MxRFVaQ3kxZ2J1bEJoWHdkMGxsZUVlNWJrUm1aVV9UMTdnX1J5anZfcXBPbExPbEo3Ti02ZTViam1oUjhTMjREYWN5bURiZndkQ2VrazMyYzFIby00dTR5bFNwUGE4N1NvLTZOVTFaajhRTDNIZldDZWFRSzFOR2dEWVlNa2hqa0VuZVJWMk9aRWFnY1BEempEZFlwOEk3UQ?oc=5",
@@ -3956,7 +3983,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPUHdxWWUzTldPYVRLUV9fZWdaM3BRRXFoLUpURm04bGJIakk4M0x3NGJBdzg2ZXNWM0tmd3hXRUdraUJuejd6cGN6ekVJTzVTY3pHb1lzOG5TcmhpT3QtWEhVeGJSNHVmWGdNNlhjckJFSVNVWDVkM2x2NDRMNmdrN0Z3VHFuOUYwM3JQWDlLWktyV2h4MkxOODdYaHk0MWZHWHByNFJ1aXdDaV8wM0hobU1XbEtVS19reTlLclBpUmw?oc=5",
@@ -4002,7 +4029,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQWDlFblA5NW5iUGM4bmJnV1lSdDdHWlp4Z2x6ZjlIWE5tYzFmUFhKcDQ3OG9YdV8teXBJc0JMTTVQQ09lZlpmQUd5aWR4VEsyMl8yTzItRG4yUHh4YS1yOE1BUXhUWW9ZbTRRUDRfOU9DTUk3V1lwd1NKYmlEcW9mcEpZMXVLeTVqWG4zUlRxUmZOaTdJTTBzOF9KemE?oc=5",
@@ -4010,7 +4037,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxNU1Qwbl9IR2FtV0Rsc0Fpc3czWFRTVWljSnN3N3FKVW8wdm1Rc1dEbVhYQnhsRUVJYjcxdkpydWkwVTRnRHlDNGc2Vm1XUFM5V0NzQjNUQkhBX3hyczN1UVc0czVmdk51QUxfd0lmZ19DZFhyaHB1U25wVnQzNUJjUnR0clI5SDZmOEJGRTFPcjNIOV9FVmlxaXJsZmI0YnFWYVdWMlp3UUhEaUtWNEtnMDc3NWV0enp5TXp0YzR0akhjSTIxQWxZU1k0d2lzUThucnBleHJOM3kwS3RDOHc?oc=5",
@@ -4018,7 +4045,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQTDF3Q0Jsc2d4eFhUTGEtUUJZWlJ1VGtXTjlCdFhZdi1FZ3NxRUYwTnFWQ0k3WkdNVHdLOTA4MGpkSTBuRlZobW5fdGYwM0ZzUnJPNFpwZTRRS2hkQ1JQX1pTb1BaZlY4OU5jRHlXZkdDdXVObkhqalRhSnVDV1F6YVlxbVhDcHpkQ09PUFlSX3F4SDhRLWZpYQ?oc=5",
@@ -4026,7 +4053,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxNc0RNV0JxYUpFa253WjdBSm4wZUdBZDh3SklsYkluUndPV09MejNyUHFqamJuVlBRaTN1R2dmMEQ2SjdSWjYxZmJhTEtuTG1wTld4MlZuVURNX3oySTc0bUs5Skdjc09kaVN4VWN0ZzFmZGtObU1PSEVKV2dMRjRpNUdFc3FrVVpsUnFXOFFJdlJ6Y2VzZm1HQ3JocTBWNElhZm5aanVmZ0trVURsdklxWkhLS0M4NWdod0V0RkRMWDhQekVhek9WTXhmNEdGVmYxcnBzbFBiN1FuTUlveGZNTGMtMlfSAfMBQVVfeXFMT3NWOUZEM0owM1lPRDZTWnZnRWlTU1BhcFBZZF9XdlBZcGx6R0Ria3lQbEhyUXNEZmJzQlR0MDZ0V0VoS0R1b1FBTmhpbHlvYjVkOEF3NDMwbFhtbVY1Y2EtQnE4LTRQc0dvSk9JSFdBVXJaQl9zWTY5NGxQSDROZ3VVNjQ5S0prVGZjcUFVWHA4UWoxdktTMG5vMTJ1SC1LbGZpOTd0SHI4aEE1T25Ma25yek9pN0lVMFlSbVdfS2hKMDhkSWkwRHhhUXZRcERpd2c3TllXVkFXMkxDY0RWQUtDR0I1UE1mU1dRWDBNcTRmbncw?oc=5",
@@ -4034,7 +4061,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOM2xORmhYSEppZHluUnExSWVnTmhEaFFJNUNfenlRdU9BNmEwZHdrTXNMdl9rNDE5Tk5MTmY5SWxIQzdzTlpnTG5PZWI4dGhOLVIzbVVBLTlWeENJc2kwREc3SkluTWxrRG9zd09ENVRBaEVVeWRxSkM5VTFsQ0trMHZGLTEtYzUwSmJqbXlXdFZuUlVKcGJNN3puaGU2NFlsWEtHbGtvNk9JNG5hc21YLTlEbTRsOTlZbXM00gHDAUFVX3lxTE9YeHZ0QVZpcklDUGFwSHhucGhTbnFZSl9EQUh5X3hwV0c0OGRjb0pWQ0JDbjdSdXJYQXpqVUR5NkJQeVJfTjVmZ0d5d0ZET2czN3prbV9XRTgwU0JFN184VE94eTV0MUNhcG1OWHM2UFZ3ckxVZHFkbFItZ1BFRkFvLTVuSmlCTkpCb01ZNTlaTnA4Y1otUG5iUGdVa01pUjhBTTNUckMtVEJHTUgtN1VuN0RnMW1Zc1lZQTRUNHpWa3pPSQ?oc=5",
@@ -4055,7 +4082,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxQSWJFNnI2b3JfUXYxNkJ6TWhmUEhuZktXSE1heEV3b3lVeU9URXlja2lxeS16Z1VJbEtCWlRoYkF3MVoxT2g0WGluelRmMzhvX2cwR05jTVF0bHZraHhXNnBEd0IxandITHhiYnFYaXJab0U3MDJNZWdONWllRk8wTnhjbWlQWldjcWxRZkFIbl9UTFhhRllCSllmcnFhVDlqT0R2V0ZIbmRtN2M5aG1sMnFndG1rVWlneENLNjNpTHdJYmxxZ1FhYnk3aUpqZ01hQ1FySTdGODXSAecBQVVfeXFMTWZ3Y1NJYk9DSnNGNXJsNHU5SF81dmt4ZjlWNlhSaXY2UUxCXzJpYUtQWUxja0lCdDBtRE9aZ000bUk3dzBXVEZLaXFyRnNfVE5KSl9KLU9JZzFuUmRrWUVoRmNuTXlQTmEycHRyMzNQSzZJeTdXNy05d0xsbjZrdFBURnUyM1ZCSFJKMzZpSUpWVnVFRnY0RFhOaUlTYS1zTjdqbVJCMXdXWldwME02c0R5MGZCQ1BUbWE0MFg3WVhzdkY0SldVc3Z3LXhlOGthem1zOWI1SXRmQlpENDNwWFpHX1JGdUhj?oc=5",
@@ -4063,7 +4090,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxON2EwdW5LcGt1NWFIS2o0bU1aeTNpNlAxZDNDTktIRnBueTRIc0taMzRMRGE2RlZIcF9KTzkwR0pzNGIyOUpEdDlsLTJFazRJU19TSVBQblNyWlhhWEVsSm8xaENDXzRFRTgtcGlPUWZpVF91Y1B5MHJld0xGcG9aUHQwY0pIdkZvak5GTTA3d1FudWFMX3BUNjlDZXA1czQyaWh2aFFLNG1XUzJmTFJFOEt2ZlBhM3o4aUE?oc=5",
@@ -4071,7 +4098,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNdDBKdFZqbE01MjFNSkxJSjd0T2pidnFTZ3Q5LWJDQkRSNEpEeWtna19FNDBweEtad1dXWVRvUXVxcktEZVE5V09RSjVOLUhHSzFoLWh2YUZjV01IUmx5NWd1aXdCOVhWSFdVSkdKWG5yZ2FqMUMtOTZwOWdybjBOT0N4LUNqQklMeVAzaFZ2X2dZRUs5cGEtbklhU3NLejNmem92NnFKc1R6Q29kbTZ5RzNZWHFvbzhnZmc2eVVfcUgtWElsQ1E4TGNScmFqcUJhRXRv?oc=5",
@@ -4103,7 +4130,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxNeTliOS1mVzRJTDNhTTBXdDQxcDJsY09oZjJyeFJrREdjb3MxV1dwSC0xY2VKVFJBQ3FENmpLT1NGcEdoNGMwQ29aY2Z2TXBtWU9jZ3ZDRV9JNkdzeXBydE9nZW93RHFIT3FYc0Z6VjBzOUl1VWZsVWQ0RWZ4VnkyVTdsMk1fd3RtT1ppVDd5Tm1BdnloVVVuWElUcEZESDktU2EtU2pKa2RFMVpOcEZpX1ZDUnNPM2wtSTFuUGpDTHVSc051Z0h0WC1VOUhBenhxRkRLSXhnY0ExcTBvWWgzVjdNZ1ZEM1Fac045TtIB8gFBVV95cUxOVTV5S2pLLVpiTDdnZGtpMjlCUEVBejhTY1JHTWM3ZUxTdHdjN3NwQzRZTkJKblBJcEdEX05zMGxhNW5ZeUJpTEF6MzBkSG9jV3F2Y29LU3ZHbDFlbF9Dc29lNUFEdVVtMGRjUTNKaUhSV25OR2R1VXd4bDROanVjQWJGZ3BUVnlibTBPYU05NFp4TldXcGtzUEsteXgzZlZ1aThpaXZQVzhRWVhjaE5nT0k5NWxJb3Y1SGtjOVpDeWpGLTZlWlprN3VqcEo1cTdpY1pyM1hrLUR5NURZeml1eDlKVXdNNGN6WlFJb0M1WEM5QQ?oc=5",
@@ -4152,7 +4179,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOR3RjaUwxd3VZUnZ4d0x1NXBONE04RGVQYzBwdkVaWDh2Y3FBZWN1dGFqcWVMYWFJMm9oekIyT2IxUldMRFpQcGtZamR3b1ZIdVFJUmowZUJEZFZrS3JoWjhyaThOTHcwM3V4TXBrM1I5V0VteG5rc01fbEN6YzlvTS1VVTBHTFVGRFI5VnlkU1ItTThCNlJRTXF3ZEoyQzU1OGNHRVRldFFVb1XSAboBQVVfeXFMTU91V1d6VzBrTWlSMExjT3o0NERZYkxhdjh6ZWVtRXNBUVVhRklWY0k2Wkp1dEM3MThUVFBiYmpzeks5akk1NEJqOFF1RGdScFpQa0JPdXR6TFFvb2NyS2pWYU5acFpQLWFvaGZmWDZZRDI2bHhNbUZpNjRENk4taWNsOTBxd3lhcTRjUTVsdkdWNnJqZEJleXA4bVNnbXdHaDVXWmZodDk4VG5YN09lcDhwSlVqWGFqMkln?oc=5",
@@ -4160,7 +4187,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxPTjdUdW4wRzRiNUk4M2Q0dFVKVDhVNUgzQVE1dUNIVHFiUm85OUlfOG0yM1Q5aHZIUlUzT1VSNjB2c2NaZG9CUkZQbzdjeE9vRmswTGpKYjN1VzJuR3dZZGxSNGVVZWs5eEFFcEhtNEpLc1FYTVQ4WGxyRkdlak9jaTRwcGU1cVA2WXFCYzI3RENYTm9GY1dnVFRkenFpTlFIRWhDMGdidzgyXzlPVjl6ZU5wb1Zub2hpakV1SHVSRFF1emJkWmFhNXRkT2hnNXJ5RUR2Y3RPdjVPT0NqZUE?oc=5",
@@ -4168,7 +4195,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxQd2xENHJIUnhoNlpoYmZxWHRobHdkMnk2bTFiam1kd2RHUUZkenBEeUVTd0VXOXpaVUJBaG9fUks2MGNlR3VzVUdELTRCbm1nVkdTWkVPUFBQQ0Vxa3JOQmhHdkJlZmlYMXExN19YVUhFMXVaT0dEOXNtRC1TTFFmXzBKZGVSTzBqdW9XZGhUelU4Y3BhTldBQjNnbnBTSVQ0QVFUR09lTHdidGYxYlBEOW55endvNDJZY2ZCZVZRN0RIYjFRY2RaMmxsQ2xpTXF0N0x6MXZhdXZUVThyaWxNQk1WNG5sRkptdWc?oc=5",
@@ -4188,7 +4215,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQMy15TTl1c0ZrYmg0WC0tdmNXRWR1UWlKSW1lMHl0RHNCbm1PRWRrOEZTZnNqcWxacXZ6ZVZKUjNMOG1ZMEg4MnEwWVhGS3dlSkQyVE5OTXZqeVo1TVZOWmpWeTFXaW56MkJlM0ZXY3FHMDBKX29vWXV3bzdsQ3JyV2lkel84Zk1WSTlZYjNzdnhDcWZycEVrUVVPcHdHTmtEQVphb2pqb21GaEtvMV9oVkQ2a1NWLTNQ?oc=5",
@@ -4196,7 +4223,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPVmJoODhFVV93SV9zcHZhRFJHZ3BjQ0M0Vy1QTTJzNlZDZWdmV01fQk5pMHZDNmpYOXpIdVptYTdrWldycHdXT0lYTnh4TkNWR2ZFTTEyNVJfLTdfM3pTaERvRl9RbVphM1BOOTdVMzdkLWVrSmlHa2JaMGppMXNqQ185anVzdU1iWWd1eUQ3ZGZ4Nm4zem53NTJvTjJUbTN5cUUyQnhWYnN4dzA3MmFfUTdvNGJMX0Q5TFpPb0Y0bWEwWHVyYnVv?oc=5",
@@ -4204,7 +4231,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNNmpfWTdmamdKSGNwSDYwcVFYeC1sNW9FRnM1RkxhSlhQZ1FJcGdTeEJ4VGxDSy1DZUpheXd5dHAyNHZWY2MzU25rNmNhLUhvVV9Tb3JTWlRwaHc0RVpkN2dVSFJKTzNpeGhmUWhTbDVVQ2J6TGdCUVBHbXZvMjRiZW02bU95bEF5QVROMFlEcXlrVUxLTzhyMTBIakd0MW54SF9fOWVaUnJZcVJudld4Y2tsYkpQVmE1MGk1TDZqWTd4WkNCZ1NiQ0xwc1lVWENUZDI1M1k0SUxYT1k?oc=5",
@@ -4212,7 +4239,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOQm5yOFhSY21RTFRwZEo2R2lGYktkM3h3V1kwNWZQX0ZxdUU3WWlPSXA2eTFJQWRtX3M1UXVRT2N4OHl5dzMwOXByRU9vT3NBLTNzNlpUVHR2Z1lhS0g3aGxZVDZQa2Vpd2Q0QUxzUXZQX1l0bUQyRG8xd1BsbUcyX3FfNDAwSGFObk5qUERoTzlxZEs4cVlkV2VJTWRBbWo1Zy1vQVJlenJ3NEpYRXJPbE1VS0pUaXPSAbcBQVVfeXFMTkJucjhYUmNtUUxUcGRKNkdpRmJLZDN4d1dZMDVmUF9GcXVFN1lpT0lwNnkxSUFkbV9zNVF1UU9jeDh5eXczMDlwckVPb09zQS0zczZaVFR0dmdZYUtIN2hsWVQ2UGtlaXdkNEFMc1F2UF9ZdG1EMkRvMXdQbG1HMl9xXzQwMEhhTm5OalBEaE85cWRLOHFZZFdlSU1kQW1qNWctb0FSZXpydzRKWEVyT2xNVUtKVGlz?oc=5",
@@ -4220,7 +4247,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPeHc1aVRNbFczbVJwS0xlX1hXUHBhZy1ucE10UzNhT29PeEw1elNqLXJqTWdWMjFvbFZaZFNONnFGRTY1QmlVWnB4ampVNUgwVU1wcUhwOGp0Si15VjA1Z0VDV0EtOXhNUnpBN2dYdGxKLW03SDdiVjJaRE5qOC00NWpwZXpndzhXSU5WLWFwLVRsSHotbkZqQVNSVjBodjJCd0c2dzlVYTRPQkZQLWZMMVBQQk9qYzVO?oc=5",
@@ -4228,7 +4255,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxQRTBRYXBhZXhuZGxTSUR4cTcyYnJYSERQdjd5ZGc1RDdNSFk2azFDTjUxbzhHSXc0Sy1fQ3NFUlZzVUV1ZXRVNElHMThqa1ZQd1lHRDZLUXFEdFNkei11dVp2cW05emlfWGZsa2lIVTZFV3NwaURNbEVVSVVMejliZEhxUnVfOUJFOXFYYjBGZG8wMmxQQ3Ruc3hsZC1rb010ZHpXc0dRbGRBUlpCQVI2bnFDZnJ4ZXQ4Q29WMlp2Y1JRVHZBVzlBYnFiMVZfVjhkOGs5ZEZ2aWtwRk5hQ1QtQmxoSjRzYkJtSjRSdmU2Zw?oc=5",
@@ -4249,7 +4276,7 @@
         "Não classificada"
       ],
       "evidencias": {},
-      "leitura_fonte_status": "nao_necessaria"
+      "leitura_fonte_status": "texto_insuficiente"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxPV01iTlhvLWdfSzBFaTJrNXU1T0pXV19sUFlLeWY1SXVCYmFpcnd0cEtLNmF2dEx3dTBqamkyeVF0WEE1a1VIZUFfbV8tYUhaTXQ3NE1IZmluMG4xRTMzc3lPQjhwREVtWGRELW9hNnl2SURJcENEclFCeGRweGVaN1NzUnNEU2M0WGYxZHgxcGFMRTc0WlMycml6c19JbkVNTkl4bmxlQWpiUG9fdURSXzd1SnZQeUdncHJKN1dLRW8xek5zSmlJcWRCdEhtbjkzVTYyUGlxTTdva1FwbnF0YmVUbXljaWM?oc=5",
@@ -4384,7 +4411,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNUU9Qczk4aWFmaGZNcGphV1VlR0R2Tm1UazFFdF9TckJlNS01cFllbVRWUkY5UVVzbEo1Vnk4TGJuRTR5RFFvcVJGaF9hdU8xelFmaDE0VWFvY0hkdWtmVlZwTFZZeEt4YU9XanJkNHRFaDZwMjhDOWtjVlNueHpOUk5TQVlpNE8xbHdZcWZKUlJEOGNLdTA4d0t6Wk5RS3U4QXE4?oc=5",
       "categorias_sugeridas": [
-        "Dinheiro e valores"
+        "Dinheiro e valores",
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -5840,6 +5868,14 @@
       "leitura_fonte_status": "nao_necessaria"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOcDRfZlcySjVXVk00OUxUQjZVQVRFUjBkOHJlUjBfQkRoSmdaWkNPQmc2Q3l5UEJnRjc4WnE5NkRIamxNSEEta1BtUTdIcm93OWtvd3JUdHE0ZmJkd0ktcjdKNlJaTExMRzJvUmQ0aGJvZF9MbE9oY0dGcnlIeTZVRG80a2YwTWE2MTJoR1gzVWF5ZVJFSGM0V1VMODVTdk9waW96eTRSTjJpVzZ3WWtMcVlnRE1rekRObXRsVW1XTDU?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "nao_necessaria"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPX3BhQUw1OWxMdTkwZFBNdUljMlRNU3dRaFptX21pRTVlWGswWmpGS25qSzU4UXE2ZXJCSHZxcjRwNmlUVldCcE41SXMxQi1HbW10d3JwZmxFcHBSeXppM3VVN3AydURMRE9YZ1BIek9NVTZUalZEZHJONjhyb01IdUNNaV9RSEhsUk1RT3VVcEIxYUxKVTV6Mk5DeThXSENkNWktNE9mWnk5TEpGM3o4Mg?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -6432,7 +6468,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxPbjBTdy1zMFgxMmZ1S2QyTUE3aUV4eU1NMFA0aVhMd3NibHNvblY5WUZiNUhKamtYMEdLcWdaVDYyWDM5b0lXT1VUdno4WVBwVm5XY3U1QWQ4c0pPeERGNmlPOWpaWS1keGRyVXFMaWhrWG4zeGYzMkxqT1VoUzRzYUYtMG8tVURfLThCd3NRUWR5VHZHclo4dlBlUTRvb000c3FsUVZ5cXd4YWQzWmcyUE55SmJIZWdvQmh3cG02QlFkMVZfYXl5NWI0ekpKVi1qdG1mYmNLNmd2Zm1TckdoZHA4NUkwVE5xYUtYellGejE0eFZod3FJRUtlZlh1Q0Qtb1HSAYICQVVfeXFMT24wU3ctczBYMTJmdUtkMk1BN2lFeHlNTTBQNGlYTHdzYmxzb25WOVlGYjVISmprWDBHS3FnWlQ2MlgzOW9JV09VVHZ6OFlQcFZuV2N1NUFkOHNKT3hERjZpTzlqWlktZHhkclVxTGloa1huM3hmMzJMak9VaFM0c2FGLTBvLVVEXy04QndzUVFkeVR2R3JaOHZQZVE0b29NNHNxbFFWeXF3eGFkM1pnMlBOeUpiSGVnb0Jod3BtNkJRZDFWX2F5eTViNHpKSlYtanRtZmJjSzZndmZtU3JHaGRwODVJMFROcWFLWHpZRnoxNHhWaHdxSUVLZWZYdUNELW9R?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -7007,6 +7043,14 @@
           "policia militar apreende drogas e prende homem por trafico em aracaju - p.m.s.e."
         ]
       },
+      "leitura_fonte_status": "nao_necessaria"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxON1k1enJxeUdoOUJiWllJZ3J3SzJzUlFjNTc1UF9YaWVSU0h2WUtYZ01qM3laTExtWVNNNXBNckZYRHA0b0FGaDl4MTFHVHdrVk55Yzd6OFdCZHQ1SXczVHpHUlRRMnNlMERjRml2dVNnOTJlTGZSTXItb2g5MERDRGoteXpqZ0g4YzhiOU9aNEhNZ2lsMWFvS0FsVXFZREtUazVNM2FpRzI1UlEyOHd6b05n?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
     },
     {
@@ -7947,7 +7991,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQcncySUFtVC0wOF9DcXRTLW8zU2xDS2txS204U1N2Y0lseUtNZUVVanVDdC1jdWFwM1JLUVFnTWdIWTBSdTFlUjBMZURfUzJwQXJManlpUnlFZUNsUlZKZXdQZHB0RlFFcGVZYlZna1ZZZkNwMmhnMDRidlBvNGVKcFZMTElhQU9NRGgzdWJfQlZlOWFPYUFTaGx6SEI?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -9219,7 +9263,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOallkdGlOVEtoWWhoTWFINXdEN3BaNEM0Unlsd2I4dllod3dDbHRmdTZTUExTNzJ0UmVOWkFIbGlzQVh4LXdUd0VLZVZqTlNranBGTEhxWHFnel9pSVhsZlZsS3cxSEx1M2YzbHFuREZVazRxd0xySHJJTEZBM3R1ZnRyVkVRZDFmNDJwYjdOZEk?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -9586,7 +9630,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOUE1IM290OTgxUl9TbkxWNWVaU0JyOF9XX3hPdkp3TGU4VEZUcDd5QXpZX1EtNEd3UnVRYmlqdUF4Ujc5My1rcm5VZUY5eElmRkM4amhfdVM4OEV0NnJYQ1JXTUktX3lRbHp2R0p5aU5tcG42WlFlR0lFQU5ZZWtxaWVfNzhSanFXTk14VU1CX1BtUW14NkRiSlBleGRUZEttRGlTVVc4d3oxbk41bjZVQ0JPOVFRbGRYZFJMdjVURmVvdW8?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -9849,7 +9893,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPMHhjYWhsZ3dqVzJyX2FTQXRuYjZTOWM5bFZCMVVOY3hUZlhvRWVZMUdKcWFrOV9kYzluamdzQ3N6b1ZlNkt2TU5GOF90TDYybWJyV3Z0OXNvVFoxRDhMZVBQZUQ0Wm1ESmFIbmtoWWE5RGJWVFJ6NDkxWUZZakhnNXdIeVlJX1V6dFdaZGFXTWkyeFMtV1FkR0RPcGJvcURfaTI3aGVrR285Vm5XeXV1cFh3RW9kYkxPb3VsZUNB0gG-AUFVX3lxTE5KUmtYVlFZdFdwX2pCWmRMMmg0NEZsVldXeHVYNnV3NWVtMXpGR1UxYnFDSk1Vcm9ua2xlSU1ENWpWRmZpQ19xZkkycDA2UnlEcVlmS3pzQVVVSmRaZ01oZHNPYXBVR0hKdEFQQTVOUXhhZU1fTEtzcDNiLVRhWnl1MS1SbHEyRkkwN3lDSXRRYlZCMW9IUUFrWW1FczR1bFVhRllxTFdzYmlFZTloZXdVY0tORWY0WUUybEp2ZkE?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -10103,7 +10147,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPOHJWMk9lYmd4a1lKRk1vUTVTNHpjVjFLaTJFNGdhRFA2Z2JlMU05dzY4ZVA5bkk0cHJjZmlwUE5hV1g3cEczTGNBdExuLUxNeXphZzlJT01lQ3cxSTBrZW1ob3dEUFN0aXNVWTZtbld6NjRGamxDZWo5OGRtVHZtUTAyaWJ4QmQtUV9RdVFRY2lKcVZXSEhOQVBlRWxIREhzb3FFOWhYWFVhT0tnejlNakZmMnpkeU5JQ3c2SG9ReTl0ZG1idFpLNHZaT010MnhBSVVUalBn?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -10198,7 +10243,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNbzAwNzg5S0NsX3Qwc3dGZVJGSWZlRktKQVFGc2V1VzQ5X0p3Z05KSmlNeWZPdnN3Rk9FUWM4WG1mX25iTEdjOEtsb2hRQ2w5N0pVUXNMTWFLT1FuVmgtRWtCLUlGaVZ3dnJ2TEJJNWdpZEJybkZVQTI1RmhrVUs4aWtLZk1YYkxLOEx4d0RwampHeDlVYmZTTnpIQXFIY0l6Yk5uTUQxYzVfcEp6Y0JIaFRDMWY5a3RLTGotbkZKc2k3LWIzZWZWb1UyMGRseDQ?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -10750,7 +10796,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxQamxPT19xNk1oUUY1azNVQno1aTJjMl9YTGxiZ2JjS2JFVGZWcGtuSWlFYy1TclJzT3FCcHpTamdVdjl6MktKLVhWbDEzWk1YQmEwdTJHRTRhN196QmllQlBEZ09UZ0Fjc0ZSTUdiUnpCVHFBQWZpRDZKOHJWdzBLdm1vcmRRMnRBWWJlekc0dUJreUk0b3Uya3J6Xy1mZ0RvMHQxaHU3MWhfd3BUOUJvYXBOMHFlWENZYjZCcXctWXMyYUdwbXNMRWFXdFVaVFdTX3pIaDB0MG5hOXNyaXIyUDFpUXFhRFJRaUI3RDFtajM?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Armas e munições"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -10769,6 +10816,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxOUXNud1NzMHRxVnh1cEctb25lLThPcGZiRlQyTDFBWXgyd1FJTDN5ckhRTWxQazRyZFRBTW93QmcxS3R6S3JlMWpYbjhuTjNYZTdJNjZSd2E1SFZMSXdTTWVoejJKZGZsVVBVcXdHUFZ1YlU3UWdxZndhbENYRHl2c085RmlQSGVDc2lFTTd1Q1lqckIxeVZobkZMbVRiMl9sd1VDaVdqQU1ETlMwOXZ3clkxRXNXanFHdldhb1RUSy0xTHRna3FFcUVjWTZKODRzVHg2eExtYVJZS2s?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "nao_necessaria"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQMzZ0cUN0UUxLYnJqTXdkUUk4NDdSZktHOF9UQ1Zqb2c1WnpZX2k2MHlxRzNwclQ3NjhobVhCczlWRVBiUDd5Y0V4a3N0dXFKVkY0VjFSTzJGR1ZBVE95YldsTjVacmxkNFRRTVZIVEx3VGoyU3lON1J1d2tPaVB6WjVPV1huRmxsQkVBNDhhT2NndGNlSHUtcmg1ckJSaFNPQkRCNjlMQzZnZW9WOURRTXdidmNSTlc4M2JkU1pSMA?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -11737,7 +11792,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOTWp0UDhEWHFseDZzWGpyR09oR3h6UVZGcG1lbVJJQmlwd3o3VVlfaFh1VnRUeEdKQ0U3cGd0UUtsa0FkNEUxb05CSG1EOExsLTFsek1pRHBkOWJva3FiSU5JaU1adVB1SFdVV05aTTk3WEhPVnpxai0wUDU1Mmh6VTVHUktuZ3JlNVFYLUpZM0JpbjVSNEJrZ3lvdnRHWE82ZXM4dVJ6MWF3c2lQZHNWWEFEaHIxQQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -12323,7 +12378,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE84WHEtcTdDQlU3TjZPRVUxcnRUUS1pc1J4MlpPbm4tQlVRV2dsazNmaFAtNHEtLTY4QkFKMWtjOTBoYkpBWjhYcWVwaFpxbTdJMVlxanFGVXZ1UGwyXzRTaDVNQmVYZUZCU2pkVTRR?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Armas e munições"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -13567,7 +13623,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQRndxbHhDQ3NPTExoaFBtcmo2TEFrM2FyZ1ZBWUFuN1FHaTI0YUIwTjhnQndNNmNHN25DZzVuMFFpclJ3Tjd3NTBveDVUMzNpUUlKWm1PRExJVndlaVVfUXF5NUJheFZqZ2syM3hWU3VnMnJjSDBSekt3OE5aU0xsUndwa0Q3cWo1eEZRUWI1X3p0dW85NE9LeWFpNXdtWjljaGVXSmdlRm9rODN0RVhUd1ZCVWI5ZEVENTNqQzVqUEU?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -14894,7 +14950,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNUG5JMU8zTTZzaEtFM2liT3I1UUFpYVFwdGJoTV9XQzZsNmJkck54Qm1QU1Z5ZDZSal9Tc3BXZ215U1ZkOTR2c3FvYU9vRWFtTE5JdWo1VDhWUmlJbVFYc1JfOVViOXBnVVFhNktLLUJMekxKTGJrQ3pWczZscGpfZFo3U3pITWpKb3J6Y1VKU0wzdVdsM0FXWXZGS3lyaXlZVlAtdVlHSkpSRFVpa19ZT0xMZEJESkhBNUp0SGl1anp2eHM3dXNHVm1B?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -18441,7 +18497,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOb0tFQWJGWmY2X2lYdWNlTnRIeXNxRHZISWEwOXJoQTBEUlVWdWF5em9yc3Z0akkzSE5xT1M3OFd5RHBtTEtfWDhYWlBEaXB3Tnc5b181YkttdWNCb1BBMFJVanJnS0Y2c1pCTXRDemlrMThJYVRRMWUwQWowcUp5MFoyZ2NRNk5pYjRhdTNmQm1vdm5zTWFOOXFZUDJHTDc2dU53amdjdXhqeEU?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -18449,7 +18505,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNWElEVWRiMFpHb2llOVFqLTJmY3dlVkdtRE9ITDlaMWRkamREYWI3TFAxQTlSXzlmUmEwLVEzN0pXSVZsb1J6NHUxR25ESUhJRml1ZVZRRi1KaV9qelBLTUdqUHkzNGNFZWhNeXZ1TjFoT1k1VUpLSEE5MjZVMTk5aFpid3psYUhtYVc2NEh5TkczLTQyNVhLc1ZSeE15ZlhodnRRdlNZYTYzZlhaSGlzZHo3WVU?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -18485,7 +18541,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNaVV5YjRIc2d0eWJOYWFoaEZfXzduLVZpM05rbGtlX01ZSGNibzJaQ3RaeFFERkt4V19iVDJzVFhNS3E5Z0dIOTlNTC1CamlsYzhNYnNCYTlrYzJaTV9XeTNiMkpIcmFaRzFtSmRuYzBZc0VjWmdoZ1dSSVFhRUlfY1JLNGNId0pjMHZIZzRnRFlEQ3hRaVZjQ0hJcDkwT1cyWWNqaE1BT1lvMWRoMUNhN21R?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -18527,7 +18583,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOekxjQmJiOHJjc1FPakxITm1tbFJKTFdYYWZsSmV3SVZ3Z2xxWDIyM2NBWTh5alJWcjU4UkQ2N3JhcWE5UzE5R0NfZ1ZtOWlfakUwUXNXOXBlZDB1WFFRQXhBM3VUR0FkVW41TThpRllNd1NMX3A5MWM3SUgxQjlqalYxUllqSWZacDJhMk1QY2g0bjhIYzhmMHdGejdUZ2JUTHEySVNSbkdBR0lkQWdNODRPb0o3YWpzUmVOVw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -18535,7 +18591,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQeVd2TnBWQ2Q2dmNZcG94UFU0eVVIdGt3cjNwUVpreG15S2JpNWJaZEpFSWVUcWdQM2ROUVdTaXBsZUU3SmltZm1zSmhlVzRnN0llREdqU2FUY3Z5amdpWDNnVVZ2S2dEVW5makU4VHI5VXZrVkJSNEo0dFBFM011WDRqWUZ5b3hzdFdEYnJtemJmOFFlSVNuVThFOVVWRTktSjdWRzNzZ3BmbEdWdGttZ0ktdnZIa1l1OFRhdF9DcVBLejA0WUl6RTQzd9IB0AFBVV95cUxPWURTeTB5QnZXVldyTlhVbW1zdnlJclZ5QnlfYm5XOWdySm8wdHJQcDBjOTNuMTEyS1NfYUxwMHRUXzlXa2lWV0N5MGs4Uk1MdVVQQW5HWDFXa0FFbWF6M01rTjdqanp1YjB5SnN3eGFaRHNKWEJjMWpxZGhKeGtyNGtsNmU4RDFfMHNKblVrWHhvNGJncjNsa2dBZlBWZWtoNUYwV2FsTVNZM0pzWFBaTWNwNWNQWnlzZHNRTmJ6aTY5QkRfUjZKWktRc3A1R3Nu?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -18543,7 +18599,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNWXFVX1hxTklNV2hpdWtySjljb1NHQng5LVZyei1ndWEyckxqd3BlVTNjQlM5bXdYV25ONGVaNjExUWRCTndldlFBTGkwXzMwbUMzSk43dWRlYUxiM3JoaE9QTTFGS3pFeFpBTFlRQkxNNGRYUjVuVlhzVlc4TjJhaW84QjF4Uy03MmwtQWxDZUgyX3hZQ3o4Y1Vsa2hQcGVaSFNWYk9LVllVeDBNNlprdA?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -18609,7 +18665,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNVHZpRjBNb1lvOG9KNEQ1SmE1UnlqZVoxVEtzX1dhLVRfOG93SGN4NmZfVS11bk56U2dMdEozWDlqNWs0U2ttbW14S0ZuLTNsSVRzdFduTXlEdXJtWmhUQjY1TmFGYUpQckJaRmpzcWJKRnR2U0p3VE9ZVktXeXNmVmhmOWJQcHd1N3RaZHZjVnNGSlVVcDZ6NmU1LUp1T1F4cmc?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -18617,7 +18673,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPMUFCN29lMHlxeFB5clV1UWxGckFkUWVJZ2pOUVA0S3RTeDBjaVk4MUYwRThQbTh2dW5iOU0zTTh1WW1YZXAwSzlOQUt4LTljOVlVdDdYNkNGaDFMcVpoX09qclNGZG9fb01ZTlZ1WDFZOGNJRE5sdF9FQlJrVGQ0M2doZjZBVTB4NVVpTGZ1cDdSbGIxcFNGbnplT2ppeHVyNXFid01lYUVOQVN4LTNIVEIwSQ?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Armas e munições"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -18736,7 +18793,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOR0hFN1A3b19LYUVCRVp4Q0staXJUSlF0MTQ5dkJxdU95d2NGTDZFTV9BOVgwcmd0WEpKT01GdUFBemRDOFdmY18wRldpbDBpYVBhOFVKYkxwZjVXbmxvY1JWWlZWejkwWmgtVFd0Mm15UWotQm5MemI0NjJSaW9qWnJ6eDlBbzNJTHNyMGVTS0VHcktOdnppV0h6Zi1GMEV4R1d4NzVwNHNrMURvOEg1NkREQlZha242ZVR3UXVLVdIBzgFBVV95cUxOZ0R2M3FCNHF1WDY0VjVKMGM2cEFuajlvUHkyZWhfMTdsajFFQ2NxYThRZUtsSWhPYVU4WkRPM3A3ellPYmFNd1VqSlZJNnVCU1FKVmt6Y2ZtR2ZSSVkxYjFseGNOWFJwNVh1MDNFVkxUdGhQdmE5eGFiTFFpa0t4SGVrWFBwZWRMSEJKV2JIRy03WWtiT1ljOF9vQjEzSE1QQlQzRko0V1JhUmJrc1AxVlVLVjdUWVJEZnVyMTBHUzVxTjJXYzk3cElzTmYtQQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -18801,7 +18858,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxPVThaYkVteUN1OGtIQkZGc01qb2JxUE1SRTMwaGZmcmZyYmJnS05lNkJTcDd2NXY1TjM0bjdlc1dMMEpoZTJqcWpNNlU2V2FKZHI0U2xpTXpKTDlQS1FaOHdZRmI4R0x3MTRPLUh1cUtTZERacV83c3ZzUkVKVnFjZWk3YnVLekF6Q2VOQUZ4S0xKRGN1VjdselFFUXJGLVBVNlJwMFJYSFZwbmlpS3dwMXVyS3BnZ3dES2dwSFpDYzlYMGZiZTU1Wk1DbmRZMmZGSGt6NTRCMTJKcVA1R2tkbWNIQUhGNlRZYVBjZncyUzcyTmIwbGRncFBsX2vSAYsCQVVfeXFMTVNZNjkzdHNiV0pzWnNfNzItYWlEZXlybWpWZXVpd2lzU01HQTg1d1FzVEtaN1FEdjBRVC1kMzJFMTFldzdfS0RPeVBMckRCcnp0Qkd6R2Rib1I5d19ZcTlibU9RYXF5VFNfRFFfeTdGRWo3cEZOSHNrRmdSMEExMHc2dzBpZmE4UGQyVWJxbU50S21CWUZYeGJzWkxkbUlxZzdJeTJ3bDNINXUtUXR3aFRHRWZQcWU4bHRZWU1sZEdiLUFpSXdWSFNST2pHa2ZheXBfNVJSZFhfWGpIcVRsX2NpUHVHOGpEclNzV2Y3QVJWLVpUWHNyYVNTVUpPbW1zYXJNa2JYVXdsdlc0?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -18863,7 +18920,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPeC1neE1VRzdWdGp6WGxNTmdEbnJFQ3NSZ1REV2hDcGFCRTRjTzM5TWRVVS0zWHR2MFNoRGNjSU5fUXlvel9DNlRobm1pT3NLeGdqSjM0UHlxNHJyQkdvYWp0Z2lvMUVXXzRSUDVnSTVWajdNUlNZci1WQ0dnbVg3QkRWcGg1dVFMVUh4Z016ZG00S2otM3V2djJCS1FqVHJRQjZUYTRBWkxPUUlkbFZrbGtuc2lWYWRKdVp3U284a9IBxAFBVV95cUxOUlc1M05TNGZEdkxnNzNYNEdnYXZBNy1ZSmdvR3FUWko5eGVqX1ZIM3diVTJHSHpST1lSaDV0Z0R2OXNqMGktQmpwZEJuaEZ2YURSeW9NYm9HaHNWODFrYlRZeWRTdDNiWGpDcGVueE1NYm5Hd3lBQnp4U2FPdlVVV0ZNMW1OQVV5WDlGX2o3RGlBVTVCT3Z6XzEtYUlTVXFCX2NBemVHWG4tdUE4TmRKMGoxOU9TRHpsRWNLd1RaOXpkQ3ZM?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -18879,7 +18936,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPQkpwQTZ6UzR3VkwySHJRUklwb3dlWGQ4cUFUamxkVGtMWGM2U19XaEY4M09JMS1EV3hxSUtDMmlJY2tfU0tOejczdzBrcTZjZXVQWWpfYU41WWR1ZnFSSVdFYmhEbmVZaXU3ZEIyTFNQbHBrT3pEVTROVkUzXzBlZ3lYeWg1azdmS19IdEU4bDNFS0tuSjVkQmE4TmhLQlZaWndkN1dVSl9OeWh4NENlTFluc0pfVlB5SllKXw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -18887,7 +18944,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNNjY5dUZvQ2phaXk3TkxyTTEtZzIyTW5XV2p0dGJKSUZwM20zY0FjRGlPNTFKYzI4NTNLRnJ3Q2NWa2Zra2FUSnFlQWJWeXRVZHdKRW82QlVRcE1rYXZHbE1wMXZ4LUt4VGlxV1I1WU9iZ2xwNk9ibk1WRXdzekU3YWNQMXQ4dmpCZGFXRmc4RlNwRTVPSWtGWFNrbm1tY0hYck5lbm1aQlYyMDNvSG84U2VWanNLTWFNUTRZcUQwWnU?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Armas e munições"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -18985,7 +19043,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQRDVXd3BqU3NhcVFIME1XMTFTay12RXpZb1k2RDlmMDBNZVYzVkI2cGpLR1hPaXdveUtCN0pRVHB3QUhqY0pMWk84bGQ1SEdDcHlScWZYTFRiWmdrdW15MVlvLXFvWmxteW5mQXlPdW43S29VVUFhZUpGdVoxay1xSTduMkFqeWxkaFN1ZHhnUHpVT3V3MTlqUjF1ODQ3ZzRyTzgxaEpSeGZvMGkzQWYtWmE5b3R4TURVZ1lka2xUc1hGelFOcklOVkUyUlV3Zw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19039,7 +19097,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMigwJBVV95cUxQYXMxc2FmT1gzVkpMOVoxTW56dXk5d3I0VDBCYXZRdy1YeGVvMl9GZEI4c1NZeVhEdVZVcTBBYm5rN2ZfMERpTkszNkdFa3pEU0pFZXJtNkFkOGs4MG42WW5BTXljb0VQMzMtUXlaZmVzMTFhcTdiUFgzdTRCZEhoS2ZzYVVWei1Rb0tLQXB2cWd4a0doOWdPUXdzVXhnR3A4LVIyT1p5S2Q5c2hYMXZlNjhKLUg1dU9zVnJiWFhBdE5tbEtUenFERXN1UWZwUlp0MEtoX3ZpV0s2aXZYdDFpTGJXSjFteUZnSVBDeUx0dUpHWTdFT1NUcEppdjhBdkZ5blBN0gGSAkFVX3lxTE50clJSdGc0dGJOTTBCZHBvMUdPNUVldEc2eXpDRzBtQ2lONzJjYV8wNnRVR19jYm90SGJPRHNPMG8wOUVqd0JySVY5SXc5RTAwSTNEcnpNR3hpSzBpQUFLNlg3QWpnLUYyam5UdDhyQUVhZUNiTkNYbGtkS3pJdWlFeFJta043Q0xjZTFSVG1kRHRTRXJCX2lGQmExWHY0T2hWeGVUcDRqZUNkMTBEUUhyc3M1cllUeWpVQ1RoTkpDRHVEOHJGcGRVVXFILUdXMXpVWnlUMGxUWUNIY3R2bms3el91SjJOanBvOUgzcndwS2h1bVI1V2xZVzcyd3FyRjFxXzduRWtQT3ZubnJHOFRiYnc?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19063,7 +19121,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNZVVTXzZaeHg0RldFa1o1SzJQZEFMd01fM1B0S25XWjNtUW1pb2VkdmhXNUpXZVRYVWlEYkU4R2M1d29qX09hQlRQemg3LTdfYVFMc3Q0Y0hSYzZSLURHUmpteXMwZ1MzSnpoXzB2UmhGbWJUeU9RQ01qSV84OXk0RUx0TG1OYW5RWmVYUXZmVnZ5UV9sRUpUdzVxQjZ1VVBFU0l5Y1VMTTF5N1hDSnVVWk1NM0hJVG9lWkprdGdSSEsteVJKb2hZYmxJWHJUUmp6ZkdkcFJLUnlHUlnSAeoBQVVfeXFMTkdZVnREdVNuX2JyV0kxdFQyQXdIZ0VTejhFdGMyUHBTNzdwbkxBbmlkTG95Zm9TVnlBeHNDYXpTRl9BcXFZdC0zSnJ1U0tBS01QbHVfS2wyU0s1ZF9tSF84OGFRZk1acXNCNndqQWdxWXZsVmU4emdyc0RQVENHNzNBR055clc1aHJJaTQwRURsbWYycG9GRjZYb2k1ZThVYTUtVTlpNnNPOFdpQmU3TWh6blBlMG5yc194dFA3QkJZN1ZuTFEzMHpMRHRncU5DRGhQM2FPeUJ2ZlNRNEI2cU9BcWxuN2VZM3Jn?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19165,7 +19223,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxPUEJoUGdodWRVejZCZHZIdXYzT1hOZ2puUHBwaGNESnA3NjJpcFdaV0tKcHJzaFdNa2loeklTUHpzY3pmWTI0NFZyYkE2V1lyN3BDeTJVaHA2cEJseEVmUkd2emF0RmFmTHczb1dTeFczYks2YV96cV9hWlpDTVlRM0NoRUVRTmNkRm80NVFoVnU2Z3FMcUk5MUZyOXFTd3B2UHRHN2xKY3VGVmRrYWQwWFZ0SlE3cWY2Vll2WmpBSU9JRG9vcWlvd2x0ZTJjZFhDTjNhV0xPdzZjVmwtU1BocGNNeGZ1MUp2cGQyM2RZeWtKNzRWOXhTT1BwQQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19291,7 +19349,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQWGtnc2ljVGRpMkZUd3FYcU1neEV3RkxEQ19xNWlmWkx2Qm9NYTFjVXFxeXdYMU9HeC1LcVhyY0NZUU9va3BWcE9JY1h6SWRWaTlWNExaNzE3Wnd5R05HbXVNU0pjUUNLdjB6RVFUcmVscHRNaWpka25yVkpfT3Yxa2FEZU80NVI5Y2JWOG54UXFwYzNTZEhhVmhLTEFXYVdUN3lTcg?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -19430,7 +19489,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNWHBSWmxfOUF6NnFEZ2FydnRSMWt0bGxnMzZpejhTSjczaWZqUXlHODdYcm9XYkZycW9DMnZNSTVlcjg1ckdKVFB6MzJmUW9oWHhPcGRQU2NjNjNMbHNHYmlMdFBOOUlyWkU0ampBUXk3TXllTmJ1d29jbThhVEFsdzhwQk5tdW1KUUNVSEtQM1ltc3d1ZnE4UEgtUXpPQkZueXZza0ZWbDNBQnFGc3VDZ2VTWVJCc293UzduRUwxNTRuRHctdGQ2TkxVakg2SmEyRy1iZUo0OWJMaWVsV0NJeURDXzZ3SUU?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19532,7 +19591,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxOSl9XZGJXSGRud05tWXNIVjZZVFIySmdwcHFQTmNXMXE5dlRfaW1BLWc2QXo5c1J2QmxzRFhPQktPRk1udGhOQ1dHd056SXZaTUNzZ0p2UGZGeEdNUDFPcXlqRnJJQ3phYWxYT0ZaUWxkNWhqQUNoTG1mVEl6LVo5VTNiZjR1ZTAxM1dlcUJReS0zQU9xMFFJR0NYc2o2MEVxQW4tWjFyS0RuTUczOUJMYlZzM0lfbVNUT2VBaWVNTVRhcXZ0?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19565,7 +19624,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQWEI0a3habjZvUE01Vkx3bUlzQVFQQTVLa2lBcDNOdXVsOXFJelVDVXpHUlY3TU9LV0Y2TmVfNEZ3cWJSSnRvMlVqTzAwaF9Tbk9FSWZUUTVWZHdrV0xjbG41UEJvZjNPTlRUaU5mbDd3eS15c2c3YW9YTmpTUDdCdUYySmNUMDlKWTRnY2psVzRKNmhm?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19636,7 +19695,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNOWFOYWVLbHVld2txUGQ4S2ZWaG55YVRCQXlqZGdLRDhISHdFV2lNek9UZU1ubXJrb1I0NDV2RXRjUnp2TkxQay1EdzJRWFNPUExsdV9kODBJaXZfeVpGRE9uVDY1UzhZTzRiRmpPUkRIN2FPMTYwcVV4YTZldlZTalA4eTF2bUtUVmlwWDRSblIwREtRdnNxVUE5THJoV2lUdHRpaTd3QklkcjdEMXUwWTIyZlU2bC1kSzdHNTZwbWViYktYbFVF0gHWAUFVX3lxTE5aMXdGeWJvcjBYNV85elFtMUkwSkFhZE9zOVJ0U3BybFFlNkdSNm5HS1cwbUVUODk4Ym1ZSUxqSERpM0ZYenNJbkpQVnlsTzUyU0RjRFdSUHJPd210RVJndVFsbUtDcDBaMktPak1WTnpjSWFzeHQ0T1ZuVDZnMlFZTzlybFlGVTd0bWFkWW9USGhoQS1LRW1QbGVkU2FNaWhkZHZoUFNqU2U0RS1UeERnLWJ0RmxCWWozQWdEeFBrT2tNVHFHTllCOUk0RjcwNld4a2lheUE?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19661,7 +19720,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxOcXExMHdwMllaRHFJUlE2V3lodzBDUExPeDIzMEhrOTZHU3F6RWt5OVR6aFRaRzZNRXpRdjNkNlBHRERnZ0hHSmdsTmYyb284ZHkzWlh4SXlaNnUxMTdQT25WZWJ0cGtzUmlxNGxSaml3V0pRb25hNjdGVkRoYW1VNHVWMFhhTjhCWWVsWndHUUxUa25DYzhkM0Z4dHJSSElIMTdUM3lCcDRwWFRYWkQwMDNCdDJ1Y2h3dWNGaGkwd3NEZjR5Zm00dlpOY0M0STZXZlc5RHBTZ3RfaFEtejBrMEhxLUJwUHBoYWpDcE9pcWNXeGpC0gH6AUFVX3lxTE1URTlrb0hFaEozOU9QbjdzeThJOWFpY2h2dC1aQ3BveTNRN0lEV1BSaDYxbU1TbXhKWmVEeS1xSlNTR25VZjdrcVltdkhyYXpvcUw0QnZmeWRpRDFuTV9lanZtcVVrODNkRnRQU0x5dUNlX0d0bVNvdFVFdDJlMm96MU9JMmFrTXJTRmxLbTVLOTVQcWRTZzllU2tFQ2t5UWJmNktkbk90NktudXA0eFd6SHZvZnFtVjhiNElhQjNuRUFhUFlacEMwYzRUR0s1Uy1Jb1Jtem5SZ0JZTjk5Q0N2QURmWFVHSGwyYnhQSmZmc0Q5OEJJT3Qxb3c?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19670,7 +19729,8 @@
       "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxQc0dKQU9hOEdBcUFzWEpMeVZZd3dBVEo0QWgzN2pJR1Q1VG91LUMzYWRvVEVvZnQyQmtlaXYxQm1rTVY4NFlsZ0g3WnQybHFoNTBhcUd1YS1qekFYV1NiYk9NY2pMUWwzcm1CYW1QZEhyMHY0TEpnWnFxQ0xrRGlYakZUSUtfRFBTaUxpSVpRX0FZRXY5Y0dBRmUwZWtfeEItZWh6Y2x3TDlZd1o3LWxBcUoxdGtNTkZZTTFzZ3ZPUDJNdGxza0U1TWlzZjJmaWUyYURWOWdWTDV6d0xqQlB0bUJVMlQ5NTMybG96TEdXQlJpc1NkeklKV3NMZDDSAYsCQVVfeXFMUF96QUtVbF9ISUhoZFRSMnBfVUtJRzlla3BzZ3RzS05EUzBzdTgwU01FckhYRFEwc09lc1BFN1h3YnFOSklmRzJDWWdyY3dSMVFhS0FyTXJnR3d4WkJGYTMwMUpSOVNXcnJtcE9yZzMtSWlVUzRvbGlSVV9YZ2dlYzJUZklKbVVkY3VsTnNaaVFvSVdhZmhfME5ybHhPTDMwNms1MlJOTlljMnllZG43NncteDZEN083emltVHpGejRka0tOdHRWcEhEVGxqQlRWSkVOOW1tbjFhckNFVHY1eU1NWmwyQzFwS3BDN2lRT0tHeEFXQUlvZnUwNjNKdlBVcnNKX2E0WjdENVBF?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes",
-        "Armas e munições"
+        "Armas e munições",
+        "Contrabando e descaminho"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -19744,7 +19804,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNcEU0YVVaN2hhbkNxemVabnpPUVplYWlZYVlPcUhPX0ZtV3J2NXdtQVRhSzRod1MwYkJXeVZZSEk5dmswalpFYzZSaHN2Sm1CRTlobUNDNFZtSENSenlEcFdQdzNDQ1E0QXBpNGdYN3VVZWJGdDllNTkyT3R6WGMtY0I3TG54TElNbUpQY2lIZXhaUTFKRW9oUXhZaEkyeU1yb0FBX0NuOFNwd3o3STdxampIcWxZQXUtSVl6YnpqOTZCckQ1VWtn0gHMAUFVX3lxTE42OXBjN3djdkVMX044RXNZbkdFaVkzeTJoRmNNWEZ3TjVBeXRSdzk3RG1DV09lOWVOU2tCVmtPM1lDRXVOdjVuZjk5MklEY1pGZDBaWWJqUVdUZUZsVzRnZU1FbEVUbWpoOUdsSHZTNnVnc2RZNE5sM0hWSUI0ekx3YmcyNU9sLTAwM1dteEdFVVNSb3haOUt4ZmlxdHppV3JQeW93ZlQzRHl6N2ZHZ0lpQ2c0QVBxZlV1dGhFZXZyNUdGblNxWDdRQ1o2NA?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19760,7 +19820,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxPZzNhdTdlbmxRTkYyMm9UR3JBX2Z4c09JUGpZNmNkc3ZaUkRLZXhkWFJkeFBsazJXWVJ5TGVMS2Y2ZVRuSkUtN1A4SGRZTHRoQ0liWFhrdjgtc3B2ZzlfU3hEMHNmd0xiNF9ObVpncWhDUGl1UTRVUnFnelFRckRmZFppV2hZVmhaUjI5ZURteC1LMVpYLWxVX1hRUjdUel90eGtTNzhLUzZwRElJYUl4SFhKUGdiX3hlX2kzOHFIX0JTUHFaZnNUbW5abFdhZDFlWXJROE5GX1RqMXZXMm04NkhWTFd6RUdTWEJfeUpoODVpeWdrYnlscFc3Zlh1VEthWnc?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19768,7 +19828,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOZUdKZnFxVDl0TlpWRklDY2xWYVdBbjJZY3lVb002WERLaXppV0NZekVaLXdSZ1pkc0duUU43bWxmNktQQXVkT2s4dW9QRkNROEdhY2FzVDJwUlR6OEpRT05xaVVBbU5kZ2x5VHQxazNxMVhXckQ2MjgzeUdkSElYdk9BcDF6bkk4NlQ5WDVIRmNyVmdWdzlrQ0dsYkVpMlhtRlg4bTNDYzB6ME1ONDNRVU1BTU52Um0zcllPMFB3?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19776,7 +19836,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxQbUgtSkUyXzdEMzlRWWVZeWVtQnA2WXY2X01pOU5jV0g2dFEzRm5EYlRsN0U4dTVuZVpseldjSFRpSUJPSElGTEV5STItSWRSYWcxd1J4ME1uY3QyWTNtMVR4a2pXcVFaV2FHb1BBb3JaYzBTNHdwNUFDNVZoTlliTHdEQ2dUSnc0dHFqZlV6RUIzcGl1eG9zeUJ2SmhwbWRDcGtSYk44SmVYenhkN0c4VmFnd2xJeEZoLWRrWGdWdmRESnZMbmJRQjNaWXktamVVRUhDalc5N1ZxRjJHdXhoOWJQeThjUDMtQzRSZkphREhSZ2k1WlHSAYQCQVVfeXFMTnZxNmtQcnBXQUZuZ2ZzakNMNFBfTURkc3R6VUxZMDhhWlc3TkFrMXZCZ1hFYUJRVWdqVng3clpVVnZDdENfLWJXaFJYWUQ1SVhYUjdxNlBNYnBQRTV2R1g5NFNSX1NjR3loakJ2MTNYVEtjN01TaXA4dFVsTF90UDU1empxbXIyemZrX0tEaU9BNHVrTHQ4dHJYR3VBenZfVVhoTFh3QUs1MkF3cWtZd0JMX2Y3dUtsM0NOOFRsOXY2Q0Q3NDJTMGh3LThWdFFZb3dyZ0tTWWkxQktyWHhOdWNsRVE4cS1zRkRnVnRzQVU0Qmdyc0EzYkpVUVAyUlg2WkNMa0c?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19805,7 +19865,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxPZlZNQXN5Z1hGUXVaWXRzc2FpMENack9tdTN5dmdLNnlONms4YTJkaHV3QVhZazY4SXNoNHNSQWRVTFdRTGhVV2R3SEpZQ1JQaWlsSzQ1aXVzUkNEd1ZVVWo3ektwb2JCb1lVRFNKUHQtb3AtZllMUEcxeEVoWnhiWlc0c08wTDZ0VWR5X0U3Wmc2aXpBS256MFVlUEFNaE92NTRSZ3NRN3VSNm5TRWI5dXNZWmRWZE8xRGFyVW03Mk1HUVRhOFdicXZ2UzFDSkhQOTlMOU9JQVhtNXdlc1pmeWFpel96cEd5T2wxT2xn0gH8AUFVX3lxTE4taFFLX0oxd2ZwT2hjcWtXQ1pDMkZRVTJKS0ZBRl9ZUVA4Nnp3Smx2NDhkVGVuZVYyYUstT1lldGVIVVNDbTlObXMxOTJFQThBdzhrVFdiOHNZWlZXNmNJbFNEbVJHSldVZl9fZ2M2dTU0cEtxQURJZmduNzlHZng1UWl1U3BrQzZLNHZCdkN0UVpGRnpJdWZKckxzRmhQRHB4RHFvRTZNTS1JbzBuWU12eVR5bVJlOTFock95OU1BYTFuM2RaVnpFa1ZZMjdtcTRoNUcwV01NaUFsOExuUGx1WDA2VjBqbWxWWGpnVXlkelJJeUk0QlZQRlZFRQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19838,7 +19898,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMinAJBVV95cUxPYmp3VTlGTjBSQWxGbERKbHlfX0dLaXpjTzRYTDZ5V2Fvb00zcVZRUUU3cV9mZ1Z1YU9Oek14T0I0N3l4N1FlXzRQU0l3RXJXbkYtazFCM1dxN0xsYVNfby1WN0puby1fVC1FTXRVdVg2Q3pkZnllVEp6azExeExJTmt0WVpGTC1Ga3g3aFVNaFhxRm41UVRfYlVCQTQ4b3REUGhyaEF0Wk1IZmVMd2daQmlJWFBZQXljUzY0NTlPRnNzMmRHRkk0bzdoR0pYam1yOEJ1MFFUemJsQ0pOZTBxMUgtUnNMTEhjM1prSDFKZmFPRzlGcGZzcVdDRkZxXzBuYzNJS2liVFNCOVhjSlBjby1pbTBTUWpMUEVBbNIBqwJBVV95cUxPSGRZdW9PbTVtbFdkYUlBR1BiNnpwbmpzR3N0X1pUVEdEdk1FUGpidGtvd3NJU0tpOW1Mblp1X051VG5ySnVhTTlXcmNkdmlWWnQ1UFBKcWFpM3o5d2tSekMteXdNY3Q2NERlS1NrUDloZHBkZ0tYRHFDRS1sckpkWjRMVXRWQ2lHdXZVZllfQ09ZY0NGQnVDcU1FRG1iRGFqbXhvYVJ6VUFDbUNVT1hUT3pMTmpFak9nUjZDdUFmVFRYVVJDeXRySHBmTGRoUGl4REVFdGRrbDg4VUJqb0FpUVh3MUUwTXNSLWh3Vk1VbVJ5d3ZLdHVldnVibmhibTNjME9kby0wbDVLa1JZYkFFNlFuaVIxdUR6T0U2NVVzYm1iWHRmbHdTdFpVaw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19846,7 +19906,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQWUEtbGE1X2otTEV4NXlJazBEZ2R5WEJMYmZtYldoa1otSS1URURqQUxmOUlvRkxjTVhRelc5VC1GdEpvWnVsMWxNTGpIMGtmbm8zX0NuNWNZMGRXWnpVcHU0ci1sSy0tZUJrdkFBTDh5Z1hqQUhsOWN4WmtkM1ZwUmltN1pKa2VJa3JYMUV4OFNPYmItVG5Tal9pc2NMcFgwSjg1UnZ1YnZwdjFNdzllN1o0LWx4dFFxZ3BrYm5wUFJiSjZ2VWfSAdQBQVVfeXFMUElxcGRLRFZBYWNZcVlTSWV6TmR4WHdxU3FzbUtrX1BjXzIybkZrUTRBN3VLbVlsX1JXUDktQWR5dTk3anJmWjlQQm5mdjhid3d6SHl0S2s5X1RnWVFWclNkQVdocjZIOERsUEozSjh2dGFlcC1Hb2pNVUEzYjFGYjU3RFJLR0ViVGJBWkxHcm9KVFZvRm11dDVZSk5sdUxpYlVCdHhHSjBsTFdNMEo1UFlVblZ2MGpXc1JkY3pyc0Z6MmpSVFpKTkZFYzF1ck92czU4WVk?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Armas e munições"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -19858,7 +19919,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPZE0ySVVCV0lHTnFHZi1MZF9jS094M1FQbjZfUUs5SUNHZldyWk1GYzIzd1E1Q1pqU1gwWEV2aUpMcHVxckJINDdkM0N4bVBuM1MweFVFWGJ3WWJYVnlPNlpmamZDUHdRdWpKNno4akV0MVNCT2piMFJxWThKMVdnWlBicVFBRjdxQl9mWWVweUV3UjZQelRSVA?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19891,7 +19952,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNa2ZFVDVvVUp5TFlWRGdVNkJhc3RObnptZEVRcE9Sb2NmbVVGNjJTaVFUNi1mX0tqRDJ1dmVqbnA4bXpGM0RaRzVaNHhZWTUwU2hVaVc4bWJnSXREWXB0UkRsS2h0TjhqWmpIT016elQwOTVMa0d1MVhqNV9yS2FsdmdKS0ZVSWRWWEpyNmc4UnRLdFY1N1Y5d0lUSHloX0MyNWJCWTJzRzZFQ2NGV183SmIyOUxKUlhIRGlUU0NDXzR1VG9yWTIzT0prNHh1aXBZQ0HSAeABQVVfeXFMUGdCY0lBcHYxQW0yNDA4YmdQZWJMQVlhY0UxMkVybW16NVFkeGc0c0t2Mk0zZGhKY2IwUEstZ2w4UUhnRVB4eDFnVzQxY04wUWV6d010R0c4Yl9kdkJPaDZxVmkwREFwR1BLVWttLUFaNjhaRWRYYjRhWkcwNWtQbWNJcllHNlYzMGpLVGphdmx5V1FOTVpQWjlkcWozTlAwV2VURlZzZmI2RkNoTVltbVNybkdLUnhXaWd1OFhjU2M0blp6WXl0ejJMSk9iNFVKTk9xWXBzblFkeHdmTWFESkE?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -19900,7 +19961,8 @@
       "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxPT1lRWVJsbWdzTEI5VGhMUFQ3OXJkcEhzR08zTlRRSzA0WE9wNFJReTNCZmFHMjZxSlNNNnF2bDFpMDZ4OEN6T21pQXgwNWg3NFdFcWZXQzd0NjhIM2dlQ3Rjd0tiU05MOEhJVmhMcGY1anBDZ1V6bTVMR1h2RTNLbzhBS3pTTEJvY3o0eUM0QjNkRDBvMGNSNWJ1cFpaakY1S3RzYV9MOElLV21XSHh2SWVmVnpSY05FXzFzOWVTajlWZldxM3l1NWlQcU0zYWZwNzlKOFVPYlpsNm9xa1RvOGo0NV9yUQ?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes",
-        "Dinheiro e valores"
+        "Dinheiro e valores",
+        "Contrabando e descaminho"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -19972,7 +20034,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPOXU2X2lQV1YwZEpkRmhKR0hLVHNtRXVtTy1vWktoR2UtdlFLSjhSUkp0NExHRi0xQ2kxZkJTZVFJV0lUQ0FOQzc2azl4b3B3czFnb3hJa1dCRkwyT01IV2lCN0JOVEtXR3AzWDFGeXdIZmFxeS03VGZHdjM3Z18xX3ZSNzNad050R0lfVDNkYzRDUm1FUmF0ZzZjMGNPQQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -20082,7 +20144,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxOdGROc1JIOTdsdGFpQjVtVnp1dkxrS3I4Qng3X2lhYTItd2NjdEFERmtBd2Nsekg0a2lWWUZNaGhnWWJORDZXbmR3NU9GRUp4QjVyU0lPRUpVOEhLbkl5VmhvczY0WnZWNzlEbzdXZTZpSFRkOWxiV2t4QzlOQ1VrZHdEZGRYVlF6c0U1MFBWMzhkNFVxSVU2MDVpTnFOT1dESEtkQW1zYmJ1cC1hZGFEc1dGNjVLVl80ZEJqRzZjRXUyOGQ0Ujh5MGNTY3Q5LUFPZk94WNIB4wFBVV95cUxPZnVFMGNDcmxJQTkxRl9JZkg0MmxFSUYzU1N3OWstbVB6bjdrYVJIMFlUX2NiVlJaQXVLNUhFNmxnRmlwRzNrbjByVHdLOVFkaUpZVFFXZUJmZFhyUlRkcWdRZ0VQMnFPTVEzWGxYXzFzOFl6dk4xdlZnM0NUcnhMYUlxUGlLWVdwTEdOM0NUbndYLU9KVFNqMnMzSnFuN2tuSHI3N211QW9ZLUV6cF9lMkdOcnkycjVDRHE2WlV1T0Z0NzJET0Z1UlhZQUdrTHpVVlRSaEpYd09xWDJDc1hqMnk3QQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -20090,7 +20152,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxPVGZlUnhHYjBhVkFKLUFXYTZOdElSdk1DcWlJeU0tYmtwNklKV1ZnckdTLThRRHB4bFZFMTV0VVl6VVk2MzhYM19EOWt3RlUxYjV6Zzd3TUhPbUhYQlFoUDdwRmt1MklfR1p3OHhhSzNnTWRTLXgxbHduN2JpMmhQams0anlsN0I3OHdidlJxU0lXVkNJaFZZMUY5aFR5MEhwa2RnWW1xX1RmVmxmcHN0S2RpcVBNOHd0TW4zVG1LRXFUck1LUnltQ1FGdHA0UGxFNGJVbWdFMmVoQQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -20098,7 +20160,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxQMkl0ckNIX0Jza00wdV9GRnV0M25CdVJWbUlZT2JXLXBMX0ZzOUJVM1hOemJ3c3R5T2NYa3Y4eFBXQ1RMVlV2RktfRmJGWlBHWGxZczMtcmZRUklMNVgwdlpYU0Nrbkc4bkVsNFd2anA5NWtvcmZZay1NelJfT3JhMnJEYm5qRmpRWUQ3NW9QN1o1c3RTWm5UaHRvMmdZcGktTmwxenpodEtkUUc2d0NVUlZxMDl5WXZyN050bjJZVXpuV2sxbkRjeDVzRVZseFRXWmRiMWpSd1Y0OGxTbWkxYU16UTlJZDjSAfYBQVVfeXFMTmxvbV9Za05zUDZZTlJ5T0lCNmQwdHAzaHlzd3JhQlBoamFoZ0lIVWNsSC1hSURUUmMxQ1ZQcFJ4OEMtbG9JRjRzbnNGdl9fLVhPeTRTZThycnA5bTNlVHY4SDZPdTFYQWNfS29veU1QUFRPR1lCMzZEM0xNMGpSa0JwakNTbXV1LWtGdXZXcVV0X0NUZGtBaVk4UGVjUWd5cG82V25scUt2emZOVnhnWG5BOGFqNU41XzgwbHlDUjRYSUFnaDhNSkpHc3FkTXJlWGNEWUppc01PN0syeTU4RW8zUWRxak1ocHNreHpfYk9VLUVTQVRn?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -20185,7 +20247,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxObGx5d1NPOFJaMktieXYtWDNtRlJhWXlScGlXVl9pMl95VTEtNzYtNW16Q3g5NHI1cEhzRzVEVlQtR0lDZmhqQ2s4RWNOTjhpWHJTRlA3czFTNm45Y0xKcms5a01vdlp5bEdiR2R1R25Ya01iYjNOS3U2NjZVWnEyRGF5NXRIZE84aDVJSVk3VjFkamtlYVpHeEEyT0RaWUtma295NTFHQzNNUdIBqgFBVV95cUxObGx5d1NPOFJaMktieXYtWDNtRlJhWXlScGlXVl9pMl95VTEtNzYtNW16Q3g5NHI1cEhzRzVEVlQtR0lDZmhqQ2s4RWNOTjhpWHJTRlA3czFTNm45Y0xKcms5a01vdlp5bEdiR2R1R25Ya01iYjNOS3U2NjZVWnEyRGF5NXRIZE84aDVJSVk3VjFkamtlYVpHeEEyT0RaWUtma295NTFHQzNNUQ?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -20205,7 +20268,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPVzJwSmJRMkc5dFl1ZlNva3cwTUZFWFhmbUxmYnVMTWlXU0YxNGliTlpLTVFqOTE3TWhMU3JxNHpheW45UXNwS05aQU5XcEctX0hNOE9OeldBVGpaNFN5TFZYb0V3d1diLWpnbXZ5MGJqNW43NFIxOUNxdVdCWWRzMzJmeURxajlaWkg5cnUxOVlldGdxbTZQeGRoLUpMQnVmQjlGbHBkY1B1SlhxNGU2LW85eDBfWk5BNk1xMURR?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -20395,7 +20458,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOaXFoaWdNUHM2cjRoRklQclN6ZWE2Mm1pU1ZzakJHdENzT0ozTGthRm5DSlJ3TE5oT0VZa3hJV20wbzBXMDNySFl6dWhTTVJkNUJzX19YeWZFZVl6MnRKRGwyMFVqdUpjemFSQjlTY1lqb2FfTjJsVG1VN29PUXpnU0RHLWJzbWFsbUtuNmJHa2JhUXh1RnlTMWJpaUpkVGMwRGIyVjJEblJyeHVlTFA0V3hwRll2TEhKQnZ0NmxMNnY3eDDSAcMBQVVfeXFMUC1jd3NpWmhfLUp5ODhhNjE4SFNhQi1qY01jM0U3OTZpelFYMm1fYnJmeHEyaHQtYVRGLVB1dWdUdWxSTVdzNi12UlFSWmVyaF82Z0c5bnliQ0pyMGxsa1RUSnN3TXFnVDJJNFdmOWZDSUVMSXV0RTFZNnp0NWRvVTVwTklpbm01UHpyaEpGdzZ4Q01lbnpJd2UycFdMZ3Zjdm1QZ3ZxYW9tcVo2Rk9naFkwbHVvWTNUTVAzWlNkN3N4TGIw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -20525,7 +20588,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxObkVLRmNIUmlhNUNVazRsMnZycXBqOHFzakFrUk1RTW10ZFVGdFIwSy1uLWlpb3RPWTIzcEcyVjJFUUUybXplZ1h1X3h6ZDV0aGtSNEk3b2lNaXNSd2NnbmQyYVJ5SFFQeWpHaHRjdGxORl8tXzhPZFBTVjhtbmtvWTU4U05UbjZ0ZXdYbUZvRmkyZTNRYTF4WnRuS1g1NnE0cm9GM05IRndYYW1kQUJaVTNOanJuZXB2VXROeUlRSzVqdmxZMnU4aWtzbXNuazFGR2tj0gHiAUFVX3lxTE82U3ktUXZ5TVdiRkR2R0xKdm5PVlMwUkFrbHlwTEp4LVBINElPZHUwRW43QXE1VlZMN0xhbldZMzMxeFBibDQ5b3pVdUF4LVBvalcwSjdISDYyWExtSlNldDJqbFpSd0pWTG1VTGJiaWdwaWRaUGdwbEpFcU4zZVJfSW1yQWVhSzRXTlJzQlZBcG5mek5zZkdyN01EdFMzdE1RX04wTV95a294MW1JcVYxRnBmNmNObU5ER1hhbFhQZGhvZUlqSHh4Z1RkMk9oS3NTTWVJX09jU0l6SDlCejhORFE?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -20559,7 +20622,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMilwJBVV95cUxNbzYzamY5QzJ0LVBlRE9vc3J4YUxKanczemVCSkhNS19zRDR3Vm9zTEthLTl5bG5vVTZMTnI0Z1dKNUNJY1dhRi1uS0k4c2FCUFZmMkJZLU93UXNLVUNHSklNSkJxOWp5VE10bUlZQk1jT2EtUkhHVVU5WmVYQzhMdUpMclJtZVlJdzZYUzJ4TXR6RGgtS2toaVZNdVJGMFhBTjVZbGdwMmhmc2c2dThidjctMW9TM1czdVJueG9td1RIZXBGdGduTXNCX0QySVdmVXJGaDFiTnhJNDUzTFJrcWppZmVUOFZfSWpyZmExZUdoNjg2blVVRDdMQjZpTkJ2c3phUi1EX1lEcVFiQmtLU2V0WVlRU1k?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -20580,7 +20643,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxPY3dEWkNYMXpqR0NFNmNLajFrZl9yRTJtS2hBZUk4RlNBb2gtVXhEZFpGTHphWXQzSVVSSzg0VXg4VDRXR0hkWi1mSjJVd25ZNE5FbVZFVXl6dG8xcWJLYlVDM3NUSkdiM0hwbWtLNkJNbWY0QURPTlJFcnhSZ1RuQy1vM08xY19YamlPWVo2TktZNVBncjJIMmhwSWdpZkwwWDJSam9RTlBJdkpyZld5eTlua0ozVnRCTHJubFZkUGdDdjhxUzZsQVhSZFM3UmN4?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -20625,7 +20688,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxOaGx4ZFEtX3hZOUlBbWpXVVZGY2VRTXE2ZnhYNG5ONy1JLVZGSnhKZlRKaGM4UjY3OTFfdFg5RVFMaFQ0QWF1bG9xMHptcE5mN3N3NnBJdWNNZHlOTU1EYmFxaXdqejVNRHNyTDMwVlR2WW9oalJMRDVTSUtXeGltTzVRd1dnTm5HSzU5eUxCQjQwdC03NnFRTlVsb2dkMkNhZ3dfTkxOT3dybzhPSFMzT1M3Y3lqNHhQTjM3a2tRaFZGZU9nMWtHSXZwMWVFSU5qb201NDQzQ0ZGNHNpRDF0ZEFDWHk2eEc4eDBLeWpKYmduM19u0gGDAkFVX3lxTFBxMm5SZlVtejRJbnN2TVZYdXBuQmg4cnBMeEE4QVdVT1d1WmdHdExhWDdxQzhxQS11UndrMkhnZDR0a2YyWV9QT0N4aFhxUFR1ZHZGVGpvY2NrcDVWZWJ5ZFZKUHBGZ19YdHVLVEpZVS1CNlFhUWJoRUpnVHl3X3VNbGRTSnpndkpTZVBOaFJRSlE3REN4TWJlemVqQ2ZCVVZodGo3Q1JOUTdpRTNwZGFYcVpkVkhaZmlpMUZiNGNKLXo5aW92aGxuUWpwcXBrUXVZMzVsN2p1SFA0TUVCVlJmSG45TnhqRTI1YmdoV3NWN0xjYVRDZF8tdFFEN3N6YnVvS2s?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -20633,7 +20696,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxOVjRZWE1wNENTWThlckdRNjZsMC1GaS14SzBZcG41RldaalhYSjA0VDlJd0RhRjk0Tk5INGlQZkJGUk9qSWtmeUwxbUZUc1pyd1d5SjRWLVdBdnlnY0tSMkFYN2J2MGtwSmVGUnl0a2M5MVozU2kyNDNELVZGWDZpR2RtTnVNd081YW1NZHIxekl0WG9Kb1prdlRwdUZCM0FrTV9tU0c1V3hRNHoxNjM0V01Sd3d4RERCVzVyZTc1TVVlSWlq0gHEAUFVX3lxTE95RkwzX3VLS0lvYTlZYWJJenpvcldMQXhvVXNQZGpFTTF1MGlIVWdiaG16Ty01RzJvNmhCVFFhcGxTOV9LbmM3WXZ1Zy1ycGlzNjYzU21nUWF4dTk2VXRrVk1rMkMwWDd4OWhWY3VDV01zN084UlNsOURLQWtRM3lqTW03X0lfT1U2QkNFZ1laZzRiWHA2Z1VZbVNXcHEwdkxpNVlaVWM5MkRqUFZlVm9UTkp1Y0daSEhrSEo3bWJ4YmM0TE4?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -21220,7 +21283,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOM3dvbEdZemxKZHRpQXYxMU5sbmxmc3V6alpWTkgzOGhnZWxvQ0s5S01URkQ2RWU5Sm9kYndnOTVzMFg2T0d0bDhUM3NYakhjZUxUVmd1VENMWU1uQjRxTWtKUUNVZ1RUMzgxN0dvRC1KWVA2RkdhLUJ6NURmWHNnZWI5YlhITGhM?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -21458,7 +21521,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNOWJ3YU1pam9PNTMxS25iOVl3MUxLckxPb2JXSVJIM3g5bTZwc19fZ0NGOU5sZWNOakJmYmh1X3VxMzdfdUpuYVZ2azJ0LVlLYm41dzNYTGx4S0tZRXVSU0x5MG1ESkNZeS0xZWxDdnBnZUNYOUlqeVhLOEphdko5ZmduVjNEQQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -21466,7 +21529,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPaTdPTlhaUUlXSGJhbDZMTEF5ZkVPLV80SDVQU3pqOEZlbHZpQWJndHV4OGpFajhNdVZ1eUFTY05DcUw5azdGSFpoQ25VWFBvZ3lkV0VSajZkaDRJenFveEk1WE1kZ05mQVFrUXA3a1R6c1FTN2tBN0dpcnMxSlhobWd2OW40aVU4YVItcnNsa0ZFcTVrM09KMzhvSmw3ZW5vVUFfdFhwZ3hFOFBjLTRUdG1RX0pzX0NUNEtxVXFvY9IBzgFBVV95cUxPTzU4NWp3QUhXQXJ0WDN4U2hvU2RwSTdXMGNzVWJpcEVBYlRvWmR6ZUVKMVI0cTlYYjVlUFVRdTRiSDM3UEgyU0VsSEhScUp5UUl1MGliSU5rRVNRUjZKRkpfbnV3bmx1SDJ1ajRrNDhGUkJEM2VjdklEWUxUYzJFWlJwOG5iTGlDaG1iNlllUzFNUkNzQ1RKeDlLRzdVLTlBQnBZbFhhUTJMemZFeHlqb2V6ajJVMk93eW9CeFd2OWIzblBFQU5RYTRXRHlXZw?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Armas e munições"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -21571,7 +21635,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPTnhCckxXZFJodE5wbzJKSEVFRnVUemxtLTJ5dHNfQnBvWDlyMGNremZLVmEtZE8zTC1fOV9taFYxMV9tcWJuTzNlUksxN012XzZway0xT0pEQTlQb3M2RHk2UzBuU2tYTktBc1AyTEJJQ3F1NnNEQXplNDBsZVpMTGZ4c1pwc3U5M0R3QTUwUnA5Z2dKTlVTWHRMaFZ4RGxXbTQ5SjBZLWxNVnM?oc=5",
       "categorias_sugeridas": [
-        "Dinheiro e valores"
+        "Dinheiro e valores",
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -21616,7 +21681,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPbENjbWFIVl81UXhKQmZ2Ql9JNF9KeU0zYml0Zm5NSmZwYjZUeFNHaVpZbWgwQUlmUHB0cktqaGlZRGQ3WFBFelV6Ym5VTmlfdU92XzJ1ZE45dFFTV19XallMZTRzWi1QVnBFeUdQVlN1OVRmbEZuOVdpdGJBTHQyM2h3OXpaQnhWekVENXBDQWFMVE9rcmM3NFJpdE1MSWx5ekZ3U2tRY25XSWVsZ2FTS9IBuAFBVV95cUxNN1M0a1hJc1F6VV96SldlUXJWb1M0Q3VUa0ZMY01lM1IyaWZwYzFONmFNZDJzcjZ1SzB5c1hwWXRvaVJUQXVRRHFzdzhOX1RwVWlMU0I2dXo3TTltRUxXTV9vcjlPVU5GR0NhTHdPMWJzb2tOcy1LaUJvdmxmb2VwVDMxdm5tcWE3amNVTUxsV1pQZ1JqZjVQbDh0U0tZbzVUak9mSjJaZWQzVVpUQTMtU2xqal9xSGFK?oc=5",
       "categorias_sugeridas": [
-        "Dinheiro e valores"
+        "Dinheiro e valores",
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -21692,7 +21758,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQLTBZVWZOZ1lFMXlqZ1NGbTRQNlQ3dzRXN3YtN0dnLUJtN0VmR2FudGx3ZVVZdFRld2poSjhJazlEck1OZm9PWVBULVloWEVpZFpBdEhPNFFLbTIyWUMtb0VDOWZXMGdSSGJkWmcwQTZBcExhb21XOGhmTUVzR0xjWHNkdTFYb3RpQk5QN1ZYVVI5OWsyQ2Fza095Y19nMkUzSFF4TU0wVE1pRk9WR0k2ZTdILWYyc2sxY3Yxb0pLelp0UdIBwgFBVV95cUxQX1hFaFh0ZGM0Y2VKYjBpYjRvUHZMZ0kxTmV4b3hZcHg3Y0tXSFVGNGVpaWJ2Vk9tYU1BNkRTSmppLXNDSDN5XzlXaHNpRjJpSVd0cC1OdzVvZ1Z2MThpNVdQMVc5eURSLVhKcTVidG50QmJ6MGZ1S1M1Zzl0RXZBZXJxUnVlSkN6LUFjaDNaRldSWkFDcjNxZnc3OGJxSDJFUnVkX2RNWERDVXVBQU5FN2owVUtBLXUtbThRVXJFZlN0Zw?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Armas e munições"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -21704,7 +21771,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPQjg5cVlvN3Q2N1NWcl9ZMmhKTGlHR3JiSFQtS1ljYzhsV3BMdEN6b1V5cUlnLXZNc1BKZUV1NHNaRjFwcHhEV0d4eGdxT0FOZVJGbEhoY3g4WFJDWHRDWjhjcU9zLVAtZXdYZ1Q4ek1FLTl4S0lONEI0ZFd0QnVFY0lKaEdaZ204aU9WNm95M1Q2SVVmbWFoNEpTZEVTWmpMR3FCOTIza2xmREdMRWFnMmRlSQ?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Armas e munições"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -21717,7 +21785,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNa0xKUjZzNlltNWRfellqeDR4YmUzRlVaeDFvUnJ6cmtwZmRrN2t2OWRZcWg3TGVGREh0WThYZURVZzhHVWtJOTFiNTlWOXpDS3pIMUZZOHNfbU1wYW9pNk5PSERPeGFJTGlETC11Tm5mR0JjalN0WlNMR0QxbDh4aTduNUwtZ00yaU8tSllRalNlNjFOZjBIajhjYVh6QXo0enVubzA2MXNfQXFtYmp1dnFLUG9xSWM1TTEwR3RiSzhVbnJSZ2I0aGk1UWRwUEJwYnVj0gHiAUFVX3lxTE91ZlFQYnFZNHpXNmFtaWlqRl9KWW1JMXNSSklycnV2YWFxaVRZbXIzb1B5UXZUd0RNWWJ1VVEyRGtwMVRmQVdfWFVhbDZSMlowakRBUnJlYlBXSmpVbEE0TDg5aldVUzB4UTVvcVNaVkVfU2NrbFNiRHFSOHpjaHRTZDZGSV95c0ZTQzBfc2lIbFNMU28tYXctZ2htY1UwTkUtRDdwVmNhN1JiYmJFT19vcm5tN2hOX2VzaHBnMkxZTFNPb3l3dERka3RXbHZOUUJUS3RtU1NHaFF1YTlGV0xQeGc?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -21737,7 +21805,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOcXdEa3ZQTmE5TGNQY3BOWkNsVEtsemsyRkE1R1BmRnRxZFR3dEZONC0tTExHNlUzakxCcVd3Ym1SWVpScnpxT3lqQkl6XzV5djZGZnlJbl9TNWZyaXBodWZzVFRBMzBhSkNIeGNuaGJEVEM5QldyUlI0NExrTnVBREN6Z0x1VWYxQVpxWHBjTDNFQQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -21745,7 +21813,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOSmd6cGpzd2ktWHpvNnBvQlRpd0trMXc5cE0wRmdqeFVpeUpzRXh5Wi1hQnFLd001S1BsdkdlaXNaUkI4dUJBSXljVURYYXM5Mjd2ZjdNb2UyQ2YtcDJkQUpoZy1oVUs4S2x2M29HUmlGVm8zRGNqU2lZMlAzWFpfUUJ5d0VEd3RpME9IWUdTX2o2SFZ0NHhJd1ZTSENTZElubUc1WFBvR1FYdEctemNLSVpraWlNRTEtXzFPbWN0eGlaYXNZVTY2UnlETUg?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -21777,7 +21845,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxQUFNWY3o5V0VRVTVacVFxTnBGUzZGdEZHZWJyMVBvTzh1cW84bVp4Sk4xeE9QYlFJVGZ6NjA1aGZSUlhfdXZRcFlzNUNYSVZXVllZWmRkYXRfUVRGbjFoUWQ1YnViNjgzWENlcy1FanVwSFNPVDB2LXhfcHl4R2RzbU5XM1pEXzloTExrc284OUY4TGlrdnJ1THRGT05IMTVwcmQ3YTl2N05vcVk3RWpsQ016TlZtX1NlekY2X18wLW5CUXVLZ2g5am1sSzFNMFVUUU0xM1hjc0xzdDJ5Njdv0gHuAUFVX3lxTFBvOWI4Q29MWTZMVHBuVUtwN3h4bkRpcUJodE5ESVlMSXJLZnZZSE1EeG5tTW5kd0ZFaFFiODVYREExN01yWnFvTkFFTzZMTFNlWmhTTU9ROC1jMUpyNlktQUUwc2xLbzR2aEpSaVZCbGNQMGNFd3oyUHQwaDROLVlVUDhtemJxWC1UUXVoMWctWTFSZDgtZ2hkdUYwRU9kR3hxRmhaUGdTYWNkRW5IdFdYYmFJeDJmUmoyU3NiUlRvVjRqblBxWldZWF9yaGNUMFNZdlJJUFlkWUtPMWQyZW8wZDdydzk5QjNZVVA3bFE?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -21785,7 +21853,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxPdlBlV25GTzZ1RXlZck52a1dXaVUyLUhNczY2RGk0VWVQLUt6UXlnZUUzc0JDQnQyQ01zOEtaNU1sYmlmazZDdkNPR3VVekthb21VSUpNRWFHRDBUd0kzaUh3RVM0aEJvcGgzc1Uza01LYzQxNG56X0ptOE9fUkxQSlhMcnlFbkVPaVJwRTBZbnZVeVI0Ukd1OTIwcVhDTHNRSzNHZ0U5N28zSjRRdk4zbTlRZmJjckZvaDR3bVpCLVJTWHZoTDkzcHRrbm9MV3dNeThlUVhHYWdMTlFheDNtOTQ0WjhjQ0JDTTVhN0NSU2c?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -21841,7 +21909,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxPc29zUW1qMjg1M2MtNU1NUGc1NUpLTGh6c29WOU9pVGYyNWdWZHJnczdLOGJjZkYwX2VqWmZHRDRYM0NCQXdxdkJYdEtyVHdSVzR2aUdCemNCbkVNT1BxaFN5QUJmQ2V2aWhkWng2LTAwM1BWQ21IWnh6VDNoRHd4dV9TUmVJU2EwTkJ1eTBmemQtelI3ZW1vUEJlZUhXaTJHOTlRSmN5bTh3S0hWMWFFcW1XRmNwRG00UXJVVnJUZVppdzhrc0REb2J3Zl9xdHZvNHprYTlDSzVnNHp30gHrAUFVX3lxTE4tWEFLcDFFQ3h4cXRhMkZONUNSaFlmNFQ2NnhGWU9paEE3cmZPLTN4aF9HSnEwdmRpSkxiM0UxZ2FBb3JCampWWDdGM0JZUjVhbWlCcE9KTExKOVhwZ3pmdnhBUHBGeVVxTG9EcmhXd3pLR1BCV01ZZEp2Ql9pdk9RX2hRLTJXNDljZUFaNmxuTTR2RFhQbGZxRzhVSUtMNFdCaXZWTENNcGNZaG1fNGltM3lnUXRHM3hacG9hMVlndTVsU0d4bTl5Y1VLYVFRMVBXRC1rZDFQenh5S3l6WW9ycDVOSmZOU2ZtTDA?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Armas e munições"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -21854,7 +21923,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNVHh2MU45bWF3SWg0Zl9jYlNyRU9lSTNMemUwT3pGd1hQdHA4OHZpbHVrWGZFbmU0ZlRGZjJLUDB0ZTZfR0czSXpxUy1reVV6cFZpMDVtNGM1NWdrMGtCaDBYMVlXN2JCOTlLX3RkU3lZNG5sb29xTW1Dbi16X2hKaGJ4Z1hyOU1xd3hjN0FfZHU2Zi0zTDVvVUg0TGVxS1JuTXJ3TzYwN0k1c2R5dkM2dXVPQy05XzFFS3BqX3l3TXdKc3lVTzNz?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Armas e munições"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -21914,7 +21984,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxPd3RCTVF6V1E0Mk4xa0FaNExYb2dsbXFjU3RtaGRLWVVTQzFicTF3UnJ0UzNrQl9ueEk4bnUwNThXZFFOUjRseFRxN29HM1dYWUNDbHFsdm5NZHRSMGJkYmxsS01uQ1M4YmFOTGlVYkVPOEh4VU5VcWRuaFhsY0tMeGRrTkJuOHhxZTg2SUVjc29jNEFSNXdrWThXeHozYVpRdDluVkFRMUI3RUNCbXA1dWczakZFQWhUWE5Ba1BlV3BoaVZZS1ByTUFwM0M1TVpjTkNRZFdsRGI1QdIB6AFBVV95cUxNZ3JCQVJweHJWVWtUODI1cWlBZ01xYm9uLU43d3gwa1d2Y0ZNMjVxTTZEUXZ5MFZfRk5SQWRsTmlpQWFhX1Q2UlB4cEhDUGM4cnc0TnJxS2VwdkVfczRNMFhWNXZvajhrU2gxRkc0MWxJVDN4SnNGZFVETzRxVzBVU2szanlWcTNHbER0cFREUlh5VU54cFA0c0YzWDBFMnRiQ1hTazhwU01RZFdHUU1sSTNBbWoybnNfcW1wakMzVlFlZXl1NHpKazJIX05jcGcwa0tFUDVVRWhIc2FxQWdUV1FvVEhPN0Jn?oc=5",
       "categorias_sugeridas": [
-        "Dinheiro e valores"
+        "Dinheiro e valores",
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22001,7 +22072,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPcVFoalBva1N2M3AtamxLMzdtWGxQNTVMOFhaS0R6SjF4MUNKbU5lV05uekgwNzNHM0RqSjR4UWVYeFNxaHFrSnhGSks2WUxOdW9VRUlNS2otZUNJRkdBaW9LNlRhNmVuX21WbTBoUVdVMTZsTzFXQzczUDlzaDN2TmhrLWRoUXl0SFhnSmRaS3pHNHA2ZHZUOVB6UWg0VzJGR0dyVHdlQjlFeFN3aVE?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22009,7 +22080,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxPd3VCdU9ZOGZLcUEzNFpOaGFNRFR5djg1c2VuV0JXVl81WDV0ZEZjdWt3RktadXF0SndWZi1mdjRrZkZmRVFPcnVBbi1vWWY5Z3k4OXVOSnprdWhxemZrajhYYTdXUEJEVW9uc2NEdUZMZlQtMjc2SWtlZkVxenZOT0dnSmZVOXp6SElNUzFRdDVnTV9WWVRMYlZiMzdqRDloeTd0ekVJU2lFMUxhaEx4WGhHWF9QdDN4dWlnSHZwaXZUcXpwNURuOEc5LVBBN3NjeUd3TTlxMklCbW5pdWNZN1JoUG40WENFLXVMOE94bEtIS1Uw0gGDAkFVX3lxTE9zYVAyMnJiNGhyYWhDd2tBd3pfWVRWWHRNc2tfLWl2dVU0MUs4YlNiajQ3clBsZWM3MEt0UG16N3VRRl92Y1pocG1FLXRlTTl5Q1VKWFBlVnhQZ1J3TnZrZ1RTR0szTmpSWXVkTGlWVHJCSWV2OExOSmxMaElGU0JMS2FLQ0FIdEVhcWRfUUtNcmRpWVlTZW5XMWdWUTcyWGMyWlhya3VVZEdKdWllQWhVWWZyZVFsYXdVeENDczRhdlhnZ1pKYmw5ampybllzLXJBdG9JZVBDekxob0lERExfcFdiQm1OdjdfNjk2NzhzcTE3WXJkaXZrdzF6N1c5Y2FvTkU?oc=5",
       "categorias_sugeridas": [
-        "Contrabando e descaminho"
+        "Contrabando e descaminho",
+        "Armas e munições"
       ],
       "evidencias": {
         "Contrabando e descaminho": [
@@ -22046,7 +22118,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQNE13VlZLQ1FsZzZadFJXZmV3QUZocW5FVnNTcW0zWEwzMUtZMXQ0bzZUZUNuT2ZScUhoT2RSdHBkdWlPdEFmUF9kUm1BSkJ3X0txYjZ1ZjR1ZDhFRUVYNERJY0RTN1RuZFozMS1CTkVCemhHQkhYQXVuVWdoYTkwbFVJTVlMZlZaT200Y1dCSEZQNFE1eUJTQmx3ZzZPNGpmZ2pwbTNB?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22094,7 +22166,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNSG4zZUJWcUVic2FmV1pVZmtsaTFlWFZMUjdxbXRiZjQ1WURTaGVmQkdaYXRpbEo1VlM4WUFPbzBXcVZrdV9WVzQ1TVVQODZmZElCWmJsUmUzQ09LVXhtS053ZEZrc09iTm02TExuX0EzZW9pUUl0SUN4MDlHUmZyR2Utd2l5QldFemstOUZKYlhsQkpEUmlCREVpZlNOMW5WS0hfYVU5Q2g3dWhwY3p3VmlnczdXZUJfaVQ5cDBvONIBxAFBVV95cUxOVzB6Zy1qMHY4QTdhZXJHYnZkbml4LXhyakpZRGM3Tlc1ZEZSWFk0MVphVUNLUXhKWHktUk5mSUlhNm11U25uN3phQ3FIZ1VZTkZRTzJsR3RpRzd6Q0hUQlM2WHVvTWlFTUdRel9SalVYZUR3SVdVTV8wWXBTcDNqdVdJaDRkYmRReUJHNmNOMzdOMmtnQ3BkYUNsUnk3clVGcC01akVabm5BQTYtNkt6eGV2RWpyQTdfc3RjdUVLWTQwN1l6?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22102,7 +22174,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxPbE9ZVV9tQ0hNUm9NSkZIcFh3WVhrdkQ2bGR3bWFFaThzUTRpRHpNU1ZFV2pyTThuUEkya3JEVFhzRzY0OHFoaEVTd3NDV1lVNnl4UmRueFFBRDR2QXFvYTRvRC1GLTQ3RktXZlBTdmt2RlhwSGEyMGRwXzlyMFpyTEtwSldPa3BpeTl1Nk9fV0RMMzVxX0xPY0hqcEh4RDVFSXBpYjhodTNGS2tROHBuMktDREVvWEVid1hmVlJMVUtkc3cwRG5nbl8tZ0w1UU1iQUk1SXBhUXM1SHVuUW9wWGExZmlNcW56?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22156,7 +22228,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxOZXFhOG1sM3hqampVQzFDZmlTZTNvdmkwbzV4dTNSY3FVelNNT1Jab0RraHhxRTItTEhhbWlEWjFqR28zTExYSWZrLTA4blFmRWZlTDgwY2h5V2ZnSTM4U1pGV3RGd2pJR0xMM2E3VHc1WlpKQzVxdDk1c3RYRDNsMFFhTEkxaXFWLW9GeTU2Z0J6UWpaV0ZjcXdGOEJkY2lxYnRxbWdLVnJfVTR1YkRiSzl1MUkzU2VtMm4taUNjRExVdFhrZ2MyaFg3WHEzOUxReXfSAeABQVVfeXFMTUhyRWJWc0JUTXB2YkRwUWs3U2hwYUsyZVhDRmJmZ21GNXEwS0NkMndmSXM5SWFsYm5wZDQyMEtwTkU5Wnpmckd2azg5TUo0dXQxeTV6cTFJZl9tWDhycjdwektGTEN0WUZBYWJ5akVCeXczbXFNWnJUZUQyQjNDQzZha20tZXFrVnRnOXZXQm4yQi1CWTk1VnNJMmdKVkNfTWpMeVhkUzFIeGk5cE01UEZoWGxQem9ha05mRVg3b09YbzVqOUJNbjZpenhtbTZRQUtYVW05ME5BMlB5VmE2NnQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22226,7 +22298,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQYWlMWUZQMHdHX2VYZzVpMkpSbTE0aTlLMlhwMHNUYy00Ym1iZER0ampiaVIzYnByTk5vWkNtQ1JpbG9lUGs4UjlpWklqbDJUUjhuWUJUX2JMSVBiUWM2RUlZZGVEZ1JzNEZnYkhtOHFqU09JZFlNWmM4X2xQeDB0V0FaU01BQnNwQy1tb3hvclAzQWhyQWhIMmtnWmFkUzBGZFE?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22290,7 +22362,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxQOGxlLUZpOWRaQndoRzgxTFNEaG14QWlsaHYxeTBYLVQzcnlGUm4yRWU4bG1za25ydEU5T00wV1VJekhxN205eEpwUkMySE1sZkVGamhwRnpOdXAxdWxwdUkzd0JKYzNDNjlmaW51VU11SHV6eVYyV2tDbWJteHRiSmhEWm9wWnFiOWZWRkp0Q3VXaFFhQ2NJZGhKRlA1OWVqMXQ5VTk2R21La0ZrYzZ1WkpDbE9VWG9pLVBuNkZsZlBIUjJiSk0zdFpEZlJGNUU?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22359,7 +22431,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPdHQwcDQ0QmFXaENMcjNjZUJCaTExaWUtV3BkOFdPRXBwX091YzlzakNoVU9WVFl0enhVMUc0TzVBNVdoWHh3cXJyTGlyVUR2dHZ1ZG9Wa2wyeHhBOVJkZGlzN1ZQVjRlYUhlVGpaY283R0t0bDV1cndJazJiNGF6S3R5RThjMEJRY3ctcV9Yay1wcnY2ZFZCY25uNHAtTkVDb21YbUpYQnkwNDRlUHUxUHNDM1Y4XzJpbVhoMElB0gG-AUFVX3lxTE90dDBwNDRCYVdoQ0xyM2NlQkJpMTFpZS1XcGQ4V09FcHBfT3VjOXNqQ2hVT1ZUWXR6eFUxRzRPNUE1V2hYeHdxcnJMaXJVRHZ0dnVkb1ZrbDJ4eEE5UmRkaXM3VlBWNGVhSGVUalpjbzdHS3RsNXVyd0lrMmI0YXpLdHlFOGMwQlFjdy1xX1hrLXBydjZkVkJjbm40cC1ORUNvbVhtSlhCeTA0NGVQdTFQc0MzVjhfMmltWGgwSUE?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -22371,7 +22444,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPR201MW00STMxVUNyRVlUOGVBS2Z6WXlNdUZpY1NBalM1bFB0SDFrWUJ5Rm92X3RnNkFSamgwTWlKdVNTWjJ1MzVfVFAwYkx3bnFjdXJXNG02Q25qNklUNFJBemg5c0NWWmRpbUltY05mRXhNeUJPRVdKREhmbWVqY3c3Z3BCTy1URVp3MjNhWHFSMDQ2amVxNG9sUdIBoAFBVV95cUxPOTJvSXF0VWJkRmZNMUQ2RTdjbEZpLVlzMzlsSTktYnFibnZGUUkteDZhMlZzZTBmRVhmNHJTM0hvLUg0MGFXbWNvZmZwSW95ZllGZldzcm54ZWZNVl9MY2dSMm9YMFplclE5UVlTaG5aa2VRcHh2bjdrTVoxcmxOUDVVSHhpdE9kbnMxcFhLcjNQdGF3Z2ZnbXVsRjMtckJE?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22429,7 +22502,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxPRzlORFJTRV80R3JZaXI3R01aY1ZWbTZRQXVUMnQ0N0hsMFJPel81N1BtNTZWLS15eEo4clZCRGFxSVBRUHNxNEFLeElrdllBVXlSMVBfRDZSQ3lmNnYzZzFpbC14SkFaYkJkMy1RbUE4TkNRRXdSNno2R1JoT25QRDhtM2hYNHAwOXJWQlFtQzFnazBZT05vZ0hoUllWTEpPMlNFMHZtWS1RUnBLcjR2b0FxdjQ1R1pkTkVMT1RlaVZHZjBhNXdoZV9SaVNzMmdT?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22495,7 +22568,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMijAJBVV95cUxPc2V3R0g5c3Itc0hUbC14X3R3TW9KV1BpcGVCVGI4UjF0YkJnUUw0MEdwdUp1cWpuQllrOE9leWFpUmphWjJ0N0ZiWkp0TnRnUzZ2Yi02elZOa3FKX0s1ZnFWcmdLbzhzTi03R2VaWXJLdzRMdmhaSTNtOHdFWkJOZFZZYk1hLVVzb2gzcGdBbTVDVWQxeFFPMm0xWmY5bDIwR3F3QmE3WEpQZE5xb3BmeElXOXJLWnBqZjZUc1JjNktwNkhqWm00bVpsT0tmV283YlRTa2hERzZjWUs5cmtacXB4Vm5MeU1OcXN5dzUtWElzTUlFd1VqTU5tZ3psUUVabWJkaFAyNEI0dWFU0gGbAkFVX3lxTE5NZFRPaFJiQ1BVeE9ETkxPSmhpdEd5MnZ2aTNNX3MxT1FZUXZPamVOcFJZV0JfZFVDblFFejZHVDQxNGFjSkNtSEtZejVQSTBBM3dlVGcwbDJYWF9TVDlNa2dVYk43eDlURkdFTzkzdTVfdmM4Mkp3U3BSSXpPQURVRk5JZ0puY3d4ZHU1ZzIwQlc0UWJxN2ZZV0xqc2VJRmNadTNpZFFHNGhWYldqYUdaMm9TTTdGczFmZEpuYTZGS3JTeUJfMnNQM0tNQ0tMRzdSWnNEQzJCTEhIZUhxQmpVTzNNUFVGTGhvbTZhWk41T0hTVzhUdTZyX3JmdmZGVDV6NUVzU0FKZ1AtS1p0X3p4aUlvWkNZY2JEVFU?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -22570,7 +22644,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNMHpJVlVtcXp6RTZSZkVuVUFBX2tRZjdDV3FrSDRRb0dTU2FSRFNhZE1pLVZuTDRnMzJsUGxFVHRIbFVWVWViWlFRSVdBVUN5aV91WHVnVUZtVXE5UEM0NTFTV21zQlVCdkkxQTNuQ29TQWZoRzVLZHlPdmJuM1hGd2hNbUN6UXNQOFU2SXZhdUpOMzRXQktON0VBejd1eXo2YjhrZUo3VFRJYy1o?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22635,7 +22709,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxNY1MweGxWTGxWZzF1LU1DeDlBeU4zanRHS3A2NjVXaHBpTmV2bkRoWmNKLTJ5WmdIR3hVWUZzMkFWYm9uYXpkZU50Q3doWlZMWm1ETDVmbW9raVZnUE85bXRrWWdHN0NkSXM1R25mZEc2dXZ5X19sTTU0cm5BQ0lUbWczTFpiWEIwYnJEeEZ5ZmI3blpxaWNYMlphLWFuaEtTMXdIOTFYMGZQbjVzeVNSbXAzeWtDU082RDFjQkJlMGRnQXk4OGMzT0x0cEdZanNmaUdHdDVkQWVzekwyVHRqdXQ4Zw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22697,7 +22771,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPMGw3TDhGQkg3bTVJaG1JRlplLVhJY3E1YTc1eHRON2ctTWVmVERDR3RsZ2h4aGJ4VEdOUWxBUnlzTnBFQnJUY2ZwLUdENVUtMGsyR0U3dWhRSTltRzlOLVFqNTNRdmpuSkd1NHBsZzBQNzU3bjJZRW5Ca2tUOGlmRG1VelNRWlJ3Ym5IWjU3TDBjOGFFVHhYYTM2amwzcWxycEs5VVJOTmFlX2Z1RWI4Y0x6dExtZw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22790,7 +22864,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQNUxfRWpSYkZDeldnZGtRTHBweDZGVng3TEMyMV85Zkc4TXhXNlJ5SkQwOGpOUWItRTIzSlk2c2ZSWktBcEh6ZWZrTXJLakFIYTUyWEhBeWtiUl9XWEhnWkNkeE9DeHdxVnVSWDlVTHM3ckJveDByb2h1b09ybk4zaXFmYk5keGfSAYYBQVVfeXFMTTZrS01ZX203aEd5V3NJV2dHcFBSTldkS1dNOTlNZUpXdmdCZS1KRUE3WWhESGxMSlJuNy1RYU11a3pobGY1VVpRSTBwRHZ5YUhZS2U3VTJtOGxqSW1rWTdIWHh6WDhzXzlaV0ZDWHlVOE9Za2paSDh2X0RaODdvQVhuN1lVelE?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22847,7 +22921,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNTjJmU1Y2LURXblAwWFZGOFlIN1Z5OGlaa3U0WjVEZmZaeTAxLUo3bk5mRVVubGQzTldiUzN6Y050d09EVzJPNTcwdE54bTdrWUZWLTFrLXJJc1ZDOU81VTdMN0szU1VPN0FwWFZQSk0yM3lPLXhPM1hCOGoxT3ptLXhPeUtxTHJrMHdDUnF1MDZYNFdaejctSG5yLUZ5LXV3Q1AxNm00UnRCYmtKYWY2YlZVUFZUTWhUQ1A4OGlFeDR2LVVOdmN6cUpab0l3ZEJXV2x4b1NkYUszdjlleF9FV9IB7wFBVV95cUxQQzdIdmJNdV9fWk9mTl9WQWNGc3RIbnE5WUJfY3lIVjVPTnZrSG1HQzg1Wmp6YUJoWEFCY2hVMTlfN2VScTgwOXpOUEJYYnpzdDBHNk5lSDRCUDhIUWhrY3I1SjlQaHZYVGFmd1g1SVY2NVV1Y25feXV5UGV6RGR2SDRQQkN0MjNFNk91QWZWWGJpaEpMaVFEcHhJTjd6RmRnaXlHSVhoUFVOaWhvZ2xZM1RMdmMycE9UTGNlMVRsQzZ6TElVSmtpekhkdjFqeXZYUVJzZkpUWXFxbXlGUkhxbEttNHJqRjV4UW9SRVhHQQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -22945,7 +23019,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPY0ZDNG96MUJ2MjNacmQzejJMSW9qVzJlT3BCY0dKMW5LclJCcHRxTDNFUXRyUUxRY1VxU1NPLVBGUEljLW1ZNmtpSzJsTHM2ZFZWSGVLSHEzZE91TFExekpPTVZFX3NDbHRfOFB3SWpaX3Y5QlRyU1ZOb2FEaGNQOWxyajVKT1RxdlBjN1lqcVFhaVNUX2J2Q1BJMDY?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23006,7 +23080,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOMmVWVWRxd0JYNEowXzhqWTZzQjVmdGVxYjFlekJ0WFRvRFVyRkwwa1FzRjlYVmtZNFJxTTVYZFFLYk1LMnRucm5nMFlyVllNdHdub3pnaENwTGt0R09vU2o5TldDOEVZWVdQX2ZIQXZNOWR3Q1pubk5Hdi02OHRQWjBqQS1sUWZOMmZ1R203VnFTVXgwS18tTk56SVN4U0dsMDZ4Xy04Ujg3YXJlM3RFVmcxWQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23137,7 +23211,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxOOHpSc29FbzVydUQ5RGFVa2VDM0stNkozczV6Wk93bktGelNxRnJRRzd2T0tPekVwUnB3VlFiWnhFdWVVd0llWEZDaE96V2RiRk1vTDBNOFVZLW9GX0FfZ09GOUd2RTdSdUJOajVmNW5IYXFpa3FtTXRHTk9LZTFBNGRtaDZIVGZLWDJCbW5BaHJWNkI4aWFsTmZXQWxFbVVWRUpSZHJRdWlSVzNzODlzREpiUmJMQ0ZaanlIYzVpbzJsOUhGUVJ0ekJ0bHJwVEtRMWtJWXN1dDJMc0ROUU5SbEZmR2tOTzJjc1I5N2ZPcndoZnBQWGY4?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23145,7 +23219,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQTzRjSTZ4Tkltd0VSM18wdF9aemNXNmQ0RUFhYUl1WVpEUDJuZ1lndDNpbnBNWGw5V3VRSUpCdjJOVmV2X1pVQ3YxRG5QTTk1OXcxbjJwOUhjbVBfYjJGRk1Jb1cwQmM1T091T09QOVBfSHExYXpfT2RscWZITW5wY1U4LVZsdXVPSGc4RlpEU1hvTDM4OTByUGlZdENZMmpBcXlraGstcUh2MDZZRV84ZFhTWGR4M3NYRmQzV1A1UFY4WjR1bGs3UEp0NNIB2gFBVV95cUxQTmlDMVczUE1qMmloLVBZOWd0V2JwalRZa0NjY0VlU3djTkt5QU5aRFpJVHQyNjVaRENJcU5rRm9WdGZDM0lvUU1MOTZMTVp0bENOektTVlk1enFCa2xJbVpUNWxlNnpTVVFfVlAtOGJHZ3o4OHVrZml0UkpXeXRoMUlzQ2NtZU5KeTMzMk5oaHFjeEw0NGlPUVF1NTV5aUx6Wkp4dWRyckY3dnZmazFUQThlY3d6Zm5qQ0lORk5VOXNKSGc3Y3hLeVJmbTdtTDBDT0pFOFFqMmtJdw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23153,7 +23227,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxQLUVfVno0NEEtZFVFMDdmcHhpVjZBZjdCeXFEMjZtSVg0TFJDQ3JJTnc5aUVjRkd2RFhwZXlWM1lCX2N3LWNrZTRCcVJwbnZvVVp3SXBfS3I5dmxSUXVXaGdPd1pfaXpSV2xKYzV4MEJMLXlyLVY4aU5mZVlHWWtTbXRON2tud2M5bmNYaE9ha1ZlYWVIaTJud2NfWDdHT1BHN19lNEpJRVE3TGp2aHhnM2hPaFVTelMtc0gzY3JEcDAzVU41aGJmcHZDZVZBM3c?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Armas e munições"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -23212,7 +23287,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNSmlsTHVkUjkxaFA1V3B1aVcxVVBfaVpPRFhnaDk1bGhyY0xSZDNTbkxwNE1uVFJTbDN2NzQzbnFHamk4elowRWRhUHNsbExpV0ZVT2lmcV9JaHBvZVo1MVhfTXJGX3hYTHFiQVR1cVVYUVJfQlA1WVRMajBacnB0MGFDV0xmcjBIWWNOMVYzb2lxdUFqLWptOUhsWkV4X3BQd1VMOUxES3BHWWhBT1RHRW13?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -23225,7 +23301,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPbk44NkcxdVJUVkZFSDRkRFN2LTlhUjBYVk40NHlMNnhILW1rUjVOX0Q4TFFsQjVxbHRENTI1NWstVWN3ZDhGYUxSTDFLaDhtY2d6U0FvRlFBNzhkX2VFNVUzbnZVNmpDekVtbUxBN3ZNRFhwcVVoQ1lRQ0NiS2FBUkhkSlVKQlpwV3M3eGx1VWkwcy1ZdXdBY0dNT1F1eGFMYmdPVlhTeUZfY0g1TEVGMGw3V1RHMWk4djltT1U4OGNCOVpRd0NFb3hFSEZlaUVpNWc?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23241,7 +23317,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPY1JMVnNuTzk0RTRqWExTc1c5SjJQQ1ZDWUJWTWJYOHRxOXNkY2x3eHZ5YjJEc0d5UFJHclkxZFhaalJkRXUyUEkwR19ZOE1GM2FGUTFfUHN2Mi1rd2lqcXJ3MWN6SXI5YTRDYUxvMUJkOXg5cDVWLXZfbVl6OHIyczBzWTZZTVhFOTE3ZUc5TWJQZ1RWa1gtLQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23249,7 +23325,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOeGdxNE5lRTFiVTE1OEJ1cGFKbjJaZHRLM19uRmJaS2lpanJkbUltZVg4NzRJYjNYUEtJTnFSdW1SeWZLUi03X2JKc2FucUhfVFhfOTJHQ2pRTEx6Nk9CR05pRlY4TkpuVEhQbzlIS19RbWdfSmtKbk9DSVRpeWRVN0lERUlYTHJzNmUwMGpLWF8xMWFsUjJvWjRUOENwU2xEbzFtZWh3bXNCcnZPMXfSAa4BQVVfeXFMTnhncTROZUUxYlUxNThCdXBhSm4yWmR0SzNfbkZiWktpaWpyZG1JbWVYODc0SWIzWFBLSU5xUnVtUnlmS1ItN19iSnNhbnFIX1RYXzkyR0NqUUxMejZPQkdOaUZWOE5KblRIUG85SEtfUW1nX0prSm5PQ0lUaXlkVTdJREVJWExyczZlMDBqS1hfMTFhbFIyb1o0VDhDcFNsRG8xbWVod21zQnJ2TzF3?oc=5",
       "categorias_sugeridas": [
-        "Medicamentos e produtos"
+        "Medicamentos e produtos",
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23309,7 +23386,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQcnZ4SXV4UzZFTWx1Q2xYUWkyWklUWW96WjRPTGY3LUZlYkp5MnNCQ3oySFhabEEtZWdJSlhnaWE1aHB3NXgxUXdabmt5d3ZhaVI3Y1RSMXVzRWlYUHhmZVpSYk5IVWVMZWtNa2VELWFYblMtakVBT1JLQUVROVlPVExjeXFqVFQwdlBPZmxZODFMbmlIV3FsWmNCMF9XRlFpd3ByWGhRMDZHQVRHejUzUFNsNVAzTmpRd1VBTzh6cWrSAcABQVVfeXFMUHJ2eEl1eFM2RU1sdUNsWFFpMlpJVFlvelo0T0xmNy1GZWJKeTJzQkN6MkhYWmxBLWVnSUpYZ2lhNWhwdzV4MVF3Wm5reXd2YWlSN2NUUjF1c0VpWFB4ZmVaUmJOSFVlTGVrTWtlRC1hWG5TLWpFQU9SS0FFUTlZT1RMY3lxalRUMHZQT2ZsWTgxTG5pSFdxbFpjQjBfV0ZRaXdwclhoUTA2R0FUR3o1M1BTbDVQM05qUXdVQU84enFq?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -23349,7 +23427,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPSld0azRKUVhhZ1BGZUR3VUlZcmJKZVByYTFBZGk4WWxzVlBNNko3MzNkX0MzVkJtNk9fY19mSnFLblAwNUVnb1NvdTM0a1lMdjU3REtRRHIyQ2huTzN6RUNvOWFsdXJvMTlfTVhmdHJkQjNTZGY5Z0pyNmNBMjdNdm55ejBDZkZvd0hST2ZyZDE3cENOZU4yYy1QYXg5S216SWRNTmVjcnFydw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23395,7 +23473,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNTWRUTkdRMVQ2T1hxM0FBdmZFdjU5VHd0TWJ2emVWaGNSSG82WTVjdVNXVnd2UU45UjJGOG1ldTI1RjdNcG8taEpFUlRMMFRLOW1hTUNYaDlWUF9pUTlmR1ZRMjFaRDJWM0Z0U05vRU9xdlRESEV1dmtPNVJ6SVV3N1NPb2tvNXhXZWYtNG5RT0c5ZlRmaUNGZlhUdzJKZnZuMzlOMVh3Tk1nZF94azdLdXoxSlV3Z1dxN2VWLdIBywFBVV95cUxOaXgxQVAyUnZkOE54VndZR3o0RjZPeDJfSzlXV0QtdGNGRGtkZmtjdkVZSmVRN09JdHVHLTlvVkFiSkRUY0x5bmVtczBGcm14RWRubUlnMWlwODQxZmFoY1B2UjRCYkVmazhjbFZjbUNTOFJMc0xETFJ2bEMyUG5vQk9scFAtNS1CeENtTVdqSFVzT25DY1hZZjFMME4xNmY3WVlwSWhFd2ZuSEs3QmJuQjhCaElZTzFQMVFHRUVxS1pfREJ4VFR5N0Z2QQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23403,7 +23481,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxNVThjOU8xMl9MQUdEVFRTcThGeUp5UmZ5dlMtWHZiczFTZ3otN19HbGtfa3o0ck01XzJ3RFVhdkVUZjhWVUs3OHlpTGlleWo5dlp5bG4yRGVlX2xEd3lqR3BCNUxXMmx6V2N6ZTNGMGJZVlRMUzFLSExadVJyM1dmMlZPV21xQ0ZYTnN0Y3kwRXctMkN2YTFlbENyUGtaR2NTN1hKdUVtRGY0ZGJLYTF6NVQ4WU4xb0QxWG1QdzBTREFFdGdPNEVFUVBXVkpBMzBramhab3V3Yk51Rl81Z0FqcnNUVERzRXhRd01HRnhtNNIB_gFBVV95cUxPUE5YN0x2NzB2WWJ5cGpLYm91VFYzUjM3cFpBdW83TzdhaXo4RlVrUGJ3ZXk5ZzQteDFXekZhRTVGNkRORklCMmFieHh5X3RNZzE1bWtoaUp2Zk1ocnhEOWtzN1BUVzdhQkE5cDRva0htSEtoZnN2cTlfazQtbVhvQm0zbWNMakVyc2RRNVVmbFhReVM4dlRBNWlYSnJKLWxEcS1wQW9ObDgwV1YtZFR4YkZ4el81MzNQZXZUeWxiWmkzd25aMmZIRzN2ZWNxUFAzVlRqbFhCb29jTnhkbE43OWVWdjY1U2VGeW9BQThjOGhWVXhEQVhvbHBLWUdtdw?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Armas e munições"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -23486,7 +23565,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQd2tkX1VtWlQyMXpjRW56RXhNc2xKS3pRNGVGTVVkMTNrX2lBbDdkOW1xUnRDajExUE1STGJkbUI0UWliSTNCb1QwM2FPUHpHeHlMdnV3NVo1d1hxelliYmFvWjFiV2RDYUJZUk1IT1ZSX3pSWUh5VU1xMWxIQzRLYUFhRGM2LW1DQ1NibTJCZkVlazVTNk9NSEpOYU9PZGZ5RFNKSU9UeHBac00wc3VJ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23502,7 +23581,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxOTU1UVjRobHJXQy0xVXRxQVNWMGhwbkRTMm9LOWJMbURkQnFaYUJkWjJBN19lOTc4X0c0S2JQSUlkZWw1OXRTclVrSjV1dHZvc3lyVzNhcXVGN3dScnRjcHdKMjhTN0VVX1RRcHc3cDQ3M3NVNmVlelN2RklqWTFuZmdQMEtaNy15OXpCbHp5Y2V0ZVNNUDFiT3lnZFZ0SHBLbFhVNmoxenJqT3RRLThjczlVc2Q5ak5JUTl0YkxwRkRaUkxjaUQzTXRla28wREJwdU5udzY2NldXSzR4WTNDV0hxbw?oc=5",
       "categorias_sugeridas": [
-        "Dinheiro e valores"
+        "Dinheiro e valores",
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23554,7 +23634,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNaFdXV3NJX3p0cUNKZEtzZDdqRHZrSzFTN1lZU1l2RWd5aE1tSzVrVGljOGpuZU8xY25IZmxvRElpQjF1MVV2N2JzV180LU1SS3FHcWhCcTZyOWtmLWlTcVhQb0g0ejNMUXhUVDJJcWtKaFVxVEtvR205bkc2UV9CTmp1WG1QZUdzU1k2ZndpY2lYMDYtSXRXTWx6ZDVaYS1hc3VZTjdpcjJaTnVQWDR4dVI4a0Z1UElfVEh1Mm1LN1dhUi14ejd0OE9Qak_SAdsBQVVfeXFMTWJGVDNIRl9nWFE5UkI0OGxBRkxZWm91Y3I5dDJrbnJ4QVQ1aGEyMnRmTkk4MGRnaF9NTW1HelhsWTh0NjM3cklsWnM5VVluZU5HSTRiM1JjTUZSRDFuTmVwNEZEZFBGcXpFS3RrODBzMlhoZXhzQVk5ZkIxSkFncXY2dVhqZGhJaG0zcXJpNXc2ZkNPU3BEb3ZHYlFKZHZLaVVEQlNQQmVoQUtNUVNDUE51RHNHbUgxaGpkb0JGaW0tZnQ5TzVKdlIteF9tTEFNM3lIZXdnTFlCRTNJ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23678,7 +23758,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNa2p4R01TRVlGVm53U0FXVlpmZElwUjhjWEc4bUh2ZVN0T2hrdlNET2xib2tpV3dGM3pObWdyNFBSMW96Q2lQNDB1OWxXSEQxOVJpb0YzSXhVOTlKM3R1b0dnT0taSzBLOFlibXlPQXUyd3lnbHJ0eUxmeUtEUDk0UGNKbjBVbTlUck85NHpSVWVhU251UlkwanR0dXpMTjdCM3l2MmI2N2JJZTdXbjZIRkxtdzhwSlBvWFE?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23698,7 +23778,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxPRUhQZzlfdlRjWW5zcUxkTHpQcjg3NWg1WjJpYVkyU2doUW9BWll6cTliZUJpVGdxdUpUdEIzWFVqVktMWXZ4b0VLeGI2d0ZuRkFMcGI1MW5IMTdVX0w5Y0FFMmwtZlhhZjVNV1Fwek5kX3pOODJNTm9hSnh4N1BJMUo5cVJNX25fRm9adUNVYlkxcEhYcm4zVVRRMkgwbkl4TVZ0SFY4OUp5eDY4NWVZWVJsazItczEzS19FWGlJeXNvZ3puOE9uT21NaGdzQ3B5VnRraVgtU0xsQQ?oc=5",
       "categorias_sugeridas": [
-        "Dinheiro e valores"
+        "Dinheiro e valores",
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23755,7 +23836,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPaXFvMFJQcGl2Qlp5VDFBZWFZWkc4TjBSU3VGYzkzWjJjWEVvalZ2NEYxUENqUEd0XzNyOWlDaDdXTkJvWDlpaTM3Y01YVWRZc3hsY2NkaXBwcV9DZlRvTHkzYlFkYzlPSjZZTHFwM2x3UlVPMXFEelhOcE1zYllmYThyUGs5SGxQWXVrT2doWS1DNTlMNzdiTnQyeWlTejZGYzNtVkN1VVBNM0NhdzBxM0pfdkEwMVVHa0RwZEpOSXpwRVExOVV1d0dDY3UtVFRQYnJWWG5YVmpSOGJrYU1tZdIB6AFBVV95cUxOZDNyUEc1TnNTMzZLeS1uV01YMXpZX0pjaVBCU3N2bDZITnVacFBhQXNreWxnd3VldnRaSEdaVDdQVzZMY1EtRnZoYmtQYnJYbkhfTi1EYnZtTm41UEx0QzNmOHJXV2lxaVRBYjhQcGZ2NXhfdlQzcURZbmxkZVBvSkgwTWFYbVk3QlN3ODRnQUpYTXhqbEJOMXY5cVlrRlBaOWhMWHNxMy1RY0hEUzFYbVNYVEZUZXVkclVrU1A1dnc5SXhGVGVtdHY4OGNkWmJDSXY0UzFuc2YwbXQ5UmExbnVrVjlvRk9X?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23809,7 +23890,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxPbjhwVEdhWGpocFRVMFVmRXlrTFVJU3M0OWVROV8zZEhSbEVWOVVKTklHdlRJSW9wZTlVS1JBTS15S3Z4dWFsNXlrZ09tVXBUVVRJSHdrZGIxeEc2N0F5Ri0zOGN2WmdpU2pyUWcxUVN6VTV5VTZPWjZqaGRzdTFKMV8yeGFZeldIQlJUWWdISEE3a3ZzUWJUT3NqNEFIYm1BaUN1M1BOYUtvd21Za3pkdTV4aE5NZGlJV09qbm5VamhWVGlTOUdHQVhIeEczYUtURm96Z1puR3JXZlhiek9IdVI5bkdRY0E0M0V2T1pDU2ktaktGNFE?oc=5",
       "categorias_sugeridas": [
-        "Dinheiro e valores"
+        "Dinheiro e valores",
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23817,7 +23899,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNU0hUZE1obmFUanAwUTlmclQycTdpWVl3QU9ONlc5NVM2aUtuWnpRR0JoT0F2d0hmd01uanFyTGdfenlkQjJBZzhKREdoMWN3TEZHRmotRFJ3VS1halJTeDd0ZFdmWHpyT0JFV3JNek5Yb1lNc3NYSUpPeWxIQkF4dTRlQlF0X1dod0p1eVdkQzEwX09DTDRJcFc1Ukh2ak51a1ZKUw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23890,7 +23972,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxOUXVTcU4wdi04S1Y1WHdOdXAzdXZfUVNWU2xXWV9ZeTZ2Z1I4bkNmNHdzdUZIbEZkVlMzaVR3S3RVQzloRG5Wa1B6TWtTdXdSRkJNbXNQSnZFOU1LckU0SzN0SHh5aHlrZG1qMjBDVEJZdnFVQVZmT0o5TldZYVZ2WDVuUG9Bb0dWNG5VQTNuZEJzcUhaNGR6LXkxMUdwaWlTTXh5NXBDbi1hV1QweEdNU2swSWVQcUxLcWJLTnVUSV9oMm1CWFdKbElIUVptZkI0dkR4MGVySVMydTTSAeoBQVVfeXFMT2o3OHk1WFdwTnM1eDV3SEF2clBYVkxNUlhhREJDYVp3TmdWcVhKQmplWTB3Vl95UngzT3pvUmRkcEx5dnFOMHhSemNWZEswNF9hdEF2WjY5V1p5SXBDSWZrTVNTQWZ2Q0lYOWFwbVo0WV9POFhJREczaW51VVI0OEMzcjBJa2NJYXF3Mk1OY2JPaHJRRVNoTEJNSS1TQnRJWUowcGtkeFZCSmEzbU5pMTRQMmxYQ3Z3TmFXLVVxVUlLRmhHd0l4Z0FfWHNtVGxVZy1KS29qVnNjbUdjZlJQUVpLa1ktWmxYOFdB?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23919,7 +24001,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNb0d3bGctZ01vNy1YdWZyM0hCblc2R1BLbUVUV3hYdUVSZHU3Qk9nbWpQVG00OHRXV0FlaFZNdlhNTVQyU0Z5ZzIzWTBtZElXanZRNWgwRFFzMFFqc1h1VURaTExPajcwQmg4Z0RkM0xaaXNFRzhaU0pGckhTcm9yWC1SRGFlVmdjWjMzQzdDRGgtaHI3ODJtT2ZYQ0g2ZnF1X1drQVdrUHY3YVNlTkxrZg?oc=5",
       "categorias_sugeridas": [
-        "Armas e munições"
+        "Armas e munições",
+        "Drogas e entorpecentes"
       ],
       "evidencias": {
         "Armas e munições": [
@@ -23972,7 +24055,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPMzlvWGl3elg2U1hzbFZUSkVpUEk5RFlfUDNVSFZ2WmtBdkdKMjJoZGdpYkFibnFNQTA0NTEzR2tsUVZvNkVTOFNRb0xXNFM5NFRWM0FHY0lwMmJwRUZEU2NnUHdIY3RNZnJjR05ndFFMWmxabk03WElNaUZRTlp5RXBIZV9iVWwxeDdBZW9iQk1uX0I3N0JrRWF3b2d2bWw2bGZWakw1dDlvcFJOWFI5Xy1leTZBQTFpT1h2UzJLVS1ZSFJyamIxNTJ0ONIB2gFBVV95cUxQZFRJdHNrU1VucXJfT3lUUmNEX2RIWUQxSVl6SGY0TjladVVYSnYzaFpRLWpXVDV5ZzA0V1huVFJNNTFrWVQ4Skl4ZVdjNHhEcEVWQ1Y5dzNaeXdnLWx3VUhPZ25lbXRfN2Q4a1ZGOE5aeEFSVFVCZEpQVXl3NG0tblhKN2RiQkdPRU0zRkdPcEVCWldMeGYwdDJvSzRLMVFwMzZudWFXNUE2bVJIdGg5T3ZvNHJEdHNYTVhnQ2htWnRwZjZPYTJheDVzMzVYSWVzZ3pQLWVGaHNmZw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -23996,7 +24079,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE93NDVoajA1UUdhZ1VjUUF2VEZKbFJaUVBjWk9PUlExV0pWNTVGdmVxekM0TlFIQkQ3WWs3VGM0X2ZSejRYcHNkdmctWktET3FkblNDeUhOemVNcFA2bFdVbjVCTHNsb2F1MUVhVEhCZjZKdk5obzBSaktWMmxnQQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24004,7 +24087,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMikwJBVV95cUxOM19nQnN0RlMyU2NiNWRHVWdhaVZDRGVfZ0N0MXJ2TkVmQmE0bnIxSmp5WTVtU0twMmtESURUZDNpLU9WWC1mMFl2ck9pM0V5MWJ2c0dqdmtJVFFDMG5rNU1JdVhORkNQMmFmcUxXVnZLVVloTWIxcXpHWFU1WnA1WEh3eDg2R0s4VW5MVnVESG1VcTBxZ3luLVJDTXAxMm04cTk5WGRTanc1WTZiNGhfX1RkajlTci15c1cxbHdDdTROUG94YU5CaFpBQTM4U3NxNzNkRzhXbXRReGEzSHF6T0Z0ZGdFOWZ6VUhEUUs0TDJaOFZsOW42TkNEWXU1dk1fRTIxNGEwZTFHUW9HSmwzVVNwQdIBogJBVV95cUxPaU8xdG93MUNaNXhDM2R4RDZCQmZxT2VuclBjNjJtM0ViSzJfb2ZuZnlDaFVUT2hHWV9pN3dMbnZsUVdVeEtwYU1rdDVRREVVU3hOcDVmZnBCOVRqeXEyRW5ScHZXV1ZKUjZ5UUEwb3BDM0RRQUhqc3h1eDlyaTEtTk5JQU5HS1JyTGpKMDF1akdRbWh2ZVN4T3BVemVBdnhHTDhLM2VXY0VtTXhyakpxNFc3bndPdjFHUThqZFV3QldlM3BwLW1xSFIyLTlPLTJVeVQwWF8td29USXNzMjVMMExzN1pwV0ZoZ2NOaDhSVERka0N5R2M3UFFMRVlVSUZkeGRkdnFyZjdnbFJ5d2ZVTktfZFpidWI2NnpJd1hQM0lyUQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24044,7 +24127,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQY2dFaTFmenVCbi15Q3FtZ21xRUpHazN5bFJIZGp3NUJnbV9vcUxsRHVsRGJKT0JwWEFMV1E3bjNXUEhpZHJ3UDlPVzFzanBlU3E4NG5UM1psT0dTUlFXMXY5RkFsNG9jSUQ2X3NxZURJZUZKeWZTX3ZCYnN0TWE1bjgwZDNIUTRmd21ibkJ3LXRRczZTXzlBd2tINTlKWllyS3JCNi1YOTNkMkFsUWkwNzZZdUx6Uk9BdnNGWF9Qc19SdTF4dTlGVQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24105,7 +24188,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxOMWgtU3Q2WHJibmsyVWhoM2JrOEJnVENYRzBHU3JNU2JTTHVPckwzeFE5UmVmUGhuWTRYYlgtcV9WZXhEQWtSN20xVW1iVTFJLWpfSkdRQ2F2aFNBLWw5dkRUOWRNMmRZYW55ODFaTDJWRFo2NGJCUzdFVlU2WGo3emhaNk1nS1VCV1NnUFV0RlFKV2c0N2Nia00xN3JTRDkwSlAzd0MzUk5pVVZ2SUxzUXNGRnIzbjRVTDRrTnZMYTRTNllHQ2Ryb2kzRERXMmctWm9BMTB6UUIxdjFIYXEyaWxn0gHwAUFVX3lxTE43NTF5RURqUjZGTE91bFlTMW13VkJPQkM4YUNSOFlULXRMYXBpYTEyRGhXNVRPV0lfMDNHaHpNRU1qWk44Y1dSVlpNN1ZjLXBnUHBvd3BQWnRmLU1mLWJueVpVWlo2RkFERmpzbjFDSWo4eHJFazVSR1VxMDVxZWVhSW5rUEt6UHhSY1F1RXlqMjlET05UYlhjUGNNcElHUENzQklZUlRTZ05uMWV4R2dMb1lIU2tzY3BxNDFVZWNpOWFJQm9RYzhsVG5WaTRsa0NweVlGaEpNN3NVYWd4NTBSR09XVEFrSWVqVzliaXlzcw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24113,7 +24196,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxOaGVVNWlpZ1VMdFA0d2t1WV96NURlM0xMUEtMU09FZXNOZUFVRUQ5YUxjQ3Bvc0R4ckphTDJWampSLS1KVUZ3amcwSWhNYTZDU2hKY3JKemRPVVdrQ1ROUTUwWXNoREpaN3dnVkdOZkxOOEZhSUNDNzVNanRBeEtmWlM5T1pmMmh1dWJ5M0Q2SWhjbDU1TjhvUmVyWDZGdUg4Q3VFcFRQNEVuell1bHZYcnlpRWhpX0hmd25wYUFfM2lqRmlIRnhNTDJoQldqOTRiMGZtdHd6NnN1UdIBiwFBVV95cUxQUV9yOW9BRVBKekxOdElxY24xdHdKN200Sm9ac2ZaZUUxMERsYnRfZkRxM1IzMTFaZW5iSnFhd294MVRORG5xeXZUOTVteEpiSTdlNXN3cXZhT0NEVEdyZWRuekZyLUdWeVJvOXBxUS1pelBoWlNvVi1BRUZKRk1HVDFoMFV6cWRyaWRz?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24178,7 +24261,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE5VVHBZb19fRkdiMHNrM1lDOHBxeTRhZEl2U1lmYXRpWW02Yll3WmlyWUFrMGxLR1dVSHlJWDI2M0Mxc19NRG5kYnRSaUZMNFdsbUVFMWQ3QldNZ9IBX0FVX3lxTE90b1o4SmRiWFFVNVQybmJyTEM1czdCdWoyX1lPTVd1S3hhaUtRTVhCalQ2ODVVTFctbWJQTk56ekE1Q2FfSE5VaXVXRmNGRG1qd3EzNjVna1EwXzVOMU9v?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24230,7 +24313,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBlbzNiNkJwUlhMRk94ekVjLVp2NFc3NXA5UWlVRDVaLWFaM3JZSWcyR1VsbFNQTjVDeEJJVDFkbnBVT25iUWppNkQ2N0hkY1hfQnNBektycw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24282,7 +24365,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOSDVSWFRiUnlielJjYTlONW1oNnBuSnRFekFCZGpHc1JSTUYxVU80dGdscFRkQXRibXNjVnZQYnZuYThxRXI0VlJ0bV9pX3Z0MmMyLWRMSVJrcGxCTl9ERU9zTGNWNWFXVU1ZWFA2bENacHdMNjhCbmFGLVlpeE92Y1VtZFhhbW0wNXVwNnYyRVNkbXY2MGltOG1GbVdHX2JlbnE3Rng4cmxyR0pFOFFkS0RKVVpLeEJaenRUWWNIZEJ0UVBweVRJdFh3SdIB2gFBVV95cUxOTEI1WVVwakdGYURiWHdGZ04xMHNEZTBFNkpXWWtzZjRvd1lHVmV0RjZiV1FIVzF2UWFlVlBuRXNBcDJjeFdnZF9BNENSOVJaZ3ExR0d2b2JYcjRWMmlEdVItLU5YSE9DemxETGdheF8zczNDRUVMZXpRenltbXNUcHB3a0VuWlloY1NIeDFNRmdic1pSYkNsQmJQSGlBcU5fd3JFZndiQ2JXeU1qNzY1MmoxQmlOWnpOOXBZVzZLMVFJNTRzT0JDSUNvQ1BmWURFdVNCdk1qV1JHZw?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24406,7 +24489,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxOWXV5RHVici15VlFqclRmVnhXSG9DTkhLUnZRNkYtQldHaFZHUTdlLTdhVFNfSzMtQkg5YmdoaE1NN0tydXRqRTE3dU9DZkt6cGNlbldaMUZCZVdTWjJ1ODZINXNrUzBXZFJQcEFPSTYwQmZ6YjhrbFFZNEE5OHFOQlRvVXM5SG1XSXZLQUdid0txUVVKWHZmZldhVGRJMGV0VjRfZFduWE9ORXVnRDJ2eWJadURva1lic1RZZ3M1TVhRWFBBX2VKYUdmUWx1TTNaWXEyLWZCYW_SAecBQVVfeXFMUFEwTnBGVlF3cVZHZldpSEN3UUlkQVdzSG5GVUY4R3BtMkExWXAxdHAzV3VSWE5Td2JhVnVkUVdwQm9xSnUxNmU3NUdEVzg0enJiLXRIamlERkJTM2prMUo1Wmhqa3AtZEF0NFhiR2NMSHhabEVaTzBRdk1jamNkLXhkd1p0WXhTRW9tZnowU0QtMzZISGVQcU52cHBaZEwwcFRCRkNfRnVxNzdlWXk1REZhREdGSEpnekFKQzN6U0ZoYm42QUc0WkxwS1pVV2UxSXdXWDNwRHhfWTZER0NqaV9TdUdTM2hN?oc=5",
       "categorias_sugeridas": [
-        "Outras apreensões"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24468,7 +24551,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNSV9Ya1pHMjZhV0dmZnFtc2JYQkxnZ2czcGtOMzUycG1HLTN3b1dvNGZfWjhHT1ZIMS1qVDJIdFNfZHNSQTVmOUtmaGNQOHRxOTFhcnJpRkt1NWRqVEdIQnRUOXRqMEJMR2dIS0N2VTRkOTBSck5QcnItUzd6VHZrOHNoRmp2RXdfUjhNOHZBYkZyUXRrQ1BOR2lVN3E?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24517,7 +24600,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNRWFPcS1WYlh0Nk50V2RZRlM3RVNNeGFIZG9uckk4S2tiM2N5T0pqT2ZnV0RMZHdCbF9JY2wtMVU0TklIaWtNUWpqOE5mNnBoZ0JaUDgtQ3hDSkdlOGhsUVBmVm9oWU40bUprcUo5T0JBQUtsR2ZHRW5ENF9yb0xJY1pBdjB1OEFvblBNbUJJSWxVekxIZlhGVTltak95b2ZRazMxQU53b24xLWU5S1EzZXl1Q0lHQS1LcDVILS1sY0NSR1Rm0gHTAUFVX3lxTE1LS1p4WC1DUkllQWZLWF82VDdnMnBTX0VnYmhUWTk4SWJVd2xjNktJMEVfd1paRlJRdUhfZFgwd21aS0pmWllRTS1MaGtYNUhCNEZqb1RNd1ZkVlZ5WEtXanUwZ0VCc09ITEpMNTZsRWN4Wi12NGhuSlQ3T3lINlk0QVJjclN0bkRlU3dGX21FUkFORmZYeENDWEtrLWtuT2dOSVZiQmpUOHpNbWxLZHhJaU1DZzJEZ2tHOFNWcW0yNnVIZlcxS1NWeTV0MVZIMm1WS0U?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Armas e munições"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -24583,7 +24667,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPRG5sSWtiaUdLRTk4OTlvY3d1Yzl1VzQ0cnNHZWRYWUdsNHVkRnM2LVMwLTExb0w4WnFhcnIxelQ1YjNFeWRob3ZhOTVfZExySFh2Yy1sTks5ZmF1OEo4anZFcHI3LVZ5SmpRTmVvdzByWl95VWxrbHVmbTVxQ2g2aFRyTUM5dGY4dU9LdXZhT0swNGM1ZUNtS01qNTc2OEZjVjNRRGIzMmhQcF9GdURDVWxQaUlZdHNINE8xdWVCVEswd9IBwgFBVV95cUxPdTZCNTdwWEVDenVqZXVua293U0UzUXBPekZaZnF5OE5rZkhOQWJ6NUpjUUNPU1lDbDdSVWY1VTJVZEdBa3F5UHZjd3FncnhnVDBManZXZ0ZsVUw2WXRaTWtPZmtkX2hyWWFwYlk1VnVsUmtfWXZrU3B1LVNsNmFaMUw0eGdvdTRQUHdqeS1DNmdaZ3drdXlTcVpoNlRPT1FadVM2eTlralc2S2ZNOWo3MEMtX0JQdXg2MzN1VUEzTkd3QQ?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24607,7 +24691,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQWjlMRDNMMnB0WlJJMnlxZnhFX3ppQTBMSVlwWEY4UlFqSjQtVlgwSXIwWnkxQXpISDJhLTJNWm1hNl8yV3NzSnFuRGZnZ1RxRjlwY2ZpTVJhRnVVNjU2TGExQVNEYVhLZzlLRkhUUk52WDNYQXlEa3VZR3l4M0dfWFJ1Wk9UeVkyQXdoOERfZ3ZzRFUwc1JGcFZTak5HVWlBeHJmaWVJamFRUHRucy1pUFB6eElydEpxa043OENB?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
@@ -24661,7 +24746,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPSkhWeXBwWG85SzYtYjMxS1RCQjZtb3dSYmxFWTdQVS0xeUFJRFlad1c1azlEOVNKRTJ4Wlp0UDB1ak1XVHp3M3dHTnVkLVE3eUhXejBpZDlVZ1FkV1ZtRDBtNEJmaWYybmJpemhpOTVsTjhEUV9PZXpJWnJ5LVJ4YXdGX003V2FZeXhqOHhMWjd5R2d4UDdieWlYS3M2ZFR4Y3U1VkJOM2xWRHpnSHc?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Drogas e entorpecentes"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24770,7 +24855,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOSWIxRG15VzJPRHlIOHZFZVBsalhES2FfZFhfV1lqMlU4TF9hdVNWV21nUmtyVzl5cFMzVGNVRy14cEJvWC1SSXZXSHdOdVZ1RmdNbFhrLWlmdmx1ZHFrbEtsNEhJZEJ6cmUxUE5CdmtJLXEtSng4cmFZbDFObHd6UEQ2ckV3OHI2d2dETFQ1SXBHN3o2TkZuSmdhUGplVHc?oc=5",
       "categorias_sugeridas": [
-        "Dinheiro e valores"
+        "Dinheiro e valores",
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24803,7 +24889,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOd1FWY2hka3FwbmltM2c0Z3dlaW9fUi05NmxPbHR4a05hUDB0S2JxM0ZVVzRScG0tOEJPUHo5Zks1ZklLN1pPcHdyWkpoSVJ4eWtuckZUdXFvMzVhbXZ1MXJ4MzRvSDF6UWFOMXdyYUk2YWF1WXRrb0E0Yms1LUh3bGlmZWEwczNVc3ZUeEhfU203SkdJS1o5dEFLa2NYd1pBX3hmN0QzQdIBpwFBVV95cUxOaXU0dVhnaktKazFGcmhxR3hWemN0TkhQdDBQY3dxcGJyZTYxMW13Qk04bC1OSEFvOGhNSUQ3Zkx4RDJPRWFiSmN2U2VaNDFfT3dmSHBucHRpcTFBbS1RYnNrZWQwM2NVVG1lMXEwTlBSaVJVdXRJVFVTLXRpRWh4c3VESFNpdXFzS1NjRkxZRkUtb2VOcnFmei1uNDI2WEdlbFNfOGhyTQ?oc=5",
       "categorias_sugeridas": [
-        "Dinheiro e valores"
+        "Dinheiro e valores",
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24844,7 +24931,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPdURQUkhZaV9aRFlfeE5ZVEoyd1pvZmFwNVNESmYxa1VXUGF4dHpCRm5NQlFIc2QxWFBsTzdlNmhNdmhrQW5JRDRBdDJZQnJMX1VDNVVLWWZndGRlb0FKcTRQYXY3ckJOR1lzdEd2ellYN0pjbG9YMmpfaGtEYVlacGF4Wi1xNWVYMkNjSmFfa0kwM1lhWWNwNG5RWmZISkx4YTU1MURhaWNzd1NL?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24876,7 +24963,8 @@
     {
       "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPSG9qYVYtUGlyVGpHRU8yU2VqcFdlNFpYWUpJU19RZ1Y5eVF3eWVraERFaVk3bU5DeGdMV1QyZkNIWXZYU1plZjJFTFBvZHRnSE9xX3E0WkxncmQ3QTdTWlY0d0Q4aHVNUFd2ZmF4UXRVRVhTSjNmMWxZTnlVWmQ1dTI3TVh4UkM0M19iLVBtNG9jSUl3ZG0zclA2SHNEaVo4QjJxUFhTNGdFZw?oc=5",
       "categorias_sugeridas": [
-        "Dinheiro e valores"
+        "Dinheiro e valores",
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
@@ -24962,7 +25050,7 @@
     {
       "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOQmJEZi1lYUduQzlZR2theVIyNVg4S0FMTE90WkNWb3J6VE9WdS1aT2JkYTFGamJaakpZa1pIV094R0FVYTc4UzFKN21ndHZILU5HSDdlWUN6SjczR1BJZUhFRWpqTlpJWllTSFJ6WFRMU1ZhcFM2Q3Mtcjg2cmlqM2RXQ2N0aHpkZUxncUNSU1RWUElsaXpfcC0ycWhKRDZFMWlFc3ZybE9wOXliWFBEcVNMcTgzZ3VlTkJrRU1VUFpZM1hEa05uaXJqVDlQVFnSAd4BQVVfeXFMTWJNR0ljRkg3RmtRZGliTXp2cFF5VUQ2TUw1VjBIM24wYVNjMUlQT0RwTFVZNjlkeWhySHdPekpOdFM4VGpPQUxVeEdXS2tmS1Y0VjhySUc0ODBib3dFY2VQZXBCM2R0VFdMdzJxb29oVll5TmpjX3ZJZWg4WFpKUjhGQVdQWXRrdDdXQWczZEVaU1FjdXBYOHNyOG5kVVRSMk9FZnBnYmdJVGFOdE1qT3haZFRMcWxmMVUxLTBfbDZINkhtbE5mMS10R09rU1ZsSjZCZUJ3bnFocWhHODJn?oc=5",
       "categorias_sugeridas": [
-        "Não classificada"
+        "Contrabando e descaminho"
       ],
       "evidencias": {},
       "leitura_fonte_status": "nao_necessaria"
