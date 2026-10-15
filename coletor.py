@@ -245,8 +245,18 @@ def coletar(query, categoria=None):
                 if candidato.startswith('https://') or candidato.startswith('http://'):
                     imagem = candidato
                     break
-        if imagem:
-            noticia['imagem'] = imagem
+        if not imagem:
+            # Algumas fontes fornecem imagem em enclosure ou HTML do RSS.
+            enclosure = item.find('enclosure')
+            if enclosure is not None and (enclosure.get('type') or '').startswith('image/'):
+                imagem = enclosure.get('url', '')
+        if not imagem:
+            descricao = html.unescape(item.findtext('description') or '')
+            match = re.search(r"<img\b[^>]*\bsrc\s*=\s*['\"](https?://[^'\"]+)", descricao, re.I)
+            if match:
+                imagem = html.unescape(match.group(1))
+        if imagem and urllib.parse.urlsplit(imagem).scheme in ('http', 'https'):
+            noticia['imagem_url'] = imagem
         iso = data_iso(data)
         if iso:
             noticia['data_iso'] = iso
@@ -324,11 +334,23 @@ def deduplicar(itens):
         t = titulo_base(n)
         dia = dia_publicacao(n)
         if u and u in urls:
+            # Preserva imagens e URLs originais descobertas em coletas posteriores.
+            for anterior in unicos:
+                if url_base(anterior) == u:
+                    for campo in ('imagem_url', 'imagem', 'url_original'):
+                        if not anterior.get(campo) and n.get(campo):
+                            anterior[campo] = n[campo]
+                    break
             descartadas += 1
             continue
         prefixo = ' '.join(t.split()[:4])
         candidatos = indices.get(prefixo, [])
-        if any(mesma_materia(n, unicos[i]) for i in candidatos):
+        iguais = [i for i in candidatos if mesma_materia(n, unicos[i])]
+        if iguais:
+            anterior = unicos[iguais[0]]
+            for campo in ('imagem_url', 'imagem', 'url_original'):
+                if not anterior.get(campo) and n.get(campo):
+                    anterior[campo] = n[campo]
             descartadas += 1
             continue
         unicos.append(n)
