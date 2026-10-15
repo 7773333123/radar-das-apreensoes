@@ -1,17 +1,17 @@
 {
-  "gerado_em_utc": "2026-10-15T01:13:20.806157+00:00",
+  "gerado_em_utc": "2026-10-15T01:28:13.603185+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
     "materia_sem_informacao_quantitativa": 1213,
-    "pendente_verificacao_apreensao": 915,
+    "pendente_verificacao_apreensao": 916,
     "com_informacao_quantitativa": 236
   },
   "materias_sem_informacao_quantitativa": 1213,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
   "noticias_multicategoria": 250,
   "noticias_com_quantidades": 236,
-  "noticias_analisadas": 2364,
+  "noticias_analisadas": 2365,
   "fontes_distintas_informadas": 667,
   "noticias_por_categoria": {
     "Drogas e entorpecentes": 968,
@@ -102,7 +102,7 @@
     "2026-07": 24,
     "2026-08": 24,
     "2026-09": 20,
-    "2026-10": 1573
+    "2026-10": 1574
   },
   "noticias_por_ano": {
     "2019": 1,
@@ -112,29 +112,27 @@
     "2023": 29,
     "2024": 32,
     "2025": 16,
-    "2026": 1665
+    "2026": 1666
   },
   "status_processamento": {
     "classificacao_automatica": 1438,
-    "pendente_evidencia": 915,
+    "pendente_evidencia": 916,
     "outras_apreensoes_a_revisar": 11
   },
   "status_leitura_fonte": {
-    "lida": 1125,
+    "lida": 1126,
     "sem_evidencia_especifica": 450,
     "erro_rede_ou_timeout": 517,
     "http_503": 272
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 915,
-  "noticias_pendentes_revisao": 915,
+  "noticias_sem_classificacao": 916,
+  "noticias_pendentes_revisao": 916,
   "versao_extrator": "extrator_v3",
-  "leituras_externas_tentadas": 1914,
+  "leituras_externas_tentadas": 1,
   "leituras_pendentes": 0,
   "resultados_leituras_externas": {
-    "lida": 1125,
-    "erro_rede_ou_timeout": 517,
-    "http_503": 272
+    "lida": 1
   },
   "classificacoes": [
     {
@@ -148,6 +146,14 @@
           "pistolas em investigacao sobre fraudes na aquisicao e no registro de armas de fogo no rj - www.gov.br       google noticias cobertura jornalistica abrangente e atualizada, ag"
         ]
       },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiqgJBVV95cUxQT3I3a1VWNGdJNHBQaHM2VGhmdC1zOEJYS1gyaHc2NkFSTTJZbFRuMHRaQVZKQkUyd1dmSGdFZW82Ri13Y19Qd0ZmZWFUX3M5VnQ1dVROOW5KTmdob3hOZmJxR1NnMGVwdTkzUkl4U0N0T3JldnVkaFFQd1IxZ1JkbFhhWmE0TU82QzMzVnF0c2hadkFRMmNXZ2NwUGw1emFhUVF1SDRiRnJJN2R2TmZUaGVTM3JvS1VTY3FzRnpDbUpBZEI2YzdWaUk5bHkyNV9pRS00N3hWUVQ3RXMwVkJfZTkxR0otQ2dqYWZXdGpiRGhrSlhaS1ZEUmthLTZjbG5YOTBPeTJFSm8zMWRrcWtEUDZiMXFpQkVpdy1qN25aajBYT3BpQ2szNnZn?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "lida"
     },
     {
