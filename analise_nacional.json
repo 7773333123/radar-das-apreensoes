@@ -1,20 +1,20 @@
 {
-  "gerado_em_utc": "2026-10-15T03:16:15.199458+00:00",
+  "gerado_em_utc": "2026-10-15T03:37:45.634246+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "materia_sem_informacao_quantitativa": 2450,
-    "pendente_verificacao_apreensao": 1274,
+    "materia_sem_informacao_quantitativa": 2452,
+    "pendente_verificacao_apreensao": 1281,
     "com_informacao_quantitativa": 373
   },
-  "materias_sem_informacao_quantitativa": 2450,
+  "materias_sem_informacao_quantitativa": 2452,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
   "noticias_multicategoria": 509,
   "noticias_com_quantidades": 373,
-  "noticias_analisadas": 4097,
+  "noticias_analisadas": 4106,
   "fontes_distintas_informadas": 860,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 1710,
+    "Drogas e entorpecentes": 1712,
     "Armas e munições": 1140,
     "Contrabando e descaminho": 266,
     "Dinheiro e valores": 131,
@@ -25,7 +25,7 @@
     "Operações patrimoniais": 1
   },
   "noticias_por_uf_explicita": {
-    "PA": 236,
+    "PA": 238,
     "BA": 151,
     "PR": 71,
     "CE": 47,
@@ -35,9 +35,9 @@
     "RO": 29,
     "PB": 25,
     "PE": 25,
+    "GO": 22,
+    "AM": 22,
     "MG": 21,
-    "GO": 21,
-    "AM": 21,
     "SC": 18,
     "AL": 18,
     "TO": 18,
@@ -125,7 +125,7 @@
     "2026-07": 34,
     "2026-08": 46,
     "2026-09": 33,
-    "2026-10": 1619
+    "2026-10": 1628
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -136,20 +136,20 @@
     "2023": 29,
     "2024": 32,
     "2025": 16,
-    "2026": 1756
+    "2026": 1765
   },
   "status_processamento": {
-    "classificacao_automatica": 2806,
-    "pendente_evidencia": 1274,
+    "classificacao_automatica": 2808,
+    "pendente_evidencia": 1281,
     "outras_apreensoes_a_revisar": 17
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 4041,
+    "aguardando_url_original": 4050,
     "lida": 56
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 1274,
-  "noticias_pendentes_revisao": 1274,
+  "noticias_sem_classificacao": 1281,
+  "noticias_pendentes_revisao": 1281,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 2,
   "leituras_pendentes": 0,
@@ -320,6 +320,14 @@
           "policia apreende arma de fogo adulterada e uma motocicleta em mancio lima - g1"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNSGxOazJVNmNCVDdmd1JtekN2VnZ5LTFzNVJlOVNkS0xLNDNhOG9EM0pIdWNrdDRTQ2JvaURDYWh1RUpoWlBubUFaaU9xOTRWMlJTYkZLdGJOQngwVVlZY1haOGpadDZwRVZHaXRGRG1iN21QcVBKMFZKbkJGNGItdmJGUVpKN2ZlTndMQmZ4aW9NTThlbUFLeDRFWQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -738,6 +746,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOd0lTYUlST0FIUFBQYk9uS1dmTkVVQXQ1NmYwMVIxZEhKdlBHd2FfYXMxWHVHVmw2TXMtT00zd19fVVVFaDZzei04R0dDbF9WWTdOVXVkeFdpTFFQME1XSk5UaWNDMmJXZFRQU3AtcTgzbk5JRkd5bDA1Y0VzUTZGUFhqZEN0RmMzRmktNDZNS2NVNHNXUWJFN0VfdmJpNm5vSVdlemNMVFFnLUt3QWQxYQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFAxMHBxeXYtRGFhMVZtbWZIUTdCdk1LenhWeWNYbGJBalhNNFJxNUxnSU1WcVh0REozUmM1MjVKUTIxb3RZNV90WkxwTWRDaDhWOVJGSGtaVkZzRFRWVVlzMjhB?oc=5",
       "categorias_sugeridas": [
         "Medicamentos e produtos"
@@ -920,6 +936,14 @@
           "pm apreende armas de fogo, entorpecentes e um radio comunicador durante ocorrencias em maceio - rede brasil de televisao"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPbG1NejZrcnZEWjl6X3BDNTllQVlONTl3R0JvS1diSXJ3MDg4ejdRNHlja2VNMGpOOUhKOWZkbmliU1lkTEQyUWIzdW43M2l2cDF1NllCVTVLOWZjSjVyUm43NEE1X0pLLWJGejVMbXNuQ3pTX09jc2pTX2RyTWlkd1RQVzJWeEtiMHlDQkJEUWFULVIydl9Dbzg2UFdXQXE1N2ZNMXppSFVHMWV2eVR4dFRSdEs?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -1615,6 +1639,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMilgJBVV95cUxQVWJoZlNja3hOX3U3amtEcFNvVWZhdzlFS1lTcGp4eTBERE9uQTBkMjhVLXdWdTkxdzBvMXpaYVBNUlRGN0JJcGdMVXN2QXBkZjJsNXZ5anl4S0p4UzkyS0NLWHRDNExqem1raVVoemdtUFFwbEtZaHU0T1RaOWt4RUcyRXQ3eURQN29XUGJUZmRGMU9PaTNjQ2l0T3kwLTZoeThxWmVCNGRENEtPRFNLd2NRdXlyU1NJRl8zdVJJdW44QW9OQWtidl9UdmtzMUZhZjdheUhiUVlTczBhUVVqcm9yVEF3b2I2aFNVSGtQVXAwYndhNV9CNFZoN0Z4UXZ6SmtlbzlvWTlzTkdLSVhkOTlrLWl2UQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxPaHVuTGxkTTZmVmFzQkNiYlU0bkEzaWNkRERqMGRIc0pSVE1jeEZoeEpYRXI2bzJoMzZuel92aWFRY1NKNlBiaFhiNnNTRTZNSm1UdVExYnBybDdnalEyWkdxenF4VEhFRVJ3bVZiRzhFUC1kVXVxYlBMeEx3b2p5RDZMampKaGdOVVpLd0wzaEc3NFp0Tkp2dUxjN0dLaEx0WTBzbGlrUkQwc2JDYklYNnV2NGRCdjdwUjRpVWJtNXEtR2ZLZVBldXRic0FVUkxRMGNR?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -2374,6 +2406,19 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQMFZQcTh6WjZXUzRiTzJ0eFpQUUdQRi10M2tLTW92cGlwdnJ0UEs1bF9nemlzZDN2ZUxBc0gyYjZNRlhTY1ZxSkpqaHFqa0g0R2hFMkdGUHk0a29hTXgxcDNoSVEwTVp6TW8zbnJrLWt0S3NodENva0pIOHI2NmNtUGNXeFdIRTRTVUdGVUlWdnhuUEZvRnhuVTZYdE9fTWNIVEUyd2lSbm84RHFSUzZrVG5POEN2bzEzdm1Mcld6anVQWDlrMWw4WA?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "seis pessoas sao presas no para durante operacao contra trafico de drogas e lavagem de dinheiro - cidade 091",
+          "seis pessoas sao presas no para durante operacao contra trafico de drogas e lavagem de dinheiro - cidade 091"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPX0JjTGw2NTBDQ3NqR1ppNnFRNGlOS1hLXzRjZndMVE81THhhQ1VfN2kwYWFYSzdETklFLXlRT2o2aXI3Sk5DQzloU211dmJqWjJaZkIxS0pzdng3NW5zMzJjbEFNYk5ZM1czY2FCajB5VGJ4N194YkFqcVNySVlGcXRzSVNiX19fNDEwc1F6Ulh5aWptZzlnay0xTU1IMGd3b3E4ZkxGU29Lbl9XS0lnM1d2eXNzQzVxZ0Q5R2JYRW5xbWhhT3lJTzEtOA?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -2798,6 +2843,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOc3oyenlwTVhGVHY2R1NVcVlnUlZpY0FoVUc2RWxRVXhUemxSWWVSVURfWWh4S1B0dm5GMy1SbEpndVU1a2FWbnZLSXVWX0JoOGJvR2JaOUdrdk41N3dNdHItRGlHT0NpYW5ZalVYN1QtWjVDbzkyU19hLUhIMTlfUnNQSjdXb0dlNFJEbnMyTzNuTXB0UkdjTlpPeG1wWFIyMkxqYmZ1NVhZYTl4b0c2LWRwVDdOckl5RklfZVN2YTRxdGdlNS1r?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNZEE1SDFSd1JudmV1NUdWNTlxS2dvdzBWUTducVFpbWpSN3ZKMnd2SFVVaXFLZ00wRWhWenNfWWlENDYtR3JRSTc3dFgxLTMyMXNNM01DNTlrSVRUWjBnVHc3NG14WWNHMkl4b2p5czd6eVZqOVNZLUJiVDJtNjNkSVBaSkVQbGhKVXlReVVhM3J2X09YS0dISklYLW9fVjdhR09PTDdlMmt2Y3dtR0RPcFVzM09VZjF6bEQw?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -3705,6 +3758,19 @@
         "Drogas e entorpecentes": [
           "policia militar prende homem por trafico de drogas - g1",
           "policia militar prende homem por trafico de drogas - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPYVI1WGdKMzFaRmxLOUZOcWQ0cHl4bWZjUUsxTFZBc1N5TnZFSWVJamZyUlByWnN5eHFSbHFhOWZlRDd0TU9obzBJc0FvcU14RHNzS256ZlFCT2xkUnNybVFYakhTLVBLcVNJZWlSSnBjYk81SGI5XzNxWXhVOENoZnowNm8tX3RyTV9XNlBKaUZxYzI1MGVTUXJMSW80MTdhN1ZZQW5OT2RadlNqdGpEQXIyaEZJUQ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pm apreende cerca de 300 barras de cocaina e maconha em carreta na mgc-497, em uberlandia - v9 vitoriosa",
+          "pm apreende cerca de 300 barras de cocaina e maconha em carreta na mgc-497, em uberlandia - v9 vitoriosa"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -6953,6 +7019,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOWGFGeGIyeUI3TkU4QnlIR3VBaXpjOGNLNW9YWWRMejhNZ3JaR2lGbDJRNVo5bHZBNDM0ejNzb29lbnhYLUQ2bWlXT2x3U2Nqbi1MSVYtRjdiZjRXalhQeW5BS19pc2FMQi1nVFNEUUlMWVcteGtGYmNVX05kM0JsUA?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNT1hyRkl6Y1VBVDRobFk0c3ZWUGhfMUhlQ08wSDVSN1BSQUFhMlV4eHNJZm13TUR5NHRFTWtfQk1Pdzkta240SDRmalNKTE1WbzQ5S080T1AyVWRoOVU0MFhhSU1wRWlCMGxsSTZVRUxsamxsUkk2WjlZZXNkLW9QclhwTjNjamw3d2sxSl9Uem5VUUNJay1oY3BreEFDRlFfbzkxSEllVE5XTEFaRkxpM1VBV2tXN2ZrQkRYVHhsVQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -8163,6 +8237,14 @@
           "dois detidos com 3,7 toneladas de cocaina vao a tribunal apos operacao que fez um morto - renascenca"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNYTNacFk5NGxzUkVyWFk3WXJQVGgyV0hkS21pYTdNUU1BTkxveW9mUGtFUGFMWHkzdVpFaVotbExodzhaZmxrd0dDTkUwOUUyQ3YzbGoyX2lWVWh1UFhIR2tVU3FUd0pEY1ZzSXNWdHg2OC1pVE1Ib2JtRG9XRjNWYTlNZDA4aHFCb1VVdUJxcTM1NVBvR3dldUdJaGVmNmEzRUZKWjBRT1RCSkp3cmRmczdtUFcyc3dNUmxF?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
