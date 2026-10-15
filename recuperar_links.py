@@ -9,7 +9,7 @@ import re
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from urllib.parse import urlparse, unquote, urlencode
+from urllib.parse import urlparse, unquote, urlencode, parse_qs
 from urllib.request import Request, urlopen
 
 ARQUIVO = Path(__file__).resolve().parent / "noticias.json"
@@ -88,6 +88,10 @@ def resolver(url):
     original = extrair_do_codigo(url)
     if original:
         return original, "recuperada_codigo"
+    for key in ('url', 'u', 'q', 'target'):
+        for candidate in parse_qs(urlparse(url).query).get(key, []):
+            if url_valida(candidate):
+                return candidate, 'recuperada_parametro'
     via_rpc = google_rpc(url)
     if via_rpc:
         return via_rpc, "recuperada_google_rpc"
@@ -130,9 +134,9 @@ def main():
             noticia["url_original_status"] = "direta"
             existentes += 1
         elif "news.google.com/" in google:
-            if noticia.get("url_original_status", "").startswith(("erro_", "nao_resolvida")) and not os.getenv("REPETIR_FALHAS"):
-                continue
             pendentes.append((noticia, google))
+    # Priorizar links nunca tentados; não ficar preso ao mesmo lote com falhas.
+    pendentes.sort(key=lambda item: bool(item[0].get('url_original_status')))
     lote = pendentes[:max(0, args.limite)]
     print(f"Acervo: {len(noticias)}; links originais: {existentes}; aguardando: {len(pendentes)}; tentativa: {len(lote)}", flush=True)
     sucesso, erros = 0, {}
@@ -158,6 +162,8 @@ def main():
         temp.write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding="utf-8")
         temp.replace(ARQUIVO)
     print(f"Recuperados: {sucesso}/{len(lote)}; falhas: {erros}; acervo preservado: {len(noticias)}.", flush=True)
+    if not sucesso:
+        print('AVISO: nenhum link resolvido; o Google pode exigir outro método de decodificação.', flush=True)
 
 if __name__ == "__main__":
     main()
