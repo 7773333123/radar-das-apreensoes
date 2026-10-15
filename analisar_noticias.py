@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Radar das Apreensões — classificação múltipla auditável.
 Lê e atualiza noticias.json, gera analise_nacional.json. Usa apenas biblioteca padrão.
-A leitura externa é opcional, limitada, e pode falhar (paywall, robots, Google News).
+A leitura externa percorre todo o acervo em lotes, com cache e controle de falhas.
 """
 import argparse
 import collections
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import datetime as dt
 import html
 from html.parser import HTMLParser
@@ -293,7 +294,8 @@ def quantificar(texto):
 
 def main():
  ap=argparse.ArgumentParser()
- ap.add_argument('--max-leituras',type=int,default=150,help='Limite de matérias externas por execução (padrão: 150)')
+ ap.add_argument('--max-leituras',type=int,default=0,help='Páginas ainda não lidas por execução (padrão: 0 = todas; use um número para limitar)')
+ ap.add_argument('--trabalhadores',type=int,default=10,help='Leituras simultâneas (padrão: 10; máximo: 12)')
  ap.add_argument('--repetir-leituras',action='store_true',help='Tentar novamente links anteriormente indisponíveis')
  ap.add_argument('--sem-web',action='store_true',help='Somente texto já armazenado')
  args=ap.parse_args()
@@ -301,7 +303,35 @@ def main():
  raw=json.loads(path.read_text(encoding='utf-8'))
  items=raw if isinstance(raw,list) else raw.get('noticias',[])
  if not isinstance(items,list):raise SystemExit('Formato inesperado de noticias.json')
- counts=collections.Counter();quant_status=collections.Counter();multi=0;states=collections.Counter();months=collections.Counter();years=collections.Counter();sources=set();missing_date=0;read_count=0;read_status=collections.Counter();details=[];pending=0;review=collections.Counter();quant_totals=collections.defaultdict(float);quant_count=0
+ # Tentar ler todas as matérias ainda não processadas nesta execução, inclusive as já classificadas.
+ # Reutilizar texto integral já obtido; não insistir em falhas anteriores sem pedido explícito.
+ eligible=[]
+ for n in items:
+  if not isinstance(n,dict):continue
+  url=str(n.get('url') or n.get('link') or '').strip()
+  if not url or args.sem_web:continue
+  already=bool(str(n.get('texto_completo') or n.get('conteudo') or n.get('texto_analisado_resumo') or '').strip())
+  if already and not args.repetir_leituras:continue
+  if n.get('leitura_fonte_versao')=='extrator_v3' and not args.repetir_leituras:continue
+  eligible.append(n)
+ if args.max_leituras>0:eligible=eligible[:args.max_leituras]
+ read_status=collections.Counter();read_count=len(eligible)
+ if eligible:
+  def get_one(n):
+   return fetch_article(str(n.get('url') or n.get('link') or ''),timeout=7)
+  with ThreadPoolExecutor(max_workers=max(1,min(12,args.trabalhadores))) as pool:
+   futures={pool.submit(get_one,n):n for n in eligible}
+   for future in as_completed(futures):
+    n=futures[future]
+    try:content,status=future.result()
+    except Exception:content,status='','erro_inesperado'
+    read_status[status]+=1
+    n['leitura_fonte_versao']='extrator_v3'
+    n['leitura_fonte_status']=status
+    if content:
+     n['texto_analisado_resumo']=content[:30000]
+ # Estatísticas e classificação usam agora os textos atualizados.
+ counts=collections.Counter();quant_status=collections.Counter();multi=0;states=collections.Counter();months=collections.Counter();years=collections.Counter();sources=set();missing_date=0;details=[];pending=0;review=collections.Counter();quant_totals=collections.defaultdict(float);quant_count=0
  for n in items:
   if not isinstance(n,dict):continue
   title=str(n.get('titulo') or n.get('t') or '')
@@ -309,26 +339,6 @@ def main():
   stored=str(n.get('texto_completo') or n.get('conteudo') or n.get('texto_analisado_resumo') or '')
   labels,evidence=classify(evidence_text(n))
   labels=combined_labels(previous_labels(n),labels)
-  status='dados_existentes'
-  # Consulta uma única vez por execução apenas notícias sem categoria específica.
-  # Reprocessa categorias a cada rodada; não sobrescreve dados originais.
-  if labels in ([UNCLASSIFIED],[OTHER]) and not args.sem_web and read_count<max(0,args.max_leituras) and (args.repetir_leituras or n.get('leitura_fonte_versao')!='extrator_v2'):
-   url=str(n.get('url') or n.get('link') or '')
-   if url:
-    read_count+=1
-    content,status=fetch_article(url)
-    read_status[status]+=1
-    n['leitura_fonte_versao']='extrator_v2'
-    if content:
-     new_labels,evidence=classify(' '.join((title,desc,content)))
-     labels=combined_labels(labels,new_labels)
-     if labels not in ([UNCLASSIFIED],[OTHER]):
-      n['texto_analisado_resumo']=content[:20000]
-      n['leitura_fonte_status']='lida'
-     else:
-      n['texto_analisado_resumo']=content[:20000]
-      n['leitura_fonte_status']='sem_evidencia_especifica'
-    else:n['leitura_fonte_status']=status
   # Extrai quantidades apenas do texto efetivamente disponível; sem extrapolação.
   texto_quant=' '.join(dict.fromkeys(x for x in (title,desc,stored) if x))
   if n.get('texto_analisado_resumo') and n['texto_analisado_resumo'] not in texto_quant:texto_quant+=' '+str(n['texto_analisado_resumo'])
@@ -370,7 +380,7 @@ def main():
    for key,excerpts in previous_evidence.items():
     if key in labels and key not in evidence:evidence[key]=excerpts
   n['evidencias_classificacao']=evidence
-  n['metodo_classificacao']='regras_textuais_com_leitura_opcional'
+  n['metodo_classificacao']='regras_textuais_com_leitura_progressiva'
   n['revisao_humana_recomendada']=True
   if labels==[UNCLASSIFIED]:pending+=1
   for label in labels:
@@ -384,7 +394,7 @@ def main():
   if source:sources.add(source)
   details.append({'url':n.get('url') or n.get('link'),'categorias_sugeridas':labels,'evidencias':evidence,'leitura_fonte_status':n.get('leitura_fonte_status','nao_necessaria')})
  result={'gerado_em_utc':dt.datetime.now(dt.timezone.utc).isoformat(),
- 'metodologia':'Regras textuais e leitura opcional de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.',
+ 'metodologia':'Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.',
  'aviso':'Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.',
  'situacao_quantitativa':dict(quant_status),
  'materias_sem_informacao_quantitativa':quant_status['materia_sem_informacao_quantitativa'],
@@ -393,7 +403,7 @@ def main():
  'noticias_por_categoria':dict(counts.most_common()),'noticias_por_uf_explicita':dict(states.most_common()),
  'noticias_por_mes':dict(sorted(months.items())),'noticias_por_ano':dict(sorted(years.items())),
  'status_processamento':dict(review),'status_leitura_fonte':dict(collections.Counter(str(n.get('leitura_fonte_status') or 'nao_tentada') for n in items if isinstance(n,dict))),'noticias_sem_data_valida':missing_date,'noticias_sem_classificacao':pending,'noticias_pendentes_revisao':pending,
- 'versao_extrator':'extrator_v2','leituras_externas_tentadas':read_count,'resultados_leituras_externas':dict(read_status),'classificacoes':details,
+ 'versao_extrator':'extrator_v3','leituras_externas_tentadas':read_count,'leituras_pendentes':sum(1 for n in items if isinstance(n,dict) and (n.get('url') or n.get('link')) and not (n.get('texto_completo') or n.get('conteudo') or n.get('texto_analisado_resumo')) and n.get('leitura_fonte_versao')!='extrator_v3'),'resultados_leituras_externas':dict(read_status),'classificacoes':details,
  'quantificacao':{'itens_extraidos':quant_count,'totais_preliminares':[{'categoria':k[0],'material':k[1],'unidade':k[2],'quantidade':round(v,4)} for k,v in sorted(quant_totals.items())], 'aviso':'Totais preliminares por notícia, sem deduplicação entre matérias sobre a mesma operação. Não são totais oficiais; requerem revisão.'}}
  # Gera arquivos temporários e substitui somente depois de concluir o processamento.
  out=BASE/'analise_nacional.json'
