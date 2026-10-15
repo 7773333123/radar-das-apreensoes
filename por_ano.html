@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Radar das Apreensões — Notícias por ano</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,Arial,sans-serif;background:#071321;color:#e8eef7}
+*{box-sizing:border-box}body{margin:0}header{background:#0a1b2e;border-bottom:1px solid #27415c;padding:22px}
+main{max-width:1060px;margin:auto;padding:22px}h1{font-size:clamp(25px,5vw,40px);margin:8px 0}
+small,.muted{color:#aabbd0}a{color:#7ec8ff}select,input{background:#12263e;color:white;border:1px solid #44637e;padding:12px;border-radius:9px;font:inherit}
+.controls{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0}.controls label{display:grid;gap:6px}
+article{padding:19px 0;border-bottom:1px solid #273b51}article a{font-weight:700;text-decoration:none;font-size:18px}
+.meta{color:#aabbd0;font-size:13px;margin-top:8px}.count{color:#86ceff}
+</style></head><body><header><a href="/">← Radar das Apreensões</a><h1>Notícias por ano</h1><div class="muted">Publicações desde 2020 · Dados disponíveis no acervo</div></header>
+<main><div class="controls"><label>Ano de publicação<select id="ano"></select></label><label>Pesquisar<input id="busca" placeholder="Título, fonte ou estado"></label></div>
+<p id="status" role="status">Carregando notícias…</p><div id="lista"></div></main>
+<script>
+const ano=document.getElementById('ano'),busca=document.getElementById('busca'),lista=document.getElementById('lista'),status=document.getElementById('status');
+const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
+const norm=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+let noticias=[];
+function dateOf(n){return String(n.data_publicacao||n.data_iso||n.data||n.date||n.publicado_em||'');}
+function yearOf(n){const d=dateOf(n);let m=d.match(/^(20\d{2})-/);if(m)return Number(m[1]);m=d.match(/^\d{2}\/\d{2}\/(20\d{2})/);return m?Number(m[1]):null;}
+function render(){
+ const y=ano.value,q=norm(busca.value);
+ const a=noticias.filter(n=>(y==='Todos'||(y==='Sem data'?!yearOf(n):String(yearOf(n))===y))&&norm([n.titulo,n.t,n.fonte,n.uf,n.estado].join(' ')).includes(q));
+ status.textContent=`${a.length.toLocaleString('pt-BR')} notícias encontradas para ${y==='Todos'?'todos os anos':y}.`;
+ lista.innerHTML=a.slice(0,500).map(n=>{
+ const url=n.url_original||n.url||'#',link=/^https?:\/\//.test(url)?url:'#';
+ return `<article><a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(n.titulo||n.t||'Sem título')}</a><div class="meta">${escapeHtml(dateOf(n)||'Data não informada')} · ${escapeHtml(n.fonte||'Fonte não identificada')} · ${escapeHtml(n.uf||n.estado||'UF não informada')}</div></article>`;
+ }).join('')||'<p>Nenhuma notícia com esses filtros.</p>';
+ if(a.length>500)lista.insertAdjacentHTML('beforeend','<p class="muted">Exibindo os primeiros 500 resultados. Refine sua pesquisa.</p>');
+}
+async function init(){
+ try{const r=await fetch('./noticias.json',{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);
+ const data=await r.json();noticias=Array.isArray(data)?data:data.noticias;
+ if(!Array.isArray(noticias))throw Error('Formato inválido');
+ const years=[...new Set(noticias.map(yearOf).filter(y=>y>=2020&&y<=new Date().getFullYear()))].sort((a,b)=>b-a);
+ ano.innerHTML='<option value="Todos">Todos os anos</option>'+years.map(y=>`<option value="${y}">${y}</option>`).join('')+'<option value="Sem data">Sem data identificada</option>';
+ const requested=new URLSearchParams(location.search).get('ano');if(requested&&[...ano.options].some(o=>o.value===requested))ano.value=requested;
+ render();
+ }catch(e){status.textContent='Não foi possível carregar noticias.json: '+e.message;}
+}
+ano.addEventListener('change',render);busca.addEventListener('input',render);init();
+</script></body></html>
