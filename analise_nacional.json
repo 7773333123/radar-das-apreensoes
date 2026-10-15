@@ -1,35 +1,35 @@
 {
-  "gerado_em_utc": "2026-10-15T02:19:04.084049+00:00",
+  "gerado_em_utc": "2026-10-15T02:32:14.248355+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "materia_sem_informacao_quantitativa": 1218,
-    "pendente_verificacao_apreensao": 922,
-    "com_informacao_quantitativa": 237
+    "materia_sem_informacao_quantitativa": 1255,
+    "pendente_verificacao_apreensao": 927,
+    "com_informacao_quantitativa": 265
   },
-  "materias_sem_informacao_quantitativa": 1218,
+  "materias_sem_informacao_quantitativa": 1255,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
-  "noticias_multicategoria": 252,
-  "noticias_com_quantidades": 237,
-  "noticias_analisadas": 2377,
-  "fontes_distintas_informadas": 671,
+  "noticias_multicategoria": 289,
+  "noticias_com_quantidades": 265,
+  "noticias_analisadas": 2447,
+  "fontes_distintas_informadas": 678,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 973,
-    "Armas e munições": 492,
-    "Contrabando e descaminho": 92,
-    "Dinheiro e valores": 80,
-    "Medicamentos e produtos": 24,
-    "Veículos": 23,
-    "Crimes ambientais": 18,
-    "Outras apreensões": 11,
+    "Drogas e entorpecentes": 1012,
+    "Armas e munições": 508,
+    "Contrabando e descaminho": 131,
+    "Dinheiro e valores": 86,
+    "Medicamentos e produtos": 29,
+    "Veículos": 24,
+    "Crimes ambientais": 19,
+    "Outras apreensões": 15,
     "Operações patrimoniais": 1
   },
   "noticias_por_uf_explicita": {
-    "BA": 135,
-    "PA": 109,
+    "BA": 136,
+    "PA": 110,
     "PR": 59,
     "CE": 34,
-    "MA": 25,
+    "MA": 26,
     "RO": 25,
     "PE": 21,
     "PI": 21,
@@ -53,6 +53,7 @@
     "RS": 1
   },
   "noticias_por_mes": {
+    "2018-12": 1,
     "2019-09": 1,
     "2020-01": 38,
     "2020-02": 42,
@@ -99,12 +100,13 @@
     "2026-04": 2,
     "2026-05": 5,
     "2026-06": 15,
-    "2026-07": 24,
-    "2026-08": 24,
-    "2026-09": 20,
-    "2026-10": 1586
+    "2026-07": 34,
+    "2026-08": 46,
+    "2026-09": 33,
+    "2026-10": 1610
   },
   "noticias_por_ano": {
+    "2018": 1,
     "2019": 1,
     "2020": 617,
     "2021": 2,
@@ -112,23 +114,26 @@
     "2023": 29,
     "2024": 32,
     "2025": 16,
-    "2026": 1678
+    "2026": 1747
   },
   "status_processamento": {
-    "classificacao_automatica": 1444,
-    "pendente_evidencia": 922,
-    "outras_apreensoes_a_revisar": 11
+    "classificacao_automatica": 1505,
+    "pendente_evidencia": 927,
+    "outras_apreensoes_a_revisar": 15
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 2377
+    "aguardando_url_original": 2391,
+    "lida": 56
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 922,
-  "noticias_pendentes_revisao": 922,
+  "noticias_sem_classificacao": 927,
+  "noticias_pendentes_revisao": 927,
   "versao_extrator": "extrator_v4",
-  "leituras_externas_tentadas": 0,
+  "leituras_externas_tentadas": 56,
   "leituras_pendentes": 0,
-  "resultados_leituras_externas": {},
+  "resultados_leituras_externas": {
+    "lida": 56
+  },
   "classificacoes": [
     {
       "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPOGlDMzBqclY2MVE0V1lCZVF6ZTNiTWxyRUFpRnItdjAwQmk2OWlqZmJoQUYyeFZiUFdJNUdGUHN3TjNZajRkekdyWDk0dUtrNDRGMlowb0xTNG1qUFJXNmtJQmFGRF9uSzB1ZDNFbFpVZDl4OVVyMXhlbXJONWxQV01ZTnROcERaOUJwN0JWQk14V3YtY1gzam1VUjFqY1JQYWpHSzFqQTFHREJjeEpQdmZ4blhTUDJHRzdWam9SNjNPUQ?oc=5",
@@ -383,6 +388,18 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxNSTNyeV8yeWthSXlRRjJMcTg4SlRkeGd6ejlWd29UVXlrVVhGdTF6ZUZmR3p3TkJJeUhWSXd2VlZNUENFX1U3RkMyN19hcWRxUzhQWlBRd3E1TTlqVzJrVXZmVFRScEtsQWVaeEVCSFQ0cFJsY3ZlZ2gyVHE5NGVyaEd6S3RLeDRxZmhlR0Z3aThNdDl3VnRnRlRWSnpkMTVqZFRFd2k5M005WjF6YkoxQmhDWEEyWDRjclRhLXZ4VjVfOU1fc1pna0hsd2lTRVo2ZlcwOVY5alBTU2hIaE1QMzEtZE0yU21KT3c?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "boletim: policia rodoviaria de sp apreende quase 1 tonelada de maconha escondida em caminhao no interior do estado - www.agenciasp.sp.gov.br"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -3154,6 +3171,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQTlloZHljSWtuN0Z0UWhFVlBmbVdLRVVDRmdhZ0tZM2QzeHJnZ2NhU29XX3E5dWhYUndUNzg5NTNQMjBPbUIzZmo1SXZ4Y25RM0VXNnpYb0k2UU0tU21HdW9hMGJJR0Z1UnVtNkZVUzdqeHItWkFUZ0tyUnVydUlBYTdua2xLRUZjWWtydWdiRU9aQl9sZllkWVJjSFpWa29nbEpIUkQtX0FnenlWSXo5QkJtUFRtdUlHaTVJNUdMbERCcFBn?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOOWJFcVV6UGY3aXMtbmdRaWxIenlvSDhmUDFUWm4tUjhRaXZueDhhOFItam5PVzJNZTVyTEl5MF9uOTdjdXFlcFRQTFlrOVBNeWw3MVB4bmZLbTVIdlhRTENNZWhVbzljRE9heEd2VjlMbWF2X2xfVHpkanBuT0ZJWlZSSVpkRWQzTC1XWnpUc01kSW9ZUUZBbVkyVzN3WGJkMnA3RTdfRElfNjhSOWRIVFI1cXpBdV9tZ2h0VUNxc0NPUHRhY1lpMk1NRE5XOUxO?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -3300,6 +3325,19 @@
         "Drogas e entorpecentes": [
           "policia civil do ma faz operacao contra trafico de drogas e lavagem de dinheiro - g1",
           "policia civil do ma faz operacao contra trafico de drogas e lavagem de dinheiro - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOaXBpWXNoNzJ0TVp6THF1aDVwLW9WcDdQNTN6R2k2NTVsSWFLZldHb2gwRVA0VFJjbEVOeFI1YXVGODNOVVNWanVKdWg0MUVsdl9vX0pCWDBtd1k4NXh4MVREYWhyRi1SSjAtZ3BzUnp0NDh4RHlldGJuU3JNdDdwUHlWWHBpenJjWks3OTRsam16UmVFSW5uR2Ywa2I?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia militar prende suspeito por trafico de drogas no bairro farolandia - p.m.s.e.",
+          "policia militar prende suspeito por trafico de drogas no bairro farolandia - p.m.s.e."
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -3802,6 +3840,19 @@
         "Drogas e entorpecentes": [
           "prende homem por trafico de drogas e apreende mais de 200 porcoes de cocaina em guapore - radio lagoa fm",
           "policia civil prende homem por trafico de drogas e apreende mais de 200 porcoes de cocaina em guapore - radio lagoa fm"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQNjJPNWVuaFBobE90bFd4ejYxXzZJOWRQQXgxVXdpajR3NUpRUHJ1QVFGcGZjMVVGU2pIQ1ZDYlVQdXdBdDhrRkNQZDczT1BnR2pBdjlndE9idFlUeUJoOU9OdkV4bHFoUm1hX24zV1RxbFNxOHZ2eDVKR2JlUTloenktdVctWHBNQU01QzBCYnJPZHhxRFBZMW9RRlZsaXNWQXAwMTBmOFVwSDNBcHNBZkpPQjY?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "pm rodoviaria apreende arma de fogo em veiculo com adolescentes - portal de noticias da pmesp",
+          "pm rodoviaria apreende arma de fogo em veiculo com adolescentes - portal de noticias da pmesp"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -6348,6 +6399,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOaE5Hc0F2QWx5Ri1PLUF3QmtINHhZVVRmVjFRdTQzT1pNLS1wWlJJcldfNU9uamNuVjZqMjFZdEZMVkswVnBRaHFnbEpSX2hna2F4N1BBRWZQV2RXMV9HMkl4MF9Rb1NFalpZZDBrSktnX2xOd3dQZmhtVmhVdDJRd1hLWHlpVDVqN004RXhtRUpiRUFoVVVpRDN1T290RTJ2UENuX0NqUnRFQV9KZzFtNVdCVUhucWlZcmRjaE9XMllXMmNmd2hBWg?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMijAJBVV95cUxOU1IwcUVibldwMnBLbE83cWt3dHRUZXpsaWdlVWJVdHlPeFhKdnZrQUItSVFpNmszT3dXSjFhMENHSkVzVlhIZVhGRGFoY1hXSkVOQy1MY2xGdmtKNWFmUHhRcE5zMlFXcXNzdmFZZDFnOVRtT0RuV1V4RzZnWDctMUZlMTBCWmpUVmFZTlJPU3NYMHB3MXVQUzRaT3dIRXlGdVRoYWwzNVZKX3htMW9MdzRhcHowUUx1Vnk4RThNNkJHSlhfdFFZcXFwaENnemxZX1A2YnYzd2Q1VkJvM2pNZFhDTG03WVdpZE1Ta3plUlkzVUJVM0xOWm5Bb0JjRHpDdk9raTVWR2RyTUdX?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -6400,6 +6459,18 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNNjRCczBOY3JwTnRXd3VCTDRnMlVSYld3QXdFa3I1cy1Hd2RaZVRHVmlmVVFCQ0Z5UHpSM0pvcFRPVmN6UUZ2M2tJclV1Z0poMGFGVUY3TTA3c0gzdWF3ZmVDelBVbmpFSGhqdVBlT281R1NqUV93TTUzSTA5WGM5WG5XMnA4SUZZcUNmT0JYd3NMdkRsSkhxU1M1dWdQU254dVFFcXVxNFg1dGR3TEtkQjczcmNYR2M?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia militar apreende mais de 200 tabletes de entorpecentes em pontes e lacerda - sesp.mt.gov.br"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiugJBVV95cUxNMjVGb1R5dXVRTHdqNWhhTV93Wmc4WUdPVTlqTTNzdFA5blZSRTg3MkxFRWlpRlJUTDlTZ004X3VpX1ZlTmd0eHJmSWN3MjItWU1rUVRrajJIcGNZTm5JQ3B5RUFGUjlDR3oyU2hyNDBSQUlJTVJLeXhmcHU3M29JTVozdEhOdnBHQkF5M3B0ZFBrNHJMYjgtdHVleTkxSmh5aUZhZWpuOE5LUXdxdFFnLUpRdUhIV2J6VkZpMnBnZVFIN1BUc0FZZWdSNlBFYmhWN3IzS05keEZBSWtJM2xGbHZpdTlMdFlrMjJ2VlR6b3RzNThzTC1DaS1jclF0bFVRanlzd0YtRlBKaGNBdmZKNW9yY3Y3WUVKUV83WnE2a2FaTXFUeXlYdFZYbEo2bjY1WnBScThlbXg4dw?oc=5",
       "categorias_sugeridas": [
         "Armas e munições"
@@ -6432,6 +6503,23 @@
         "Drogas e entorpecentes": [
           "homem e preso com cocaina, maconha e dinheiro durante operacao em sao miguel do anta - primeiro a saber",
           "homem e preso com cocaina, maconha e dinheiro durante operacao em sao miguel do anta - primeiro a saber"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPMDRLdWFWb0F4WTZCcWFmY3FOZ2NhRlhNTU1pODB5Wk9OaTBoSGQ3RFgzR1M0RlVMYk9vWGRnNTgtYmI1Y1QzSnJfTjg4ZDVEZUxBUWZqdXpubG1PSnl6X09vVXZMTGxnOHUtRGZmSGhFM3paWXVjM2J3SERMaUl5Y1U4VWUwbTJnVWFxdklpMkVKMDZVd3owcFBfYlFadXQ1b0QxeVp5MW44WTR3aEdSSVZLT1U4blN4SlFZ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia civil prende suspeito por trafico de drogas e apreende armas em canarana - sesp.mt.gov.br",
+          "policia civil prende suspeito por trafico de drogas e apreende armas em canarana - sesp.mt.gov.br"
+        ],
+        "Armas e munições": [
+          "policia civil prende suspeito por trafico de drogas e apreende armas em canarana - sesp.mt.gov.br"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -6497,6 +6585,14 @@
           "prf apreende explosivos, arma e municoes, detem cinco pessoas e registra quatro mortes nas rodovias do rn - bnews rn"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOdmxZZF9HN25sTWhSdDN3bkhTd0JmMFBodjhSYmtKMUJNTUVaekpMSHp4RnItVF9ZSk13MW9ybDhoRW5Ialg4aHRwNnpFQTI4cHRVdld1WTRsbXVGVWFFcnlOX0RQZmtiMWViQlc1TzRmNERIM0JXdVlyR1pkRFJla0xLTXFwZkZOVksyNGFYTUdZWXhYSW9WRnhYVFZ2Q0hvQU96RWRBNVZLSnUzd1ZsYU5yNW9VbnhuV0hxYktrOUlzX1k?oc=5",
+      "categorias_sugeridas": [
+        "Outras apreensões"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -6879,6 +6975,22 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxONEp2aU5rV1BWVUdyUGlOSzg3a2tJWnAweGVYLTJWTUNHVnN4WExuRXJ0aVVBOTBYQ3ZfWWRQMUlhODRmNjZhVXFuYm84cmNBOWh2MFpiT3B3WXNPdkFLdXM4Y291VV92ZTNVTjVfenczaTZoOXNqODA3emhEazU2RGtMeUF1dFhVZGZQeVZmcHdtcU1JS3dXQkxkVUtMVURpUjVsNkRzRGxuWXgyNHlQXzhwVmZoX29H?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pmse apreende 470 gramas de cocaina e revolver durante acao no bairro getulio vargas, em aracaju - p.m.s.e."
+        ],
+        "Armas e munições": [
+          "pmse apreende 470 gramas de cocaina e revolver durante acao no bairro getulio vargas, em aracaju - p.m.s.e."
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNdlZiMFp0eU1CbzYwc0JDbEpmOEZXeXpTTXdxa0JsYTRGYk1tUVMwZm5tTEU4b2FTOHQxTU9neUx1UWRUZ3pRUVR3NFg4SW45YzR2YkpfdFBZWVE2d05hYUFGajFwSlJwczREZGp5YkF1QVNZYW9hU1ZyWi1mbDlBYk5NS3MyZUpyWmhPRkE2Vl9RbE5tVHhWVzJMOUZ0N0E?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -6927,6 +7039,19 @@
         ],
         "Armas e munições": [
           "pessoas sao presas e policia apreende quase um quilo de drogas e duas armas em uberaba - jm online"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxOMGItMkZEU2daT1BzbDd1YWExZGxadTZjSkFmdmljY1hVMmRWSmRESTBwWUxOU29JQWdoUy1qVVpCZm5vM1hPNTFfckZvSk83Nk1CUWRsekg5Nkw1MS1JNTE5QkpBZFc3eDdYR3dZc2dKdXFPS0hXQ0R5UDY0anFtV3ZtVjZtWjBpUzh3ZXExbkFpWUNSQkF1YmFLaHdhalJjdHI5cTBJVmdxU1Y4X0djNElVTGpiQWtRVkN1VGN6WlRnVmVSWndUby1USV8tOVZNajk1WE8taw?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia civil prende mulher por trafico de drogas e receptacao durante investigacao de roubo em sao luis - corpo de bombeiros militar do maranhao",
+          "policia civil prende mulher por trafico de drogas e receptacao durante investigacao de roubo em sao luis - corpo de bombeiros militar do maranhao"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -7974,6 +8099,14 @@
           "policia apreende centenas de animais silvestres durante operacao em alagoas - tnh1"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiigJBVV95cUxOZml4WkpHRTIzV3NVbHhiNlhlbVhDeXNqYXF3cVdlWW53TEFzcklrZzg2SGM5aVFlRkljYWg3Q0JIVTUzVUpMcWZpdDNacDlFQjJtQmhTN3YxVzREMGxBd2xjOE5pcGxnTndjX0tVR29vQ1djcjRRbDRzaXFSUWFYVVY4MHpZNnZ6bDdRTEVkMWNXM2dlVmM1akhvVlp5LVNwN1ZPNDI3WjFqa09BQUVOMGlxeXdoQ1Bhcks5dVpJZ2lfQjN5SktSZGxMRDFMVWtUN3Fpd1cteFpMYzQzWmJ4SVJhM1I0T0x5VENCd0pka1ZvdHVKWWhGdzBDbGJDSWNqTkt3bXdNeHVrQQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -10988,6 +11121,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPM1JMWnV3bjMtcGJMUEVKUGlaRHVHUGo0VlR4Q2w2clZjaGhVaWE0ejBOS3VPblZQTWZTaXpxM195SXRMdFVDQnhZY1hTMWhPVV9Bb3lqREt6T1FNdktscHhnampnQ1JTb0laakFlT0p2eEsteTNnMVdsZ2NpYnowM3ZB?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOZFZhd0ZYQld2ZVpPeFZiR1NwS3YxV3RaRW5FbjFLMjJuOW1sZjVNUWlqYnhxRkRHb3lseXp5eE42cWdqcjFrWlNzdVgwand1a1ktdjBwODJ1MldUd3hra1h1VnFacWlqVmJobFMwQVFGOHZjNVcwNFFoR01odHJLYXZJV3VaWWYza2VHZVNIZnRjV1dOSENZakJyRGZ3VnZEdjlMQmVVWGNRcnVHcElYamZHRWR1QXlPMVlFSDFXbFVhVlhqUTdYWjc4MTDSAdsBQVVfeXFMTnBDZ3Z4ai1lTVl0bDMxcG1RWkJweEo4NndzQ1A4QXFhX0FaWk9zQld5ZGNnSEYydTBmMEdDa3gyODkzYnU4ZHFRY1VkbkVOdnpGbkh0ZXZmQ3AzOE9BbVdESUJvajVWczdlX0RILUtOT3UyR3Naa3p5bnFiQ1pDemZzMHYyYTlLdjYtSUtSVTVUM05IYU1xNTg5MVVkZnAxU0l6ZUVGWU5mMGliQjFDZXRtRDFmLUFCN2FhbnEzTFVGcjhzRDltYXhQVnNfdWNVRGtJYnpIcVVUajJn?oc=5",
       "categorias_sugeridas": [
         "Veículos"
@@ -11657,6 +11798,18 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPeUZEazllNndMMXU2YXhwdjE0M2liZm5zYWpPbE00T2d4UU5tWjZNeXhWREFibEtSYVNRdkd1VjAwdkFTMWU0MDdNTmpRLWpsSDY5UGpLejFRVWVLQWdiRFBjTFNrdUlFdDlydkFyVTZXNEpfaTRfd2tnQTZoUUM4bXJEalZfVXVFWC1JN1lRRjFHelowMEtPUkpMc1hJQ0JNVVo0V3hic3pZR1JkX3pLb2RjTlNBUHdNZ2FWajE3V2ZjSjZteXpRVG9TRUExbzBHc1NiRV9QQnQxMU9sMTdvN3JB?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pm apreende drogas durante acao de combate ao trafico em garrafao do norte - policia militar do para"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -25659,10 +25812,880 @@
       ],
       "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5DNTh4UWZ4VXVhMm80RXVvSnUyQThIN2t6b1VTR0dCV1gyRzFDOUM0d1VxZEY4X3FnbmRIam9Qek9HS05KdmVSaEdqU3UtOE5HamZxY1RJYjJpYWFzdWJn?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/07/pf-deflagra-operacao-e-apreende-3-7-kg-de-ouro",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Crimes ambientais"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "pratica dos crimes de usurpacao de bens da uniao e posse irregular de arma de fogo de uso restrito. comunicacao social da policia federal em roraima whatsapp: (95) 98407-9833",
+          "pratica dos crimes de usurpacao de bens da uniao e posse irregular de arma de fogo de uso restrito. comunicacao social da policia federal em roraima whatsapp: (95) 98407-9833 e-mail:"
+        ],
+        "Crimes ambientais": [
+          "eve como objetivo desarticular a cadeia logistica de abastecimento do garimpo ilegal na t.i. raposa serra do sol acao teve como objetivo desarticular a cadeia logistica de abasteciment"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/07/pf-apreende-cocaina-no-porto-de-santos-sp",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pf apreende cocaina no porto de santos/sp       pf apreende cocaina no porto de santos/sp — policia federal entorpecen",
+          "/sp       pf apreende cocaina no porto de santos/sp — policia federal entorpecente foi localizado durante acao de fiscalizacao entorpecente foi localizado durante acao de fiscalizac"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/07/pf-e-bpfron-apreendem-mais-de-107-kg-de-maconha-em-pato-bragado-pr",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "— policia federal acao localizou sete fardos de substancia analoga a maconha, totalizando 107,5 kg acao localizou sete fardos de substancia analoga a maconha, totalizando 107,5",
+          "em acao integrada com a policia militar do parana (bpfron), apreendeu entorpecentes durante patrulhamento fluvial no municipio de pato bragado/pr. durante as diligencias, as equipes"
+        ],
+        "Armas e munições": [
+          "na (bpfron), apreendeu entorpecentes durante patrulhamento fluvial no municipio de pato bragado/pr. durante as diligencias, as equipes localizaram sete fardos de substancia an"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/07/pf-e-bpfron-apreendem-cerca-de-400-caixas-de-cigarros-contrabandeados-em-marechal-candido-rondon-pr",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "pf e bpfron apreendem cerca de 400 caixas de cigarros contrabandeados       pf e bpfron apreendem cerca de 400 caixas de cigarros contrabandeados — policia federal",
+          "pf e bpfron apreendem cerca de 400 caixas de cigarros contrabandeados       pf e bpfron apreendem cerca de 400 caixas de cigarros contrabandeados — polic"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/07/pf-cumpre-mandados-em-investigacao-sobre-contrabando-de-medicamentos-emagrecedores",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "dos pela 1ª vara federal de colatina/es, em enderecos localizados nos municipios de sao mateus/es e em itabata, distrito de mucuri/ba, no ambito de investigacao que apura os c"
+        ],
+        "Contrabando e descaminho": [
+          "pf investiga contrabando de medicamentos emagrecedores       pf investiga contrabando de medicamentos emagrecedores — polic"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/07/pf-deflagra-operacao-contra-contrabando-e-distribuicao-irregular-de-medicamentos-para-emagrecimento-em-pocos-de-caldas-mg",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "agencia nacional de vigilancia sanitaria (anvisa). a acao ocorreu no municipio de pocos de caldas/mg, onde foram cumpridos dois mandados de busca e apreensao. durante as dili"
+        ],
+        "Contrabando e descaminho": [
+          "pf investiga contrabando e distribuicao irregular de medicamentos       pf investiga contrabando e distribuicao irregular d"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/julho/receita-federal-apreende-mais-de-r-30-mil-em-cigarros-eletronicos-e-produtos-derivados-de-cannabis",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições",
+        "Contrabando e descaminho",
+        "Dinheiro e valores"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "annabis e o nome de um genero de plantas conhecidas popularmente como maconha, das quais se extraem substancias com efeitos no corpo humano. ela possui compostos quimicos chamad",
+          "nde mais de r$ 30 mil em cigarros eletronicos e produtos derivados de cannabis       receita federal apreende mais de r$ 30 mil em cigarros eletronicos e produtos derivados de ca"
+        ],
+        "Armas e munições": [
+          ", focados no controle aduaneiro, destacando-se na deteccao de drogas, armas, dinheiro nao declarado e produtos contrafeitos. categoria outros servicos compartilhe: compartilhe"
+        ],
+        "Contrabando e descaminho": [
+          "utos derivados de cannabis — receita federal info noticias combate ao contrabando receita federal apreende mais de r$ 30 mil em cigarros eletronicos e produtos derivados de cannabi",
+          "eceita federal atua de forma permanente no combate ao contrabando, ao descaminho e ao trafico de drogas, contribuindo para a protecao da sociedade, da saude publica e da regularida"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/julho/receita-federal-em-foz-do-iguacu-apreende-mais-de-5-000-ampolas-de-remedios-emagrecedores-em-um-veiculo-na-br-277",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "es em um veiculo na br-277 — receita federal info noticias combate ao contrabando receita federal em foz do iguacu apreende mais de 5.000 ampolas de remedios emagrecedores em um ve"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/julho/receita-federal-retem-600-kg-de-substancia-analoga-a-maconha-na-aduana-da-ponte-internacional-da-amizade",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "receita federal retem 600 kg de substancia analoga a maconha na aduana da ponte internacional da amizade       receita federal retem 600 kg de substancia analog",
+          "maconha na aduana da ponte internacional da amizade — receita federal droga estava em dois veiculos que ingressavam no brasil e foram fiscalizados simultaneamente. droga estav"
+        ],
+        "Contrabando e descaminho": [
+          "e internacional da amizade — receita federal info noticias combate ao contrabando receita federal retem 600 kg de substancia analoga a maconha na aduana da ponte internacional da a"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/julho/operacao-conjunta-retem-477-80-kg-de-substancia-analoga-a-maconha-na-aduana-da-ponte-internacional-da-amizade",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "operacao conjunta retem 477,80 kg de substancia analoga a maconha na aduana da ponte internacional da amizade       operacao conjunta retem 477,80 kg de substancia a",
+          "conha na aduana da ponte internacional da amizade — receita federal a droga estava escondida em compartimento oculto de veiculo de carga. a droga estava escondida em compartim"
+        ],
+        "Contrabando e descaminho": [
+          "e internacional da amizade — receita federal info noticias combate ao contrabando operacao conjunta retem 477,80 kg de substancia analoga a maconha na aduana da ponte internacional"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/08/ficco-am-apreende-meia-tonelada-de-drogas-no-rio-negro-am",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições",
+        "Dinheiro e valores"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "negro/am. a acao resultou na apreensao de, aproximadamente, 150 kg de cocaina e 350 kg de maconha do tipo skunk. tambem foram apreendidos r$ 3.048,00 em especie e duas embarcac",
+          "ultou na apreensao de, aproximadamente, 150 kg de cocaina e 350 kg de maconha do tipo skunk. tambem foram apreendidos r$ 3.048,00 em especie e duas embarcacoes. cinco pessoas fo"
+        ],
+        "Armas e munições": [
+          "ru (dirandro/pnp), apreendeu 500 kg de entorpecentes na zona rural do municipio de novo airao, no rio negro/am. a acao resultou na apreensao de, aproximadamente, 150 kg de coc"
+        ],
+        "Dinheiro e valores": [
+          "foram presas em flagrante. os suspeitos, as drogas, as embarcacoes, o dinheiro e os demais materiais apreendidos foram encaminhados a unidade da policia federal, para a realizacao dos procedimentos de policia jud"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/08/pf-apreende-mais-de-88-kg-de-drogas-em-equipamentos-industriais-em-tabatinga-am",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "as, foram localizados aproximadamente 54,4 kg de maconha, 32,65 kg de cocaina e 1,18 kg de substancia que ainda passa por exames periciais complementares. a acao resultou ainda",
+          "abertura das estruturas, foram localizados aproximadamente 54,4 kg de maconha, 32,65 kg de cocaina e 1,18 kg de substancia que ainda passa por exames periciais complementares. a"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/08/ficco-sp-ficco-pr-prf-e-tor-sp-apreendem-mais-de-uma-tonelada-de-maconha",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "ficco/sp e ficco/pr apreendem mais de uma tonelada de maconha       ficco/sp e ficco/pr apreendem mais de uma tonelada de maconha — policia federal acao integrad",
+          "te de ilicitos. durante a fiscalizacao, foram localizados tabletes de droga, que apos a pesagem contabilizaram 1.154.600 kg de maconha. a ocorrencia foi apresentada a delegaci"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/08/policia-federal-apreende-856-kg-de-cocaina-no-porto-de-salvador-ba",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Veículos"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pf apreende 856 kg de cocaina no porto de salvador/ba       pf apreende 856 kg de cocaina no porto de salvador/ba — policia fede",
+          "federal apreendeu, neste domingo (2/8), cerca de 856 kg de substancia entorpecente, cujo exame pericial preliminar indicou tratar-se de cocaina, durante acao realizada no porto de s"
+        ],
+        "Veículos": [
+          "o criminosa e ocultacao da carga ilicita. alem do entorpecente, foram apreendidos tambem dois veiculos. os suspeitos foram conduzidos a superintendencia regional da policia federal na bahia, onde foram"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/08/pf-deflagra-operacao-contra-contrabando-de-medicamentos-emagrecedores-e-produtos-eletronicos",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "pf investiga contrabando de medicamentos emagrecedores       pf investiga contrabando de medicamentos emagrecedores — polic",
+          "em minas gerais e no parana para combater rede de comercializacao de produtos contrabandeados acao cumpre mandados em minas gerais e no parana para combater rede de comercializacao de produto"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/08/pf-prende-passageiro-e-apreende-cerca-de-8-kg-de-skunk-em-rondonia",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pf efetua prisao e apreende cerca de 9 kg de skunk       pf efetua prisao e apreende cerca de 9 kg de skunk — policia federal acao ocorreu no aeroport",
+          "segunda-feira (3/8), a prisao em flagrante de um homem por trafico de drogas durante fiscalizacao de rotina no aeroporto internacional de porto velho. durante inspecao de bagag"
+        ],
+        "Armas e munições": [
+          "e a um passageiro que vinha de manaus/am e tinha como destino final o municipio de guarulhos/sp. no interior da bagagem, foram localizados cerca de 9 kg de skunk ocultados. o"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/08/pf-pm-e-fab-apreendem-drogas-cigarros-e-prendem-homem-em-foz-do-iguacu-pr",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "l acoes de monitoramento resultaram na apreensao de mais de 340 kg de maconha e de cigarros contrabandeados em foz do iguacu/pr acoes de monitoramento resultaram na apreensao de",
+          "pf, pm/pr e fab prendem suspeito e apreendem drogas e cigarros       pf, pm/pr e fab prendem suspeito e apreendem drogas e cigarros — policia federal a"
+        ],
+        "Contrabando e descaminho": [
+          "to resultaram na apreensao de mais de 340 kg de maconha e de cigarros contrabandeados em foz do iguacu/pr acoes de monitoramento resultaram na apreensao de mais de 340 kg de maconh",
+          "pf, pm/pr e fab prendem suspeito e apreendem drogas e cigarros       pf, pm/pr e fab prendem suspeito e apreendem drogas e cigarros — policia federal acoes de mon"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/operacao-conjunta-apreende-3-400-ampolas-de-medicamentos-irregulares-em-rolandia",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho",
+        "Medicamentos e produtos"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "os irregulares em rolandia — receita federal info noticias combate ao contrabando operacao conjunta apreende 3.400 ampolas de medicamentos irregulares em rolandia receita federal e"
+        ],
+        "Medicamentos e produtos": [
+          "operacao conjunta apreende 3.400 ampolas de medicamentos irregulares em rolandia       operacao conjunta apreende 3.400 ampolas de medicamentos irregulares em rolandia"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/receita-federal-apreende-carga-milionaria-de-celulares-apos-abordagem-na-br-277",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "s apos abordagem na br-277 — receita federal info noticias combate ao contrabando receita federal apreende carga milionaria de celulares apos abordagem na br-277 carga de aproximad"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/receita-federal-apreende-aproximadamente-300-kg-de-substancia-analoga-a-maconha-em-duas-acoes-na-ponte-da-amizade",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "ceita federal apreende aproximadamente 300 kg de substancia analoga a maconha em duas acoes na ponte da amizade       receita federal apreende aproximadamente 300 kg de substanc",
+          "r um cidadao paraguaio. a agente canina daphine indicou a presenca de entorpecentes no automovel. durante a fiscalizacao, foram encontrados 199 tabletes de substancia analoga a maco"
+        ],
+        "Contrabando e descaminho": [
+          "acoes na ponte da amizade — receita federal info noticias combate ao contrabando receita federal apreende aproximadamente 300 kg de substancia analoga a maconha em duas acoes na p"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/receita-federal-retem-quase-250-kg-de-substancia-analoga-a-maconha-apos-tentativa-de-fuga-na-ponte-da-amizade",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "receita federal retem quase 250 kg de substancia analoga a maconha apos tentativa de fuga na ponte da amizade       receita federal retem quase 250 kg de substancia a",
+          "o contou com o apoio da agente canina urla, que indicou a presenca de entorpecentes no veiculo. acao contou com o apoio da agente canina urla, que indicou a presenca de entorpecente"
+        ],
+        "Contrabando e descaminho": [
+          "e fuga na ponte da amizade — receita federal info noticias combate ao contrabando receita federal retem quase 250 kg de substancia analoga a maconha apos tentativa de fuga na ponte"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/tenis-do-crime-receita-federal-encontra-emagrecedores-escondidos",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho",
+        "Medicamentos e produtos"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "tos em tenis de passageira — receita federal info noticias combate ao contrabando receita federal apreende medicamentos para emagrecimento ocultos em tenis de passageira produtos f"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/receita-federal-retem-tres-onibus-de-turismo-com-mercadorias-avaliadas-em-r-1-5-milhao",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho",
+        "Medicamentos e produtos"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "avaliadas em r$ 1,5 milhao — receita federal info noticias combate ao contrabando receita federal retem tres onibus de turismo com mercadorias avaliadas em r$ 1,5 milhao fiscalizac",
+          "nterna, os servidores encontraram ainda medicamentos, anabolizantes e cigarros eletronicos, produtos sujeitos a controle e restricoes especificas para entrada no pais. os dois on"
+        ],
+        "Medicamentos e produtos": [
+          "culo. na parte interna, os servidores encontraram ainda medicamentos, anabolizantes e cigarros eletronicos, produtos sujeitos a controle e restricoes especificas para entrada no pais."
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/ponte-da-integracao-registra-primeira-apreensao-de-entorpecentes-desde-o-inicio-das-operacoes",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "acoes — receita federal aproximadamente 10 kg de substancia analoga a maconha foram encontrados em onibus internacional durante fiscalizacao de rotina. aproximadamente 10 kg de",
+          "ponte da integracao registra primeira apreensao de entorpecentes desde o inicio das operacoes       ponte da integracao registra primeira apreensao de entorpecent"
+        ],
+        "Contrabando e descaminho": [
+          "sde o inicio das operacoes — receita federal info noticias combate ao contrabando ponte da integracao registra primeira apreensao de entorpecentes desde o inicio das operacoes apro"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/operacao-aquila-combate-contrabando-e-entrada-irregular-de-mercadorias-no-sul-de-minas",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Contrabando e descaminho",
+        "Medicamentos e produtos"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "peracao aconteceu no sul de minas gerais, na rodovia mg-050, entre os municipios de sao sebastiao do paraiso e piumhi. durante os cinco dias de operacao, foram apreendidas mai"
+        ],
+        "Contrabando e descaminho": [
+          "operacao aquila combate contrabando e entrada irregular de mercadorias no sul de minas       operacao aquila combate contrabando e ent",
+          "aquila, acao integrada de fiscalizacao para combater o contrabando, o descaminho e a circulacao de mercadorias irregulares introduzidas no pais. a operacao aconteceu no sul de mina"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/agente-canino-pike-localiza-248-kg-de-substancia-analoga-a-maconha-em-van-paraguaia-na-aduana-da-ponte-da-amizade",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "agente canino pike localiza 248 kg de substancia analoga a maconha em van paraguaia na aduana da ponte da amizade       agente canino pike localiza 248 kg de substanc",
+          "nacionalidade brasileira, o agente canino pike indicou a presenca de entorpecentes ainda do lado externo do veiculo. a partir da indicacao do cao, os servidores realizaram uma insp"
+        ],
+        "Contrabando e descaminho": [
+          "aduana da ponte da amizade — receita federal info noticias combate ao contrabando agente canino pike localiza 248 kg de substancia analoga a maconha em van paraguaia na aduana da p"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/operacao-conjunta-apreende-cigarros-convencionais-e-eletronicos-no-oeste-do-parana",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "ronicos no oeste do parana — receita federal info noticias combate ao contrabando operacao conjunta apreende cigarros convencionais e eletronicos no oeste do parana veiculo tinha m",
+          "operacao conjunta apreende cigarros convencionais e eletronicos no oeste do parana       operacao conjunta apreende cigarros convencion"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/operacao-dona-bruma-receita-federal-combate-contrabando-de-cigarros-eletronicos",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "te a operacao, foram cumpridos dois mandados de busca e apreensao nos municipios de vila velha/es e salvador/ba. a acao contou com a participacao de quatro auditores-fiscais e"
+        ],
+        "Contrabando e descaminho": [
+          "operacao dona bruma: receita federal combate contrabando de cigarros eletronicos       operacao dona bruma: receita federal combate contrabando de cigarros",
+          "operacao dona bruma: receita federal combate contrabando de cigarros eletronicos       operacao dona bruma: receita federal combate contrabando de cigarros eletronicos"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/acao-integrada-da-receita-federal-e-policia-civil-do-ceara-resulta-na-apreensao-de-aproximadamente-700-kg-de-skunk-e-na-prisao-de-tres-suspeitos",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "mente 700 kg de skunk e na prisao de tres suspeitos — receita federal entorpecentes estavam ocultos em carga declarada como sucata de plastico proveniente de manaus (am). entorpecen",
+          "icia civil do ceara resulta na apreensao de aproximadamente 700 kg de skunk e na prisao de tres suspeitos       acao integrada da receita federal e policia civil do ceara resu"
+        ],
+        "Contrabando e descaminho": [
+          "a prisao de tres suspeitos — receita federal info noticias combate ao contrabando acao integrada da receita federal e policia civil do ceara resulta na apreensao de aproximadamente",
+          "a receita federal, por meio da divisao de repressao ao contrabando e descaminho, e a policia civil do estado do ceara, por intermedio da delegacia de narcoticos (denarc), realizar"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/receita-federal-retem-16-5-quilos-de-cocaina-em-paranagua",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "receita federal retem 16,5 quilos de cocaina em paranagua       receita federal retem 16,5 quilos de cocaina em paranagua — receita federal a d",
+          "federal retem 16,5 quilos de cocaina em paranagua — receita federal a droga foi localizada com uso de scanner e auxilio do cao de faro falcon. a droga foi localizada com uso d"
+        ],
+        "Contrabando e descaminho": [
+          "os de cocaina em paranagua — receita federal info noticias combate ao contrabando receita federal retem 16,5 quilos de cocaina em paranagua a droga foi localizada com uso de scanne"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/receita-federal-retem-36-5-quilos-de-cocaina-em-paranagua",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "receita federal retem 36,5 quilos de cocaina em paranagua       receita federal retem 36,5 quilos de cocaina em paranagua — receita federal a d",
+          "federal retem 36,5 quilos de cocaina em paranagua — receita federal a droga foi localizada com uso de scanner e auxilio do cao de faro falcon. a droga foi localizada com uso d"
+        ],
+        "Contrabando e descaminho": [
+          "os de cocaina em paranagua — receita federal info noticias combate ao contrabando receita federal retem 36,5 quilos de cocaina em paranagua a droga foi localizada com uso de scanne"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/mais-de-5-toneladas-de-camarao-apreendidas-em-operacao-conjunta",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho",
+        "Dinheiro e valores"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "didas em operacao conjunta — receita federal info noticias combate ao contrabando mais de 5 toneladas de camarao apreendidas em operacao conjunta acao integrada entre receita feder"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/09/pf-apreende-723-kg-de-maconha-em-acao-conjunta-em-altonia-pr",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pf, eb e bpfron apreendem 723 kg de maconha em altonia/pr       pf, eb e bpfron apreendem 723 kg de maconha em altonia/pr — policia federal aca",
+          "e, apos pesagem, totalizou 723 kg. diante dos fatos, a embarcacao e o entorpecente foram apreendidos e encaminhados a delegacia da policia federal em guaira para as providencias cab"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/09/pf-apreende-eletronicos-de-origem-estrangeira",
+      "categorias_sugeridas": [
+        "Outras apreensões"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/09/pf-e-pm-apreendem-mais-de-180-kg-de-maconha-em-foz-do-iguacu",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pf e pm/pr apreendem mais de 180 kg de maconha       pf e pm/pr apreendem mais de 180 kg de maconha — policia federal acao localizou entorpecente",
+          "apreendem mais de 180 kg de maconha — policia federal acao localizou entorpecente durante monitoramento de embarcacao oriunda do paraguai na regiao proxima a ponte internacional da"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/09/pf-e-forcas-de-seguranca-apreendem-7-1-toneladas-de-maconha-em-itaquirai-ms",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pf, pm/ms e prf apreendem 7,1 toneladas de maconha em itaquirai/ms       pf, pm/ms e prf apreendem 7,1 toneladas de maconha em itaquirai/ms — policia",
+          "toneladas de maconha em itaquirai/ms — policia federal acao localizou entorpecente apos informacoes sobre os veiculos suspeitos acao localizou entorpecente apos informacoes sobre os"
+        ],
+        "Armas e munições": [
+          "substancia analoga a maconha, localizada em uma propriedade rural no municipio de itaquirai/ms. a acao teve inicio apos informacoes sobre dois veiculos suspeitos que trafegav"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/09/pf-apreende-740-ampolas-de-medicamentos-e-perfumes-importados-no-aeroporto-de-foz-do-iguacu-pr",
+      "categorias_sugeridas": [
+        "Outras apreensões"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-apreende-sementes-de-maconha-em-encomendas-internacionais",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "receita federal apreende sementes de maconha em encomendas internacionais       receita federal apreende sementes de maconha em encomendas inter"
+        ],
+        "Contrabando e descaminho": [
+          "encomendas internacionais — receita federal info noticias combate ao contrabando receita federal apreende sementes de maconha em encomendas internacionais cerca de 50 mil sementes"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-apreende-armas-de-fogo-haxixe-eletronicos-e-medicamentos-em-onibus-de-turismo",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições",
+        "Contrabando e descaminho",
+        "Dinheiro e valores"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "receita federal apreende armas de fogo, haxixe, eletronicos e medicamentos em onibus de turismo       receita federal apreende armas de fogo, haxi",
+          "au apreenderam, na data de 30 de setembro, eletronicos, medicamentos, droga, armas e municoes, em um onibus de turismo. o onibus havia sido retido, apos ser abordado, no munic"
+        ],
+        "Armas e munições": [
+          "contrado um fundo falso embaixo dos bancos. nele havia, 1 revolver, 1 pistola, 1 submetralhadora, municoes e medicamentos, com valor estimado e de r$1 milhao de reais. tambem fo",
+          "culo, foi encontrado um fundo falso embaixo dos bancos. nele havia, 1 revolver, 1 pistola, 1 submetralhadora, municoes e medicamentos, com valor estimado e de r$1 milhao de reais"
+        ],
+        "Contrabando e descaminho": [
+          "entos em onibus de turismo — receita federal info noticias combate ao contrabando receita federal apreende armas de fogo, haxixe, eletronicos e medicamentos em onibus de turismo co",
+          "iscalizar o veiculo, as equipes encontraram indicios de transporte de mercadorias irregulares, e encaminharam o onibus, apos lacra-lo, ao deposito da receita federal em itajai/sc. nesta quarta-"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-retem-dois-conteineres-de-cigarros-eletronicos-no-porto-de-santos-sp",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "icos no porto de santos/sp — receita federal info noticias combate ao contrabando receita federal retem dois conteineres de cigarros eletronicos no porto de santos/sp no brasil e p",
+          "receita federal retem dois conteineres de cigarros eletronicos no porto de santos/sp       receita federal retem dois conteineres de cigarros eletroni"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-apreende-onibus-clandestino-com-cerca-de-500-caixas-de-cigarros-e-800-ampolas-de-emagrecedores-em-foz-do-iguacu",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "e fretamento eventual que transportava 22 passageiros com destino aos municipios de criciuma e tubarao, em santa catarina. o veiculo trafegava sem autorizacao da agencia nacio"
+        ],
+        "Contrabando e descaminho": [
+          "recedores em foz do iguacu — receita federal info noticias combate ao contrabando receita federal apreende onibus clandestino com cerca de 500 caixas de cigarros e 800 ampolas de e",
+          ". diante das irregularidades e dos indicios de crime de contrabando e descaminho, os dois motoristas, pai e filho, foram presos em flagrante e encaminhados a delegacia de policia f"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/caes-farejadores-da-receita-federal-sao-decisivos-em-operacao-que-apreende-drogas-e-resulta-em-35-prisoes",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "tou na prisao de 35 pessoas e na apreensao de 100 kg de cloridrato de cocaina, 30 kg de pasta base de cocaina, 60 kg de skunk e haxixe. entre os principais flagrantes estavam a",
+          "oridrato de cocaina, 30 kg de pasta base de cocaina, 60 kg de skunk e haxixe. entre os principais flagrantes estavam as chamadas “mulas humanas”: 28 pessoas foram identificadas"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-apreende-116-kg-de-cocaina-no-aeroporto-internacional-de-guarulhos",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho",
+        "Dinheiro e valores"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "receita federal apreende 116 kg de cocaina no aeroporto internacional de guarulhos       receita federal apreende 116 kg de cocaina no aeropo",
+          "os e bombons, foram interceptados apos uma tentativa de introducao do entorpecente na area aeroportuaria. em 18 de setembro, outra acao de monitoramento permitiu localizar, antes do"
+        ],
+        "Contrabando e descaminho": [
+          "internacional de guarulhos — receita federal info noticias combate ao contrabando receita federal apreende 116 kg de cocaina no aeroporto internacional de guarulhos operacao sufoco"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-apreende-celulares-recem-lancados-no-aeroporto-internacional-de-foz-do-iguacu",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "rnacional de foz do iguacu — receita federal info noticias combate ao contrabando receita federal apreende celulares recem-lancados no aeroporto internacional de foz do iguacu o va"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-apreende-quase-r-13-milhoes-em-mercadorias-irregulares-em-um-unico-caminhao",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho",
+        "Medicamentos e produtos",
+        "Dinheiro e valores"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "500 cigarros eletronicos e 35 pacotes de balas de goma contendo thc (maconha). apos a contabilizacao das mercadorias, realizada em um deposito da receita federal, o valor total"
+        ],
+        "Contrabando e descaminho": [
+          "lares em um unico caminhao — receita federal info noticias combate ao contrabando receita federal apreende quase r$ 13 milhoes em mercadorias irregulares em um unico caminhao carga",
+          "na de perdimento, e os responsaveis poderao responder pelos crimes de descaminho e contrabando. categoria financas, impostos e gestao publica compartilhe: compartilhe por facebook"
+        ],
+        "Medicamentos e produtos": [
+          "a apreensao. entre os produtos encontrados havia grande quantidade de anabolizantes, hormonios, polipeptideos, vitaminas, cigarros, produtos eletronicos e outras mercadorias. tambem f"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-retem-mais-de-250-kg-de-substancia-analoga-a-maconha-na-aduana-da-ponte-internacional-da-amizade",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "receita federal retem mais de 250 kg de substancia analoga a maconha na aduana da ponte internacional da amizade       receita federal retem mais de 250 kg de substanci",
+          "cional da amizade — receita federal cidadao brasileiro e detido com a droga escondida no fundo falso de uma van, com placas do paraguai. cidadao brasileiro e detido com a drog"
+        ],
+        "Contrabando e descaminho": [
+          "e internacional da amizade — receita federal info noticias combate ao contrabando receita federal retem mais de 250 kg de substancia analoga a maconha na aduana da ponte internacio"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-retem-aproximadamente-300-kg-de-substancia-analoga-a-maconha-na-ponte-da-amizade",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "receita federal retem aproximadamente 300 kg de substancia analoga a maconha na ponte da amizade       receita federal retem aproximadamente 300 kg de substancia analoga a maco",
+          "paraguaio apresentava adaptacoes na parte traseira para ocultacao de entorpecentes; condutora fugiu durante abordagem. veiculo paraguaio apresentava adaptacoes na parte traseira pa"
+        ],
+        "Contrabando e descaminho": [
+          "aconha na ponte da amizade — receita federal info noticias combate ao contrabando receita federal retem aproximadamente 300 kg de substancia analoga a maconha na ponte da amizade v"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/10/pf-combate-contrabando-de-cigarros-em-campo-grande-ms",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "pf atua no combate ao contrabando de cigarros em campo grande/ms       pf atua no combate ao contrabando de cigarros em campo grande",
+          "pf atua no combate ao contrabando de cigarros em campo grande/ms       pf atua no combate ao contrabando de cigarros em campo grande/ms — policia"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/10/ficco-pr-apreende-mais-de-uma-tonelada-de-maconha-em-matelandia-pr",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "ficco/pr apreende mais de 1 tonelada de maconha em matelandia       ficco/pr apreende mais de 1 tonelada de maconha em matelandia — policia federal",
+          "dia — policia federal acao conjunta com a pm/pr e com a prf localizou entorpecente ocultado em meio a uma carga licita acao conjunta com a pm/pr e com a prf localizou entorpecente o"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/10/ficco-sp-apreende-mais-de-1-tonelada-de-maconha-e-prende-uma-pessoa-em-flagrante",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "ficco/sp apreende mais de 1 tonelada de maconha       ficco/sp apreende mais de 1 tonelada de maconha — policia federal acao conjunta com gise e to",
+          "ue apresentava indicios de estar sendo utilizada para o transporte de entorpecentes. na vistoria, foram localizados 1.088 tabletes de maconha escondidos em meio a uma carga licita."
+        ],
+        "Contrabando e descaminho": [
+          "r), realizou diligencias de combate aos crimes de trafico de drogas e contrabando. durante a acao, os policiais abordaram uma van proveniente de maringa/pr, que apresentava indicio"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/10/pf-e-pm-apreendem-15-5-mil-macos-de-cigarros-paraguaios-em-deposito-clandestino-em-itaipulandia-pr",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "pf e pm/pr apreendem 15,5 mil macos de cigarros paraguaios       pf e pm/pr apreendem 15,5 mil macos de cigarros paraguaios — policia federal acao"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/10/pf-em-acao-conjunta-apreende-eletronicos-vinho-e-azeite-em-foz-do-iguacu-pr",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "integrada com a receita federal, com a policia militar e com a guarda municipal resultou na localizacao de mercadorias de origem estrangeira e na prisao de um homem acao integ"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/outubro/receita-federal-e-policia-federal-apreendem-aproximadamente-17-toneladas-de-insumo-quimico-utilizado-na-producao-de-cocaina-em-corumba",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "roximadamente 17 toneladas de insumo quimico utilizado na producao de cocaina em corumba       receita federal e policia federal apreendem aproximadamente 17 toneladas de insum"
+        ],
+        "Contrabando e descaminho": [
+          "participacao da equipe de analise de risco da divisao de repressao ao contrabando e descaminho da receita federal do brasil da 8ª regiao fiscal, em sao paulo/sp (direp08), da equip",
+          "a equipe de analise de risco da divisao de repressao ao contrabando e descaminho da receita federal do brasil da 8ª regiao fiscal, em sao paulo/sp (direp08), da equipe de vigilanci"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/outubro/operacao-play-fake-receita-federal-retem-nove-conteineres-com-mercadorias-irregulares-no-porto-do-rio-de-janeiro",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "no porto do rio de janeiro — receita federal info noticias combate ao contrabando operacao play fake: receita federal retem nove conteineres com mercadorias irregulares no porto do",
+          "operacao play fake: receita federal retem nove conteineres com mercadorias irregulares no porto do rio de janeiro       operacao play fake: receita federal retem nove conteineres com mer"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/outubro/receita-federal-apreende-de-entorpecentes-em-molde-de-compressao-industrial",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "6 10h12 ontem, 6 de outubro, a receita federal em viracopos apreendeu cocaina em molde de compressao industrial, cujo destino era a espanha. a carga de 7 toneladas e meia teve",
+          "receita federal apreende de entorpecentes em molde de compressao industrial       receita federal apreende de entorpecentes em molde de com"
+        ],
+        "Contrabando e descaminho": [
+          "e de compressao industrial — receita federal info noticias combate ao contrabando receita federal apreende de entorpecentes em molde de compressao industrial compartilhe: compartil"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/outubro/receita-federal-em-operacao-conjunta-com-a-anatel-retem-mais-de-1-300-produtos-eletronicos-em-situacao-irregular",
+      "categorias_sugeridas": [
+        "Outras apreensões"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "lida"
     }
   ],
   "quantificacao": {
-    "itens_extraidos": 245,
+    "itens_extraidos": 289,
     "totais_preliminares": [
       {
         "categoria": "Armas e munições",
@@ -25677,16 +26700,22 @@
         "quantidade": 20902.0
       },
       {
+        "categoria": "Armas e munições",
+        "material": "Pistolas",
+        "unidade": "unidades",
+        "quantidade": 1.0
+      },
+      {
         "categoria": "Contrabando e descaminho",
         "material": "Cigarros",
         "unidade": "unidades",
-        "quantidade": 400.0
+        "quantidade": 1015.0
       },
       {
         "categoria": "Contrabando e descaminho",
         "material": "Maços de cigarros",
         "unidade": "unidades",
-        "quantidade": 84500.0
+        "quantidade": 248000.0
       },
       {
         "categoria": "Crimes ambientais",
@@ -25698,13 +26727,13 @@
         "categoria": "Dinheiro e valores",
         "material": "Dinheiro em reais",
         "unidade": "BRL",
-        "quantidade": 1565785190.0
+        "quantidade": 1590198238.0
       },
       {
         "categoria": "Drogas e entorpecentes",
         "material": "Cocaína",
         "unidade": "kg",
-        "quantidade": 70978.05
+        "quantidade": 106848.17
       },
       {
         "categoria": "Drogas e entorpecentes",
@@ -25716,19 +26745,25 @@
         "categoria": "Drogas e entorpecentes",
         "material": "Maconha",
         "unidade": "kg",
-        "quantidade": 62901.42
+        "quantidade": 1232232.32
       },
       {
         "categoria": "Drogas e entorpecentes",
         "material": "Skunk",
         "unidade": "kg",
-        "quantidade": 5496.7
+        "quantidade": 6265.7
       },
       {
         "categoria": "Medicamentos e produtos",
         "material": "Comprimidos",
         "unidade": "unidades",
         "quantidade": 1932.0
+      },
+      {
+        "categoria": "Medicamentos e produtos",
+        "material": "Medicamentos",
+        "unidade": "unidades",
+        "quantidade": 756.0
       },
       {
         "categoria": "Veículos",
