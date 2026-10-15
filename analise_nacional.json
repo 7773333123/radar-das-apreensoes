@@ -1,20 +1,20 @@
 {
-  "gerado_em_utc": "2026-10-15T02:09:30.729253+00:00",
+  "gerado_em_utc": "2026-10-15T02:19:04.084049+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "materia_sem_informacao_quantitativa": 1215,
-    "pendente_verificacao_apreensao": 921,
+    "materia_sem_informacao_quantitativa": 1218,
+    "pendente_verificacao_apreensao": 922,
     "com_informacao_quantitativa": 237
   },
-  "materias_sem_informacao_quantitativa": 1215,
+  "materias_sem_informacao_quantitativa": 1218,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
   "noticias_multicategoria": 252,
   "noticias_com_quantidades": 237,
-  "noticias_analisadas": 2373,
+  "noticias_analisadas": 2377,
   "fontes_distintas_informadas": 671,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 970,
+    "Drogas e entorpecentes": 973,
     "Armas e munições": 492,
     "Contrabando e descaminho": 92,
     "Dinheiro e valores": 80,
@@ -42,7 +42,7 @@
     "GO": 11,
     "TO": 10,
     "MT": 9,
-    "AC": 7,
+    "AC": 8,
     "RJ": 6,
     "AP": 5,
     "SE": 4,
@@ -102,7 +102,7 @@
     "2026-07": 24,
     "2026-08": 24,
     "2026-09": 20,
-    "2026-10": 1582
+    "2026-10": 1586
   },
   "noticias_por_ano": {
     "2019": 1,
@@ -112,24 +112,56 @@
     "2023": 29,
     "2024": 32,
     "2025": 16,
-    "2026": 1674
+    "2026": 1678
   },
   "status_processamento": {
-    "classificacao_automatica": 1441,
-    "pendente_evidencia": 921,
+    "classificacao_automatica": 1444,
+    "pendente_evidencia": 922,
     "outras_apreensoes_a_revisar": 11
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 2373
+    "aguardando_url_original": 2377
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 921,
-  "noticias_pendentes_revisao": 921,
+  "noticias_sem_classificacao": 922,
+  "noticias_pendentes_revisao": 922,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
   "resultados_leituras_externas": {},
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPOGlDMzBqclY2MVE0V1lCZVF6ZTNiTWxyRUFpRnItdjAwQmk2OWlqZmJoQUYyeFZiUFdJNUdGUHN3TjNZajRkekdyWDk0dUtrNDRGMlowb0xTNG1qUFJXNmtJQmFGRF9uSzB1ZDNFbFpVZDl4OVVyMXhlbXJONWxQV01ZTnROcERaOUJwN0JWQk14V3YtY1gzam1VUjFqY1JQYWpHSzFqQTFHREJjeEpQdmZ4blhTUDJHRzdWam9SNjNPUQ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pm apreende 198 tabletes de skunk escondidos em caminhao na zona leste de manaus - portal cm7"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQX09abFBCNXZBZEpJU09yYlJrRUNHUXVrZlJWRXdXRFNlVk93RkJScDZpa1lSWHNzZFp5eVJhRVhQTUNKbS03YnVkb2pkOTAyYTNCOVFMMFJ5bDdaXzJaYm1GdHVIWVdvZmRsNGtra21ocG1FYzZqNEFVOVVPQmFSUlpZUEJUZWhwMU1xQ2dKeGxMTko5YUlzZkJkdEIxcThTZWtyT1YxajZGbjZOYllYNlpMMGtRU2lINndj0gHAAUFVX3lxTFA4U21LX29qLTJTZDFsTTU2X1FiWE80SGYtYklSaDdtVzI0eVd6ZkRlVy1HODU0eHBPLXRTZURlbjBxQVZ2eFRJaGsxdlJQU0VQLXdjdjhVVElaT3FaTlpmdUUzOWh6RzRXNFBCcVdsUGQ1b0M4VmtYSVVUS01NZ2xVRm9EZFJrQ2ZSUGcwWk1UYkRYbmVJYmgzbXoxOGhPbDhRRlI3anFuU01MRU92RmY0SjNrSDNLVzE0MVZCOEhUWA?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "bope encontra drogas escondidas em botijao enterrado em quintal de casa em rio branco - ac24horas"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNWFBfTzNPUENnVmZHQ1NwaEQ3NFdTTjZmZDhEM25DXzdZNjNmazZrekNCNXFvY3pjNThTRGxVVDRmclE1RHQ5MXg2QzBnRl8tNGZqdWZTSl9CMGlqc1VkeVgwbGQtR2RuRWx5Z3pESkVMNXUwdjM2RWJVQURLem9JVmVEeHYtUmltRXRabktjWHU3UVNOdDc1RVh30gGaAUFVX3lxTE1YUF9PM09QQ2dWZkdDU3BoRDc0V1NONmZkOEQzbkNfN1k2M2ZrNmt6Q0I1cW9jemM1OFNEbFVUNGZyUTVEdDkxeDZDMGdGXy00Zmp1ZlNKX0IwaWpzVWR5WDBsZC1HZG5FbHlnekRKRUw1dTB2MzZFYlVBREt6b0lWZUR4di1SaW1FdFpuS2NYdTdRU050NzVFWHc?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxPLXR1VXZRZGV2V1BYb1dVTmVac1dKRmlmQ2NwdllSWDVVY01JcEJ3VmFRYWp3SHVqWVp4eUxOcTlmSHlPUzZaR2JqOFRmWHR2dWJnSHNDWlg2STA0S3JvUnd1a0plT1RYZ2ZnSzhNLVA5UWpKMmRzajk3YUdCeHRrNllVQWRpVmRGbUxtNDZWUzhTbEVJb1lMZW0zSHlHNWI3NGY1Mkh5c1luRnRuTFJxT0xLTjB0bVUtNlVnVmF5Yy1BWV9vd3A2MkoxcTN5VlZReWdNN1R6djZxTTFMRFFsaHlRWWRCRS1rQ3c?oc=5",
       "categorias_sugeridas": [
@@ -160,6 +192,18 @@
         "Drogas e entorpecentes": [
           "homem e preso com 137 porcoes de crack durante operacao policial em simolandia-go - blog antonio carlos",
           "homem e preso com 137 porcoes de crack durante operacao policial em simolandia-go - blog antonio carlos"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPaUVGQ2ZtMENBYU80d0w5NGxrRFgzTGtoSm1iNHF1cEM5eTlfamg5VFZfcFR6bE4wTTBTOTFZT0pfdWdBR0NrbGVESGlJQUhvamhQbldFRmdBbTJvckIydUVvbHFFRnRMazF0RWN2azlvTF85NkRzXzZtcGJNRzdnMFRENTRTdTN3Z3JJazcyS25XeFAxdzNYYjB3a1hkUkwxZ2tidW5aWFJqNUs0TDVCQlE0N1NIMzFuOHZpNnBR?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pm apreende 63 porcoes de substancia semelhante a crack no centro de camacari - mais regiao"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
