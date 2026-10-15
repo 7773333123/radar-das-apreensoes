@@ -1,28 +1,28 @@
 {
-  "gerado_em_utc": "2026-10-15T23:37:08.349101+00:00",
+  "gerado_em_utc": "2026-10-15T23:38:26.469981+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "pendente_verificacao_apreensao": 3905,
-    "materia_sem_informacao_quantitativa": 6391,
+    "materia_sem_informacao_quantitativa": 6394,
+    "pendente_verificacao_apreensao": 3907,
     "com_informacao_quantitativa": 791
   },
-  "materias_sem_informacao_quantitativa": 6391,
+  "materias_sem_informacao_quantitativa": 6394,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
   "noticias_multicategoria": 1246,
   "noticias_com_quantidades": 791,
-  "noticias_analisadas": 11087,
+  "noticias_analisadas": 11092,
   "fontes_distintas_informadas": 1367,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 4187,
-    "Armas e munições": 2955,
+    "Drogas e entorpecentes": 4188,
+    "Armas e munições": 2956,
     "Contrabando e descaminho": 647,
     "Dinheiro e valores": 364,
     "Veículos": 115,
     "Medicamentos e produtos": 95,
     "Crimes ambientais": 58,
     "Operações patrimoniais": 38,
-    "Outras apreensões": 31
+    "Outras apreensões": 32
   },
   "noticias_por_uf_explicita": {
     "PA": 738,
@@ -136,7 +136,7 @@
     "2026-07": 34,
     "2026-08": 47,
     "2026-09": 34,
-    "2026-10": 2200
+    "2026-10": 2205
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -147,25 +147,33 @@
     "2023": 1786,
     "2024": 2177,
     "2025": 2518,
-    "2026": 2340
+    "2026": 2345
   },
   "status_processamento": {
-    "pendente_evidencia": 3905,
-    "classificacao_automatica": 7151,
-    "outras_apreensoes_a_revisar": 31
+    "outras_apreensoes_a_revisar": 32,
+    "pendente_evidencia": 3907,
+    "classificacao_automatica": 7153
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 11033,
+    "aguardando_url_original": 11038,
     "lida": 54
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 3905,
-  "noticias_pendentes_revisao": 3905,
+  "noticias_sem_classificacao": 3907,
+  "noticias_pendentes_revisao": 3907,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
   "resultados_leituras_externas": {},
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNeWZXVDJGYmR0NlhOR2s2Q2hjTm41Uk8tZTRmTktoUTJ0NlhlY1c2QWRETzNEdWsyZjFLUk9TMUlGcVAxbklIVmNtVkcwUTZIYnk1RmppYmRzN2JiUHlxSVRLQzdkejk4TG1zYXFUX1NQcmoxbC0wVWljMThKWkRSd3ljUjlGTFd2d1VhNFJiWjNuX2phMWxsX05TYw?oc=5",
+      "categorias_sugeridas": [
+        "Outras apreensões"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOLTFxQ0xLRGJFWjJsdXpuaExGRkstZ0ZOR0RPeTBZMWxTNUhkaXFQeERmazZzclM0RThROUNPeHI2UTd1MHZ6cVVpamxKTU5USG50N3A1eHQ4bThwT2U5UUFUMmdrZUYwVFU1OExrbFk1RmxXd0lCcnQ2YUNucVZDcENMOUhyamtMNzBTTERIOTM2bjQxLTVHSEpCcjFucm4wWXZUcUx1NnZuRWFJZExQLWpQV0l2Q0VEdnFBb2tmU1ZKOUEwYUtLUElLdw?oc=5",
       "categorias_sugeridas": [
@@ -288,6 +296,14 @@
           "pf, em acao integrada, apreende 320 kg de maconha e prende um homem no parana — policia federal - governo federal"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxPTEhNNjRzYTJoVTcxUGJtYjdObXVVb0tTeFp6TktIOUNObm5vLTBjVVFyNHlqb3RjVzNsVllUUlEwQzVrY0o1NndJcDdvNUdMZXBnRkkxem9GLUg3SnFqMlYyQ0xCNFo1aTdPLTJmbGVMX2gzaVByRFpVTHZFcWdYOUpFVkkwdE0yU3F2RHFRM2dUQ1RIbUl6aVhmM3F2cjVmNWFUUW4yVlpDaGhzYkpXWjFYandSYkpNem5SNmlYS1RvbHdDRGZSSEtaN1ZEVEQ3OG5oZF9adlQ5OC00M0hpZFdSeGNuOHFDWXBMOXdiRERaQQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -515,6 +531,18 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOVHlyMWlpTFdXczlIWERVTm1TU1hOYlRWejFnMmJ5anp1NTY0MVMzVUlRRVE0aEVJM1ZyaHZHTlBwcElsVlcwUm1pVlJMMHZyOXF2SFNabmVPbWFjTEtuYi1qUF9pUmtPaDdQNWpUX3NoaU81UkF1ZnRqTEJ0ZTgySXZWYld5N21oRzM5Y09oVWxCVnZfbWRwNEJpUFhTMnRnLUx4a2VraUJhU3huTmlSVUZJX1FLMzVSOU9YTDVIZGo?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "policia civil esclarece tentativa de homicidio em dourados e apreende revolver utilizado no crime - policia civil de mato grosso do sul"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPZ0F6Y2t2RXZZNnpGNnRXYmc1Wlo1RHdpZ2p0ZHEybkg5SHBaZ2hOX2JOTUlKamtObWk4TGNWYWF4UTgwbndSLVZxNm16NHdfQnYtRDFPbllJYzRyeThTaUFoTjA1d29CS195ckM1UTRTT3ktNVJYVHRGckpSZVV0RERsWlFXRF9LX2RMZlpYY1V2d1BVakJQZ1RvY1RaV0JrdnBiOENINllEbk0?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -701,6 +729,14 @@
           "mpmg promove palestra sobre integracao institucional e combate ao trafico de drogas para policiais militares em bom despacho | portal - mpmg"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOYUVjUl9sRzZzN1VaNVktb0V5U2RzNUpmZ292QXZKdGN1Q0FFVVJGMEVPMjdQSGFCVElWUjFTZ1c3c2RLcGxzWTNnOHpXRTEtaXJpUEoxTnJxWFQ5Z3JtUkh0SmQwN2NjQ3NzWE41dWJsMmRXNWhrUXJEWVdGWHZIRWtaT0ZZYlQtZmdQVk5wbTRHdlBtSTlUb0RaUzZoa3hZNVQzZlhJajlJS1RfeXF3M01VQ3VPLTNjMUZ4ZE1n?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -19408,6 +19444,19 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQeC1fN1h0eDdDOEs2MUhEWWp3OEZ1SmdySHlBNkhqd2NFMGVKLURmMWdPelJFV2lBUWNabjRmZ3VwNXpSdVVDOG1STlA2NjJIRy01RFQydm5rS2Q4SnFFYXl5ZThnMW5UemlhOWQxVFRaSDBDTkdWX1dHbGtwcTBIWUdsN2tsNkowMnhlOWYzd3ZZaVZURXRrQTVfT3RuVU1VMkNDWG5pNVBQYW5ZVUhyQkNiU3dLSmtfSkZGMnVpXzZNYkxHYlVVaFp6XzVDWGg2QTVYeFBzdlZqQ00?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia civil de deodapolis prende foragido por trafico de drogas e violencia domestica - rede jota fm",
+          "policia civil de deodapolis prende foragido por trafico de drogas e violencia domestica - rede jota fm"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
