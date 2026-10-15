@@ -9,7 +9,7 @@ import re
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from urllib.parse import urlparse, unquote
+from urllib.parse import urlparse, unquote, urlencode
 from urllib.request import Request, urlopen
 
 ARQUIVO = Path(__file__).resolve().parent / "noticias.json"
@@ -57,10 +57,40 @@ def extrair_html(pagina):
                 return candidato
     return ""
 
+def google_rpc(url):
+    """Tenta resolver os identificadores recentes via endpoint público do Google Notícias."""
+    codigo = urlparse(url).path.rstrip('/').split('/')[-1]
+    if not re.fullmatch(r'[A-Za-z0-9_-]{20,}', codigo):
+        return ''
+    try:
+        pagina = f'https://news.google.com/rss/articles/{codigo}?hl=pt-BR&gl=BR&ceid=BR:pt-419'
+        req = Request(pagina, headers={'User-Agent': 'Mozilla/5.0'})
+        with urlopen(req, timeout=7) as resp:
+            corpo = resp.read(220000).decode('utf-8', 'replace')
+        ident = re.search(r'data-n-a-id="([^"]+)"', corpo)
+        assinatura = re.search(r'data-n-a-sg="([^"]+)"', corpo)
+        if not ident or not assinatura:
+            return ''
+        payload = json.dumps([['Fbv4je', json.dumps(["garturlreq", [["pt-BR", "BR", ["FINANCE_TOP_INDICES", "WEB_TEST_1_0_0"], None, None, 1, 1, "BR:pt-419", None, 180, None, None, None, None, None, 0, None, None, [1608992183, 723341000]], "pt-BR", "BR", 1, [2, 3, 4, 8], 1, 0, "655000234", 0, 0, None, 0], ident.group(1), assinatura.group(1)]), None, 'generic']])
+        post = urlencode({'f.req': payload}).encode()
+        req = Request('https://news.google.com/_/DotsSplashUi/data/batchexecute?rpcids=Fbv4je', data=post, headers={'User-Agent': 'Mozilla/5.0', 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'})
+        with urlopen(req, timeout=9) as resp:
+            resposta = resp.read(180000).decode('utf-8', 'replace')
+        for m in re.finditer(r'https?://[^\\"\s<>]+', resposta):
+            candidato = m.group(0).replace('\\/', '/').rstrip('\\')
+            if url_valida(candidato):
+                return candidato
+    except Exception:
+        pass
+    return ''
+
 def resolver(url):
     original = extrair_do_codigo(url)
     if original:
         return original, "recuperada_codigo"
+    via_rpc = google_rpc(url)
+    if via_rpc:
+        return via_rpc, "recuperada_google_rpc"
     try:
         req = Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; RadarApreensoes/1.0)"})
         with urlopen(req, timeout=9) as resp:
@@ -77,7 +107,7 @@ def resolver(url):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--limite", type=int, default=int(os.getenv("LIMITE_DECODIFICACAO", "60")))
+    parser.add_argument("--limite", type=int, default=int(os.getenv("LIMITE_DECODIFICACAO", "200")))
     parser.add_argument("--trabalhadores", type=int, default=6)
     args = parser.parse_args()
     if not ARQUIVO.exists():
@@ -100,6 +130,8 @@ def main():
             noticia["url_original_status"] = "direta"
             existentes += 1
         elif "news.google.com/" in google:
+            if noticia.get("url_original_status", "").startswith(("erro_", "nao_resolvida")) and not os.getenv("REPETIR_FALHAS"):
+                continue
             pendentes.append((noticia, google))
     lote = pendentes[:max(0, args.limite)]
     print(f"Acervo: {len(noticias)}; links originais: {existentes}; aguardando: {len(pendentes)}; tentativa: {len(lote)}", flush=True)
