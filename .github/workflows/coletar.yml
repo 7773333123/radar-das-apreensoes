@@ -44,11 +44,15 @@ jobs:
             python coletor.py
           fi
 
-      - name: Preparar recuperador sem bibliotecas externas
-        run: python -m py_compile recuperar_links.py
-
-      - name: Recuperar links originais das noticias
-        run: python recuperar_links.py --limite 60
+      - name: Coletar arquivos oficiais diretamente (2020 em diante)
+        env:
+          ANO_HISTORICO: ${{ inputs.ano_historico || '' }}
+        run: |
+          if [ -n "$ANO_HISTORICO" ]; then
+            python coletar_fontes_diretas.py --ano "$ANO_HISTORICO" --paginas 2
+          else
+            python coletar_fontes_diretas.py --paginas 2
+          fi
 
       - name: Analisar noticias e gerar estatisticas
         run: python analisar_noticias.py
@@ -57,7 +61,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add noticias.json analise_nacional.json
+          git add noticias.json analise_nacional.json cobertura_historica.json
           if ! git diff --cached --quiet; then
             git commit -m 'Atualizar noticias e estatisticas automaticamente'
             git pull --rebase
