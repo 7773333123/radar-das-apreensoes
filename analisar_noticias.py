@@ -120,6 +120,32 @@ class PageText(HTMLParser):
   return ' '.join(x for x in (' '.join(self.title),' '.join(self.meta),body) if x).strip()
 
 
+
+GOOGLE_GENERIC = ('google noticias cobertura jornalistica abrangente', 'cobertura jornalistica abrangente e atualizada, agregada de fontes')
+
+def generic_google_text(value):
+ f=fold(value)
+ return any(x in f for x in GOOGLE_GENERIC)
+
+def is_google_news(url):
+ host=(urlparse(str(url)).hostname or '').lower()
+ return host in ('news.google.com','news.google.com.br')
+
+def source_url(n):
+ # Prefer an explicitly discovered publisher URL. Never treat Google News as original.
+ for key in ('url_original','link_original','url_fonte','link_fonte','url_publicador','url_resolvida'):
+  u=str(n.get(key) or '').strip()
+  if u.startswith(('https://','http://')) and not is_google_news(u):return u
+ u=str(n.get('url') or n.get('link') or '').strip()
+ return u if not is_google_news(u) else ''
+
+def valid_cached_text(n):
+ for key in ('texto_completo','conteudo','texto_analisado_resumo'):
+  value=str(n.get(key) or '').strip()
+  if len(value)>=100 and not generic_google_text(value):return value
+ return ''
+
+
 def fetch_article(url,timeout=8):
  """Reads public HTML; returns text and an auditable failure reason."""
  from urllib.error import HTTPError, URLError
@@ -146,6 +172,7 @@ def fetch_article(url,timeout=8):
    charset=response.headers.get_content_charset() or 'utf-8'
    page=PageText();page.feed(data.decode(charset,errors='replace'))
    txt=page.article_text()
+   if generic_google_text(txt):return '', 'pagina_google_nao_e_materia'
    if len(txt)<100:return '', 'texto_insuficiente'
    f=fold(txt[:1500])
    if any(term in f for term in ('enable javascript','habilite o javascript','access denied','acesso negado','verify you are human','captcha')) and len(txt)<1000:
@@ -303,22 +330,27 @@ def main():
  raw=json.loads(path.read_text(encoding='utf-8'))
  items=raw if isinstance(raw,list) else raw.get('noticias',[])
  if not isinstance(items,list):raise SystemExit('Formato inesperado de noticias.json')
- # Tentar ler todas as matérias ainda não processadas nesta execução, inclusive as já classificadas.
- # Reutilizar texto integral já obtido; não insistir em falhas anteriores sem pedido explícito.
+ # Invalid Google News landing pages are not article text; retry only when a publisher URL exists.
  eligible=[]
  for n in items:
   if not isinstance(n,dict):continue
-  url=str(n.get('url') or n.get('link') or '').strip()
-  if not url or args.sem_web:continue
-  already=bool(str(n.get('texto_completo') or n.get('conteudo') or n.get('texto_analisado_resumo') or '').strip())
-  if already and not args.repetir_leituras:continue
-  if n.get('leitura_fonte_versao')=='extrator_v3' and not args.repetir_leituras:continue
+  if generic_google_text(n.get('texto_analisado_resumo')):
+   n.pop('texto_analisado_resumo',None)
+   n['leitura_fonte_status']='pagina_google_nao_e_materia'
+   n['leitura_fonte_versao']='extrator_v4'
+  url=source_url(n)
+  if not url or args.sem_web:
+   if not url and is_google_news(n.get('url') or n.get('link') or ''):
+    n['leitura_fonte_status']='aguardando_url_original'
+   continue
+  if valid_cached_text(n) and not args.repetir_leituras:continue
+  if n.get('leitura_fonte_versao')=='extrator_v4' and n.get('leitura_fonte_status') not in ('pagina_google_nao_e_materia','aguardando_url_original') and not args.repetir_leituras:continue
   eligible.append(n)
  if args.max_leituras>0:eligible=eligible[:args.max_leituras]
  read_status=collections.Counter();read_count=len(eligible)
  if eligible:
   def get_one(n):
-   return fetch_article(str(n.get('url') or n.get('link') or ''),timeout=7)
+   return fetch_article(source_url(n),timeout=7)
   with ThreadPoolExecutor(max_workers=max(1,min(12,args.trabalhadores))) as pool:
    futures={pool.submit(get_one,n):n for n in eligible}
    for future in as_completed(futures):
@@ -326,7 +358,7 @@ def main():
     try:content,status=future.result()
     except Exception:content,status='','erro_inesperado'
     read_status[status]+=1
-    n['leitura_fonte_versao']='extrator_v3'
+    n['leitura_fonte_versao']='extrator_v4'
     n['leitura_fonte_status']=status
     if content:
      n['texto_analisado_resumo']=content[:30000]
@@ -403,7 +435,7 @@ def main():
  'noticias_por_categoria':dict(counts.most_common()),'noticias_por_uf_explicita':dict(states.most_common()),
  'noticias_por_mes':dict(sorted(months.items())),'noticias_por_ano':dict(sorted(years.items())),
  'status_processamento':dict(review),'status_leitura_fonte':dict(collections.Counter(str(n.get('leitura_fonte_status') or 'nao_tentada') for n in items if isinstance(n,dict))),'noticias_sem_data_valida':missing_date,'noticias_sem_classificacao':pending,'noticias_pendentes_revisao':pending,
- 'versao_extrator':'extrator_v3','leituras_externas_tentadas':read_count,'leituras_pendentes':sum(1 for n in items if isinstance(n,dict) and (n.get('url') or n.get('link')) and not (n.get('texto_completo') or n.get('conteudo') or n.get('texto_analisado_resumo')) and n.get('leitura_fonte_versao')!='extrator_v3'),'resultados_leituras_externas':dict(read_status),'classificacoes':details,
+ 'versao_extrator':'extrator_v4','leituras_externas_tentadas':read_count,'leituras_pendentes':sum(1 for n in items if isinstance(n,dict) and source_url(n) and not valid_cached_text(n) and n.get('leitura_fonte_versao')!='extrator_v4'),'resultados_leituras_externas':dict(read_status),'classificacoes':details,
  'quantificacao':{'itens_extraidos':quant_count,'totais_preliminares':[{'categoria':k[0],'material':k[1],'unidade':k[2],'quantidade':round(v,4)} for k,v in sorted(quant_totals.items())], 'aviso':'Totais preliminares por notícia, sem deduplicação entre matérias sobre a mesma operação. Não são totais oficiais; requerem revisão.'}}
  # Gera arquivos temporários e substitui somente depois de concluir o processamento.
  out=BASE/'analise_nacional.json'
