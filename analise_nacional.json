@@ -1,31 +1,31 @@
 {
-  "gerado_em_utc": "2026-10-15T09:44:40.669113+00:00",
+  "gerado_em_utc": "2026-10-15T10:44:49.212698+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "pendente_verificacao_apreensao": 1300,
-    "com_informacao_quantitativa": 378,
-    "materia_sem_informacao_quantitativa": 2474
+    "pendente_verificacao_apreensao": 1309,
+    "materia_sem_informacao_quantitativa": 2480,
+    "com_informacao_quantitativa": 381
   },
-  "materias_sem_informacao_quantitativa": 2474,
+  "materias_sem_informacao_quantitativa": 2480,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
-  "noticias_multicategoria": 511,
-  "noticias_com_quantidades": 378,
-  "noticias_analisadas": 4152,
-  "fontes_distintas_informadas": 872,
+  "noticias_multicategoria": 512,
+  "noticias_com_quantidades": 381,
+  "noticias_analisadas": 4170,
+  "fontes_distintas_informadas": 874,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 1733,
-    "Armas e munições": 1143,
-    "Contrabando e descaminho": 266,
-    "Dinheiro e valores": 133,
-    "Veículos": 37,
+    "Drogas e entorpecentes": 1737,
+    "Armas e munições": 1144,
+    "Contrabando e descaminho": 269,
+    "Dinheiro e valores": 134,
+    "Veículos": 38,
     "Medicamentos e produtos": 33,
     "Crimes ambientais": 24,
     "Outras apreensões": 17,
     "Operações patrimoniais": 1
   },
   "noticias_por_uf_explicita": {
-    "PA": 241,
+    "PA": 242,
     "BA": 152,
     "PR": 72,
     "CE": 48,
@@ -44,7 +44,7 @@
     "AC": 17,
     "MT": 14,
     "AP": 13,
-    "RJ": 10,
+    "RJ": 11,
     "SE": 6,
     "MS": 4,
     "RR": 3,
@@ -125,7 +125,7 @@
     "2026-07": 34,
     "2026-08": 46,
     "2026-09": 33,
-    "2026-10": 1673
+    "2026-10": 1691
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -136,20 +136,20 @@
     "2023": 29,
     "2024": 32,
     "2025": 17,
-    "2026": 1810
+    "2026": 1828
   },
   "status_processamento": {
-    "pendente_evidencia": 1300,
-    "classificacao_automatica": 2835,
+    "pendente_evidencia": 1309,
+    "classificacao_automatica": 2844,
     "outras_apreensoes_a_revisar": 17
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 4096,
+    "aguardando_url_original": 4114,
     "lida": 56
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 1300,
-  "noticias_pendentes_revisao": 1300,
+  "noticias_sem_classificacao": 1309,
+  "noticias_pendentes_revisao": 1309,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 2,
   "leituras_pendentes": 0,
@@ -157,6 +157,71 @@
     "lida": 2
   },
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNT09ZSTgzR1Z6SHBhVURkU0F1dUZwU1NTRWRjQzdVa1NmVFNFQm5GWDlTRkpBR1dvajBGaUk1WWVtdXpyOE1YMGQzdHJ3Q0tCY080d191azZhZFg1cmN0OWZxYk5BRHVMRklNYk9ta3NqUkxfZzZwdnVZS0tTZWhsTjJpUGY3dkpVUnBiaGNObmxVZ0dPMHlQdFREa1oyaEtlWnBsQ2hRckI1NVNQYi1aaHlTcWJwSG5PY2EyVm5oMWMxazlZ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPbHNveVRQa3RBSTFYcGtON3FZZ3djbGpOYnpBRHpmMW1zWWNDUFFkakxEVWRyR1NCVld6ellicmFYSXpyMi1Cb0dDVEJYTmlzWHJpZ3RCdkxIYVgtZk45VlFvZE11eW9iMnNKRUhnQzkwbVRHajVMbG9PUEJlQ242R3RXZHp2SWpvNjlFazRyQW9nZW9ybjdjMFRncjllQkctaTEtc3ZqNGpjYkw3RUE?oc=5",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "pf combate contrabando de cigarros no sudoeste de minas — policia federal - www.gov.br",
+          "pf combate contrabando de cigarros no sudoeste de minas — policia federal - www.gov.br"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxPT2hBMUl3bE1UbEVZZ1A3Z3U2M05NR1dmakExSC05ZnUybHBiOWlHNVhxMHdqNVQ5QjZYYkd6LTRoX0RWM0N4R1doQ1FZZ0VwZDZZNVVVLWhLMERDTDUtVUg4QmtjTlp6cGQ4WGE3ZmFQb3RSTTVwektDQUlHNmpNNXVqSnRLM0kxOFhCSDZDaDlYMld5d19sMWFfWERkeGZKZWNoNUdMQmNxOVJiRGtlbjh3UGRaWUNyUnlCci1WR3Fkc19CS1BFUGlVR3FIeGNX?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pf e pm/pb prendem homem e apreendem meia tonelada de maconha — policia federal - governo federal"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxNVDVKS2VLWTJNaEl3Rkw0aHBoX2VqVl9xNEtQY0FWR2c5b0dxMGRIUmxuRGtUUkgxSDRzQ2hIYmVDTXd4TjdYdTFMYkp1VG5IU1E2LUw3bUlZZ3NST0FUS3FUTEVMNWNSSDNuc2Y3NlpydlFIS1dZMHBfdmtBeFdEREh0cE1za2tERUNFbEZpaTU2TXljNWc2dXdONkpJTFVXQ1J3Y0VEV3ludmE4SG9LcnNrSUl6MEV2bXhCRnZaeTA3RDl4Q1R1Tl9WVURhalRKQjZ3UUMwNEtrY29ubURWcEUzQWM?oc=5",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "pf e pm/pr apreendem pneus contrabandeados em deposito clandestino — policia federal - governo federal"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOU05QQTZkS01ob3VBX0hDV2pFVnhzZU5xS3l3WjNUZXdNRDd6cTcwUUc3dWRxUXJscFNDQmd4RHZXOXowR3o4NEJzTlpRRzdvSTJ0M190Yl9aTHlqWGU5VkpKdU4zZGhrbEFxa09ZOExyYkdmaDNQS1JpakF3NHQ4OEVGUFF5d1lKaFZBTEdVcnFTbHhZOUt6MVdUUE11V1I4N2o1OGRyMVJoM01r?oc=5",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "pf e pm/pr apreendem 7,5 mil macos de cigarros ilegais — policia federal - governo federal"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQbzlaWjBwMUVVR0pRazY0cS16OXg4dzluWVppdVVNMnJKd0R4cExNcjB3MEZQUWF1TTM2MTVadFNaVWVJQVlpRmVjZGFwWUYzQ04zdEhudGpOaTgzVURuQmtNSGRtNDhjamE5VWduX3F1RWNPb0dMcVhOaVRocUJNY2tqbmhRUQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOODJwNUZHbzl5ZWk1ZU5PVEVmenRRZTVZM21jbXZteFE3RTRoSkFjbHFYZGJpOENnaWhqT1VISnZSSXIxVmo1WUxmalpmYjNnVmF6OTU2dWlLS010TGpBVEgtXzVlOHM0Y2NCaUlsblNTZ2JnUmh5c2ZrMVFzeFdlZk1CZTg3V25DM0t5d1gxT2hmRHRjTC1qVFZtN19NVDJfOGt6aDFaeDZENWdmLXpXT2FodnRlNG52MGU4?oc=5",
       "categorias_sugeridas": [
@@ -171,6 +236,34 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQckhydDJvLTBNZkxsV0JWdUg2azg2Q1BNMV9PTFJOWVBpUUpJdk1SVlQ2YnZnUGNFaHNHSnpnZlZpVEJZWXZsOXRlZi1TODRhWnh2d25TU2JhMXQzbGM2a0hSdzM5LU9MdjM5VmRjeDVtSGd0Uk9ZSUxEeWlpVkJWNWduMTB3M1hpOVd1bUdhLWhjSUxmQUtCckliOV8xdw?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "operacao faro: bprv apreende mais de 60 kg de maconha na pr-323 - cgn"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNNnRyMXA2bGJIUzdLZHZ3Y0w1WnBWOFo1VDRxRVhzdFpwWVZJbkhnaG12ak43RkxFRS16LTNURkZURzdtSWhMSU9tQ3M4eG9qWW55NlRvLUR1T3NxS0ZZVXJUeGFpOXphMHRQUWtiQ0ttaFJfdW5yd09mV2lTQnNxMWlzMWQtT1hJT25Nc2hmODlBZ01rX1FwcjBUNVFlRTQ3WUNVdHEzZlhQQ2dDajZQQXZ5TDh4VXBFVXpsNEpOUXQ3M2ZCN0VJWGg3VEhsR3BEMTdyZDNELVhzaWtXam1EcFhKVXpSZEVnbGlv0gH6AUFVX3lxTE1KZk1pOG9RR081bWE0RUNvQjJRWTMxcjZZUDBmUkNHOTNQY0lHRjlwNk50WTlMZ295N0R4TE11UzJPM1I0TnU1NWZlQ2ZKRm1seUl5NFlVeUdiVkF3aG1KV1M2eEtWLUNTQ2szWVYtRld0Tm9ZRUcyRGxoT2xKbXJPbWF1aHlrTGZfLS01dnJkM0owQVlWemlyckhJTjdrZ3RhYk82N3ZSOXYyaHlJQUJFZEVaVk9OWGR0RDh4eGhwT0tieGxjMW5tSXpsSzZzYkN3OVFnWWltenJvVnJwZExfTW40MEVoZkotTWFIR3BhaDhQSDlUUWhxeWc?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia apreende drogas, dinheiro e arma modificada durante acao contra trafico em santarem - g1"
+        ],
+        "Armas e munições": [
+          "policia apreende drogas, dinheiro e arma modificada durante acao contra trafico em santarem - g1"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -195,6 +288,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOSTBkRmtKQWUyQmtpejFxN0RabUo0eUU4d0tpZnE2ZnVMbkMyLTc3bG9TdmZ5RkhreHB2R0FCUzdOWUxDbVZfbTQwYWtPcWpLOGw2bnlrZlM4NWxkVTM4RnB4dktnV0QxenlWVE9KMjVqa2hPRU56eUZNaHpqYzZrWVJOSlExYmstcUhoeExOS2VuUHQ0WEFoMjZJZWZNaXFHX3A1Si05ZThJSTdxUmlwaUZ5X3FuTkk?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQS0hvcVY3X29mQkNfWElObmI4ZHRvYnpzS295dS1QaGNwekZjemk2OE45enFhSzZ0RFZGc0h4TTZ1Wlpvc2N4eE9KdnZrR3F5cFZ2WWRQdHJVSlQzYVdLQ2ExZVVSZXhIM2JtVDRwVi0wMWI1OTRJRU8xM05aQk1iSjVrVjhFV0pkZXY5TzVzSnlfYWlBd0tpMmRWU0ZpelZ2THYweURyT09mUERGT0ttUjZOa3UtVUhMdDBoRzNkeF80M3c?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -1863,6 +1964,22 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxPbkZMUE9KQVBmdWE4SFpLc0dWRzNKVWNMRU81a2s3cUh2QkZaX1VmOHpZbVE4SXhvV3hDR3VfT3k2MERUaUdjSVlZT3cyV1hReWRQc3gweUpNaGVnRlI4Tmw0b2RUa3p6YXR3ZVNKTEdQM0x3a1Z3bXNTMWRfZ3d6NFJfWTM3ZmVrN2UzSjgxM05SaXl3STRyZXBCd3dyVzE3N2JxLUdsZ2hRemhkaktlRzY3eDBBUUJnZmRhSjZtMjJQMXBBWTF1MVhQbHlJeU1qamI4?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMijgJBVV95cUxNVTc2OV9rWl9RMEVMWkMydGJ2T1dId2RNaDRXM3NxRFdKSTE5Xy0zblVHcmQ5OTh0SGNmVzJ5TkwxZ1VqZ3hBMktrLWZYOF9oMENjT285bTVXaFhCZm5BcHRkT215a0ZXRUFpcmVFMEx1RklwZVVhY1ZzNmZjQmxvNDBRd0R3RlZuclVUYklxcTU2RFZKRmFIc3hMYlZfRlY3UXVsTTZYOVZkbHQzU3M1SlRQdGNXNVpFQWZ0SlBPdDFUSWhuaHZmMU5HQW40OXBSMUlGZ04ySlV2M2E4VXlfMW16ZlJDOE9XRzJ3NUZhRDV0MndNMzl0WVFTQllqZ1JadGxhMXByNXVnVkpXd3c?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPT1hBT2IzVlJmTGl4OVUwWUVMOGNORzZpMWF2WG0wX25LY3phTWE1dHVYMVNDYTlhMnJOanVqTDFhTXZ2enRYUHBxVGtDNGdVR3BkZjFQOTdfUU9jVVZqcVItWFNIYTlnQ2JNbk9sWDZ0Tm84V01DMGNoVE5taFBfV1ZERGhUVnBBWS1BR3hXdmlpRk8tdkdTS08zekpDR0d0Sy1iRHY1VGJNSWpKb3lsSk5lMC12REllTU5Bd2dUNlM5SXFEWDM1aF95NEtaWDQ?oc=5",
       "categorias_sugeridas": [
         "Contrabando e descaminho"
@@ -2722,6 +2839,18 @@
       "evidencias": {
         "Contrabando e descaminho": [
           "ende mais de r$ 240 mil em dinheiro e cheques durante operacao contra contrabando em mg - hoje em dia"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxNYmlCQnYzWF9BeW1LbmVuXzA1VzVGdVpkNTRHaEhaZ1REd3VjNUJTSXVrd0VvNGQzWGZ1TXlPb0VmblJzVzRlRW1PSTBVQVlQRUxoZndwWmpIRTlXTWpfNEJjRllIY1l1TlhDcnFiQUY5dHpEQmMyY0JzaUllVjdKa0M4QnMxd1NEX3BhbkRnWlpYNkRyRzhVNWQ4ekxnT24yU0RtNnphUmQ3ZHFkTlFmMjE5dTNqaW1XNndka1JELWR6NEUzbzNyVF9lN3ZpeG5wTzRSQTZqN0o1Q1lHUXlVUnY1R1pkVlp1T1E?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "em uberaba, chefe de grupo alvo de operacao em mg coordenava rota de cocaina da bolivia a australia - o fator"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -6747,6 +6876,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQZzZ2Wm1taVZHbHJoOUV2WTNkWmtvWFBNNlpuX2RmaU9BQWpGSVNSQmJrQ2RFeGpxbVExNmVrS3dVdG5xZnh5cndQZnE0SEZmTWRxZEF4THRhNzBFVmY2bkZqQjl6bXNwRFdHQW80cnlpbXpqMlBLV19IbXc2VHI4LVMwaU1xd2tRZHJwYVR3Z2h3dkhjTUVsVlBnTGNVejNDNDd0Nko5TEY?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOZTAyZDZQREwzWVlFZ3hmQXF3LWQyNFJKRFJEa055eVpoNE4wX191SGU4aHZCMnpmakZoQVJ6aHFkZDVVUzVIdnJ6MXVIWEp1NGtOM3NIa1hDckhsdlVmT3czdno4Y2RFaWdadWNkQzl1NG9fNTRPTmVZQzhRMG1nNm5NS3N2SWFpZEpZZHZoVThQUEttVFV5NkFKQ3BiaFBaS19CbzRMN2ZYQ3pRZ3FSUmVoY0hzZVpUcGlEdUZUdEtPQUVaU3llWQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -6867,6 +7004,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMijAJBVV95cUxOU1IwcUVibldwMnBLbE83cWt3dHRUZXpsaWdlVWJVdHlPeFhKdnZrQUItSVFpNmszT3dXSjFhMENHSkVzVlhIZVhGRGFoY1hXSkVOQy1MY2xGdmtKNWFmUHhRcE5zMlFXcXNzdmFZZDFnOVRtT0RuV1V4RzZnWDctMUZlMTBCWmpUVmFZTlJPU3NYMHB3MXVQUzRaT3dIRXlGdVRoYWwzNVZKX3htMW9MdzRhcHowUUx1Vnk4RThNNkJHSlhfdFFZcXFwaENnemxZX1A2YnYzd2Q1VkJvM2pNZFhDTG03WVdpZE1Ta3plUlkzVUJVM0xOWm5Bb0JjRHpDdk9raTVWR2RyTUdX?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPRlU3LXhpanFHYm11NnZXOXNOSnhuLUlrTjVoMllRVlliZ28xVDlaVWotem5yTWtmclBtZlNGZHhDWkk2VzBRQ21IU3o2SkJKYVg0UXVVal9MR1lXeS1IOWlhTnJLdmM5RUtLclNjMmFkbndNbzNBUFhCTFZHSHBNaU80cmcwUHNQOFpCSWlqNVJUM1AtejZSdENMSlhQUDdJa1VwM1R0eWdFS3FzYzk2YzVxdUU5aENpR3J4d2s4dnllUQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -7191,6 +7336,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOVFdxQXFKX3ZFMWxoSkdfb19ZaGFiNUs0dzdsQ2NGU3RERWllQmg3VEdSV0hHRVZPdHpaYmxqc0w4WjB2RG9YQVM1Y3pzZlZRU2hKNHl0eEVxNXVMMkZIQ0x0d3A3Tnh6Z3ZxREZ6S3NfLUpCUjR2TEZERURiSV9MRElmSHFDT0tYRm5EbWJNY2twbXg4cUtib1lxdWJPM3BvMFZsWGxHamhJNU9ybXFjMkZ3dmM3UjF1TVdLWVdn?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOT0syWDI2R1hEaVdIUDlFWmNySmhmdTNhV3IwTlBuX0NkV1lzM0NpR1hkQmVtNnR4UWFqc0ZUM2YwNDZSeVB4TlhjY0xJN1VxNnZZVnZYek82aVA3WWdId3BwLXJfYXAtdUtFYXJHTWdhbXptVld4Y0lpUlFuU0tXQkJMdmcyeFljanhNYkdoYUZRWWNQQlJmT09VZkYtWTU4Tld0dUxMZHpGREUycHI0aWpvWEo3UTh5Z0xfNnBhVDY3YUxUX0k2Rnp2MGFhT185SlY40gHTAUFVX3lxTE5PSzJYMjZHWERpV0hQOUVaY3JKaGZ1M2FXcjBOUG5fQ2RXWXMzQ2lHWGRCZW02dHhRYWpzRlQzZjA0NlJ5UHhOWGNjTEk3VXE2dllWdlh6TzZpUDdZZ0h3cHAtcl9hcC11S0VhckdNZ2Ftem1WV3hjSWlSUW5TS1dCQkx2ZzJ4WWNqeE1iR2hhRlFZY1BCUmZPT1VmRi1ZNThOV3R1TExkekZERTJwcjRpam9YSjdROHlnTF82cGFUNjdhTFRfSTZGenYwYWFPXzlKVjg?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -11470,6 +11623,18 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOTEZJVVBVOUdKbmxEUWVkbDA4bHp6SjBpN2M0OEk3YlN5NDFpckx4N2g1LUV6cTJnYlRsTkZpUW1IWF9xbHk1N1Q5TVF5Q2ZycXI1YWlTYjVNZzRuLTlqenNnaElRcEhGVUptb0p4bGVEM09tSFFKeTc4NHloaHprckk3N1NPOHA1WVRUMjNrWGRVdlBrMDFtWUdlcV8?oc=5",
+      "categorias_sugeridas": [
+        "Veículos"
+      ],
+      "evidencias": {
+        "Veículos": [
+          "adolescente e apreendido com placa de moto adulterada na mg-050 em divinopolis - sucesso fm"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPUFBnZFBjdmVpZkg5X0hhT1ZTY1pCNVlya3hpWkRLX1o1RGplQUpYT1ZsTERWRkVDZWhIeVVZMy1wYXBzdnZudktoUk9hbER5TndWeGhha3VGTDREejZlNUFDRHpFcnNCUGozYzRMYVA1Tmg1ZFVWZF9NTExDVFNTWjJWbUhjejJXbFBZU0hkdkJXUEgwTVlvcUlzT1AyZw?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -12093,6 +12258,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQbTV4aVdKOV9GaTc2RmFkZnRTV3d2RFh1WFFyZE5kMkNNU3hhazItNVpSeFRNRWl5WnYzVFV0Ujk5MWxtam9wTlhDOTRWOTI3WnVfTDBxcFNqRHdrd2g2b0lrT0NSS0ZWQmUyTTU0dEhfRjZJMVlIYnBkVVBPX3BYMWVIN3JxUkFpTWs4ZFVDYThnYnhzTlBZUHNzVTNBVmFWZ2ZhNXhNOFhwazhkN1Q2YWZXb1BtTEtqaEJUMzJISnh0UExCci1zTkNFU1BaZUdYSDFodGlCVEVYTS1B?oc=5",
+      "categorias_sugeridas": [
+        "Dinheiro e valores"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNSGp0QmVGdTdXNE1ySV9fTVZuRzdEaVNYREVKampSbk8za1drUTY0MXZFVHJkaFZIcFZ3LTgyY0txbVQzUU1HWHVPcVk4SHR5bURFdnduOFQyYXVyMExmSktDLUMzSjlPQTF1Z2g4V2tSa3dqeU9CN0tGcnlBRHk0T1QxUFExUHRO?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -12219,6 +12392,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiwgJBVV95cUxNY2FwNmxWX2QxdDFYdy1fbEpyeE50WU05REk2QjdYendvdVlsUWxEaTZ6V2dfdDFEbkFnSkJiWHEyb21rMExXc2paVDRqT1NFckY2Y3JJUHJCZGQtbUxjNUJHREpHcUpYWkx5RVVVeVJaVkhCYkpHS0o0c2Y0TnMzbU5nSnhwSERHNUpWbFB0YTZrcG9rQmc1LTE4bDIweFE3NEkyMUtWX0pHRHgzc1lsWjdZRFVQMHprZ3FKaUQ2VFBTcEktbUMzVnhUR1JUOHNYaDd2dWVIMFA3dUNGbWZEZ1liR0tVVHNXZzJhYzRGeExETzQ1N2NhTmdwd0VjeThJWW9MRTJ4ZnhJcXZrZm9icllDdm8zc3UwU2xBNnF3YzliRkdUVzl4N2M0cmNRVlFBYnN5aWwyUnlzdHVlbFBMZUxR?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi9wJBVV95cUxNWF9RNkh6OGFmbXYta1lfWWdRbWNTYWJhTEVaZTNUN3NmYnQ0U1FnUWhzajh1Y2JHd2o2ZlNRTGtSWG4wdUwxV3ZKRG9IUDdZUkw0VS1vTWV2cVpaTXdHSVlhRHF6V1pUOVBNVUpwOGtvZzVwYm9oNC1OdDdMY1Y1Qlc4dF9wTW1uLUZ6UkpKa2FwTlhoVjdtMmZXWDRCZnpaRjdJM01ZOUt4a3JTTEtXbDlQczA2MUs2QkQ5Z0pOVDB2NGpjYUFnUzZlTl8xLXlwZnJTdE5DdjRDOHZTdEk0dWY1QWl0bXFNTkFrazlHaFRPR1dGUmNGQ1pqQm1SSTk1WngzbzJwTms5Yl9JZ3F6RDMwY282UU9sUVFwODRoRGpLdmdUZXE2UXJNZ3k4MFc2S1ctZlNMM09fZUZOVHk2Y3J3eDhBOEVyT0FlR3RhcUFabnBnVVZ5YkJEVUlocVJHMG5fWjloSTlycUZkc28tZG8wb0RBQlE?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -45751,7 +45932,7 @@
     }
   ],
   "quantificacao": {
-    "itens_extraidos": 410,
+    "itens_extraidos": 413,
     "totais_preliminares": [
       {
         "categoria": "Armas e munições",
@@ -45787,7 +45968,7 @@
         "categoria": "Contrabando e descaminho",
         "material": "Maços de cigarros",
         "unidade": "unidades",
-        "quantidade": 10248000.0
+        "quantidade": 10255500.0
       },
       {
         "categoria": "Crimes ambientais",
@@ -45805,7 +45986,7 @@
         "categoria": "Dinheiro e valores",
         "material": "Dinheiro em reais",
         "unidade": "BRL",
-        "quantidade": 4335497816.0
+        "quantidade": 4335564816.0
       },
       {
         "categoria": "Drogas e entorpecentes",
@@ -45823,7 +46004,7 @@
         "categoria": "Drogas e entorpecentes",
         "material": "Maconha",
         "unidade": "kg",
-        "quantidade": 1250613.32
+        "quantidade": 1250673.32
       },
       {
         "categoria": "Drogas e entorpecentes",
