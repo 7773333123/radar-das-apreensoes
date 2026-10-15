@@ -44,6 +44,12 @@ jobs:
             python coletor.py
           fi
 
+      - name: Instalar decodificador de links do Google Noticias
+        run: python -m pip install googlenewsdecoder==0.2.1
+
+      - name: Recuperar links originais das noticias
+        run: python recuperar_links.py --limite 60
+
       - name: Analisar noticias e gerar estatisticas
         run: python analisar_noticias.py
 
