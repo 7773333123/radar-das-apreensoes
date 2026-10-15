@@ -1,17 +1,17 @@
 {
-  "gerado_em_utc": "2026-10-15T23:52:59.095276+00:00",
+  "gerado_em_utc": "2026-10-15T23:58:11.898680+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
     "materia_sem_informacao_quantitativa": 6396,
-    "pendente_verificacao_apreensao": 3907,
+    "pendente_verificacao_apreensao": 3909,
     "com_informacao_quantitativa": 791
   },
   "materias_sem_informacao_quantitativa": 6396,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
   "noticias_multicategoria": 1246,
   "noticias_com_quantidades": 791,
-  "noticias_analisadas": 11094,
+  "noticias_analisadas": 11096,
   "fontes_distintas_informadas": 1367,
   "noticias_por_categoria": {
     "Drogas e entorpecentes": 4190,
@@ -26,7 +26,7 @@
   },
   "noticias_por_uf_explicita": {
     "PA": 739,
-    "BA": 296,
+    "BA": 297,
     "PR": 161,
     "SP": 130,
     "PI": 105,
@@ -136,7 +136,7 @@
     "2026-07": 34,
     "2026-08": 47,
     "2026-09": 34,
-    "2026-10": 2206
+    "2026-10": 2208
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -147,20 +147,20 @@
     "2023": 1786,
     "2024": 2177,
     "2025": 2519,
-    "2026": 2346
+    "2026": 2348
   },
   "status_processamento": {
     "outras_apreensoes_a_revisar": 32,
-    "pendente_evidencia": 3907,
+    "pendente_evidencia": 3909,
     "classificacao_automatica": 7155
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 11040,
+    "aguardando_url_original": 11042,
     "lida": 54
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 3907,
-  "noticias_pendentes_revisao": 3907,
+  "noticias_sem_classificacao": 3909,
+  "noticias_pendentes_revisao": 3909,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
@@ -633,6 +633,14 @@
           "policia apreende duas armas e resgata 59 animais silvestres em alagoas - 7segundos"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxNZmZ1NVhPdGM2TXNvWTBQMFVzckE0WEdvRnZsX3E4WnJzaTFhTGZUZnhDcWhMNm5MaWlfNE5reHdlakZqa0MzQV9EczB6SVUxWm9GYWNGSmZGQnM5dHlJX204c1hMUUtWNmJqOWgtM05fd1JwRE9UWU01em9DNHpEeGtPRTNZRlJfbEdBTHNpcWFRWE5DTDRKU2xZVEVEaG9pLUxOMGVsemZNcHBoUmE5NWhOV2hfQXJZYXZZZ2hxTjlrUHE0ZWxHVU82N0R3elU4WW4xRVhIUlY?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -19469,6 +19477,14 @@
           "policia civil de deodapolis prende foragido por trafico de drogas e violencia domestica - rede jota fm"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNZE5VaE1YSnFza2pxWHV2dFJDM1NyQURUVG1JNFY0OWhiRHNWTExIcDZOcHhOSGRJMlQxQUI3VW5CUndtMWFzQkZYbjk5NEV5bjFpNFd0V2NCSWY4eWJ3SEl0SHFnZTdMUHpUNng1b1ZGU3liSlFDSkIwbUxURzc2eG5pdUsyVUFFZEdyTmo0V3JNZ2FNMHdmSHJ5eU1PbUlHVGVwVTVlbVJ1UQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
