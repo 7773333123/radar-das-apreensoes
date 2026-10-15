@@ -1,25 +1,25 @@
 {
-  "gerado_em_utc": "2026-10-15T01:34:59.594160+00:00",
+  "gerado_em_utc": "2026-10-15T01:41:03.920615+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "materia_sem_informacao_quantitativa": 1213,
-    "pendente_verificacao_apreensao": 916,
-    "com_informacao_quantitativa": 236
+    "materia_sem_informacao_quantitativa": 1214,
+    "pendente_verificacao_apreensao": 919,
+    "com_informacao_quantitativa": 237
   },
-  "materias_sem_informacao_quantitativa": 1213,
+  "materias_sem_informacao_quantitativa": 1214,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
-  "noticias_multicategoria": 250,
-  "noticias_com_quantidades": 236,
-  "noticias_analisadas": 2365,
-  "fontes_distintas_informadas": 667,
+  "noticias_multicategoria": 251,
+  "noticias_com_quantidades": 237,
+  "noticias_analisadas": 2370,
+  "fontes_distintas_informadas": 668,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 968,
+    "Drogas e entorpecentes": 970,
     "Armas e munições": 491,
     "Contrabando e descaminho": 92,
     "Dinheiro e valores": 80,
     "Medicamentos e produtos": 24,
-    "Veículos": 22,
+    "Veículos": 23,
     "Crimes ambientais": 17,
     "Outras apreensões": 11,
     "Operações patrimoniais": 1
@@ -102,7 +102,7 @@
     "2026-07": 24,
     "2026-08": 24,
     "2026-09": 20,
-    "2026-10": 1574
+    "2026-10": 1579
   },
   "noticias_por_ano": {
     "2019": 1,
@@ -112,19 +112,19 @@
     "2023": 29,
     "2024": 32,
     "2025": 16,
-    "2026": 1666
+    "2026": 1671
   },
   "status_processamento": {
-    "classificacao_automatica": 1438,
-    "pendente_evidencia": 916,
+    "classificacao_automatica": 1440,
+    "pendente_evidencia": 919,
     "outras_apreensoes_a_revisar": 11
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 2365
+    "aguardando_url_original": 2370
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 916,
-  "noticias_pendentes_revisao": 916,
+  "noticias_sem_classificacao": 919,
+  "noticias_pendentes_revisao": 919,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
@@ -166,6 +166,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxON2F1UVh5eXpMNFFGYUpXR0NmelJ3Ui1PaFVYUGpERjRoMXVHM2tjdmFUcWZSWlZWRWJWUFhhakstUEhaeGVEbllwektPODdJa2NqN2hZY2JGWVA5SEdKZlpaNFp6TjlUMXBYYUNLZGU2bUZGSkZLVG8welozRmQ5bGNrMl90V0Qtay1WNGlOUnlPSkdEZ0YyMmFZLXgzU05zQ1dNa1pRVmRHOFU4bVNwX3ZNOXZLSTY3THdnckU4WHJRLTgyMHhiZEt5VXpINGItRDRr?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNbnV5X1h3eXRfQXFiRnFmZ0VNSzcyVXdDeFZYUzlNeVlnTV9pT3dOOXpuWjhLbDd2dXh3SGhqbWpDQmpPS3o3NzBsQnBERzdNTnQwdVRCMjB4SExLVmNtaWhreS1qQ3VwRzNZaUFkb2ZDSHk2V0tEZzBWRlJJa0dLeEQwcHVHczhzdk45ZWFMV1lQdEUxb0JUdDU1QVFlN3FXOThBNjFidjBFaHhVOHo3VGc0dHZockVxYW9uWXJvcDdqYlBxUzcwOXhMWXE3ejRVTXd30gHbAUFVX3lxTE9wZ0NqdGdMTHc2cVlPYTRGeHkwcktfX29HQV94SlZ6dEdQOWVyZ04wRVhQRGIxS2czcnVOZ2F3ZnlHS09ZZ0ctZ0xfXzdCVS00Y20tQ3c5bWFJY2NXdTBNTXNqXzJtWlNGdzlQWUVWRFFwTmlQYUFheE5tUC1QQmxWckkzSWFQakhET29HZk1XbEVYdEtxc0ZYSWZ5WTRTcno2Rm9HZHlLYnZTOXJXTXdZNkQ3MVNpOVdwZzhDcS1lUmZjVHhYdDFKaTBNN2t3VW1BYmxiTVFlZ2xxWQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -1857,6 +1865,19 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxNX2NnZDk1d29OSFlWTXAtQU5wclZvS1hDeHRrbklJa2FQMXpfVWlZbUdGczN2SnQ5ZGFiU3c5OXE0dGYwU2ZtUjN3LXhZZ1lkTnZoZFhsVzBTeS1OWTVzTHF1c1lIakxhNndiV0JlUldSa1MzVUNFbW1RMHRmRU9MV1FwSDNoOVp0ZmJpc0wzQTR3M255YUFHYUE3Qm1WRU03bTlLZWRMMGh2Zm5GcUh4UlVtOUV5RTR6bW5GQ3BpRXhDWTY1d3YzcU1CQVV1Y1VPaXFLWFhvYXBlX3VCMnhabzVwaVnSAeoBQVVfeXFMUDJiTlIzVTQ2RU96N3p6Q3JpWXljWWRzamt5SmdiRGVQNnBBSHVkald5LVRyOUlEYUd2Y1BobUFTUzVhcG1UeE9DbkZPdGFfajdGRzNvSmpHNXlNZ3lsamQzZmFBaVhHdzJsaUJVUDV5RlI3cjN6eFYxeXVIMWNOX0FJSjlvZnJuZkdOTlVzMzhqTXRkUGY0a1N1VGs0UDFvZnBwd2VVaUJDVG9UYm1BSkpkTko1cHdSNVVDUllMVG1fSmVKWlF4WjdnbldTeVBOb1JxYUh3UHpwNnJuWmctNTBoZ2hOT3dJS0Z3?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "operacao policial de combate ao trafico de drogas e deflagrada em teresina e aroazes - viagora",
+          "operacao policial de combate ao trafico de drogas e deflagrada em teresina e aroazes - viagora"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -5331,6 +5352,19 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNdm4zbXZuRWRVeDdsamxjeF9jbEcwRUNmTkVpRnVxRWdhMHZNY2h5ZVRDWWNCUWJ2bkdUN0I2bnVEa2FjejV6ak5lRUdEUElDLWFIZDM2V0pFQVUydklkOHJMTFRZZFAzU09uaFJ6LVVMNHRmbC1vV0w0QTZhMWpVYmMtNHRUSm1qczRVeXFPTTU1NjYtNHNsOHFxNXJXdXAweWV2VGNYR1dQVjlJSWdMMEtMMnJuZw?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Veículos"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "padroeira fiscaliza 1,5 mil veiculos e apreende mais de 67 quilos de drogas em ms - a onca"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -14528,6 +14562,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBILWpUUThqd3hZSEw4WE5JWl8yakFyWVpQQ0NIdUxfZnZzdi1wUlZaZ1lWMlZmSHpkdEtid20tenZNRHdKdU1EN2M1dEh0RmJtVURLTTJmS1o3ZWxJWTAxcFlfVWg2azhlV3pLX2RfUWFWNnNhWXdMcmpXbFQtdw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOcExpV2pxVk0wSk1CMFVxVVgybzVhN1Q4QzhFWFJrVUtTQWJ3SUlNTHNzTFl4VXpnbldBVzNQZ2lFNHQ0V1Z4aEdmQUF1VkdYbzFpRWRsX2pJRktmaU1SSGRDX3lJM3IzakNYYWFTWkxnNWM3ZkliRGRyVUN6a0dtcE9GN0Q5eWxtUkcwWV9HbFFiNlpUWDZJOXVnN2dOYmF6WDVIWUQ0UEZ0QVpoalRMelA1Wk5aeTEtR280djRZN0ZGOF9Hd1F5SQ?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes",
@@ -16202,6 +16244,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNYzVRN2o3S3Y1eHd4X2ZDMkRxT21oM1FnSzRsS1dZRWNIV0lUM0xIWmVSaFhLZE1iNGZmTXRYQWVhd09kR29ITzU5RF8wN1ZDMG9ON0Nhei1SRG82LTZ1MGZsTnljbjdkTGVqcG1PVWdRVENxLWp5Z1hVbGxFNlVtRHdIWEJWdlUxei1xTXgxVEtKS2ZBNkZnN0MxM3FBYy1MVjJBaHpvYWs2UjlBUm5oLUcwVlM4Y0NEdEZERQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1oTEVpZFpkR1kxYV9DaVQzOEF6bGJXc1Y5NzRXTXY3b1BmeUhNZ2h2dVZyTlVqVjc5Rnc0YUZSaWtSblpub2hyT3JyMlNxWGE2SlJ2QXFjemNqSlpGZGpsenhhb3c0WFBMMVdzZmpuZzdrOUN0Vk1Teg?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -25536,7 +25586,7 @@
     }
   ],
   "quantificacao": {
-    "itens_extraidos": 244,
+    "itens_extraidos": 245,
     "totais_preliminares": [
       {
         "categoria": "Armas e munições",
@@ -25626,7 +25676,7 @@
         "categoria": "Veículos",
         "material": "Veículos",
         "unidade": "unidades",
-        "quantidade": 9318.0
+        "quantidade": 10818.0
       }
     ],
     "aviso": "Totais preliminares por notícia, sem deduplicação entre matérias sobre a mesma operação. Não são totais oficiais; requerem revisão."
