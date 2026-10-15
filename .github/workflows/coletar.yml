@@ -57,13 +57,36 @@ jobs:
       - name: Analisar noticias e gerar estatisticas
         run: python analisar_noticias.py
 
-      - name: Salvar noticias e analise no repositorio
+      - name: Salvar noticias e analise sem conflitos
+        env:
+          ANO_HISTORICO: ${{ inputs.ano_historico || '' }}
         run: |
+          set -e
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add noticias.json analise_nacional.json cobertura_historica.json
-          if ! git diff --cached --quiet; then
+          for tentativa in 1 2 3; do
+            echo "Tentativa de salvamento $tentativa/3"
+            git add noticias.json analise_nacional.json cobertura_historica.json
+            if git diff --cached --quiet; then
+              echo 'Nenhuma alteração a salvar.'
+              exit 0
+            fi
             git commit -m 'Atualizar noticias e estatisticas automaticamente'
-            git pull --rebase
-            git push
-          fi
+            if git push origin HEAD:main; then
+              echo 'Acervo atualizado com sucesso.'
+              exit 0
+            fi
+            echo 'Outra atualização foi salva. Recarregando acervo mais recente e repetindo a coleta sem apagar registros remotos.'
+            git fetch origin main
+            git reset --hard origin/main
+            if [ -n "$ANO_HISTORICO" ]; then
+              python coletor.py --historico --ano "$ANO_HISTORICO"
+              python coletar_fontes_diretas.py --ano "$ANO_HISTORICO" --paginas 2
+            else
+              python coletor.py
+              python coletar_fontes_diretas.py --paginas 2
+            fi
+            python analisar_noticias.py
+          done
+          echo 'Não foi possível salvar após 3 tentativas. Nenhum push forçado foi realizado.' >&2
+          exit 1
