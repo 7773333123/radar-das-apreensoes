@@ -1,4 +1,4 @@
-name: Atualizar noticias
+name: Recuperar fotos das fontes
 
 on:
   workflow_dispatch:
@@ -8,8 +8,6 @@ on:
         required: false
         default: ''
         type: string
-  schedule:
-    - cron: '17 * * * *'
 
 permissions:
   contents: write
