@@ -1,20 +1,20 @@
 {
-  "gerado_em_utc": "2026-10-15T08:46:51.827566+00:00",
+  "gerado_em_utc": "2026-10-15T09:44:40.669113+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "com_informacao_quantitativa": 377,
-    "materia_sem_informacao_quantitativa": 2473,
-    "pendente_verificacao_apreensao": 1294
+    "pendente_verificacao_apreensao": 1300,
+    "com_informacao_quantitativa": 378,
+    "materia_sem_informacao_quantitativa": 2474
   },
-  "materias_sem_informacao_quantitativa": 2473,
+  "materias_sem_informacao_quantitativa": 2474,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
   "noticias_multicategoria": 511,
-  "noticias_com_quantidades": 377,
-  "noticias_analisadas": 4144,
-  "fontes_distintas_informadas": 871,
+  "noticias_com_quantidades": 378,
+  "noticias_analisadas": 4152,
+  "fontes_distintas_informadas": 872,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 1731,
+    "Drogas e entorpecentes": 1733,
     "Armas e munições": 1143,
     "Contrabando e descaminho": 266,
     "Dinheiro e valores": 133,
@@ -25,11 +25,11 @@
     "Operações patrimoniais": 1
   },
   "noticias_por_uf_explicita": {
-    "PA": 240,
+    "PA": 241,
     "BA": 152,
     "PR": 72,
     "CE": 48,
-    "SP": 43,
+    "SP": 44,
     "PI": 38,
     "MA": 37,
     "RO": 30,
@@ -125,7 +125,7 @@
     "2026-07": 34,
     "2026-08": 46,
     "2026-09": 33,
-    "2026-10": 1665
+    "2026-10": 1673
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -136,20 +136,20 @@
     "2023": 29,
     "2024": 32,
     "2025": 17,
-    "2026": 1802
+    "2026": 1810
   },
   "status_processamento": {
-    "classificacao_automatica": 2833,
-    "pendente_evidencia": 1294,
+    "pendente_evidencia": 1300,
+    "classificacao_automatica": 2835,
     "outras_apreensoes_a_revisar": 17
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 4088,
+    "aguardando_url_original": 4096,
     "lida": 56
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 1294,
-  "noticias_pendentes_revisao": 1294,
+  "noticias_sem_classificacao": 1300,
+  "noticias_pendentes_revisao": 1300,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 2,
   "leituras_pendentes": 0,
@@ -157,6 +157,22 @@
     "lida": 2
   },
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOODJwNUZHbzl5ZWk1ZU5PVEVmenRRZTVZM21jbXZteFE3RTRoSkFjbHFYZGJpOENnaWhqT1VISnZSSXIxVmo1WUxmalpmYjNnVmF6OTU2dWlLS010TGpBVEgtXzVlOHM0Y2NCaUlsblNTZ2JnUmh5c2ZrMVFzeFdlZk1CZTg3V25DM0t5d1gxT2hmRHRjTC1qVFZtN19NVDJfOGt6aDFaeDZENWdmLXpXT2FodnRlNG52MGU4?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxONnpoYlQ1YkV4R2pueElNSHhZUGFkY2JVUExmRDZzLXNxbmt0bHVZSkZkMWhHMVNqaEdDT2JHUHBMWTlsQm9JY0dWb19uZWNEeS1VR3VfWnZoSTNVMzl2M2xWTWdBZDlYM1hRR0gyMkpZQ29POVNwYnVYWnF5TTlvMTZJUUVzbldDWGRqSTlVNzRfSlhJYm4tc2Zvbi1OVWIzWlFYclFPelA4YUNmZENiSTR3VVBWbGVDU0FOcTVaNUtVZmw0dWc?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPT01oNDFaZmpMWmN5TEFiRXJxV2lmazFnYkxYcDdCMnZBMm9DcVRjR0lyOWJjOHhHeENWRGJmRC1fZEVjUHlwNWRGakVTQXdGdnd2MDZpVUtwakdkMmdReDBCdEszU0JiM1hXdXNrMjNYTWJNZ2RFWFI3SzAzZE0wYUlUOUlBQ2JQTTRNbEd3RE1sYnh6WXFDTENhR2w?oc=5",
       "categorias_sugeridas": [
@@ -183,6 +199,18 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxOYWppeGdicjN2QUxyenJxejk2WFZWbTZDSEdKb1hqOXUzN3FmUDllUS0yY0lfZ194UmF0YzRUMEo0bTkzLU9ZbnJrV3QwbWFxRXptYzhLblJZdi1xZkxmNjZ5SjFMQXc5Y0VienhWdnduY2NtY1g3YmFxZDktaU1lMGFRWEgzNVk5ZjlFOUFUSV9UQXFnX19Mbk9SUW9Hb1kyLXlra1A3ZnBiZW4tTURTTlg4Z091SHBTZzJrdUMzMXB6anc5Yk5LSExoYmt4SVBxalE?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia rodoviaria de sp apreende quase 1 tonelada de maconha escondida em caminhao - radio sanca web tv"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -879,6 +907,14 @@
           "policia civil realiza operacao contra trafico de drogas e lavagem de dinheiro em tres estados - tv nova nordeste"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNa3F3SVp6OHZjUG1QV0MwenB0S1VsbmZ6TlFvMkoxX3NkVEZGUHlETG9hYzIteHpVZHc2WVUzMXVqMElkSnIwVk9CWnlvWGVCRE9ob3lWdXloVHktRDdoc3dIelVNdlZ6OEUtMmtvdmtVLWhuVlZKVXJKbWljaXo0eFMzQnpMRG1QRkNhZFZtUENUdl9Wc084eVpvcjAwUUhGVEdIeGl1eWtTd2FxUW5xMDBvMHdMZ0hLa0pQZw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -4063,6 +4099,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPQk92aE13cUVhUEY0YVJpY05mWTFZYVJ4OHp0ZlVsMkN1QnZWV1A4S3pudmdVRE1BUGtxV2VGd2dPdU9odWxPUmlVb1BDeHJsb0FMbFQzTTItVGM1S3VreUF0WU1seHRHRzBtQkRHanc2U1NzLXA1UjR6UjVXcmliYkY1ZFBHWGdsQkpKVWVJTzd6N2VDT0dXb2pXb0hrYVowUXhMZmgwdDNZWXNudUlN?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxNLWF1aWhjT2pSX3dCVFQ5RjFPbldXQVN4bnZ4Y2xTUHFkaVgyQkpoZUhTUlRWcUt5XzlrVjVaN2hnUkdnYmhHZEJsOWV3d1ZIQUdma2MwQkM1MFo1NEQ2VmZIU0szVzhybEw1QUlIdGlpd3lLOTl3VGphZ2pudzJjZnMwelNyU0Z2akNUM2tnOUotcUJSYTBEMWUzRzRJRDNBQ2RzSFJVeWJvTzhKcnBwMV81dTN1OGlVbklqZWpxcU42cUY1MUxMb1JqOVdzU2ZFWjlYbk5aeWNGZEdmSWo1S3hR?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -4626,6 +4670,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQRGJnWkR6S0pDYkYzcUNqdk1zYTJHWENIdFZ5VTdvek9CM2lONXlUTl8wQXRzeUktWWhhSkxQVDAzSDJ0dUVJZ3lrNDBITlVGTkR1RzlweGQ3djBxcmtSLTZXcXFBaTlTYmw1bDZZMThJMUg4dkhPZGR6MkFQWVVjRHRPeTVNSUxiR293NTVad2JiZXVUZERZVW5kYTFwMGdtQ2c?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPZzBrcUtvaEIyNUd5NjVvQVl0b2NEczRzWWNqWW9KZzlITE56eW1lT2xQdDQ5RUkyX3lZb2V2bmZEcEktWUx3V2VhTXVPSWpHY05DMG1qWHJWMG9BbENXVTlrYzBuNzMzZm5KazVUaV9KNXNHejJ1blJlUnJEYXBRZnUwanNsV1ZoQnlkXy1HeDVmM1ZGcm51LVVtNFREdXdLWmJvVDRBQnNLRzhSRHc?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -9960,6 +10012,18 @@
         ],
         "Armas e munições": [
           "80ª cipm desarticula ponto de trafico e apreende drogas e municoes em ribeirao do largo - achei sudoeste"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPQUJYOVBvZENYUW5SQVplSlBpdlZOOFZ1bU55ZFJubkhKMmhYeDN6TU1Gd0lFb1ZtYkt6WHhMUUtHaTBaelUyU2ZhN3pvV2RuSGdFMThMaTJETGhlYVI4TjNOQUdFZWJFOEoyaFVya0VlQUlmemlkMDhGVHFFdVd0a25nalJCNDg5Zk10ajBHcWRwR3NrT29uYXVFVmlkWWZIcS1oQ3huenBlc1k?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia militar apreendeu mais de 10,1 toneladas de entorpecentes em 2026 - rede brasil de televisao"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -16958,6 +17022,14 @@
           "polinter prendem em roraima homem procurado pela justica do acre por trafico de drogas - folha bv"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPNmtxVGJrUzF1dEJpODF2Rk43R0xxYTZET1gwemlacFhjLVJuX0tsdUVpSUM0UnRvWkZSbEl6UnJGZEp5bTdQN2dnVEp2VW5DYU5TSVY1Q1JXSnB4aUhNc3QydzR0Rk55UFNOV1o2dUt6RUFXUHhERG0wS0lHUFV1VmtXcVhqXzYyaVR4VlBFaXdOdTlWVHZBMEVkSGhOVjlibU1OcmxPc2cyNlRqdThXT1JKR3lJcVdZeTF4N2l1TzdhczQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -45679,7 +45751,7 @@
     }
   ],
   "quantificacao": {
-    "itens_extraidos": 409,
+    "itens_extraidos": 410,
     "totais_preliminares": [
       {
         "categoria": "Armas e munições",
@@ -45751,7 +45823,7 @@
         "categoria": "Drogas e entorpecentes",
         "material": "Maconha",
         "unidade": "kg",
-        "quantidade": 1249613.32
+        "quantidade": 1250613.32
       },
       {
         "categoria": "Drogas e entorpecentes",
