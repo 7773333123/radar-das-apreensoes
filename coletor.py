@@ -6,6 +6,7 @@ Uso:
 """
 import argparse
 import json
+import html
 import re
 import unicodedata
 from difflib import SequenceMatcher
@@ -179,6 +180,23 @@ def data_iso(valor):
         return ''
 
 
+def extrair_url_original_descricao(descricao, dominio_fonte):
+    """Obtém URL original somente quando explicitamente presente no RSS."""
+    dominio = (dominio_fonte or '').lower().removeprefix('www.')
+    if not dominio:
+        return ''
+    for url in re.findall(r"href\s*=\s*['\"]([^'\"]+)['\"]", html.unescape(descricao or ''), re.I):
+        url = html.unescape(url)
+        try:
+            p = urllib.parse.urlsplit(url)
+            host = (p.hostname or '').lower().removeprefix('www.')
+            if p.scheme in ('http', 'https') and (host == dominio or host.endswith('.' + dominio)):
+                return url
+        except ValueError:
+            continue
+    return ''
+
+
 def coletar(query, categoria=None):
     parametros = urllib.parse.urlencode({'q': query, 'hl': 'pt-BR', 'gl': 'BR', 'ceid': 'BR:pt-419'})
     requisicao = urllib.request.Request(BASE + parametros, headers={'User-Agent': 'Mozilla/5.0 RadarDasApreensoes/2.0'})
@@ -196,6 +214,15 @@ def coletar(query, categoria=None):
         noticia = {'titulo': titulo, 'url': url, 'data_publicacao': data, 'fonte': fonte}
         if fonte_elemento is not None and fonte_elemento.get('url'):
             noticia['dominio_fonte'] = urllib.parse.urlsplit(fonte_elemento.get('url')).hostname or ''
+        if urllib.parse.urlsplit(url).hostname == 'news.google.com':
+            noticia['url_google_noticias'] = url
+            original = extrair_url_original_descricao(item.findtext('description'), noticia.get('dominio_fonte'))
+            noticia['url_original_status'] = 'identificada_no_rss' if original else 'nao_identificada'
+            if original:
+                noticia['url_original'] = original
+        else:
+            noticia['url_original'] = url
+            noticia['url_original_status'] = 'direta'
         if categoria:
             noticia['categoria'] = categoria
         iso = data_iso(data)
