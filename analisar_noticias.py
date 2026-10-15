@@ -31,6 +31,15 @@ PATTERNS = {
 }
 OTHER = 'Outras apreensões'
 UNCLASSIFIED = 'Não classificada'
+LEGACY = {
+ 'drogas':'Drogas e entorpecentes', 'entorpecentes':'Drogas e entorpecentes',
+ 'armas':'Armas e munições', 'municoes':'Armas e munições',
+ 'contrabando':'Contrabando e descaminho', 'descaminho':'Contrabando e descaminho',
+ 'veiculos':'Veículos', 'dinheiro':'Dinheiro e valores',
+ 'ambiental':'Crimes ambientais', 'meio ambiente':'Crimes ambientais',
+ 'medicamentos':'Medicamentos e produtos', 'patrimonial':'Operações patrimoniais'
+}
+
 
 
 def fold(s):
@@ -83,6 +92,30 @@ def fetch_article(url,timeout=5):
    return (' '.join((page.title,page.meta,txt))[:50000], 'lida') if len(txt)>250 else ('','texto_insuficiente')
  except Exception: return '', 'acesso_indisponivel'
 
+
+def previous_labels(n):
+ out=[]
+ for v in (n.get('categorias_identificadas') or []):
+  if v in PATTERNS or v==OTHER:
+   if v not in out:out.append(v)
+ for key in ('categoria','categorias','cat'):
+  v=n.get(key,[])
+  if isinstance(v,str):v=[v]
+  if not isinstance(v,list):continue
+  for label in v:
+   mapped=LEGACY.get(fold(label),label if label in PATTERNS else None)
+   if mapped and mapped not in out:out.append(mapped)
+ return out
+
+def combined_labels(old,new):
+ specific=list(dict.fromkeys(x for x in old+new if x in PATTERNS))
+ if specific:return specific
+ return [OTHER] if OTHER in old+new else [UNCLASSIFIED]
+
+def evidence_text(n):
+ # Full article is used when available; do not silently discard existing source text.
+ return ' '.join(str(n.get(k) or '') for k in
+  ('titulo','t','descricao','resumo','desc','texto_completo','conteudo','texto_analisado_resumo'))
 
 def classify(text):
  f=fold(text)
@@ -170,7 +203,7 @@ def quantificar(texto):
    if val!=int(val):continue
    unidade='unidades'
   evidence=texto[max(0,m.start()-45):min(len(texto),m.end()+55)].strip()
-  key=(nome,unidade,val,evidence)
+  key=(nome,unidade,val)
   if key in seen:continue
   seen.add(key)
   records.append({'categoria':categoria,'material':nome,'quantidade':int(val) if val.is_integer() else round(val,4),'unidade':unidade,'evidencia':evidence,'metodo':'expressao_explicita','verificacao':'automatica_pendente_revisao'})
@@ -189,7 +222,7 @@ def quantificar(texto):
   if val is None or val<=0:continue
   val*= {'':1,'mil':1000,'milhao':1e6,'milhoes':1e6,'bilhao':1e9,'bilhoes':1e9}[mult]
   evidence=texto[max(0,m.start()-45):min(len(texto),m.end()+55)].strip()
-  key=('Dinheiro em reais','BRL',val,evidence)
+  key=('Dinheiro em reais','BRL',val)
   if key in seen:continue
   seen.add(key)
   records.append({'categoria':'Dinheiro e valores','material':'Dinheiro em reais','quantidade':round(val,2),'unidade':'BRL','evidencia':evidence,'metodo':'expressao_explicita','verificacao':'automatica_pendente_revisao'})
@@ -197,38 +230,41 @@ def quantificar(texto):
 
 def main():
  ap=argparse.ArgumentParser()
- ap.add_argument('--max-leituras',type=int,default=35,help='Limite de matérias externas por execução (padrão: 35)')
+ ap.add_argument('--max-leituras',type=int,default=150,help='Limite de matérias externas por execução (padrão: 150)')
+ ap.add_argument('--repetir-leituras',action='store_true',help='Tentar novamente links anteriormente indisponíveis')
  ap.add_argument('--sem-web',action='store_true',help='Somente texto já armazenado')
  args=ap.parse_args()
  path=BASE/'noticias.json'
  raw=json.loads(path.read_text(encoding='utf-8'))
  items=raw if isinstance(raw,list) else raw.get('noticias',[])
  if not isinstance(items,list):raise SystemExit('Formato inesperado de noticias.json')
- counts=collections.Counter();states=collections.Counter();months=collections.Counter();years=collections.Counter();sources=set();missing_date=0;read_count=0;details=[];pending=0;quant_totals=collections.defaultdict(float);quant_count=0
+ counts=collections.Counter();multi=0;states=collections.Counter();months=collections.Counter();years=collections.Counter();sources=set();missing_date=0;read_count=0;details=[];pending=0;review=collections.Counter();quant_totals=collections.defaultdict(float);quant_count=0
  for n in items:
   if not isinstance(n,dict):continue
   title=str(n.get('titulo') or n.get('t') or '')
   desc=str(n.get('descricao') or n.get('resumo') or n.get('desc') or '')
   stored=str(n.get('texto_completo') or n.get('conteudo') or n.get('texto_analisado_resumo') or '')
-  labels,evidence=classify(' '.join((title,desc,stored)))
+  labels,evidence=classify(evidence_text(n))
+  labels=combined_labels(previous_labels(n),labels)
   status='dados_existentes'
   # Consulta uma única vez por execução apenas notícias sem categoria específica.
   # Reprocessa categorias a cada rodada; não sobrescreve dados originais.
-  if labels in ([UNCLASSIFIED],[OTHER]) and not args.sem_web and read_count<max(0,args.max_leituras):
+  if labels in ([UNCLASSIFIED],[OTHER]) and not args.sem_web and read_count<max(0,args.max_leituras) and (args.repetir_leituras or n.get('leitura_fonte_status') not in ('acesso_indisponivel','url_invalida','url_restrita','nao_html','texto_insuficiente','sem_evidencia_especifica')):
    url=str(n.get('url') or n.get('link') or '')
    if url:
     read_count+=1
     content,status=fetch_article(url)
     if content:
-     labels,evidence=classify(' '.join((title,desc,content)))
+     new_labels,evidence=classify(' '.join((title,desc,content)))
+     labels=combined_labels(labels,new_labels)
      if labels not in ([UNCLASSIFIED],[OTHER]):
       n['texto_analisado_resumo']=content[:1200]
       n['leitura_fonte_status']='lida'
      else:n['leitura_fonte_status']='sem_evidencia_especifica'
     else:n['leitura_fonte_status']=status
   # Extrai quantidades apenas do texto efetivamente disponível; sem extrapolação.
-  texto_quant=' '.join((title,desc,stored))
-  if n.get('texto_analisado_resumo'):texto_quant+=' '+str(n['texto_analisado_resumo'])
+  texto_quant=' '.join(dict.fromkeys(x for x in (title,desc,stored) if x))
+  if n.get('texto_analisado_resumo') and n['texto_analisado_resumo'] not in texto_quant:texto_quant+=' '+str(n['texto_analisado_resumo'])
   registros=quantificar(texto_quant)
   n['itens_quantificados']=registros
   quant_count+=len(registros)
@@ -237,8 +273,10 @@ def main():
    if registro['categoria'] not in labels:
     labels=[x for x in labels if x not in (UNCLASSIFIED,OTHER)]+[registro['categoria']]
   # Não converte notícias genéricas em apreensões comprovadas.
+  if len([x for x in labels if x in PATTERNS])>1:multi+=1
   n['categorias_identificadas']=labels
   n['status_revisao']='pendente_evidencia' if labels==[UNCLASSIFIED] else ('outras_apreensoes_a_revisar' if labels==[OTHER] else 'classificacao_automatica')
+  review[n['status_revisao']]+=1
   n['evidencias_classificacao']=evidence
   n['metodo_classificacao']='regras_textuais_com_leitura_opcional'
   n['revisao_humana_recomendada']=True
@@ -256,10 +294,10 @@ def main():
  result={'gerado_em_utc':dt.datetime.now(dt.timezone.utc).isoformat(),
  'metodologia':'Regras textuais e leitura opcional de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias.',
  'aviso':'Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.',
- 'noticias_analisadas':len(details),'fontes_distintas_informadas':len(sources),
+ 'noticias_multicategoria':multi,'noticias_com_quantidades':sum(bool(n.get('itens_quantificados')) for n in items if isinstance(n,dict)),'noticias_analisadas':len(details),'fontes_distintas_informadas':len(sources),
  'noticias_por_categoria':dict(counts.most_common()),'noticias_por_uf_explicita':dict(states.most_common()),
  'noticias_por_mes':dict(sorted(months.items())),'noticias_por_ano':dict(sorted(years.items())),
- 'noticias_sem_data_valida':missing_date,'noticias_sem_classificacao':pending,'noticias_pendentes_revisao':pending,
+ 'status_processamento':dict(review),'noticias_sem_data_valida':missing_date,'noticias_sem_classificacao':pending,'noticias_pendentes_revisao':pending,
  'leituras_externas_tentadas':read_count,'classificacoes':details,
  'quantificacao':{'itens_extraidos':quant_count,'totais_preliminares':[{'categoria':k[0],'material':k[1],'unidade':k[2],'quantidade':round(v,4)} for k,v in sorted(quant_totals.items())], 'aviso':'Totais preliminares por notícia, sem deduplicação entre matérias sobre a mesma operação. Não são totais oficiais; requerem revisão.'}}
  # Gera arquivos temporários e substitui somente depois de concluir o processamento.
@@ -268,6 +306,6 @@ def main():
  ptmp.write_text(json.dumps(raw,ensure_ascii=False,indent=2),encoding='utf-8')
  otmp.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
  ptmp.replace(path);otmp.replace(out)
- print(f'Analisadas {len(details)} notícias; {pending} não classificadas; {read_count} leituras externas tentadas.')
+ print(f'Analisadas {len(details)} notícias; {pending} não classificadas; {multi} multicategoria; {quant_count} registros quantitativos; {read_count} leituras externas tentadas; revisão: {dict(review)}.')
 
 if __name__=='__main__':main()
