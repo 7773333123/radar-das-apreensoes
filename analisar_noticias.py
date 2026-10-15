@@ -301,7 +301,7 @@ def main():
  raw=json.loads(path.read_text(encoding='utf-8'))
  items=raw if isinstance(raw,list) else raw.get('noticias',[])
  if not isinstance(items,list):raise SystemExit('Formato inesperado de noticias.json')
- counts=collections.Counter();multi=0;states=collections.Counter();months=collections.Counter();years=collections.Counter();sources=set();missing_date=0;read_count=0;read_status=collections.Counter();details=[];pending=0;review=collections.Counter();quant_totals=collections.defaultdict(float);quant_count=0
+ counts=collections.Counter();quant_status=collections.Counter();multi=0;states=collections.Counter();months=collections.Counter();years=collections.Counter();sources=set();missing_date=0;read_count=0;read_status=collections.Counter();details=[];pending=0;review=collections.Counter();quant_totals=collections.defaultdict(float);quant_count=0
  for n in items:
   if not isinstance(n,dict):continue
   title=str(n.get('titulo') or n.get('t') or '')
@@ -333,12 +333,33 @@ def main():
   texto_quant=' '.join(dict.fromkeys(x for x in (title,desc,stored) if x))
   if n.get('texto_analisado_resumo') and n['texto_analisado_resumo'] not in texto_quant:texto_quant+=' '+str(n['texto_analisado_resumo'])
   registros=quantificar(texto_quant)
+  # Indicador independente da categoria: não quantificada não significa fora do escopo.
+  # O marcador é aplicado somente a matérias com categoria de apreensão identificada.
+  # Notícias sem evidência permanecem pendentes de verificação.
+  tem_categoria_apreensao = any(x in PATTERNS or x == OTHER for x in labels)
+  if registros:
+   situacao_quantitativa = 'com_informacao_quantitativa'
+  elif tem_categoria_apreensao:
+   situacao_quantitativa = 'materia_sem_informacao_quantitativa'
+  else:
+   situacao_quantitativa = 'pendente_verificacao_apreensao'
+  n['situacao_quantitativa'] = situacao_quantitativa
+  n['materia_sem_informacao_quantitativa'] = situacao_quantitativa == 'materia_sem_informacao_quantitativa'
   n['itens_quantificados']=registros
   quant_count+=len(registros)
   for registro in registros:
    quant_totals[(registro['categoria'],registro['material'],registro['unidade'])]+=registro['quantidade']
    if registro['categoria'] not in labels:
     labels=[x for x in labels if x not in (UNCLASSIFIED,OTHER)]+[registro['categoria']]
+  # Reavalia após incluir categorias comprovadas pelos registros quantitativos.
+  if registros:
+   n['situacao_quantitativa'] = 'com_informacao_quantitativa'
+  elif any(x in PATTERNS or x == OTHER for x in labels):
+   n['situacao_quantitativa'] = 'materia_sem_informacao_quantitativa'
+  else:
+   n['situacao_quantitativa'] = 'pendente_verificacao_apreensao'
+  n['materia_sem_informacao_quantitativa'] = n['situacao_quantitativa'] == 'materia_sem_informacao_quantitativa'
+  quant_status[n['situacao_quantitativa']] += 1
   # Não converte notícias genéricas em apreensões comprovadas.
   if len([x for x in labels if x in PATTERNS])>1:multi+=1
   n['categorias_identificadas']=labels
@@ -363,8 +384,11 @@ def main():
   if source:sources.add(source)
   details.append({'url':n.get('url') or n.get('link'),'categorias_sugeridas':labels,'evidencias':evidence,'leitura_fonte_status':n.get('leitura_fonte_status','nao_necessaria')})
  result={'gerado_em_utc':dt.datetime.now(dt.timezone.utc).isoformat(),
- 'metodologia':'Regras textuais e leitura opcional de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias.',
+ 'metodologia':'Regras textuais e leitura opcional de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.',
  'aviso':'Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.',
+ 'situacao_quantitativa':dict(quant_status),
+ 'materias_sem_informacao_quantitativa':quant_status['materia_sem_informacao_quantitativa'],
+ 'nota_situacao_quantitativa':'Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.',
  'noticias_multicategoria':multi,'noticias_com_quantidades':sum(bool(n.get('itens_quantificados')) for n in items if isinstance(n,dict)),'noticias_analisadas':len(details),'fontes_distintas_informadas':len(sources),
  'noticias_por_categoria':dict(counts.most_common()),'noticias_por_uf_explicita':dict(states.most_common()),
  'noticias_por_mes':dict(sorted(months.items())),'noticias_por_ano':dict(sorted(years.items())),
