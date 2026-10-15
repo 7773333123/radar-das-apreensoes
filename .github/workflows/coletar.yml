@@ -45,7 +45,10 @@ jobs:
           fi
 
       - name: Instalar decodificador de links do Google Noticias
-        run: python -m pip install "selectolax==0.3.21" "googlenewsdecoder==0.2.1"
+        run: |
+          python -m pip install "selectolax==0.3.21" requests beautifulsoup4 lxml
+          python -m pip install --no-deps "googlenewsdecoder==0.2.1"
+          python -c "from googlenewsdecoder import gnewsdecoder; print('Decodificador importado com sucesso')"
 
       - name: Recuperar links originais das noticias
         run: python recuperar_links.py --limite 60
