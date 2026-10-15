@@ -21,12 +21,12 @@ BASE = Path(__file__).resolve().parent
 UFS = set('AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO'.split())
 PATTERNS = {
  'Drogas e entorpecentes': [r'\bcocain',r'\bmaconha',r'\bcrack\b',r'\bhaxixe',r'\bentorpecent',r'\bmetanfetamin',r'\becstasy',r'\bskunk',r'\bcannabis',r'\bheroina',r'\bketamina',r'\bdrogas?\b',r'\btrafico de drogas?\b'],
- 'Armas e munições': [r'\bfuzis?\b',r'\bpistolas?\b',r'\brevolver',r'\bespingard',r'\bmunic',r'\bcartuchos?\b',r'\barmas? de fogo\b',r'\bexplosivos?\b',r'\barmamento'],
+ 'Armas e munições': [r'\bfuzis?\b',r'\bpistolas?\b',r'\brevolver',r'\bespingard',r'\bmunic',r'\bcartuchos?\b',r'\barmas?\b',r'\barmas? de fogo\b',r'\bexplosivos?\b',r'\barmamento'],
  'Contrabando e descaminho': [r'\bcontraband',r'\bdescaminho',r'\bcigarros?\b',r'\bmercadorias? sem nota',r'\bmercadorias? irregulares?',r'\bimportac[aã]o irregular',r'\bprodutos? contrabandead'],
  'Veículos': [r'\bveiculos? apreendid',r'\bcarros? apreendid',r'\bautomoveis? apreendid',r'\bcaminh(?:ao|oes) apreendid',r'\bmotociclet\w* apreendid',r'\bembarcac\w* apreendid',r'\baeronave\w* apreendid',r'\bveiculos? roubad',r'\bveiculos? recuperad'],
- 'Dinheiro e valores': [r'\bdinheiro apreendid',r'\bvalores? apreendid',r'\bquantia em especie',r'\bnumerario',r'\bcedulas? apreendid',r'\bouro apreendid',r'\bjoias? apreendid',r'\breais? em especie'],
+ 'Dinheiro e valores': [r'\bdinheiro apreendid',r'\b(?:apreendid\w*|confiscad\w*|retid\w*)\s+(?:r\$\s*)?\d+[\d.,]*\s*(?:mil|milhoes?)?\s*(?:reais|em dinheiro)',r'\br\$\s*\d+[\d.,]*\s*(?:mil|milhoes?)?\s*(?:apreendid\w*|confiscad\w*)',r'\bvalores? apreendid',r'\bquantia em especie',r'\bnumerario',r'\bcedulas? apreendid',r'\bouro apreendid',r'\bjoias? apreendid',r'\breais? em especie'],
  'Crimes ambientais': [r'\bmadeira ilegal',r'\bmadeira apreendid',r'\banimais? silvestres?',r'\bfauna silvestre',r'\bpesca ilegal',r'\bpescado apreendid',r'\bminerio apreendid',r'\bgarimpo ilegal',r'\bdesmatamento ilegal',r'\baves? silvestres?'],
- 'Medicamentos e produtos': [r'\bmedicamentos? irregulares?',r'\bmedicamentos? apreendid',r'\bremedios? apreendid',r'\banabolizantes?',r'\bprodutos? falsificad',r'\bprodutos? proibid',r'\bcosmeticos? irregulares?'],
+ 'Medicamentos e produtos': [r'\bmedicamentos? irregulares?',r'\bcanetas? emagrecedoras?',r'\bmedicamentos? apreendid',r'\bremedios? apreendid',r'\banabolizantes?',r'\bprodutos? falsificad',r'\bprodutos? proibid',r'\bcosmeticos? irregulares?'],
  'Operações patrimoniais': [r'\bbloqueio de bens',r'\bbens bloqueados?',r'\bsequestro de bens',r'\bindisponibilidade de bens',r'\bconfisco de bens',r'\bbens sequestrados?',r'\bbloqueio judicial de',r'\bbens confiscados?'],
 }
 OTHER = 'Outras apreensões'
@@ -94,7 +94,7 @@ def classify(text):
    if m: found.append(f[max(0,m.start()-70):min(len(f),m.end()+100)].strip())
   if found:labels.append(label);evidence[label]=found[:2]
  if not labels:
-  if re.search(r'\bapreens|\bapreendid|\bconfiscad',f):labels=[OTHER]
+  if re.search(r'\b(?:objetos?|materiais?|mercadorias?|produtos?|bens?|cargas?)\b.{0,60}\b(?:apreendid|confiscad)|\b(?:apreend|confisc)\w*.{0,60}\b(?:objetos?|materiais?|mercadorias?|produtos?|bens?|cargas?)\b',f):labels=[OTHER]
   else:labels=[UNCLASSIFIED]
  return labels,evidence
 
@@ -176,8 +176,16 @@ def quantificar(texto):
   records.append({'categoria':categoria,'material':nome,'quantidade':int(val) if val.is_integer() else round(val,4),'unidade':unidade,'evidencia':evidence,'metodo':'expressao_explicita','verificacao':'automatica_pendente_revisao'})
  for m in PAT_MONEY.finditer(normalized):
   val=number_value(m.group(1));mult=(m.group(2) or '')
-  contexto=normalized[max(0,m.start()-100):min(len(normalized),m.end()+100)]
-  if not re.search(r'apreend|confisc|bloquead|sequestrad|retid|encontrad',contexto):continue
+  # Exige vínculo textual claro entre o valor e sua apreensão/bloqueio.
+  # Dívida, prejuízo, faturamento e estimativa não equivalem a dinheiro apreendido.
+  before=normalized[max(0,m.start()-85):m.start()]
+  after=normalized[m.end():min(len(normalized),m.end()+65)]
+  before=before.split(';')[-1].split('.')[-1]
+  after=after.split(';')[0].split('.')[0]
+  action=r'(?:apreend\w*|apreens\w*|confiscad\w*|bloquead\w*|sequestrad\w*|retid\w*)'
+  nearby=bool(re.search(action+r'[^.!?;]{0,65}$',before) or re.match(r'[^.!?;]{0,40}'+action,after))
+  bad=r'\b(?:divida|prejuizo|faturamento|avaliad[oa]s?|estimad[oa]s?|propina|indenizacao|movimentad[oa]s?)\b'
+  if not nearby or re.search(bad,before[-45:]+' '+after[:45]):continue
   if val is None or val<=0:continue
   val*= {'':1,'mil':1000,'milhao':1e6,'milhoes':1e6,'bilhao':1e9,'bilhoes':1e9}[mult]
   evidence=texto[max(0,m.start()-45):min(len(texto),m.end()+55)].strip()
@@ -201,7 +209,7 @@ def main():
   if not isinstance(n,dict):continue
   title=str(n.get('titulo') or n.get('t') or '')
   desc=str(n.get('descricao') or n.get('resumo') or n.get('desc') or '')
-  stored=str(n.get('texto_completo') or n.get('conteudo') or '')
+  stored=str(n.get('texto_completo') or n.get('conteudo') or n.get('texto_analisado_resumo') or '')
   labels,evidence=classify(' '.join((title,desc,stored)))
   status='dados_existentes'
   # Consulta uma única vez por execução apenas notícias sem categoria específica.
@@ -228,12 +236,15 @@ def main():
    quant_totals[(registro['categoria'],registro['material'],registro['unidade'])]+=registro['quantidade']
    if registro['categoria'] not in labels:
     labels=[x for x in labels if x not in (UNCLASSIFIED,OTHER)]+[registro['categoria']]
+  # Não converte notícias genéricas em apreensões comprovadas.
   n['categorias_identificadas']=labels
+  n['status_revisao']='pendente_evidencia' if labels==[UNCLASSIFIED] else ('outras_apreensoes_a_revisar' if labels==[OTHER] else 'classificacao_automatica')
   n['evidencias_classificacao']=evidence
   n['metodo_classificacao']='regras_textuais_com_leitura_opcional'
   n['revisao_humana_recomendada']=True
   if labels==[UNCLASSIFIED]:pending+=1
-  for label in labels:counts[label]+=1
+  for label in labels:
+   if label!=UNCLASSIFIED:counts[label]+=1
   uf=str(n.get('uf') or n.get('estado') or '').upper().strip()
   if uf in UFS:states[uf]+=1
   d=date_of(n)
@@ -244,11 +255,11 @@ def main():
   details.append({'url':n.get('url') or n.get('link'),'categorias_sugeridas':labels,'evidencias':evidence,'leitura_fonte_status':n.get('leitura_fonte_status','nao_necessaria')})
  result={'gerado_em_utc':dt.datetime.now(dt.timezone.utc).isoformat(),
  'metodologia':'Regras textuais e leitura opcional de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias.',
- 'aviso':'Contagens de notícias, NÃO de operações únicas ou quantidades físicas apreendidas. Categorias se sobrepõem.',
+ 'aviso':'Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.',
  'noticias_analisadas':len(details),'fontes_distintas_informadas':len(sources),
  'noticias_por_categoria':dict(counts.most_common()),'noticias_por_uf_explicita':dict(states.most_common()),
  'noticias_por_mes':dict(sorted(months.items())),'noticias_por_ano':dict(sorted(years.items())),
- 'noticias_sem_data_valida':missing_date,'noticias_sem_classificacao':pending,
+ 'noticias_sem_data_valida':missing_date,'noticias_sem_classificacao':pending,'noticias_pendentes_revisao':pending,
  'leituras_externas_tentadas':read_count,'classificacoes':details,
  'quantificacao':{'itens_extraidos':quant_count,'totais_preliminares':[{'categoria':k[0],'material':k[1],'unidade':k[2],'quantidade':round(v,4)} for k,v in sorted(quant_totals.items())], 'aviso':'Totais preliminares por notícia, sem deduplicação entre matérias sobre a mesma operação. Não são totais oficiais; requerem revisão.'}}
  # Gera arquivos temporários e substitui somente depois de concluir o processamento.
