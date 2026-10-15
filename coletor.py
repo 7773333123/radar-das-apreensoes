@@ -2,7 +2,8 @@
 
 Uso:
   python coletor.py
-  python coletor.py --historico --ano 2020
+  python coletor.py --historico --ano 2023
+  python coletor.py --historico --ano 2024 --mes 6
 """
 import argparse
 import json
@@ -25,6 +26,17 @@ TEMAS = {
     'Armas': 'apreensão armas munições polícia',
     'Contrabando': 'apreensão contrabando descaminho Receita Federal',
     'Lavagem de dinheiro': 'operação lavagem de dinheiro tráfico polícia',
+}
+# Buscas complementares para recuperar o acervo histórico sem alterar
+# a rotina diária. Consultas curtas evitam que uma categoria monopolize o RSS.
+TEMAS_HISTORICOS = {
+    **TEMAS,
+    'Veículos': 'apreensão veículos carros caminhões embarcações',
+    'Dinheiro e valores': 'apreensão dinheiro espécie ouro joias',
+    'Crimes ambientais': 'apreensão madeira animais silvestres pescado',
+    'Medicamentos e produtos': 'apreensão medicamentos falsificados produtos irregulares',
+    'Operações patrimoniais': 'bens apreendidos bloqueio patrimonial operação',
+    'Outras apreensões': 'apreensão mercadorias equipamentos polícia',
 }
 FONTES = {
     'Polícia Federal': 'gov.br/pf',
@@ -225,6 +237,16 @@ def coletar(query, categoria=None):
             noticia['url_original_status'] = 'direta'
         if categoria:
             noticia['categoria'] = categoria
+        # Só armazena imagens quando a própria fonte RSS informa um endereço.
+        imagem = ''
+        for filho in item:
+            if filho.tag.rsplit('}', 1)[-1] in ('content', 'thumbnail'):
+                candidato = filho.get('url', '')
+                if candidato.startswith('https://') or candidato.startswith('http://'):
+                    imagem = candidato
+                    break
+        if imagem:
+            noticia['imagem'] = imagem
         iso = data_iso(data)
         if iso:
             noticia['data_iso'] = iso
@@ -320,6 +342,7 @@ def executar():
     parser = argparse.ArgumentParser()
     parser.add_argument('--historico', action='store_true', help='Busca mês a mês em um ano específico')
     parser.add_argument('--ano', type=int, help='Ano histórico de 2020 até o atual')
+    parser.add_argument('--mes', type=int, choices=range(1, 13), metavar='1-12', help='Mês específico da busca histórica (opcional)')
     parser.add_argument('--limite-fontes', type=int, default=24, help='Fontes extras consultadas por execução (padrão: 24)')
     parser.add_argument('--limite-estados', type=int, default=9, help='Estados consultados por execução (padrão: 9)')
     args = parser.parse_args()
@@ -329,6 +352,10 @@ def executar():
         parser.error('Os limites de consultas não podem ser negativos')
     if args.historico and (args.ano is None or not 2020 <= args.ano <= ano_atual):
         parser.error('Informe --ano entre 2020 e o ano atual')
+    if args.mes is not None and not args.historico:
+        parser.error('--mes exige --historico e --ano')
+    if args.historico and args.ano == ano_atual and args.mes and args.mes > hoje.month:
+        parser.error('Não é possível consultar mês futuro')
     estado_anterior = carregar_estado()
     existentes = ler_existentes()
     proximo_estado = estado_anterior.get('rodizio_estados_proximo', 0)
@@ -339,13 +366,15 @@ def executar():
     consultas = []
     if args.historico:
         # Uma execução por ano, para não sobrecarregar a fonte.
-        for mes in range(1, 13):
+        for mes in ([args.mes] if args.mes else range(1, 13)):
             if args.ano == ano_atual and mes > datetime.now(timezone.utc).month:
                 break
             seguinte = f'{args.ano + 1}-01-01' if mes == 12 else f'{args.ano}-{mes + 1:02d}-01'
             inicio = f'{args.ano}-{mes:02d}-01'
-            for categoria, termos in TEMAS.items():
+            for categoria, termos in TEMAS_HISTORICOS.items():
                 consultas.append((f'{termos} after:{inicio} before:{seguinte}', categoria))
+            for nome, dominio in FONTES.items():
+                consultas.append((f'{TERMOS_APREENSAO} site:{dominio} after:{inicio} before:{seguinte}', None))
     else:
         for categoria, termos in TEMAS.items():
             consultas.append((termos + ' Brasil when:7d', categoria))
@@ -366,6 +395,11 @@ def executar():
     for i, (consulta, categoria) in enumerate(consultas, 1):
         try:
             itens = coletar(consulta, categoria)
+            if args.historico:
+                # Algumas buscas do Google devolvem matérias fora da janela.
+                limites = re.search(r'after:(\d{4}-\d{2}-\d{2}) before:(\d{4}-\d{2}-\d{2})', consulta)
+                if limites:
+                    itens = [n for n in itens if limites.group(1) <= (n.get('data_iso') or '')[:10] < limites.group(2)]
             recebidas.extend(itens)
             print(f'Consulta {i}/{len(consultas)}: {len(itens)} resultados, {novos} novos acumulados')
         except (OSError, ET.ParseError, ValueError) as exc:
