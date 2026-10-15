@@ -1,44 +1,44 @@
 {
-  "gerado_em_utc": "2026-10-15T23:29:16.771259+00:00",
+  "gerado_em_utc": "2026-10-15T23:37:08.349101+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "pendente_verificacao_apreensao": 3901,
-    "materia_sem_informacao_quantitativa": 6384,
+    "pendente_verificacao_apreensao": 3905,
+    "materia_sem_informacao_quantitativa": 6391,
     "com_informacao_quantitativa": 791
   },
-  "materias_sem_informacao_quantitativa": 6384,
+  "materias_sem_informacao_quantitativa": 6391,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
-  "noticias_multicategoria": 1242,
+  "noticias_multicategoria": 1246,
   "noticias_com_quantidades": 791,
-  "noticias_analisadas": 11076,
+  "noticias_analisadas": 11087,
   "fontes_distintas_informadas": 1367,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 4182,
-    "Armas e munições": 2951,
+    "Drogas e entorpecentes": 4187,
+    "Armas e munições": 2955,
     "Contrabando e descaminho": 647,
     "Dinheiro e valores": 364,
-    "Veículos": 114,
+    "Veículos": 115,
     "Medicamentos e produtos": 95,
-    "Crimes ambientais": 57,
+    "Crimes ambientais": 58,
     "Operações patrimoniais": 38,
     "Outras apreensões": 31
   },
   "noticias_por_uf_explicita": {
     "PA": 738,
-    "BA": 290,
+    "BA": 295,
     "PR": 161,
     "SP": 130,
     "PI": 105,
     "CE": 90,
     "MA": 73,
+    "AM": 69,
     "PE": 68,
-    "AM": 68,
     "TO": 65,
     "GO": 54,
     "RO": 52,
     "PB": 46,
-    "AL": 42,
+    "AL": 44,
     "SC": 40,
     "MG": 40,
     "RJ": 34,
@@ -91,7 +91,7 @@
     "2022-08": 82,
     "2022-09": 78,
     "2022-10": 82,
-    "2022-11": 66,
+    "2022-11": 67,
     "2022-12": 98,
     "2023-01": 120,
     "2023-02": 115,
@@ -114,7 +114,7 @@
     "2024-07": 254,
     "2024-08": 206,
     "2024-09": 170,
-    "2024-10": 165,
+    "2024-10": 166,
     "2024-11": 169,
     "2024-12": 168,
     "2025-01": 168,
@@ -123,44 +123,44 @@
     "2025-04": 175,
     "2025-05": 186,
     "2025-06": 220,
-    "2025-07": 233,
+    "2025-07": 235,
     "2025-08": 219,
     "2025-09": 249,
     "2025-10": 270,
     "2025-11": 232,
     "2025-12": 226,
     "2026-03": 2,
-    "2026-04": 2,
+    "2026-04": 3,
     "2026-05": 5,
     "2026-06": 15,
     "2026-07": 34,
     "2026-08": 47,
     "2026-09": 34,
-    "2026-10": 2194
+    "2026-10": 2200
   },
   "noticias_por_ano": {
     "2018": 1,
     "2019": 2,
     "2020": 617,
     "2021": 751,
-    "2022": 894,
+    "2022": 895,
     "2023": 1786,
-    "2024": 2176,
-    "2025": 2516,
-    "2026": 2333
+    "2024": 2177,
+    "2025": 2518,
+    "2026": 2340
   },
   "status_processamento": {
-    "pendente_evidencia": 3901,
-    "classificacao_automatica": 7144,
+    "pendente_evidencia": 3905,
+    "classificacao_automatica": 7151,
     "outras_apreensoes_a_revisar": 31
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 11022,
+    "aguardando_url_original": 11033,
     "lida": 54
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 3901,
-  "noticias_pendentes_revisao": 3901,
+  "noticias_sem_classificacao": 3905,
+  "noticias_pendentes_revisao": 3905,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
@@ -213,6 +213,22 @@
         "Outras apreensões"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNZHB3OFRySDNKU1FRbjgtVUxjZHRTeVNiVkF4SFJGZlFucjhWcVNrTWtvdGhmQ1VDeC16ejVDc1JFdEhiSUdlQjJQUjZSblVCcHdGeENKY3Zjcnp3UjNkSDZDWEstZjMybS1mVmdZUEZ2dVRNYUtQaE1CYVVBMzgwblFpNUpqcUpXclZYMXBVNFR5cVNBMVlUSkR2ZWVWVlRTQU5fVHBfazBKb01QU1BGT0hYRlB6X0h4cHVhT2toaU1RUmY4c1B1SERGSk5xaktGZXfSAdIBQVVfeXFMTWRwdzhUckgzSlNRUW44LVVMY2R0U3lTYlZBeEhSRmZRbnI4VnFTa01rb3RoZkNVQ3gteno1Q3NSRXRIYklHZUIyUFI2Um5VQnB3RnhDSmN2Y3J6d1IzZEg2Q1hLLWYzMm0tZlZnWVBGdnVUTWFLUGhNQmFVQTM4MG5RaTVKanFKV3JWWDFwVTRUeXFTQTFZVEpEdmVlVlZUU0FOX1RwX2swSm9NUFNQRk9IWEZQel9IeHB1YU9raGlNUVJmOHNQdUhERkpOcWpLRmV3?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Crimes ambientais"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "policia ambiental apreende duas armas e resgata 59 animais silvestres em alagoas - gazetaweb"
+        ],
+        "Crimes ambientais": [
+          "policia ambiental apreende duas armas e resgata 59 animais silvestres em alagoas - gazetaweb"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -272,6 +288,14 @@
           "pf, em acao integrada, apreende 320 kg de maconha e prende um homem no parana — policia federal - governo federal"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNa1pyVHN2UGJHanVsT3RmaWZiTE4wT3pRTlJHby1EWmJ3cHVpM0ltYlQ2RWx5c2FnTV9TQkZjTHBlZGR4UVRRbG9aUk1qNk1GaGkySU5Ca2g1ZExlOFBHM1dPOVREaUF4Tll5WlZDdUVQRXhoZ3hyamhGMHBITUhoNm1WU1Z2Qjl3Y25xVExaaFkza29oTFZqSk5sN3hmejNZczFqZWJsSWhIYTZDNkZPWXZGV3NNNGxPUUFxVEJIYWotMFZOQXk0?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -9808,6 +9832,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPUXlBdzhWZ0s3WDFMbVU3NVpsS2I0Q0x6RWpyNU5kTmZ3Tmh3Sy1heDVlcmE1alQ1Vkg1X3JUTFh3eFBrNFdnbXJFSUxfQkd6MzFndlJubDdLUTVpQ25MRnFRNkFhdW5KdVNSeWpvNjkzYzhYWGxhOWt5N2tzWEpsUkVXd3JSVmhJdlNoOVRjaW1ub2dJOGJqQzBYWkpEdnNNQUJaNzgzV3VxbVhPYlVQM3N3SQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOQm5yOFhSY21RTFRwZEo2R2lGYktkM3h3V1kwNWZQX0ZxdUU3WWlPSXA2eTFJQWRtX3M1UXVRT2N4OHl5dzMwOXByRU9vT3NBLTNzNlpUVHR2Z1lhS0g3aGxZVDZQa2Vpd2Q0QUxzUXZQX1l0bUQyRG8xd1BsbUcyX3FfNDAwSGFObk5qUERoTzlxZEs4cVlkV2VJTWRBbWo1Zy1vQVJlenJ3NEpYRXJPbE1VS0pUaXPSAbcBQVVfeXFMTkJucjhYUmNtUUxUcGRKNkdpRmJLZDN4d1dZMDVmUF9GcXVFN1lpT0lwNnkxSUFkbV9zNVF1UU9jeDh5eXczMDlwckVPb09zQS0zczZaVFR0dmdZYUtIN2hsWVQ2UGtlaXdkNEFMc1F2UF9ZdG1EMkRvMXdQbG1HMl9xXzQwMEhhTm5OalBEaE85cWRLOHFZZFdlSU1kQW1qNWctb0FSZXpydzRKWEVyT2xNVUtKVGlz?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -11219,6 +11251,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMigwJBVV95cUxNcEpVNEhybmV1YkhwdlA5R2pxS2lLcU9tMWRNWWcyMFlWbzI5ei0xRHlhaWlwTWhJYmNuWTFHdXczeFp0SFdiTHNWT0lnMW11WEpucmpZUkN3elVMbkxCRFVuM1FSZmtxSzhkV3dnaHoySWZKcFZZYnBRMVlBZ0FSSXZ4Wi1PSUt2cG80R1dOblQxNENIWHItVUlWb1loQkRvdUtreVBTdExqVHBoTzZVeDY1dFE5c19OZGt1dkR2WlV0WEZHY1ZNR3N1MU1SZjlWMzNZcVdkZUNTdEdRN3AtLUU0VVh0dFpOb3JWcTFwejdHeFFxWlNBcXRRZHpJQl9uMHhj0gGDAkFVX3lxTE1wSlU0SHJuZXViSHB2UDlHanFLaUtxT20xZE1ZZzIwWVZvMjl6LTFEeWFpaXBNaEliY25ZMUd1dzN4WnRIV2JMc1ZPSWcxbXVYSm5yallSQ3d6VUxuTEJEVW4zUVJma3FLOGRXd2doejJJZkpwVllicFExWUFnQVJJdnhaLU9JS3ZwbzRHV05uVDE0Q0hYci1VSVZvWWhCRG91S2t5UFN0TGpUcGhPNlV4NjV0UTlzX05ka3V2RHZaVXRYRkdjVk1Hc3UxTVJmOVYzM1lxV2RlQ1N0R1E3cC0tRTRVWHR0Wk5vclZxMXB6N0d4UXFaU0FxdFFkeklCX24weGM?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNN1BEWjBlU3poY25YTlpmWC05SzZxSlg3cnFGU1R5dXpWbWZ5VEVFckUyaHVQNy1YU0VkLTdLUURXTFJDZU9VRjFuZ3RpeHNkZEFtMi1ldy1SNkV5YnR5QmlPVGYwamJQSlZfLW5tSkJCWFVlRmhXZEVQakhvM2FTYy16SkxQd2dZeVEwVU9OVXVxNjZPcmhvS2RzWTNBRHJ4OWxxM2Y5bFk5MXBfTEp5WWNOelk?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -11998,6 +12038,18 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPY2RFSm1UUlZvaHdOZmpLM1E0X1JZaXdIeERiT2pNZ2l0MDNFRno5WlZKbkRXZ2dxR0dYcHRRNkRXbG11LS1FR1gtWUNOMlk1NFdXZmpTME8ta3h0RlJKd3BZenRzVm53TGliSGFSbWloeVh6XzBVemJ5MkZsRHh3SFhIVmZNT0stSmtDVUJnMlJyZGhtSW0yTG9wcGUza1dnUGRpVDU1TnRsUVlNN2ZVeEh3YXJEN1JQVWxfZmhBNzk?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pf e forcas de seguranca apreendem cerca de 4,5 kg de drogas em porto velho/ro e apui/am - tribuna top"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -18791,6 +18843,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxPQ0xUSmJQNnp3NV81Q182bmdDaHU4WndFc1o1SnEtVjh3WVh3NGFzV2EzZm5DbXJseEw0cFc3V1cydzJKVm1qZ1pNX0NkSmV3bWVqQkwybFRHZlY5RG5qMGVvbEkyRUtPdXpfR01SdE8yVm1DQVNiRHMxSUFzZ19nSm9oRUhGUHdZd2pFdUdEQXVCbm1SMk1PSHkxSTZLS0tZX0dQMQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxNeWhRbTBZZUtBbC1hdGdRQlRDZHR1ell2T2Z3d2JKSVFlR2g2aUtVMkJIRi0zaDNBbmlieEFWTW55eHgyTTJTWnYzc0YzWVpjd3E4ZkRLUzRxbTZ3OVQ5SWFrTm5sOVdhSGliWHZxeS1mZE1iLTlTaE9tU09Xdk1vWGZTWi1OMml2dzV2UmdiOGJGVkRzVzVLckEzMjI1Ukg3NFJuY2d0NXdBNUF6NlQwNmRnOFpGOWQtdnF6Q0NiQ3ptb1BoWlRhQ3hVeFdONlo3aDlvZWQxb3pIZVU0MU9BaS1n?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -25023,6 +25083,18 @@
         "Armas e munições": [
           "pm apreende arma de fogo falsa e drogas em paulo afonso - policia militar da bahia - pmba",
           "pm apreende arma de fogo falsa e drogas em paulo afonso - policia militar da bahia - pmba"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPTlh5dm1TR1FtWjNWR25RZ0M0UGprMHJnLUtFUjY5ZjZ4MDhqQUg0Wk93VGQ4bXJCRk0yOTRwd1FHUERlbVNRWjl6d0Q4OEU4ZERrc1F1MjJ3YVBHQTc0OTFsRG1vUWNfV3FLVVBRWGozWk9oWEpkODBZS3pKZHNxVXk1TUJiZw?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pm prende tres homens e apreende drogas em sao marcos - policia militar da bahia - pmba"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -39716,6 +39788,22 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQWjFYNWQyWTVEQ3djZzYydmZUSmFRWFQzeGlvbC1OZ2t1a0dRTTQ1SG0xeU5ab2pQWkZzOE5lWmlKYWhLWnFoQjU0Nm5TNmROM3ZDQnJFLUF6OXM2WWlFM3dfcWhfX3k1MWhwUW1QS3BPNDhyOVdYeThBRldVNTBhaHd5M3RtSEI5?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pm apreende fuzil, municoes e drogas em vila de abrantes - policia militar da bahia - pmba"
+        ],
+        "Armas e munições": [
+          "pm apreende fuzil, municoes e drogas em vila de abrantes - policia militar da bahia - pmba"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNQ3dGUURvZDV6dS1YdldMYkh3Ynl3VFFEUHhyV2VGY0FwQ1h1dGtNRF94SEtzLW16c1AwV1JPNWJzRTFqNlFBOXhBWEJfM1poeGl5UVhSMnp1UWhDeUFYVVFHYmtHQm10VGNWZHRCYno4ZGZnQ2ZPT1RXTVJmTGExOEtNd0RCMnNpSWM5SlpFZGhZUQ?oc=5",
       "categorias_sugeridas": [
         "Armas e munições"
@@ -39755,6 +39843,22 @@
       "evidencias": {
         "Drogas e entorpecentes": [
           "mais de 6kg de drogas sao apreendidas pela pm em luis eduardo magalhaes - policia militar da bahia - pmba"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxORmFORTFnaGxTTlF4dXlFeFg5S1gtSHRuZXF0dGFidjNGcnhFakVNZkIycW93U0JQaGxiSWMtTFp6VXpxZEo5TUR5eWJfM0hPOFhIT04tRDQxbXF0VlYxRFV1QkZ5N1laWVloajJJS284Nno4aDdSa1ZsRHVuV2xzSkF4blVBZDZkdXd0M0t3?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia militar apreende uma espingarda e droga em sento se - policia militar da bahia - pmba"
+        ],
+        "Armas e munições": [
+          "policia militar apreende uma espingarda e droga em sento se - policia militar da bahia - pmba"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -56997,6 +57101,18 @@
         "Armas e munições": [
           "morte em confronto: 3 mortos, armas, carros e municoes apreendidas no sertao - alagoas 24 horas",
           "morte em confronto: 3 mortos, armas, carros e municoes apreendidas no sertao - alagoas 24 horas"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBmOHB5YnlabWZ6a21vRE9haFFOMEo5MEhmMmFqc3BVTXdOcjdsQ1Fqbkd6allsblZxZ0tWeTB5Q0tlWUU0cjVHTUExTFRKczAwYXI0SjluS195OEd5T3FUbmNUZ0pQTk1RSUE?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pm apreende drogas em candeias - policia militar da bahia - pmba"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -94499,6 +94615,22 @@
         "Armas e munições"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNbGctbVhRcjhIOWp1cWxtVC1mdGFUbHp6VUtHUXVPZmxHT2s5OE5INHItOEJYZmZLSHZJQnVEemEyUFFURTBDNnFTZ0xNNVdGTi1ONlkwRzFieWx4aVVYckNhRWNiUW9ESktFUDQweUFQeWdmN2lZVllqSGFWa3BlcXM4U0YwV0lIVVlkdF85Rmg5SGpBeWlDbV90amRPaVU?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Veículos"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "pm apreende arma e recupera dois veiculos roubados em lauro de freitas - policia militar da bahia - pmba"
+        ],
+        "Veículos": [
+          "pm apreende arma e recupera dois veiculos roubados em lauro de freitas - policia militar da bahia - pmba"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
