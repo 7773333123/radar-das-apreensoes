@@ -1,38 +1,38 @@
 {
-  "gerado_em_utc": "2026-10-15T03:43:28.099838+00:00",
+  "gerado_em_utc": "2026-10-15T04:42:33.835608+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "com_informacao_quantitativa": 374,
-    "materia_sem_informacao_quantitativa": 2457,
-    "pendente_verificacao_apreensao": 1283
+    "com_informacao_quantitativa": 375,
+    "materia_sem_informacao_quantitativa": 2460,
+    "pendente_verificacao_apreensao": 1284
   },
-  "materias_sem_informacao_quantitativa": 2457,
+  "materias_sem_informacao_quantitativa": 2460,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
   "noticias_multicategoria": 509,
-  "noticias_com_quantidades": 374,
-  "noticias_analisadas": 4114,
-  "fontes_distintas_informadas": 862,
+  "noticias_com_quantidades": 375,
+  "noticias_analisadas": 4119,
+  "fontes_distintas_informadas": 864,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 1717,
-    "Armas e munições": 1140,
+    "Drogas e entorpecentes": 1719,
+    "Armas e munições": 1141,
     "Contrabando e descaminho": 266,
     "Dinheiro e valores": 132,
     "Veículos": 36,
     "Medicamentos e produtos": 33,
-    "Crimes ambientais": 22,
+    "Crimes ambientais": 23,
     "Outras apreensões": 17,
     "Operações patrimoniais": 1
   },
   "noticias_por_uf_explicita": {
     "PA": 238,
-    "BA": 151,
+    "BA": 152,
     "PR": 71,
     "CE": 47,
     "SP": 43,
     "PI": 38,
     "MA": 37,
-    "RO": 29,
+    "RO": 30,
     "PB": 25,
     "PE": 25,
     "GO": 22,
@@ -113,7 +113,7 @@
     "2024-11": 6,
     "2024-12": 1,
     "2025-06": 1,
-    "2025-07": 8,
+    "2025-07": 9,
     "2025-08": 1,
     "2025-09": 3,
     "2025-10": 2,
@@ -125,7 +125,7 @@
     "2026-07": 34,
     "2026-08": 46,
     "2026-09": 33,
-    "2026-10": 1636
+    "2026-10": 1640
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -135,21 +135,21 @@
     "2022": 894,
     "2023": 29,
     "2024": 32,
-    "2025": 16,
-    "2026": 1773
+    "2025": 17,
+    "2026": 1777
   },
   "status_processamento": {
-    "classificacao_automatica": 2814,
-    "pendente_evidencia": 1283,
+    "classificacao_automatica": 2818,
+    "pendente_evidencia": 1284,
     "outras_apreensoes_a_revisar": 17
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 4058,
+    "aguardando_url_original": 4063,
     "lida": 56
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 1283,
-  "noticias_pendentes_revisao": 1283,
+  "noticias_sem_classificacao": 1284,
+  "noticias_pendentes_revisao": 1284,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 2,
   "leituras_pendentes": 0,
@@ -473,6 +473,19 @@
       "evidencias": {
         "Drogas e entorpecentes": [
           "boletim: policia rodoviaria de sp apreende quase 1 tonelada de maconha escondida em caminhao no interior do estado - www.agenciasp.sp.gov.br"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNUzkydy1GU0FKWEs2N3NuQ2VXWG5MTmdLTVFMdFZhS1FDUm15dlJXdWltS2h0NEc0SXE2dEFkOXdmajM4S1Fhd2tXWXhqWXhHdkdua19UVDZZWnB4WWh6c3RnWHBqZ1BKRXJVbk5DSXhJbmIwd3k1N3pmNmlBVFJfMUlLLS1NVnhDajQycUNiNHNHeFlITGlsN0NtU3A4Um9uQ1g2dVk4WmIzbGE2eGlTaFIwVlJfLXM?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia civil prende 20 suspeitos em operacao contra trafico de drogas no interior de sp - gazeta news guarulhos",
+          "policia civil prende 20 suspeitos em operacao contra trafico de drogas no interior de sp - gazeta news guarulhos"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -3040,6 +3053,19 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxQYm01X012elY4TGhTaG1FUHZuaEY4QmZESmFWcHUwSzd3bktUcmtzOWpaUFo4UndxNTNEb1RLRDhnVF9pUmw3eGxnZ0J4cWw5cFFiVVVMTXpGS2c1TE5DTVVJenlMb2poT1FBU0ZfN3dydnM3Und2S0tmYzhoTzJWaE1aV3JJc25jczllV25PcEw3OXdZZDhBTWNMY1lKOFBMekRWNzRScHNCR3duSmE1REFxMXAzUXpFaTNaWFZlTjRoWU5HY1Q3a0E3NHpDZUs1aWRIQ2MtaWV1YVdKUGFzM2lOblpWOUpLbmNyQ2RpTE5aMjln?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia militar registra duas ocorrencias de trafico de drogas e caso de violencia domestica em gaucha do norte - gaucha news",
+          "policia militar registra duas ocorrencias de trafico de drogas e caso de violencia domestica em gaucha do norte - gaucha news"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNcEdWYkFlN0pBekZfZDdQUzA1VjlnSzJCT2haR2doUWR2RW1CYmtwYkhQeHpyNWM5aHcyc2ZjUmJpWk9ZY2FpX1IwZ2tDM2hqSk5PQWxrSXRLM00zOFYzMHpVZXRjZjBGVXZXcXdHUGc5ajFaSXJFSzVhY19uRjhNNDJNX3BibTFaRDZpRA?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -3632,6 +3658,14 @@
       "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxPTlY4OUtGcWVaLXFnLWJ0dHRDejJfREwxSHlSMlBHem5SWjhlTWxiaUVpWmtsNVV2YnRLamw2N05yN2QxZ1FHSmxlclV1NHlfcVFjVkJHcXBWaHBObVBZNnhsaDQ4VXRDRG9lN3FXN01KUHpJOGFNLUlOTmZFNnJGN2xRQjdfUEpNZlhMLWhWbERmZDdmeTlxYlF2OEtiN3JaRDM1YkUtVk92M1FRemticV90cVNZMElfNDd1ejAzMER4Y095T3NnMWlaT1RxS21OY3Y4dFR2NUtkTk0?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQeExMczZveXRpbnZ5ZjNmMkFsbWJpV1Izc1FWbUhvakRFcVJ3djJmczJvOWpjemQxNXFDQkdqdjlXeENDWnl4WkhTUGp3dkc2b0oweVpwYnl6SG1CMzliNkN0alUxVTg1VXRGZkFRc0UzbFRSV3ljN21CRnRDV05zMmJNLWpHbzZ0SkVLczRjY0tXa1VEQVppajBUVHRLSXFwR3RTN3BXUHVoNnFnd0ZMTlZBdlpwOTVzd2hj?oc=5",
+      "categorias_sugeridas": [
+        "Crimes ambientais"
       ],
       "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
@@ -13892,6 +13926,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPUmE1aUJaZXotb3ZaZkUyUHRkM0xXZ2ZySFRwNFczcWxYUGFyVFFkV1RlQUVQQjNRbkRmY2hyemJ0UFR0STFSRnVRcEJ3WlhfMk5yR2ZfV3pFRHhEeHhyNUxuMjQzQ3MzQmRuS0NsRmVCQUFKTHA2RnZ2WV9wcF9zN2pyZFZiZzA2dmwzeEtJQldKR3RzRjhZLXU0RlZ1N1dZR0RfS1lxU3JfX2c?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNU2VNTlNFd1ZuZ2IyeC1OU2tiTC1rXzFYR2RYVXNFTFZTVE1PR3BVUWcxWlRoS0V4dFl3VWt6MGV4TjlGUlRLbnNSUFoza2FiX05qc3ZEYURhYkxWdjBQdVFxZENoOGZwZGJ6N3UxTkxCV3RiMUZlS0JldTV6Wkx2YTZDSDFoZ2ZSSGpkQTZxNk5ObVJxVmRHV0NzM2FfdGU5ZC1UNVZLX1Nhb0FKV3lQMm1qbkFDbVB3?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -19332,6 +19374,19 @@
       "evidencias": {
         "Drogas e entorpecentes": [
           "pm apreende drogas em teixeira de freitas - policia militar da bahia - pmba"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9zY2NmS0J3clFZUVVKdmFEWE9KSFJ3cEJCVVQ5MHBDVmlJR09lZEJjT3ZMOUxMaVRyMWlDcHRLVVdBMzIzMVlZY3JrLVNJZGIzc0FveDhOSVQ1VE9ZR0E1R3Fhd014MXJrbUl4ckdLbTZzT0YxbFpUN2dsYlNIQQ?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "pm apreende arma de fogo em teixeira de freitas - policia militar da bahia - pmba",
+          "pm apreende arma de fogo em teixeira de freitas - policia militar da bahia - pmba"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -45358,7 +45413,7 @@
     }
   ],
   "quantificacao": {
-    "itens_extraidos": 406,
+    "itens_extraidos": 407,
     "totais_preliminares": [
       {
         "categoria": "Armas e munições",
@@ -45395,6 +45450,12 @@
         "material": "Maços de cigarros",
         "unidade": "unidades",
         "quantidade": 10248000.0
+      },
+      {
+        "categoria": "Crimes ambientais",
+        "material": "Madeira",
+        "unidade": "m³",
+        "quantidade": 17.0
       },
       {
         "categoria": "Crimes ambientais",
