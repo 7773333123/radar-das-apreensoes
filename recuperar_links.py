@@ -123,6 +123,8 @@ def main():
         elif isinstance(url,str) and 'news.google.com/' in url:
             pending.append((article,url))
     pending.sort(key=lambda x: (x[0].get('url_original_status') not in ('aguardando_resolucao',None,''), x[0].get('url_original_status','')))
+    # Alterna as tentativas ao longo do acervo para não insistir sempre nas mesmas URLs.
+    pending.sort(key=lambda x: (x[0].get('url_original_status') not in ('aguardando_resolucao', None, ''), str(x[0].get('url_original_status', ''))))
     batch=pending[:max(0,args.limite)]
     print(f'Acervo: {len(news)}; links originais: {existing}; pendentes: {len(pending)}; tentativas: {len(batch)}', flush=True)
     successes=0; errors=Counter()
