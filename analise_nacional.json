@@ -1,23 +1,23 @@
 {
-  "gerado_em_utc": "2026-10-16T08:45:23.130032+00:00",
+  "gerado_em_utc": "2026-10-16T09:42:42.234174+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "materia_sem_informacao_quantitativa": 6423,
-    "pendente_verificacao_apreensao": 3962,
-    "com_informacao_quantitativa": 796
+    "materia_sem_informacao_quantitativa": 6424,
+    "pendente_verificacao_apreensao": 3963,
+    "com_informacao_quantitativa": 797
   },
-  "materias_sem_informacao_quantitativa": 6423,
+  "materias_sem_informacao_quantitativa": 6424,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
-  "noticias_multicategoria": 1253,
-  "noticias_com_quantidades": 796,
-  "noticias_analisadas": 11181,
-  "fontes_distintas_informadas": 1376,
+  "noticias_multicategoria": 1254,
+  "noticias_com_quantidades": 797,
+  "noticias_analisadas": 11184,
+  "fontes_distintas_informadas": 1378,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 4212,
+    "Drogas e entorpecentes": 4213,
     "Armas e munições": 2967,
-    "Contrabando e descaminho": 649,
-    "Dinheiro e valores": 364,
+    "Contrabando e descaminho": 650,
+    "Dinheiro e valores": 365,
     "Veículos": 115,
     "Medicamentos e produtos": 97,
     "Crimes ambientais": 59,
@@ -136,7 +136,7 @@
     "2026-07": 34,
     "2026-08": 47,
     "2026-09": 34,
-    "2026-10": 2290
+    "2026-10": 2293
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -147,20 +147,20 @@
     "2023": 1786,
     "2024": 2177,
     "2025": 2522,
-    "2026": 2430
+    "2026": 2433
   },
   "status_processamento": {
-    "classificacao_automatica": 7186,
-    "pendente_evidencia": 3962,
+    "classificacao_automatica": 7188,
+    "pendente_evidencia": 3963,
     "outras_apreensoes_a_revisar": 33
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 11127,
+    "aguardando_url_original": 11130,
     "lida": 54
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 3962,
-  "noticias_pendentes_revisao": 3962,
+  "noticias_sem_classificacao": 3963,
+  "noticias_pendentes_revisao": 3963,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
@@ -970,6 +970,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOb2dieVlrdnRpTVRCbUNhTWJWanRTV1Iza2E5MWZ6WnZoX2d6S0xULXRyWUdpR3VRd2hxSzJVT21Oa3hKNkR4X09xYmp5VndNM2dST3FZVHJXMzZ1WmNIZlI2YlRRRGo5VGEtSGQ4MzgwLXJuSi1vOV9LN3h5U0xzNVVLc0Z5eGtCMTVCSjVoUlB1ZDVEUzRLaHp6ZFJ5VllnQ2pfZnI5Q2Rtdw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxPLTZXYW14bTA4Z3E4RXJRSHJCZWl2SWxqSjFMSlhuYWxtb0MzdHRfODhGdG8wZzFRb0NYRU1zejlpSHlQQjc0cUxtWnFxV1R4TWhSOTEwVDY5TElRRW5BYllzSGp3WTNSLThmSTJfUjVLemlBR3drYmVqLUtOY0hNV244UW1BeExtbkk2dG5LbUUwaXdzYV93dXNYY3kwb3pucm51NlpkVlhBQTZFOEduYzNWM2g1dHVqcHB6YU9hRXJQZFBmMVhuWDJKbkdyZnpDbi1PelZEZw?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -6496,6 +6504,19 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNZ0ZPUW4taHN5LUZ3cUMyUEJGS1pYLWU2cUREYTVJM0FFN2xXN0ZsSlkyclp6OTBWckhCSmZjWXlON0RsNkp0dWV4dkxGajk1dm5GRzR6cUdHSXNDN0k2c2s0UU5EaVVJaFYzVXBUV3B5VXRJN1RDWkZRMHliY09CYjZueDNDQkIxWWV0aEZfU3V2RjZNd0RHcTNHdWE5VENYTnFF?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "forca tatica apreende adolescente com tablete e porcoes de maconha em mt - primeira hora",
+          "forca tatica apreende adolescente com tablete e porcoes de maconha em mt - primeira hora"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOMFNYVC0zYjZJaDlYczZmSDF3SXhlZGdTRUg4Q0tBU18yZWRWOHhpZm1TTnNYY1I4Z0RjQzlsQUdlTW1ITTJjYm9iNzZTZFFPajN4SVpLdkhlclQ0R19QNG8yWDFZbk1wOWtiMDFoSTNOeEo3UzNxWkFKUG0tRWJVXw?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -6962,6 +6983,19 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxPcGZnbWFvUWlMV3d0cVdWUWVJSlBSc0R5YldNMGZxTXdSUUhOYmFSTWJaSGdqZXpNbFRnYWs1bVJvekhkUGdDQjJJbjV0V0hHTk1uX2Y4NTNGSm0xd1JXb09WNTVseWp4Y3RZTlJyaV9SVmxFWXRhRHM2WXVubEJQRDB4NXFMX2NRRDhsVzB0SlZKVWltdmJObEFtaHQ3MlZjem5HSjBiVnh1d2V4a21LamFSdk15NkJEUlN0ZTl2Y0RzNktkeUJwWF92YklmZWx4NEk1VTh1RVFoYkVwNDY5QThjV25jSmNuUUpnNUtQSk9nU01ZNjNJ?oc=5",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho",
+        "Dinheiro e valores"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "apreende r$ 126 mil em dinheiro e us$ 4,5 mil durante operacao contra contrabando em uberaba - portal imbiara"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -119520,7 +119554,7 @@
     }
   ],
   "quantificacao": {
-    "itens_extraidos": 839,
+    "itens_extraidos": 840,
     "totais_preliminares": [
       {
         "categoria": "Armas e munições",
@@ -119574,7 +119608,7 @@
         "categoria": "Dinheiro e valores",
         "material": "Dinheiro em reais",
         "unidade": "BRL",
-        "quantidade": 23446691639.7
+        "quantidade": 23446817639.7
       },
       {
         "categoria": "Drogas e entorpecentes",
