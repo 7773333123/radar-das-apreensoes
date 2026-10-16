@@ -1,26 +1,26 @@
 {
-  "gerado_em_utc": "2026-10-16T06:53:13.948758+00:00",
+  "gerado_em_utc": "2026-10-16T07:46:53.424920+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "pendente_verificacao_apreensao": 3952,
-    "materia_sem_informacao_quantitativa": 6418,
-    "com_informacao_quantitativa": 794
+    "materia_sem_informacao_quantitativa": 6420,
+    "pendente_verificacao_apreensao": 3957,
+    "com_informacao_quantitativa": 796
   },
-  "materias_sem_informacao_quantitativa": 6418,
+  "materias_sem_informacao_quantitativa": 6420,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
   "noticias_multicategoria": 1252,
-  "noticias_com_quantidades": 794,
-  "noticias_analisadas": 11164,
-  "fontes_distintas_informadas": 1373,
+  "noticias_com_quantidades": 796,
+  "noticias_analisadas": 11173,
+  "fontes_distintas_informadas": 1374,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 4209,
-    "Armas e munições": 2964,
+    "Drogas e entorpecentes": 4210,
+    "Armas e munições": 2966,
     "Contrabando e descaminho": 649,
     "Dinheiro e valores": 364,
     "Veículos": 115,
     "Medicamentos e produtos": 97,
-    "Crimes ambientais": 58,
+    "Crimes ambientais": 59,
     "Operações patrimoniais": 38,
     "Outras apreensões": 32
   },
@@ -36,10 +36,10 @@
     "PE": 68,
     "TO": 66,
     "GO": 54,
-    "RO": 52,
+    "RO": 54,
     "PB": 46,
     "AL": 44,
-    "SC": 40,
+    "SC": 41,
     "MG": 40,
     "RJ": 34,
     "AC": 30,
@@ -136,7 +136,7 @@
     "2026-07": 34,
     "2026-08": 47,
     "2026-09": 34,
-    "2026-10": 2273
+    "2026-10": 2282
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -147,25 +147,46 @@
     "2023": 1786,
     "2024": 2177,
     "2025": 2522,
-    "2026": 2413
+    "2026": 2422
   },
   "status_processamento": {
-    "pendente_evidencia": 3952,
-    "classificacao_automatica": 7180,
+    "classificacao_automatica": 7184,
+    "pendente_evidencia": 3957,
     "outras_apreensoes_a_revisar": 32
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 11110,
+    "aguardando_url_original": 11119,
     "lida": 54
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 3952,
-  "noticias_pendentes_revisao": 3952,
+  "noticias_sem_classificacao": 3957,
+  "noticias_pendentes_revisao": 3957,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
   "resultados_leituras_externas": {},
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQSkU1OGpsSUdwNXlXdFd2V1Z3d0NkeXRPNmhnNlVHMVdXcFA1R3hiSDczQlMxVWdYZ2xhWGNJdER2VncyOWVZZm45UEN6cmZJLW40MEJiR1hNWXByejQ2SnZ3SE9kb0dvSk5CTjRfOWNlRzdZeXRlS3dYVlQtVUlLRWdPM3BiX2RPVE1BTmJnMFBOZmNMakVYYWMtMA?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "pcpr apreende armas e municoes com suspeito em curitiba - agora litoral",
+          "pcpr apreende armas e municoes com suspeito em curitiba - agora litoral"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMilgJBVV95cUxPOFZUdUN4UGI2UWlKaFV1SHJiajlSaTRJRUdaQzNHQ3Jabk51TzhKU2g2b0d3OWdMMzBRMjF6Y3hVS1pVTWRhVUpaM3hpaUdSVTFDdVFoVGtLS2drbTRCdFdvbk5HY041QzVHTnQ3YWF6c1ZNNEplTE5nU1prSnN3OUJlaUw0bVB0MUg3Wk5XRVFxOHlROWIzaDZCd29KdHd6MVp6WWY1Y0ZpbkkydnFDM1R4WHdJTjR4N2xqUEtsS1cxRlR1R0ZIQVo5eUF6aHNWU2N5dGpCMHpqX0tISkIxZ0MtSFdLTEhiWWRIZkVqY2VkTm56Znd4Z29hQTFMM3lrenNRVS1Xc0JrN2dKc2wxdzUxSlFKd9IBpAJBVV95cUxQR2E4LWR6LUxfeFBSNDNLS1libzdrX0FReWFRZnh6dU9hSXpZdnJvczRrWE9WNGctSFFZMi1NaHMxcVkwMWtjeDJYOEhFSzFTYU0wS1FaNWQ2Rl9pWHhQYmtZZ1JoNFRSOTdDLWhNTGpwclVHLXJWQURzU1locmQ0MXJTckk3Y3FqRmx0MHJzMEVYWlllN2NFUUUxTzhnSk9mS2lGQ2JjSDRfandYbldrcGpuZ185WURYazBndjR1U0RpaHZDSDFkaUVMcU9vT01PZElCMjF2VzZjNmdwaGtQYUkwWFpldjJnVTJfLS1fSDgtYmo1MU95TDRtSGxNcUJLejRubWRWTVFReHJVNkRMT1ozS1V4bktwUlA1V29heS1tOU9I?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOQ2E2U005YjZfb3FLUmNLZExJLWZiVTJUZmpVZXpGZXRYbHZHdzk3TWl1SlBPTXk4c21KUy1ENEFkU1FJMDNUclgwZjNDZXdXMFRfZ2dWaTV4RnBqNFMyTkZBclowWnJxNTlBWHJtSGJsS29ERUZIOUdycjE2UVM0eTBXajdaR2xiTDJKc0gycFFFbnRkdWZwaHdPTnVCUUhHVGJ3NEdWZEdZY1p1MVlNWE1oLWYxb09aTklUMFI2WGl5RG5zcVZobjRwWQ?oc=5",
       "categorias_sugeridas": [
@@ -186,6 +207,14 @@
       "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPSlQzcFZqeXhSVUxMRnFLWWtSZkpBV0xRS3RWRGpkQWhid0dSblpJN3N2c0VPYkk3dmNhWDBWa3VXaFQtaTM2U1NObXdqY1hsblBmY3ZZOUZWUHpHeTZwSDBuZmItRk1IV2hFZ0FnWVpBYmItNzRKM0ZUb3Q5d3M5RTFaU1l0VVB6OW9wWEIycHJKTTBIT3VGaVhEZjRVR21KYUdjbkVab1NRcjRTODBMWFZ4cGViT0wybVNKclg3TWctdHN1QVE?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNYWctdm5qUURzbnp0aFdhbngwLXJjM1NjQ1NHeXRkRk1rS1p2aE1DV1NnMk9HNUlXNXVqQmY3UGNIMVlIeEZsTW9JU3J0aGczLXdzZHdIcG5PaDQ2bWZXaFhwR0diVFJlaDhTM2t6V2lVcXM1Mk10dnhOMlBZQ1hPNlFuYklEQmxrM3VTNDVQRXRnY0ZXMlVhbS01WVBWSHNrRUdGcmhYcWJKSzM5TDMxbXlBTUZadXdxQ3JjemlWYzRTOFhCYmo3V2tLRQ?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
@@ -2913,6 +2942,14 @@
           "policia civil descobre fabrica de drogas e apreende mais de 83 kg de entorpecentes em campinas - tododia"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNTHlXQmFkZzY3MmI0Z3FUb253bEllZ1hUX3NhUk1lWjZBekZXbXNMR3FNUlBfQVMzd0t6djhvcEZldWxScHFlcjVkSXlpQTVibnAtaWNmbEpRTmdhMVZyUnpXUzV1NGxSYmV2Q2k5T241aVZOV2VlV1J1RURUMXlzeU02eGZWUFl2X2NUM2RNMnJMVnZLa1hySDdyS0xWdTJwZF9DMDRVcU1JZ0RpaGE2Z1QzdldBVGM?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -11962,6 +11999,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOcXNueS1JdnZ6SE5jdm1vWGRrN0Y2eFlyQ0NHalhmSUltUlhWMEZ4NDhHREFRaWhQbm9yY1lWbUhWQThOd2lZdlRMU3ZqMk5taUpfVTdfNEpmaFB0d0dhZzJ3b3pZWmNyeEc1Q095TjMzbEVlaFpNX0FSaTJmcTJvY1hUdERfbXV3eWJDbDNUaVcxRmpyZzkycU5ud1BVTlJUZWc?oc=5",
+      "categorias_sugeridas": [
+        "Crimes ambientais"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQWTZoZGVLa1I1a2dWcU03MC05TThIVW1BZ0trQ002NGc1TGxQc3Fja2FZNFpLbE5GV0tjMzVfcHU4VFg5cHBQSDQwZGtGbzNwRW85WlNTNWd5SWR1azNzVG1RZzVhVEhqRFZabWpwZUgwNnNFS2VYZndYeDB3ODdLekNKZlZlZW9FQXVTa3JYNGV5bkJKaEdXUmJMZkdFQVRET2czRWY2dUdsUzB5TllyMGRtNkhtQQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -13234,6 +13279,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBQMnYxX0QzTjlYd1ZfUWJQcXpJcEcxNTFXTk5xd3EtUVVKNS1PZ1RLOFJRNnBJa0hfd251WTh1bWI2OGU2enIyUnNUVDlRcnFoX3pmT0QzbFFoTUhRTFYtR2FSOVRRSXJZNHI5bFFfUGVtcjNzVFBj?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9WN3h4eDNOVTBzLWhaeFJrWVh6SkViREZUNVAtRndNX3M2QlpySGJvRDVoTUZhUDJlNHRiTTgteXZ1aTdjbmNvN3U0VlJtbWhKQkZTSVRzVHdOM1J2Wk1fTHZrQ3NFQmF4V1I0bFFMMHd2V2pwbkZ3?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -17172,6 +17225,18 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPSmdJWHNfQlo3aDVrSmxjc1Q1NE9xOFZHMVZfaVU5Sk95dlQzN1ZiakVxWTN1bUhSbVN4ejhnbi04aDdPaElIN052OWlYMkNsUUppRjg5dEVzajg5WjZEMmI1QVdGTTJoeExYLVFuZ2N1REdPZHRxNjh2MHMwRWR2d0lOYzNEekNLU1BmTUhhVlRyOW50T2NMTGc2Ull0VlFXRlRXMWlVTHBKOFg1Zjl3?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "ficco/es e ficco/ro apreendem 41,5 kg de cocaina - rondonia dinamica"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNbzAwNzg5S0NsX3Qwc3dGZVJGSWZlRktKQVFGc2V1VzQ5X0p3Z05KSmlNeWZPdnN3Rk9FUWM4WG1mX25iTEdjOEtsb2hRQ2w5N0pVUXNMTWFLT1FuVmgtRWtCLUlGaVZ3dnJ2TEJJNWdpZEJybkZVQTI1RmhrVUs4aWtLZk1YYkxLOEx4d0RwampHeDlVYmZTTnpIQXFIY0l6Yk5uTUQxYzVfcEp6Y0JIaFRDMWY5a3RLTGotbkZKc2k3LWIzZWZWb1UyMGRseDQ?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes",
@@ -18641,6 +18706,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPSi0wNi1vZlhPd2ZNU3BFcXRyV1YzS1liV2QyUl9taHFsUllLcXZYMWxvMWV6c0ZvNDdQbW1QZG45dDBrQmsyYWkxMThzZ3pIN3YtcmdSeU9FMmZ5Y3V3YnhvaXRqSW5yclBROENoSTNwNXR6RVBuV3l5SjU0QXZFS0dGS0NUZTZHZkZIZkpISXJxUXhoUFBybA?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQd0NlLTR3LTJzRHhnYVk4WWMwX1p4TG9HeENGWWFfMkctM0l1RWRNcFpXdXZyVUlpT21TU0E4N3ktTko3T2c2Q0lhalQ0amZXZ0hYa2lNSHg5Umhic2NUYUp0NTM4eV9LTG54aEV5Vmw4OFhPdWJXUlc0RzhLSGdiRmlmMUM1WktLSzdJbkppdHRvX0Y5MG5aUjFiWi1fcWFQR2Fha3dVZlNJbzhSb1dBQTRBMEJKQQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -18929,6 +19002,14 @@
           "dez suspeitos de envolvimento com o trafico de drogas sao alvos de operacao no litoral do piaui - g1"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQZHpmYnZzNWxHX28tdWFjYjZFZ2w5RlVTc3k2ajJZaEJGdE9FbkxCa0VrRDdNVk1MOEhCRVF6U0t5MlcwQmJDc3pHTHFLcWp1d0FDT2VNZjgxMkg5T2gwS2dKWDNSVlpnTjVGR0JWYzZXd1JXSFp6N2NQeXdQbF9kSDRTd2RKbHJ3SjhyblFQWXVmU2FMWWFsRm1raHMxdHNGaE5oZ0dJRzlhQzFlc1I0?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -119363,7 +119444,7 @@
     }
   ],
   "quantificacao": {
-    "itens_extraidos": 837,
+    "itens_extraidos": 839,
     "totais_preliminares": [
       {
         "categoria": "Armas e munições",
@@ -119405,7 +119486,7 @@
         "categoria": "Crimes ambientais",
         "material": "Madeira",
         "unidade": "m³",
-        "quantidade": 17.0
+        "quantidade": 28.35
       },
       {
         "categoria": "Crimes ambientais",
@@ -119423,7 +119504,7 @@
         "categoria": "Drogas e entorpecentes",
         "material": "Cocaína",
         "unidade": "kg",
-        "quantidade": 386448.3747
+        "quantidade": 386489.8747
       },
       {
         "categoria": "Drogas e entorpecentes",
