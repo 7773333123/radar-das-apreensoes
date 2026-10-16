@@ -1,21 +1,21 @@
 {
-  "gerado_em_utc": "2026-10-16T10:21:17.961741+00:00",
+  "gerado_em_utc": "2026-10-16T10:29:05.350656+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "pendente_verificacao_apreensao": 3973,
-    "materia_sem_informacao_quantitativa": 6433,
-    "com_informacao_quantitativa": 797
+    "materia_sem_informacao_quantitativa": 6436,
+    "pendente_verificacao_apreensao": 3974,
+    "com_informacao_quantitativa": 798
   },
-  "materias_sem_informacao_quantitativa": 6433,
+  "materias_sem_informacao_quantitativa": 6436,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
   "noticias_multicategoria": 1256,
-  "noticias_com_quantidades": 797,
-  "noticias_analisadas": 11203,
+  "noticias_com_quantidades": 798,
+  "noticias_analisadas": 11208,
   "fontes_distintas_informadas": 1378,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 4219,
-    "Armas e munições": 2972,
+    "Drogas e entorpecentes": 4222,
+    "Armas e munições": 2973,
     "Contrabando e descaminho": 650,
     "Dinheiro e valores": 365,
     "Veículos": 115,
@@ -25,8 +25,8 @@
     "Outras apreensões": 33
   },
   "noticias_por_uf_explicita": {
-    "PA": 748,
-    "BA": 312,
+    "PA": 749,
+    "BA": 313,
     "PR": 162,
     "SP": 130,
     "PI": 106,
@@ -136,7 +136,7 @@
     "2026-07": 34,
     "2026-08": 47,
     "2026-09": 34,
-    "2026-10": 2306
+    "2026-10": 2311
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -147,25 +147,49 @@
     "2023": 1788,
     "2024": 2179,
     "2025": 2523,
-    "2026": 2447
+    "2026": 2452
   },
   "status_processamento": {
-    "pendente_evidencia": 3973,
-    "classificacao_automatica": 7197,
+    "classificacao_automatica": 7201,
+    "pendente_evidencia": 3974,
     "outras_apreensoes_a_revisar": 33
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 11149,
+    "aguardando_url_original": 11154,
     "lida": 54
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 3973,
-  "noticias_pendentes_revisao": 3973,
+  "noticias_sem_classificacao": 3974,
+  "noticias_pendentes_revisao": 3974,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
   "resultados_leituras_externas": {},
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOc3VPWVgyM1FXYmZtNlk1ZXo5cGlLOWtXMnJBSDZPel9LR2hnTlptbGVLS3Y5eHZMMkJvSXFtV3VodU1YZm15QlZpYkJuUDQ3TmpzUE1PbFRnSU4xMlZiMUdtUkVqbklhbTRrQks2QzQtN3B6STZ5UXB5ckhKN2hteTItZ1pEZEFVT0ZLUWQ2a3cybUFkc3JjVG1aeU9tTkVMN0pSemFYUFRXUUE?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "operacao contra trafico de armas mobiliza 80 agentes no es - jornal es hoje"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQM1p4Q1JhUHpaeXZqZ2liel82bGdzZlNHY1YwdkZfdG0tcEM2ZEhEWGMwOUZscFQxMWhDX2ZvNDdtWjg3Q1l1ZVB5Y3UyTjgzWGx3TzRpVXR1QTJoM29MRW9VNFFDOFByd0NETGQ4Z19qblAyOVoxR003bmRXZlNDMGxkTW5oaS1EaVVsNHN3V3lJUUp2aXlqbDM1VU96dUxoZVVXNi1UM1E0UkozOEZaMFZ4RTFTZHM1NlpJUzBVMjh1V1NG?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia apreende 1kg de substancia semelhante a cocaina em micro-onibus em senhor do bonfim (ba) - edenevaldo alves"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNRF9fTG1jazBxLTJxeDdXMnJXQS1pTVg0b01YNGFFQmljQmUzRGVxM3BqTHpDYlJGSDFBWktKYnVodHpVeGEyS0NiakdMRVRtYlA5Y09PZG1QZVJ5QVRXOWNPblBfdW1CTHFuVENJc0ZxSGt5ZmQ2VEhWVDdYUld6RXZsTEh5cDlFOGpXQkd6Nk5WMEJtQVZVbWFwb3R0bE11eGZ3cG9hMzFfQ2JvNVpYc2J0OUN1ODg?oc=5",
       "categorias_sugeridas": [
@@ -1032,6 +1056,19 @@
       "evidencias": {
         "Drogas e entorpecentes": [
           "pmce realiza prisao e apreende mais de 5 kg de drogas durante abordagem em campos sales - rede brasil de televisao"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxQdVpBWU5Db1Q4c2c4XzM2VDUtd3dZdWlLY0h1VTFTbEtzdXNHMmZYSER2MTBQdVJ6UTNnckk0NXNqRFFVNHIwVDBZR1ZrWTByb0FrZnFZT1c1QlNRQzRfZVA0QVo0VGVrNHdYLXF0bUdyaFFRRmRhTnIwaVdaRDFwN3NaRDZFd2hVdlNyTk1XNkEwWGxrNllCLVAzWk0xNFQtTEtwcllrT2Z5cGRualh6NldUVVpNSHNjV19QZC1sRXJRUkJMMUdoTkplWnRKaHV6UTFnVk1KbWNFUU9maVJHRWxxbDN3LV9oMlE3ZnhDakfSAfABQVVfeXFMUHVaQVlOQ29UOHNnOF8zNlQ1LXd3WXVpS2NIdVUxU2xLc3VzRzJmWEhEdjEwUHVSelEzZ3JJNDVzakRRVTRyMFQwWUdWa1kwcm9Ba2ZxWU9XNUJTUUM0X2VQNEFaNFRlazR3WC1xdG1HcmhRUUZkYU5yMGlXWkQxcDdzWkQ2RXdoVXZTck5NVzZBMFhsazZZQi1QM1pNMTRULUxLcHJZa09meXBkbmpYejZXVFVaTUhzY1dfUGQtbEVyUVJCTDFHaE5KZVp0Smh1elExZ1ZNSm1jRVFPZmlSR0VscWwzdy1faDJRN2Z4Q2pH?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "mulher monitorada por tornozeleira eletronica e presa por trafico de drogas em curvelo - g1",
+          "mulher monitorada por tornozeleira eletronica e presa por trafico de drogas em curvelo - g1"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -5313,6 +5350,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxORDl1YmstOFBkQzBDcmdzYVNRMmxPZndkYmNDQ3BmekpzQkQxdDVYUFVpU3ZaOEJBdEk1MS1YUEhLRE5Bd1BvWUZNX1ZabDY0d3lNcnByRDlJNGxXVU9SZkd2WF9jUGxrbnlWSXlDY055QUlIOThGRjVqTTcwYlJQNEV3TVJyb3JaR1EwR2ZlU1RNYWlUM25Gcm8xZ3FDYWps?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPSWRJZ2VPekZEV0phSFBxakZiQU5EMEhWUVliM2htdXlyQTkzUFU0b0VnWDJTa3pCeXdpTl9kWDAwSHR2c3N6TjJERnpiNDJNd1FNTk5aZmNLMHdGMEV4OVhFdkloWXhyaFctczc4LVF0d1haRlNJTzRJdnhyeV9PNF9GaVBwcU9vN0hzcHhDd3pVZWhvNUI3VUJtZHR1S1hXbE9ZTmZpZzI2dndQOUE?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -18251,6 +18296,18 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQNFVXa0VBdjJ0MmNMZVFERkZLM25hWHZrcEtaeTUyaE1LMVY2UkxGendKWS0zTGdxd2FJVGRJS0JLQjZyRHgwd0xobF9KSWhSanRncEVtSHd0SkFFMjhpdHE0dDlZMjZIdjRaX0VqRFNfOHprUk10VXlqdUViSjVxV0FuM2dWYjJQOFZ4dHF6OWNzVFJWODVrMnhDbEg0ckZqMGE4UFNkQmZhMkx2OXI0?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "dupla e presa na serra com mais de 41 kg de cocaina em motor de caminhao - a gazeta"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -119748,7 +119805,7 @@
     }
   ],
   "quantificacao": {
-    "itens_extraidos": 840,
+    "itens_extraidos": 841,
     "totais_preliminares": [
       {
         "categoria": "Armas e munições",
@@ -119808,7 +119865,7 @@
         "categoria": "Drogas e entorpecentes",
         "material": "Cocaína",
         "unidade": "kg",
-        "quantidade": 386489.8747
+        "quantidade": 386530.8747
       },
       {
         "categoria": "Drogas e entorpecentes",
