@@ -1,21 +1,21 @@
 {
-  "gerado_em_utc": "2026-10-16T10:29:05.350656+00:00",
+  "gerado_em_utc": "2026-10-16T10:36:07.099436+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "materia_sem_informacao_quantitativa": 6436,
-    "pendente_verificacao_apreensao": 3974,
+    "materia_sem_informacao_quantitativa": 6440,
+    "pendente_verificacao_apreensao": 3975,
     "com_informacao_quantitativa": 798
   },
-  "materias_sem_informacao_quantitativa": 6436,
+  "materias_sem_informacao_quantitativa": 6440,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
-  "noticias_multicategoria": 1256,
+  "noticias_multicategoria": 1257,
   "noticias_com_quantidades": 798,
-  "noticias_analisadas": 11208,
-  "fontes_distintas_informadas": 1378,
+  "noticias_analisadas": 11213,
+  "fontes_distintas_informadas": 1379,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 4222,
-    "Armas e munições": 2973,
+    "Drogas e entorpecentes": 4226,
+    "Armas e munições": 2974,
     "Contrabando e descaminho": 650,
     "Dinheiro e valores": 365,
     "Veículos": 115,
@@ -25,7 +25,7 @@
     "Outras apreensões": 33
   },
   "noticias_por_uf_explicita": {
-    "PA": 749,
+    "PA": 750,
     "BA": 313,
     "PR": 162,
     "SP": 130,
@@ -136,7 +136,7 @@
     "2026-07": 34,
     "2026-08": 47,
     "2026-09": 34,
-    "2026-10": 2311
+    "2026-10": 2316
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -147,25 +147,38 @@
     "2023": 1788,
     "2024": 2179,
     "2025": 2523,
-    "2026": 2452
+    "2026": 2457
   },
   "status_processamento": {
-    "classificacao_automatica": 7201,
-    "pendente_evidencia": 3974,
+    "classificacao_automatica": 7205,
+    "pendente_evidencia": 3975,
     "outras_apreensoes_a_revisar": 33
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 11154,
+    "aguardando_url_original": 11159,
     "lida": 54
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 3974,
-  "noticias_pendentes_revisao": 3974,
+  "noticias_sem_classificacao": 3975,
+  "noticias_pendentes_revisao": 3975,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
   "resultados_leituras_externas": {},
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQVlJjeEkzajFEUFZZelJLSFJOSUc5S1BRT0xmcVZ2T25WOGtmZTBnY1kzc2dQdkJaeVZtNWhiWGJZTVpjM2tpU2Z2X2prbklOd0RGb2E1b0dzSFFscUJCLXluVzdBYnppRWJnOGYxdzJGTGJfRlpHTGtoTU03RDdxXy1sQ1h2bGN2RHk5YndpSVQzYUhiQzBBbFUxcUt3V21HbDV4dVJhaw?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "romu apreende adolescente por trafico de drogas com 475 porcoes em cosmopolis - policial padrao",
+          "romu apreende adolescente por trafico de drogas com 475 porcoes em cosmopolis - policial padrao"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOc3VPWVgyM1FXYmZtNlk1ZXo5cGlLOWtXMnJBSDZPel9LR2hnTlptbGVLS3Y5eHZMMkJvSXFtV3VodU1YZm15QlZpYkJuUDQ3TmpzUE1PbFRnSU4xMlZiMUdtUkVqbklhbTRrQks2QzQtN3B6STZ5UXB5ckhKN2hteTItZ1pEZEFVT0ZLUWQ2a3cybUFkc3JjVG1aeU9tTkVMN0pSemFYUFRXUUE?oc=5",
       "categorias_sugeridas": [
@@ -186,6 +199,18 @@
       "evidencias": {
         "Drogas e entorpecentes": [
           "policia apreende 1kg de substancia semelhante a cocaina em micro-onibus em senhor do bonfim (ba) - edenevaldo alves"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBSZUljekhyNXVDT1hxSUhTdjRvNHZFcHhWSDdlME1RMi0tcDZIdE9aUlRubWhVS2hlb0NXQmp0V1QtX0xsM3dLUVh6WkstQUNOT0VpRkhIeWowTG1zS0p4dlRhUUtPODNsbHNUeHlTNWVpVkNlUnY3ag?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia apreende submetralhadora e drogas enterradas na mata do cuia - clickpb"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -1644,6 +1669,19 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPS2dPc3hhR0VrUnJWc0N2b1dmWHRjUUk2QXdmQmROb0JPeTFpazZqQzFSeE5ES0RONGVoTkJlcXV1alZpNnBSa1FYSVNDZGlhWXZpMEJSVlZmX1FVbG9MSVc3TWVGejFrd1J2YTJaQ0FJNmt6MjN3eFQ4WGx3OHJFY1pieGNaNy1UaW9hQ1o0QXFfd1B5MjJWU0FrdkRFcnBsWEpIZkFieFFmVTNsVktyYUZ1QlVZMFlydHpBajBlUlgwN1R4SUxYbDA3Y3c3UdIB0wFBVV95cUxNVE4zTUx0enc3UmVZcHlDNGZsODBpOHZodEdvSTNwWHVxcGE3dWJaVFpNVWdsV2ZJeVhSRHVMTWhyZ09lcktzWERxMko4QkdpU1R5V3hIalpLNXViak1weFVoc0NHMU56LTNaNWQxQlJTeHRMUTVBVFg1bG1jbDNEWkxKNEFWV3ZwOS1LUUFyWVFscjYzSlRRTmZaX0ZXa0xGTzdjOVJPSVpiNGVjZEVHWnByUmV2YTNsZ0xPelNqNXlzX3RNVFRsQkhselYtb3FWbkU4?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pm prende suspeito de trafico de drogas em baixa grande do ribeiro - viagora",
+          "pm prende suspeito de trafico de drogas em baixa grande do ribeiro - viagora"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOTTVoM1BGVGJLZHUzNk5LSTFSSVc2RFBDZFlCbjc4VEJHRW13QjlSLVpPTU8zQWt5Y05jNTl1TGlwVWpPZXdYNXNreFQzMU1zZHo5TzJ1ajZVX1VSSDlTclpocnFBWGtrMlltNVJqLUJqWVZwT3oyaEEtd1BBLVhHdXNhN1JFWDBKeVM2UWFZVlVfR1VpTmU5SHVkRko5b2x5bVZCUU9n?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -2637,6 +2675,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMixANBVV95cUxQUEJxakJ5UTNUZVhjM1U1aE9RdWJ3MWNvWlhUbGstbWQyRjRkVll3VkJnRUV0SGl1VUYwMS04QlI0S3JhYkl4ZXJZQUhoX0RmOTZQT21HR0szOWo5ZTNlc1ltOWt2dUlYQ0tzWTh1ZmxKcHRwMU5UYjRaV3JGR2g4X2lsN3JuTEJRbGo0eGlteGdZX0pCOEUtNkJyQjdlQjc1QWNzRGJicXp4X1NqRVdFNDNmYkdqdUtXZkFsZm5yMUw4elZsa0FhYU50NEFFdXhJeHd5S3Bmb1YtdFNnVnBrcXFwZXgzdFhSTndQR2xueGNOREw1QTRQLVFNdDJEU09MSjdTYWZhV3RIY1V0U2JhLUNHWlpmaVUwNGtzWkVfN09yZkJhOW9ESmRvZ0Z5Vkk5YTVyZ1ozckMyX0duNkI5RE5jdkgwa3plZzR6aWNhazZjNEJwYWdUZExwdWd1OXFvLUxTVUJCQjVOV0RKRGVLNVlYSlFFdXVzR3VLSmZXZ3l1bmtUSzJtSjM4X0NmYWRJRnlxbTRnMkxnRDE4aTdsdm52aVZJV2l2RTBRT1VJUUdjdlRRZ1pyTURVTVV5alMwRWVvMg?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMihgNBVV95cUxOR3d4S3hxOVZyUmhNRXJNWUF2NHNqNG1FTlNpdnhMbGxmOHFpbVZvTHFDYTdjUUZ4bUVsNlJka1hsT3JrTjFxcFBLS2JCOEdOdkFSbXJOWDU4ekU3Z0d0eGZRUnk5QVNudi16LTRkZ0hyOWtiQl94TkJwLW9vOThGT0dqbHpKaVR2dEY2NFNFNkVDZDB1bWdmWXBnQ0tQenNVMTJNeXA5RTlUSVdVTXp0QTV2bVNDc1dWWmthTGt0NG5mNHl4eHlBNFlOZnhYZ3dfa0xZOE1vZHI3aUExNjZadlFsWE1iQUlsanhMekVvWk5qTEpjdHg3N0MyS0lpam81cUFNN2M5dlpYS1A5OW4zWERuWUxOVUk3TTBKaVh1cWdUbU9scVBFdHhBNGZ6V0QtXzRjNHpLYU5laENVNzlXNk5aLWpnZ0djUS1xMkVnN3lTOVBUaXVIamZvRm9CVGVPLW5PZFBWV0dwTF9TOWNfSXJTZGl1VUFIbjFXbHV4RWpRV3h4UFE?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -14622,6 +14668,22 @@
       "evidencias": {
         "Drogas e entorpecentes": [
           "pf e senad/py iniciam operacao de combate ao cultivo ilegal de cannabis no paraguai — policia federal - governo federal"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMilgJBVV95cUxNUnM3alp0cWNPTEEybGpxQzM2ak51MUFlcjluMS0wa1pYVlZ6aGVkc0hYclBhM2lsY0VId2hDOTc4S2Y3YW9CZFNBX0lTR0c5Q1MxVS1UMVBTZ1BMWnlDZV9MN3lIZWxuajdJLUFucnZIaUptQVpUOS1yQzBJWXBlUGJCeUU5UG5EWTJtamtvdXBZdldJV3RBR2FxSUJXSFFYZ19LTWNKYzZhZ0hsZUJaT1pkaFpJYXFhTkg4VU0xV2VUNERldjZiMEhOcGs0aWtOLU4za3N3Y0czcy1lSHZrV1NSWUw0S0xlRjMzWU1ITndwU2c5ZUlxWDExaWdhV3RKRXRjS005cmdqYWlGY2xVM1pETUhzZw?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia militar apreende armas, drogas e veiculo adulterado em operacoes em joaquim gomes e flexeiras, resultando em prisoes e encaminhame"
+        ],
+        "Armas e munições": [
+          "policia militar apreende armas, drogas e veiculo adulterado em operacoes em joaquim gomes e flexeiras, resultando em prisoes e enc"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
