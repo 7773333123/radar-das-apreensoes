@@ -162,10 +162,11 @@ def main():
     pending.sort(key=lambda pair: (int(pair[0].get('tentativas_url_original', 0)),
                                    pair[0].get('url_original_status') not in ('aguardando_resolucao', None, '')))
     batch=pending[:max(0,args.limite)]
+    print('RADAR_RECUPERADOR_V3: busca de fonte prioritária; versão identificável', flush=True)
     print(f'Acervo: {len(news)}; links originais: {existing}; pendentes: {len(pending)}; tentativas: {len(batch)}', flush=True)
     successes=0; errors=Counter()
     with ThreadPoolExecutor(max_workers=max(1,min(args.trabalhadores,6))) as pool:
-        futures={pool.submit(resolver,url):(article,url) for article,url in batch}
+        futures={pool.submit(buscar_fonte_por_titulo,article) if args.busca_fonte else pool.submit(resolver,url):(article,url) for article,url in batch}
         for future in as_completed(futures):
             article,url=futures[future]
             try: original,status=future.result()
@@ -177,7 +178,11 @@ def main():
                 article['leitura_fonte_status']='pendente_leitura_original'
                 successes+=1
             else:
-                if args.busca_fonte:
+                if args.busca_fonte and status == 'busca_sem_dados':
+                    alt, alt_status = '', 'busca_sem_dados'
+                elif args.busca_fonte and status.startswith('busca_'):
+                    alt, alt_status = '', status
+                elif args.busca_fonte:
                     alt, alt_status = buscar_fonte_por_titulo(article)
                     if alt and valida(alt):
                         article['url_original']=alt

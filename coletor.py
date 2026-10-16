@@ -248,6 +248,7 @@ def coletar(query, categoria=None):
         noticia = {'titulo': titulo, 'url': url, 'data_publicacao': data, 'fonte': fonte}
         if fonte_elemento is not None and fonte_elemento.get('url'):
             noticia['dominio_fonte'] = urllib.parse.urlsplit(fonte_elemento.get('url')).hostname or ''
+            noticia['pagina_fonte'] = fonte_elemento.get('url')
         if urllib.parse.urlsplit(url).hostname == 'news.google.com':
             noticia['url_google_noticias'] = url
             original = (extrair_url_original_descricao(item.findtext('description'), noticia.get('dominio_fonte'))
