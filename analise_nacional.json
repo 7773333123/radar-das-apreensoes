@@ -1,25 +1,25 @@
 {
-  "gerado_em_utc": "2026-10-16T12:06:57.603993+00:00",
+  "gerado_em_utc": "2026-10-16T12:14:43.828004+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "pendente_verificacao_apreensao": 3992,
-    "materia_sem_informacao_quantitativa": 6450,
+    "materia_sem_informacao_quantitativa": 6455,
+    "pendente_verificacao_apreensao": 3994,
     "com_informacao_quantitativa": 803
   },
-  "materias_sem_informacao_quantitativa": 6450,
+  "materias_sem_informacao_quantitativa": 6455,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
-  "noticias_multicategoria": 1263,
+  "noticias_multicategoria": 1265,
   "noticias_com_quantidades": 803,
-  "noticias_analisadas": 11245,
+  "noticias_analisadas": 11252,
   "fontes_distintas_informadas": 1382,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 4238,
-    "Armas e munições": 2980,
+    "Drogas e entorpecentes": 4242,
+    "Armas e munições": 2982,
     "Contrabando e descaminho": 653,
     "Dinheiro e valores": 366,
     "Veículos": 115,
-    "Medicamentos e produtos": 97,
+    "Medicamentos e produtos": 98,
     "Crimes ambientais": 60,
     "Operações patrimoniais": 38,
     "Outras apreensões": 33
@@ -30,7 +30,7 @@
     "PR": 162,
     "SP": 130,
     "PI": 106,
-    "CE": 93,
+    "CE": 95,
     "MA": 73,
     "AM": 69,
     "PE": 68,
@@ -38,7 +38,7 @@
     "RO": 56,
     "GO": 54,
     "PB": 46,
-    "AL": 44,
+    "AL": 45,
     "SC": 42,
     "MG": 40,
     "RJ": 35,
@@ -136,7 +136,7 @@
     "2026-07": 34,
     "2026-08": 47,
     "2026-09": 34,
-    "2026-10": 2346
+    "2026-10": 2353
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -147,27 +147,37 @@
     "2023": 1789,
     "2024": 2179,
     "2025": 2523,
-    "2026": 2487
+    "2026": 2494
   },
   "status_processamento": {
-    "pendente_evidencia": 3992,
-    "classificacao_automatica": 7220,
+    "classificacao_automatica": 7225,
+    "pendente_evidencia": 3994,
     "outras_apreensoes_a_revisar": 33
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 11189,
+    "aguardando_url_original": 11196,
     "lida": 56
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 3992,
-  "noticias_pendentes_revisao": 3992,
+  "noticias_sem_classificacao": 3994,
+  "noticias_pendentes_revisao": 3994,
   "versao_extrator": "extrator_v4",
-  "leituras_externas_tentadas": 2,
+  "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
-  "resultados_leituras_externas": {
-    "lida": 2
-  },
+  "resultados_leituras_externas": {},
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOcWJtenQ2eGpyMURsaTMxdnZ1UlFBeW1PbDQ5akdwX1F3Sjl0bTlaV2hrWTdBQ3l2cTVDbzY2V0hBdTRVRGc1VWEtb3F6QmFQOG5HcHRjRnQtWHJGaEtaMnI1NWVFbTQycUxTZEZJQ1F4cHNyVTNvdEg1WXJWWmJzb05MQ1oxOHFQLVhsSWtSTGxCc0hkRlF6Z3VIS2tJUGl6U0c4TEJYWU5IMlRxS3paNUxvaXcxQTQ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "rotam prende suspeito de trafico com cerca de 1,3 kg de drogas em samambaia - jornal de brasilia"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOeWY4dDdPQWxjdkgyaEQ2blJLeGU3WkhMN21TcFNyX2l4U3pvbFN5eEM4aEZpVE80T3RiOXUyYldNVGR1dGVGRS1TR1QyaFNjeDNQa1NLVDVMOWFscngtZjlJZ1ZGa0lLZjdLV1pZdUFaR0ttQ2xBLUs1NVNVY3JyZnh0NjBhYTdYVmdBcmtScjNxczNqbUhOQnhzenNBYURiN3FBbWh2bXFreG1lWXNSSg?oc=5",
       "categorias_sugeridas": [
@@ -286,6 +296,18 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQY04ydWdRYm9ZWWtNVGtaMnFGMGN2TWFOdFJqdXFIMHdoZlBNa0JhZ2h1Z0kyYWVScllXaUUxYmd4NC1LVXdfUDFPZlB1M3ZXcnkzWUFGZV9oUFUxNkJFNHF2M0FKRmJFTzFBeXVHcEN5anJXQk5fWVIyOUVJZkoxRURjMHRtYmM0SUIxZ2k5Y2xIc0RGUkdFUDlERExWVHJrcEJwcEVvWEdFaXk4SU9vSg?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "cpe apreende 204 kg de drogas e divulga resultados operacionais da semana em catalao - zap catalao"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPdVEwZGN3NUdyOENUTXFWeFhhMDZiZU8wX2xGVGRSRDVsOWJmeDJDOXg2cFVpVFdtY0lvTzRLMEl3LUN5Sy0yNWJ4d2tnOUhKcFZSN3NIR1RBOVZqN3RUclI3QXp2a3VZeEl3R2dBc0RRamJmMElrWGMydlpjQngxSmJhOEVPMTFRSVhBRThoSEt2MGtrNTdiLXRIeVYyQ2xaLXZNTlFCN2xRTjE4LXhsUF9EMjd6RnVIN2tJdGZJaVFNdw?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -306,6 +328,22 @@
       "evidencias": {
         "Contrabando e descaminho": [
           "pf, rfb e bpfron apreendem cerca de 1 mil caixas de cigarros — policia federal - www.gov.br"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxORVpITFVzTnVTWTF4VmJJcTJGUXNrWWh6X3htRExQYlAxUW55UURidUNzT2dMMDIwYkFSMU02RHRNNDJlb0dWX3YwWjAtWUVaeVFQdUdBakQ4SDJpTkhGVDRORjk0R1RfYVpDU25qd25qSFlwOEhITXhxZ0F5S19qcEcweU04QkhwUGFTRS1ISlhrYVJIYUdfYXE3YXBGX09ZUHVGbUhoa1c5cmdSLU1TT2RCWXAxYUhLN2pxSFM1Q05nWDNEbXU3ZXo4MEM3TFZ0SThqWWxLNlBsbllZb1JublRES0_SAfMBQVVfeXFMTVU2SUpsMU52UHAxQjYyc2tad1JGUmxNV09nQmVTR3djdEFQQ0VydjFxM1B3TURSbkd4clRhNXV1TFZRVlVHbDZ5VVphdDZ3S3ZTS1lqVE5STFVfNUk3MjVlcUllUFlHT19ubl9LRmFxcXVFaHZBMFg5TkYxLUljVTFLUDFvaHVqZHpqY3RaeWZkN2VDbHZkNXNIdEdvY1R6VTNDUmozMFRzZGJIaFNnVkV1NE5SVTFWQ010c0hYNTB5RVpvWTBGa3VZMVFWdDJVV00yd2lsZlgtbWk0YUVVSWJLeHdzWkoyYU4zalVhVGoxNnNv?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "operacao contra comando vermelho prende 17 pessoas e apreende drogas e armas no cariri, no ceara - g1"
+        ],
+        "Armas e munições": [
+          "peracao contra comando vermelho prende 17 pessoas e apreende drogas e armas no cariri, no ceara - g1"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -340,6 +378,27 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPVk5ZeVlvMk9HdmdmeUMzWmtsX1lUSHZTVmR5T0pJZDRFMmdBbVhmMlhZS2ZWaWRJbklQWi10X1hiUkRFV2o1TUo4WjRBQ2FPZ181S0Uwc3RTQkRaM2RvNTkwVWVMTllXRkg2cVFKVFlQZnNtRmlTajlLZ1VqZmJrOXk0ckY3aEdsdkhPXzJhbi1UMnE3TnJDc3pPQWRUblJFMmJSRHVmVGt6b0lnSUpNTEJPZUpLNk5aa3RpWnpYcXBURjTSAcMBQVVfeXFMT1ZOWXlZbzJPR3ZnZnlDM1prbF9ZVEh2U1ZkeU9KSWQ0RTJnQW1YZjJYWUtmVmlkSW5JUFotdF9YYlJERVdqNU1KOFo0QUNhT2dfNUtFMHN0U0JEWjNkbzU5MFVlTE5ZV0ZINnFRSlRZUGZzbUZpU2o5S2dVamZiazl5NHJGN2hHbHZIT18yYW4tVDJxN05yQ3N6T0FkVG5SRTJiUkR1ZlRrem9JZ0lKTUxCT2VKSzZOWmt0aVp6WHFwVEY0?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "operacao mira grupo que comercializava armas e municoes pela internet no es - tribuna online",
+          "operacao mira grupo que comercializava armas e municoes pela internet no es - tribuna online"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOQXNjSUxVT2pHOVU2QjFZWFdUUkF1ZFh5LXRUdTZpLWc0NVpvaXJRMjlqWDU0MEY4U1lva1F6NHNoZDZpeHo3R19ZNjVaNk9IZXFWcElXUDRlZm9JcXhib3ZDSlFvSzgxdHowbm02bXdXVDdCMXk1b0VaZjNsc2FqQjV0ak9wQ1JCMjNjMS16VjJfT1FiU25HYl84ZXp3S0IwcFRrcHRfV0ZIUC1BTkVCUVZ3RlhtWnfSAbcBQVVfeXFMTkFzY0lMVU9qRzlVNkIxWVhXVFJBdWRYeS10VHU2aS1nNDVab2lyUTI5alg1NDBGOFNZb2tRejRzaGQ2aXh6N0dfWTY1WjZPSGVxVnBJV1A0ZWZvSXF4Ym92Q0pRb0s4MXR6MG5tNm13V1Q3QjF5NW9FWmYzbHNhakI1dGpPcENSQjIzYzEtelYyX09RYlNuR2JfOGV6d0tCMHBUa3B0X1dGSFAtQU5FQlFWd0ZYbVp3?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQVlJjeEkzajFEUFZZelJLSFJOSUc5S1BRT0xmcVZ2T25WOGtmZTBnY1kzc2dQdkJaeVZtNWhiWGJZTVpjM2tpU2Z2X2prbklOd0RGb2E1b0dzSFFscUJCLXluVzdBYnppRWJnOGYxdzJGTGJfRlpHTGtoTU03RDdxXy1sQ1h2bGN2RHk5YndpSVQzYUhiQzBBbFUxcUt3V21HbDV4dVJhaw?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -367,6 +426,14 @@
           "investigado por trafico, “gg” e preso com 10 kg de cocaina e tres armas de fogo em maceio - tnh1"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNQjl3NWxiNXA2TmlPRkgzNXF3dzlxaXVTdWQtdWpWMGQ0VDdkT1F4TlZYNGo2cy1rMHdiQ3AxRnhUNW13cjgyVGdJODRwenM2c0JGRE5veVhXUDU4azFXSnRzb2k5NGpwMzVVU2ZyMTdRWVphcXNwWGZpd2xhMlB0eHhYdGJZNXhwNDU1dHFLQnpYMzRTd1hZWHZVclBuTWxXN284aUFCX2QwX3B5SEdrU0JLZVVDbzh1T0NOcnR6NUw1cng3ZzNIR1RoVFMwTDZtSFpYeFdCQlFzeW1EcGpuWNIB5gFBVV95cUxPcmZqMzRCWi1IZEFsbE9WNUpyTWViVXdScDBPTHRpbjYwZnF2aVEwYi04WXhGY1BqVnMyVnBleHNWWHlxMVdLc2xQaG9jQk0yMUxHejctT2JSTVVpZEhpMXU0Q0ZaSGVBT285VDA5NGpZa1JLMC1oNFNkQXhPY2tmMkgwQWwtQjV4UzZQdDdiVnR5bUVGU3NvWVllT2FqcHA0STZfaXBxeWJ5U290clNXTjJVQlRWX05IWkExNmV4MDZ2b1VJeGoyUFhQaEk3RXFzMUk4R05NeU80NFdIbkdLM1VnLUlZdw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -11890,6 +11957,22 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxOQ2FnM2gwU0hFS2Vra1Q2ME9xaU4xeFVjZVF0Qkx5WUFqMDNvZzNXa1BvU0JBRWdORFctN3VnSDJVT2xKendBT2xkejhMNTZxTnRpV3A5TFVEMHNLUVlWZHZ3cjlmNUh5MlpiX3Z6TjBkemVlXzJMMm1GOUtweU9wSTV0X3dQb01EUWdJdVhvQTlMeEc5c2lFQWF6MnozQWRoOUROZ2haR1RCcU5jRXBMMW5Gem9tMGRkeFZ1c1ptRmFBRnVheFVhLUR2ckVKU3E0UHc?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Medicamentos e produtos"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia prende suspeito de chefiar organizacao criminosa e apreende drogas e canetas emagrecedoras em quixada - ceara agora"
+        ],
+        "Medicamentos e produtos": [
+          "prende suspeito de chefiar organizacao criminosa e apreende drogas e canetas emagrecedoras em quixada - ceara agora"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
