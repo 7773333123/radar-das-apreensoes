@@ -1,169 +1,136 @@
 #!/usr/bin/env python3
-"""Recuperação conservadora de links originais; somente biblioteca padrão."""
+"""Recupera links de origem do Google Notícias, preservando o acervo."""
 import argparse
 import base64
 import html
 import json
 import os
 import re
-import time
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from urllib.parse import urlparse, unquote, urlencode, parse_qs
+from urllib.parse import parse_qs, urlencode, urlparse
 from urllib.request import Request, urlopen
 
-ARQUIVO = Path(__file__).resolve().parent / "noticias.json"
-AGREGADORES = ("google.com", "googleusercontent.com", "googleapis.com", "gstatic.com")
+ARQUIVO = Path(__file__).resolve().parent / 'noticias.json'
+BLOQUEADOS = ('google.com', 'googleusercontent.com', 'googleapis.com', 'gstatic.com', 'youtube.com')
+HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/125.0.0.0 Safari/537.36', 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.7'}
 
-def url_valida(url):
-    if not isinstance(url, str):
-        return False
+def valida(url):
+    if not isinstance(url, str): return False
     try:
-        p = urlparse(url.strip())
-        host = (p.hostname or "").lower()
-        return p.scheme in ("http", "https") and bool(host) and not any(
-            host == d or host.endswith("." + d) for d in AGREGADORES
-        )
-    except ValueError:
-        return False
+        p = urlparse(html.unescape(url).strip())
+        h = (p.hostname or '').lower()
+        return p.scheme in ('http', 'https') and bool(h) and not any(h == d or h.endswith('.'+d) for d in BLOQUEADOS)
+    except ValueError: return False
 
-def extrair_do_codigo(url):
-    """Links antigos incluem URL original dentro do identificador base64."""
+def fetch(url, data=None, timeout=10):
+    headers = dict(HEADERS)
+    if data is not None: headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
+    with urlopen(Request(url, data=data, headers=headers), timeout=timeout) as r:
+        return r.geturl(), r.read(350000).decode('utf-8', 'replace')
+
+def codigo_embutido(url):
     try:
-        codigo = urlparse(url).path.rstrip("/").split("/")[-1]
-        bruto = base64.urlsafe_b64decode(codigo + "=" * (-len(codigo) % 4))
-        for match in re.finditer(rb"https?://[^\x00-\x20\x7f\"'<>]+", bruto):
-            candidato = match.group().decode("utf-8", "ignore")
-            # Remover eventual delimitador de protobuf no final.
-            candidato = re.split(r"[\x00-\x1f]", candidato)[0]
-            if url_valida(candidato):
-                return candidato
-    except (ValueError, UnicodeError, TypeError):
-        pass
-    return ""
-
-def extrair_html(pagina):
-    # Aceitar somente URLs externas explicitamente declaradas como destino.
-    padroes = (
-        r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)',
-        r'<link[^>]+href=["\']([^"\']+)["\'][^>]+rel=["\']canonical',
-        r'<meta[^>]+property=["\']og:url["\'][^>]+content=["\']([^"\']+)',
-        r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:url',
-    )
-    for padrao in padroes:
-        for m in re.finditer(padrao, pagina, re.I):
-            candidato = html.unescape(m.group(1))
-            if url_valida(candidato):
-                return candidato
-    return ""
-
-def google_rpc(url):
-    """Tenta resolver os identificadores recentes via endpoint público do Google Notícias."""
-    codigo = urlparse(url).path.rstrip('/').split('/')[-1]
-    if not re.fullmatch(r'[A-Za-z0-9_-]{20,}', codigo):
-        return ''
-    try:
-        pagina = f'https://news.google.com/rss/articles/{codigo}?hl=pt-BR&gl=BR&ceid=BR:pt-419'
-        req = Request(pagina, headers={'User-Agent': 'Mozilla/5.0'})
-        with urlopen(req, timeout=7) as resp:
-            corpo = resp.read(220000).decode('utf-8', 'replace')
-        ident = re.search(r'data-n-a-id="([^"]+)"', corpo)
-        assinatura = re.search(r'data-n-a-sg="([^"]+)"', corpo)
-        if not ident or not assinatura:
-            return ''
-        payload = json.dumps([['Fbv4je', json.dumps(["garturlreq", [["pt-BR", "BR", ["FINANCE_TOP_INDICES", "WEB_TEST_1_0_0"], None, None, 1, 1, "BR:pt-419", None, 180, None, None, None, None, None, 0, None, None, [1608992183, 723341000]], "pt-BR", "BR", 1, [2, 3, 4, 8], 1, 0, "655000234", 0, 0, None, 0], ident.group(1), assinatura.group(1)]), None, 'generic']])
-        post = urlencode({'f.req': payload}).encode()
-        req = Request('https://news.google.com/_/DotsSplashUi/data/batchexecute?rpcids=Fbv4je', data=post, headers={'User-Agent': 'Mozilla/5.0', 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'})
-        with urlopen(req, timeout=9) as resp:
-            resposta = resp.read(180000).decode('utf-8', 'replace')
-        for m in re.finditer(r'https?://[^\\"\s<>]+', resposta):
-            candidato = m.group(0).replace('\\/', '/').rstrip('\\')
-            if url_valida(candidato):
-                return candidato
-    except Exception:
-        pass
+        token = urlparse(url).path.rstrip('/').split('/')[-1]
+        raw = base64.urlsafe_b64decode(token + '=' * (-len(token) % 4))
+        for m in re.finditer(rb'https?://[^\x00-\x20\x7f"\'<>]+', raw):
+            candidate = m.group().decode('utf-8', 'ignore')
+            if valida(candidate): return candidate
+    except Exception: pass
     return ''
 
-def resolver(url):
-    original = extrair_do_codigo(url)
-    if original:
-        return original, "recuperada_codigo"
-    for key in ('url', 'u', 'q', 'target'):
-        for candidate in parse_qs(urlparse(url).query).get(key, []):
-            if url_valida(candidate):
-                return candidate, 'recuperada_parametro'
-    via_rpc = google_rpc(url)
-    if via_rpc:
-        return via_rpc, "recuperada_google_rpc"
+def url_no_html(page):
+    patterns = [r'<link\b(?=[^>]*\brel=["\']canonical["\'])(?=[^>]*\bhref=["\']([^"\']+))',
+                r'<meta\b(?=[^>]*\bproperty=["\']og:url["\'])(?=[^>]*\bcontent=["\']([^"\']+))']
+    for pattern in patterns:
+        for m in re.finditer(pattern, page, re.I):
+            candidate = html.unescape(m.group(1))
+            if valida(candidate): return candidate
+    return ''
+
+def google_rpc(url):
+    token = urlparse(url).path.rstrip('/').split('/')[-1]
+    if not re.fullmatch(r'[A-Za-z0-9_-]{20,}', token): return '', 'codigo_invalido'
     try:
-        req = Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; RadarApreensoes/1.0)"})
-        with urlopen(req, timeout=9) as resp:
-            destino = resp.geturl()
-            if url_valida(destino):
-                return destino, "recuperada_redirecionamento"
-            conteudo = resp.read(180000).decode("utf-8", "replace")
-            original = extrair_html(conteudo)
-            if original:
-                return original, "recuperada_canonical"
-        return "", "nao_resolvida"
+        _, page = fetch('https://news.google.com/rss/articles/'+token+'?hl=pt-BR&gl=BR&ceid=BR:pt-419')
+        ident = re.search(r'data-n-a-id=["\']([^"\']+)', page)
+        sign = re.search(r'data-n-a-sg=["\']([^"\']+)', page)
+        if not ident or not sign: return '', 'assinatura_ausente'
+        # Estrutura garturlreq: id e assinatura pertencem ao mesmo vetor interno.
+        request = ['garturlreq', [['pt-BR','BR',['FINANCE_TOP_INDICES','WEB_TEST_1_0_0'],None,None,1,1,'BR:pt-419',None,180,None,None,None,None,None,0,None,None,[1608992183,723341000]], 'pt-BR','BR',1,[2,3,4,8],1,0,'655000234',0,0,None,0], ident.group(1), sign.group(1)]
+        body = json.dumps([[['Fbv4je', json.dumps(request, separators=(',',':')), None, 'generic']]], separators=(',',':'))
+        _, response = fetch('https://news.google.com/_/DotsSplashUi/data/batchexecute?rpcids=Fbv4je', urlencode({'f.req':body}).encode())
+        # A resposta é JSON aninhado. URLs externas só são aceitas se aparecem no resultado RPC.
+        for candidate in re.findall(r'https?://[^\\"\s<>\[\]]+', response):
+            candidate = html.unescape(candidate.rstrip('\\,;'))
+            if valida(candidate): return candidate, 'recuperada_rpc'
+        for candidate in re.findall(r'https?:\\/\\/[^"\s<>\[\]]+', response):
+            candidate = candidate.replace('\\/', '/')
+            if valida(candidate): return candidate, 'recuperada_rpc'
+        return '', 'rpc_sem_url'
     except Exception as exc:
-        return "", "erro_" + type(exc).__name__
+        return '', 'rpc_'+type(exc).__name__
+
+def resolver(url):
+    embedded = codigo_embutido(url)
+    if embedded: return embedded, 'recuperada_codigo'
+    for key in ('url','u','q','target'):
+        for candidate in parse_qs(urlparse(url).query).get(key, []):
+            if valida(candidate): return candidate, 'recuperada_parametro'
+    candidate, status = google_rpc(url)
+    if candidate: return candidate, status
+    try:
+        destination, page = fetch(url)
+        if valida(destination): return destination, 'recuperada_redirecionamento'
+        candidate = url_no_html(page)
+        if candidate: return candidate, 'recuperada_canonical'
+    except Exception as exc:
+        return '', status+'+http_'+type(exc).__name__
+    return '', status
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--limite", type=int, default=int(os.getenv("LIMITE_DECODIFICACAO", "200")))
-    parser.add_argument("--trabalhadores", type=int, default=6)
-    args = parser.parse_args()
-    if not ARQUIVO.exists():
-        raise SystemExit("noticias.json ausente; nada alterado")
-    dados = json.loads(ARQUIVO.read_text(encoding="utf-8"))
-    noticias = dados.get("noticias") if isinstance(dados, dict) else dados
-    if not isinstance(noticias, list):
-        raise SystemExit("Formato inválido; nada alterado")
-    pendentes = []
-    existentes = 0
-    for noticia in noticias:
-        if not isinstance(noticia, dict):
-            continue
-        if url_valida(noticia.get("url_original")):
-            existentes += 1
-            continue
-        google = noticia.get("url_google_noticias") or noticia.get("url") or ""
-        if url_valida(google):
-            noticia["url_original"] = google
-            noticia["url_original_status"] = "direta"
-            existentes += 1
-        elif "news.google.com/" in google:
-            pendentes.append((noticia, google))
-    # Priorizar links nunca tentados; não ficar preso ao mesmo lote com falhas.
-    pendentes.sort(key=lambda item: bool(item[0].get('url_original_status')))
-    lote = pendentes[:max(0, args.limite)]
-    print(f"Acervo: {len(noticias)}; links originais: {existentes}; aguardando: {len(pendentes)}; tentativa: {len(lote)}", flush=True)
-    sucesso, erros = 0, {}
-    with ThreadPoolExecutor(max_workers=max(1, min(args.trabalhadores, 8))) as pool:
-        futures = {pool.submit(resolver, url): (noticia, url) for noticia, url in lote}
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--limite', type=int, default=int(os.getenv('LIMITE_DECODIFICACAO','60')))
+    ap.add_argument('--trabalhadores', type=int, default=4)
+    args = ap.parse_args()
+    if not ARQUIVO.exists(): raise SystemExit('noticias.json ausente; nada alterado')
+    data = json.loads(ARQUIVO.read_text(encoding='utf-8'))
+    news = data.get('noticias') if isinstance(data,dict) else data
+    if not isinstance(news,list): raise SystemExit('Formato inválido; nada alterado')
+    pending=[]; existing=0
+    for article in news:
+        if not isinstance(article,dict): continue
+        if valida(article.get('url_original')): existing+=1; continue
+        url = article.get('url_google_noticias') or article.get('url') or ''
+        if valida(url):
+            article['url_original']=url; article['url_original_status']='direta'; existing+=1
+        elif isinstance(url,str) and 'news.google.com/' in url:
+            pending.append((article,url))
+    pending.sort(key=lambda x: (x[0].get('url_original_status') not in ('aguardando_resolucao',None,''), x[0].get('url_original_status','')))
+    batch=pending[:max(0,args.limite)]
+    print(f'Acervo: {len(news)}; links originais: {existing}; pendentes: {len(pending)}; tentativas: {len(batch)}', flush=True)
+    successes=0; errors=Counter()
+    with ThreadPoolExecutor(max_workers=max(1,min(args.trabalhadores,6))) as pool:
+        futures={pool.submit(resolver,url):(article,url) for article,url in batch}
         for future in as_completed(futures):
-            noticia, google = futures[future]
-            try:
-                original, status = future.result()
-            except Exception as exc:
-                original, status = "", "erro_" + type(exc).__name__
-            noticia.setdefault("url_google_noticias", google)
-            if original:
-                noticia["url_original"] = original
-                noticia["url_original_status"] = status
-                noticia["leitura_fonte_status"] = "pendente_leitura_original"
-                sucesso += 1
+            article,url=futures[future]
+            try: original,status=future.result()
+            except Exception as exc: original,status='', 'erro_'+type(exc).__name__
+            article.setdefault('url_google_noticias',url)
+            if original and valida(original):
+                article['url_original']=original
+                article['url_original_status']=status
+                article['leitura_fonte_status']='pendente_leitura_original'
+                successes+=1
             else:
-                noticia["url_original_status"] = status
-                erros[status] = erros.get(status, 0) + 1
-    if lote:
-        temp = ARQUIVO.with_suffix(".json.tmp")
-        temp.write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding="utf-8")
+                article['url_original_status']=status
+                errors[status]+=1
+    if batch:
+        temp=ARQUIVO.with_suffix('.json.tmp')
+        temp.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8')
         temp.replace(ARQUIVO)
-    print(f"Recuperados: {sucesso}/{len(lote)}; falhas: {erros}; acervo preservado: {len(noticias)}.", flush=True)
-    if not sucesso:
-        print('AVISO: nenhum link resolvido; o Google pode exigir outro método de decodificação.', flush=True)
+    print(f'Recuperados: {successes}/{len(batch)}; falhas: {dict(errors)}; acervo preservado: {len(news)}',flush=True)
+    if batch and not successes: print('AVISO: nenhuma URL recuperada. Consulte os códigos de falha acima.',flush=True)
 
-if __name__ == "__main__":
-    main()
+if __name__=='__main__': main()
