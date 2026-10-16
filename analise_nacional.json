@@ -1,20 +1,20 @@
 {
-  "gerado_em_utc": "2026-10-16T05:41:23.887651+00:00",
+  "gerado_em_utc": "2026-10-16T06:53:13.948758+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "pendente_verificacao_apreensao": 3947,
-    "materia_sem_informacao_quantitativa": 6417,
+    "pendente_verificacao_apreensao": 3952,
+    "materia_sem_informacao_quantitativa": 6418,
     "com_informacao_quantitativa": 794
   },
-  "materias_sem_informacao_quantitativa": 6417,
+  "materias_sem_informacao_quantitativa": 6418,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
   "noticias_multicategoria": 1252,
   "noticias_com_quantidades": 794,
-  "noticias_analisadas": 11158,
-  "fontes_distintas_informadas": 1372,
+  "noticias_analisadas": 11164,
+  "fontes_distintas_informadas": 1373,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 4208,
+    "Drogas e entorpecentes": 4209,
     "Armas e munições": 2964,
     "Contrabando e descaminho": 649,
     "Dinheiro e valores": 364,
@@ -25,7 +25,7 @@
     "Outras apreensões": 32
   },
   "noticias_por_uf_explicita": {
-    "PA": 746,
+    "PA": 747,
     "BA": 300,
     "PR": 162,
     "SP": 130,
@@ -136,7 +136,7 @@
     "2026-07": 34,
     "2026-08": 47,
     "2026-09": 34,
-    "2026-10": 2267
+    "2026-10": 2273
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -147,25 +147,33 @@
     "2023": 1786,
     "2024": 2177,
     "2025": 2522,
-    "2026": 2407
+    "2026": 2413
   },
   "status_processamento": {
-    "pendente_evidencia": 3947,
-    "classificacao_automatica": 7179,
+    "pendente_evidencia": 3952,
+    "classificacao_automatica": 7180,
     "outras_apreensoes_a_revisar": 32
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 11104,
+    "aguardando_url_original": 11110,
     "lida": 54
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 3947,
-  "noticias_pendentes_revisao": 3947,
+  "noticias_sem_classificacao": 3952,
+  "noticias_pendentes_revisao": 3952,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
   "resultados_leituras_externas": {},
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOQ2E2U005YjZfb3FLUmNLZExJLWZiVTJUZmpVZXpGZXRYbHZHdzk3TWl1SlBPTXk4c21KUy1ENEFkU1FJMDNUclgwZjNDZXdXMFRfZ2dWaTV4RnBqNFMyTkZBclowWnJxNTlBWHJtSGJsS29ERUZIOUdycjE2UVM0eTBXajdaR2xiTDJKc0gycFFFbnRkdWZwaHdPTnVCUUhHVGJ3NEdWZEdZY1p1MVlNWE1oLWYxb09aTklUMFI2WGl5RG5zcVZobjRwWQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOYTJtMld0YklNY1RMazV0eUxzWk5jVzdtVXYxalRMTWc4U2pIUl9MRGRKbzFWQW5JVHI3akpXdERfN01Gamh0enVEdG91cW5KMVhnWEhsRldKd1k4cjVvNEtmNmR4Mk1KR2tscnExdE96YVRjV09KRmFLa09XeXNuNlBLdWZnVXdNUWpkTUJySmE1dzl0UzBZa0w3bi1HVzA?oc=5",
       "categorias_sugeridas": [
@@ -312,6 +320,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOVGQxRGxBcnR1Z0loODhfSkhoSTdMRFJRWXlVdmhnR25LZXgycDF1ZVgyVHN4anhPZXNqVXA3bXhVVVZLZ195RnVEWWdMZ25DdlFGVV9XQUFBd3Z5bkZjLVNpY2ZvSmY4ejAwLWRkb093T0NrNjVoWkxGU0JSWFF6SjNjOGxpQQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNeWZXVDJGYmR0NlhOR2s2Q2hjTm41Uk8tZTRmTktoUTJ0NlhlY1c2QWRETzNEdWsyZjFLUk9TMUlGcVAxbklIVmNtVkcwUTZIYnk1RmppYmRzN2JiUHlxSVRLQzdkejk4TG1zYXFUX1NQcmoxbC0wVWljMThKWkRSd3ljUjlGTFd2d1VhNFJiWjNuX2phMWxsX05TYw?oc=5",
       "categorias_sugeridas": [
         "Outras apreensões"
@@ -349,6 +365,19 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxPVVpyQndGVXpuSkE4cWlDUkNNajE3MDNwTjV2eFhOcTN5NThpUy1SUFlxRy1nSTJ5bFZNSXcwaUc2eHZFOGVuaEcwcnR5ZTNZNDRwMFZDaWNqZE9ROHZSVk1hT2FqRDEtd3M5ZlNoS0NNVTB2b2dMNFF2UGp3T2VLUFVxQ3dFYmwwbmU1RWNUZXliOUVwdjIzd2w3eHFGWm1ZdUF4ckNMd252RUo1Vkx4UzcwR0pFdHpCRTNWWTN5NWg3UHFuLVJxUzB6bzh4Ym5RQnRNQWFaY3daREp4bnlXVXo5UXR1Si01cHBZ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "suspeito de trafico de drogas por delivery tenta fugir da policia e sofre acidente em joao pessoa - portal ponto pb",
+          "suspeito de trafico de drogas por delivery tenta fugir da policia e sofre acidente em joao pessoa - portal ponto pb"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -417,6 +446,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxNZG1BUWZVUmVHbmU3ZGMtVzJTTmJPdVQ0OHBEMmhTSXNMTkIwQXY5YUdiU1dGd3RTbk1aaXA2Q0hib01sN2RIUXcxQWN1TG9tUkpoYm1NQ0J2Ny1FT21jMGxNYkZiN3Zyajk5SzJXSjZoSTVxMWQxdWlFQXhkeG45TjR2TXJsWjZfR3B2Vm5Pb2Vobk4xczh4SVdfYlFaS0x3NXpOM1NDRGFORmszTTJDbnZOZlpvQkpFQkhyMl9jTFB6dVBrc1FLRGZWSlVEUkRvblVpeC0tQjQtMU1zWUFUNy1R?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNQ2FYSGVObVcwdjJ3TG9lUDFIcU1adWNzd3VsQVQ4VVY4dHV0cWVtZXNuWENwaGdqYjFZdFNRMDhmTjFUWUtXOUNwaEhOcDFLcHh3ckU5VlZGMl9OcmtkbWpPOGdveVprMU9kQzZnN2ZtNHgtc0VVdzk2b25XOXZZakVidkR6ZHczd1dsNlFNeWR6Yy1zb09fRWlaTzZUcTM1endBeWRoVlFoVkVaa05YaHBuSXVUTmZ3TFVwVzN3?oc=5",
       "categorias_sugeridas": [
         "Contrabando e descaminho"
@@ -431,6 +468,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi_gFBVV95cUxPQmtoS0JNeW51Z0t3S0VQaFhpM0x4VXVSTi1hMW5leXVnRmxDTy1lc2VvRFBraVFkZWNJUURYbHZKY2I5WDFHVHIyTEkzOEY5U0xfZlAxNU5nZjc3ekxTeXA5Y0lXR1pXNG56Tm9ZclE1SVkxeWVUM1JVbHhvbEZ1dDA4U3pwYzdCazljRF8xTWhBZTRzUGtHOU1DLXJVOWJUa3BnWGphZlZGSEduaU9vVTl5OTFJbW9oa3UxMjI3d1BicGdfS1IwMlNtRnRZbDFuQ0JPZG9hTXBqclNHalRrWTRqRldKWkN5bW40MHE1bmllQldORFV4a3FJdERZdw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOUnlrTXM0ZjFIZGVIb3NkNDVRQ2k5aDlHd1pyVmtid3BJQ202aWRRQTM1QVRjWlFkdVZ0Z2s4T3JLNEU4dXZvQ1JBZUhldzRHaXZUUUZZaFRyN2dvdENrekRNakU0V0xVbHMtZXBVZl9MMDd3MEtDR2JBdTNKZEI3TExFQjlTM0E2MU4wYWVxbUhqNjVFM3U5aWZXV3ktSjY2VHVFc0ZlbkZoUUNIVGFnUw?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -1307,6 +1352,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxQUm9oeVJIX1M0TnA4dDd4ejhsVTBWV3dnYmRLQWdfeVYzazB1SGtKTEt5Mm00d1c2dHFxTWJmZFBpUlhfNUxqOEpPUWxXa01LSTdZaWFVeXR5cHdZNnFZVS1vZS1GemF5WkZ6MlZaUl9rUXhRb0pIVEFvdUhtbDRweVF2YzNiazJYb3JZbVh6WmNmVFMteE9aRzJXYUVrY3lYRG1sc1pvd0s0Si1WZUk4cklUWV9WMldTcFR1Smk5Z3B5bGFlRmpkS3lkMlQ2NmsyWk40UDB1cHZsdXR2NVBtV2JkaTjSAeQBQVVfeXFMUFJvaHlSSF9TNE5wOHQ3eHo4bFUwVld3Z2JkS0FnX3lWM2swdUhrSkxLeTJtNHdXNnRxcU1iZmRQaVJYXzVMajhKT1FsV2tNS0k3WWlhVXl0eXB3WTZxWVUtb2UtRnpheVpGejJWWlJfa1F4UW9KSFRBb3VIbWw0cHlRdmMzYmsyWG9yWW1YelpjZlRTLXhPWkcyV2FFa2N5WERtbHNab3dLNEotVmVJOHJJVFlfVjJXU3BUdUppOWdweWxhZUZqZEt5ZDJUNjZrMlpONFAwdXB2bHV0djVQbVdiZGk4?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNV19sdmRwWFFjQnBxRzh3RndwMVdhMV81NVoxallHZ0JtaExIMFFIOU8wcVdJQTZEWE5KbEwxWXNHUGhlcGpvNWstVVJhV0pHRVNrVmxkVHFMdW9zS3VlMmQybzd5S1hJTTE4VmhyZDJ6cnlmUUlvUUJBOWNNMzBVVlIyN3dFVGQzTlgzX3ZkQUkyeEhfLXF2VHJnYzZxTDcxMFhGX1NiWjhnQTVFQmhPVk9pTklHZm1CdTZLcFBR?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
