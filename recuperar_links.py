@@ -59,7 +59,7 @@ def google_rpc(url):
         ident = re.search(r'data-n-a-id\s*=\s*["\']([^"\']+)', normalized)
         sign = re.search(r'data-n-a-sg\s*=\s*["\']([^"\']+)', normalized)
         if not ident or not sign:
-            return '', 'assinatura_ausente' 
+            return '', 'assinatura_ausente'+('_id' if ident else '_sem_id')+('_sg' if sign else '_sem_sg')+('_html' if '<html' in page.lower() else '_outro')
         # Estrutura garturlreq: id e assinatura pertencem ao mesmo vetor interno.
         request = ['garturlreq', [['pt-BR','BR',['FINANCE_TOP_INDICES','WEB_TEST_1_0_0'],None,None,1,1,'BR:pt-419',None,180,None,None,None,None,None,0,None,None,[1608992183,723341000]], 'pt-BR','BR',1,[2,3,4,8],1,0,'655000234',0,0,None,0], ident.group(1), sign.group(1)]
         body = json.dumps([[['Fbv4je', json.dumps(request, separators=(',',':')), None, 'generic']]], separators=(',',':'))
@@ -89,8 +89,9 @@ def resolver(url):
             candidate = decoded.get('decoded_url') or decoded.get('url') or ''
             if decoded.get('status') and valida(candidate):
                 return candidate, 'recuperada_decoder'
-    except (ImportError, Exception):
-        pass
+    except Exception as exc:
+        if os.getenv('RADAR_DIAGNOSTICO') == '1':
+            print('Decodificador:', type(exc).__name__, str(exc)[:140], flush=True)
     candidate, status = google_rpc(url)
     if candidate: return candidate, status
     try:
