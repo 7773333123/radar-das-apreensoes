@@ -1,21 +1,21 @@
 {
-  "gerado_em_utc": "2026-10-16T10:36:07.099436+00:00",
+  "gerado_em_utc": "2026-10-16T10:43:32.254443+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "materia_sem_informacao_quantitativa": 6440,
-    "pendente_verificacao_apreensao": 3975,
+    "materia_sem_informacao_quantitativa": 6441,
+    "pendente_verificacao_apreensao": 3976,
     "com_informacao_quantitativa": 798
   },
-  "materias_sem_informacao_quantitativa": 6440,
+  "materias_sem_informacao_quantitativa": 6441,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
   "noticias_multicategoria": 1257,
   "noticias_com_quantidades": 798,
-  "noticias_analisadas": 11213,
-  "fontes_distintas_informadas": 1379,
+  "noticias_analisadas": 11215,
+  "fontes_distintas_informadas": 1380,
   "noticias_por_categoria": {
     "Drogas e entorpecentes": 4226,
-    "Armas e munições": 2974,
+    "Armas e munições": 2975,
     "Contrabando e descaminho": 650,
     "Dinheiro e valores": 365,
     "Veículos": 115,
@@ -136,7 +136,7 @@
     "2026-07": 34,
     "2026-08": 47,
     "2026-09": 34,
-    "2026-10": 2316
+    "2026-10": 2318
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -147,20 +147,20 @@
     "2023": 1788,
     "2024": 2179,
     "2025": 2523,
-    "2026": 2457
+    "2026": 2459
   },
   "status_processamento": {
-    "classificacao_automatica": 7205,
-    "pendente_evidencia": 3975,
+    "classificacao_automatica": 7206,
+    "pendente_evidencia": 3976,
     "outras_apreensoes_a_revisar": 33
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 11159,
+    "aguardando_url_original": 11161,
     "lida": 54
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 3975,
-  "noticias_pendentes_revisao": 3975,
+  "noticias_sem_classificacao": 3976,
+  "noticias_pendentes_revisao": 3976,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
@@ -177,6 +177,14 @@
           "romu apreende adolescente por trafico de drogas com 475 porcoes em cosmopolis - policial padrao"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxNdWRESFN5U1pTbGRUM2xraVNaWWUyOUs1RDZwa1FfRGhRV24wZms2dFZZR3MtRlN1UGVyZXpsVUItb3BjNFhpZDFUZVVOMl8xZDVySk1BanlEcy1Rd0Eyc0hFMEJmcVhPWlZreUhkdHpkdUpLdWRFeWVQVEU4d3hlaXdPNmNyWmFRNTBBZnp6QmNnM2swaXNNN1BjaWtDbHEyd1pSZDhlQW45a2NiRV90cG1Va2VUTTBFTkMwQmFtajBFV2RUWnpfeENKeHRKNU9jUEh3Tlg2N2dibUVVZzZjT2J2OFJIQQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -5489,6 +5497,19 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOdTRSNW9lZ3ZNUXZ4RWYyYzhWYWtDUFV3VXhyLU5QOUtHOGVvdzN3dmVwcDZTb0xCbl9JZmZ5cHRUZ2VNSHhjMmtrSUxEcTBaZWdodTRXVjhleFZYOWJmSkN5WjFFY282YUxOVHFxcjhKTTlWNHJSVE9weS1sT1dTRkxTTEp6ckY2Q3pwTVBzOFlFQ2liVGZkQUNJSEZqRkVDdFJfZ0VmT1hKWGVBbTNPQjlRaEZqbkoyQ2ZjeGFQd0RsSFBaV180QjNGdWJZUVE?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "dois homens sao presos com armas, municoes e balaclavas na zona rural de arapiraca - ja e noticia",
+          "dois homens sao presos com armas, municoes e balaclavas na zona rural de arapiraca - ja e noticia"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
