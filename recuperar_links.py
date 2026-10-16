@@ -6,10 +6,13 @@ import html
 import json
 import os
 import re
+import unicodedata
+from difflib import SequenceMatcher
+from xml.etree import ElementTree as ET
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from urllib.parse import parse_qs, urlencode, urlparse, unquote
+from urllib.parse import parse_qs, urlencode, urlparse, unquote, quote
 from urllib.request import Request, urlopen
 
 ARQUIVO = Path(__file__).resolve().parent / 'noticias.json'
@@ -59,8 +62,6 @@ def google_rpc(url):
         ident = re.search(r'data-n-a-id\s*=\s*["\']([^"\']+)', normalized)
         sign = re.search(r'data-n-a-sg\s*=\s*["\']([^"\']+)', normalized)
         if not ident or not sign:
-            candidate = url_no_html(page)
-            if candidate: return candidate, 'recuperada_canonical'
             return '', 'assinatura_ausente'+('_id' if ident else '_sem_id')+('_sg' if sign else '_sem_sg')+('_html' if '<html' in page.lower() else '_outro')
         # Estrutura garturlreq: id e assinatura pertencem ao mesmo vetor interno.
         request = ['garturlreq', [['pt-BR','BR',['FINANCE_TOP_INDICES','WEB_TEST_1_0_0'],None,None,1,1,'BR:pt-419',None,180,None,None,None,None,None,0,None,None,[1608992183,723341000]], 'pt-BR','BR',1,[2,3,4,8],1,0,'655000234',0,0,None,0], ident.group(1), sign.group(1)]
@@ -76,6 +77,37 @@ def google_rpc(url):
         return '', 'rpc_sem_url'
     except Exception as exc:
         return '', 'rpc_'+type(exc).__name__
+
+def normalizar_titulo(t):
+    t = unicodedata.normalize('NFKD', t or '')
+    t = ''.join(c for c in t if not unicodedata.combining(c))
+    return re.sub(r'[^a-z0-9]+', ' ', t.lower()).strip()
+
+def buscar_fonte_por_titulo(artigo):
+    """Fallback verificável: aceita apenas correspondência forte de título e domínio."""
+    titulo = (artigo.get('titulo') or '').strip()
+    dominio = (artigo.get('dominio_fonte') or '').lower().removeprefix('www.')
+    fonte = (artigo.get('fonte') or '').strip()
+    if ' - ' in titulo and fonte and titulo.lower().endswith(' - ' + fonte.lower()):
+        titulo = titulo[:-(len(fonte)+3)]
+    alvo = normalizar_titulo(titulo)
+    if len(alvo) < 28 or not dominio or dominio in ('news.google.com','www.gov.br') and len(alvo)<35:
+        return '', 'busca_sem_dados'
+    try:
+        query = 'site:' + dominio + ' "' + titulo[:115].replace('"','') + '"'
+        _, body = fetch('https://www.bing.com/search?format=rss&q=' + quote(query), timeout=12)
+        root = ET.fromstring(body)
+        for item in root.findall('.//item')[:8]:
+            candidate = (item.findtext('link') or '').strip()
+            h = (urlparse(candidate).hostname or '').lower().removeprefix('www.')
+            if not valida(candidate) or not (h == dominio or h.endswith('.'+dominio)):
+                continue
+            found = normalizar_titulo(item.findtext('title') or '')
+            if SequenceMatcher(None, alvo, found).ratio() >= .87:
+                return candidate, 'recuperada_busca_titulo_dominio'
+        return '', 'busca_sem_correspondencia'
+    except Exception as exc:
+        return '', 'busca_' + type(exc).__name__
 
 def resolver(url):
     embedded = codigo_embutido(url)
@@ -109,6 +141,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--limite', type=int, default=int(os.getenv('LIMITE_DECODIFICACAO','60')))
     ap.add_argument('--trabalhadores', type=int, default=4)
+    ap.add_argument('--busca-fonte', action='store_true', help='Busca alternativa com validação forte de título e domínio')
     ap.add_argument('--diagnostico', action='store_true', help='Exibe amostra de erros sem revelar dados privados')
     args = ap.parse_args()
     if not ARQUIVO.exists(): raise SystemExit('noticias.json ausente; nada alterado')
@@ -124,8 +157,10 @@ def main():
             article['url_original']=url; article['url_original_status']='direta'; existing+=1
         elif isinstance(url,str) and 'news.google.com/' in url:
             pending.append((article,url))
-    # Alterna as tentativas ao longo do acervo para não insistir sempre nas mesmas URLs.
-    pending.sort(key=lambda x: (x[0].get('url_original_status') not in ('aguardando_resolucao', None, ''), str(x[0].get('url_original_status', ''))))
+    # Distribui o trabalho: notícias nunca testadas primeiro; depois falhas antigas.
+    # A ordem do JSON é mantida, e nenhuma notícia é descartada.
+    pending.sort(key=lambda pair: (int(pair[0].get('tentativas_url_original', 0)),
+                                   pair[0].get('url_original_status') not in ('aguardando_resolucao', None, '')))
     batch=pending[:max(0,args.limite)]
     print(f'Acervo: {len(news)}; links originais: {existing}; pendentes: {len(pending)}; tentativas: {len(batch)}', flush=True)
     successes=0; errors=Counter()
@@ -142,7 +177,17 @@ def main():
                 article['leitura_fonte_status']='pendente_leitura_original'
                 successes+=1
             else:
+                if args.busca_fonte:
+                    alt, alt_status = buscar_fonte_por_titulo(article)
+                    if alt and valida(alt):
+                        article['url_original']=alt
+                        article['url_original_status']=alt_status
+                        article['leitura_fonte_status']='pendente_leitura_original'
+                        successes+=1
+                        continue
+                    status += '+' + alt_status
                 article['url_original_status']=status
+                article['tentativas_url_original']=int(article.get('tentativas_url_original',0))+1
                 errors[status]+=1
     if batch:
         temp=ARQUIVO.with_suffix('.json.tmp')
