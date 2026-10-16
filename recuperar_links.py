@@ -24,7 +24,7 @@ def valida(url):
     try:
         p = urlparse(html.unescape(url).strip())
         h = (p.hostname or '').lower()
-        return p.scheme in ('http', 'https') and bool(h) and not any(h == d or h.endswith('.'+d) for d in BLOQUEADOS)
+        return p.scheme in ('http', 'https') and bool(h) and '.' in h and not (h == 'localhost' or h.endswith('.local')) and not any(h == d or h.endswith('.'+d) for d in BLOQUEADOS)
     except ValueError: return False
 
 def fetch(url, data=None, timeout=10):
@@ -142,6 +142,7 @@ def main():
     ap.add_argument('--limite', type=int, default=int(os.getenv('LIMITE_DECODIFICACAO','60')))
     ap.add_argument('--trabalhadores', type=int, default=4)
     ap.add_argument('--busca-fonte', action='store_true', help='Busca alternativa com validação forte de título e domínio')
+    ap.add_argument('--max-tentativas', type=int, default=3, help='Máximo de falhas por notícia; 0 desativa o limite')
     ap.add_argument('--diagnostico', action='store_true', help='Exibe amostra de erros sem revelar dados privados')
     args = ap.parse_args()
     if not ARQUIVO.exists(): raise SystemExit('noticias.json ausente; nada alterado')
@@ -155,15 +156,21 @@ def main():
         url = article.get('url_google_noticias') or article.get('url') or ''
         if valida(url):
             article['url_original']=url; article['url_original_status']='direta'; existing+=1
-        elif isinstance(url,str) and 'news.google.com/' in url:
-            pending.append((article,url))
+        elif isinstance(url,str) and (urlparse(url).hostname or '').lower() == 'news.google.com':
+            try: tentativas = int(article.get('tentativas_url_original') or 0)
+            except (ValueError, TypeError): tentativas = 0
+            if args.max_tentativas == 0 or tentativas < args.max_tentativas:
+                pending.append((article,url))
     # Distribui o trabalho: notícias nunca testadas primeiro; depois falhas antigas.
     # A ordem do JSON é mantida, e nenhuma notícia é descartada.
-    pending.sort(key=lambda pair: (int(pair[0].get('tentativas_url_original', 0)),
-                                   pair[0].get('url_original_status') not in ('aguardando_resolucao', None, '')))
+    def prioridade(pair):
+        try: n = int(pair[0].get('tentativas_url_original') or 0)
+        except (TypeError, ValueError): n = 0
+        return (n, pair[0].get('url_original_status') not in ('aguardando_resolucao', None, ''))
+    pending.sort(key=prioridade)
     batch=pending[:max(0,args.limite)]
-    print('RADAR_RECUPERADOR_V3: busca de fonte prioritária; versão identificável', flush=True)
-    print(f'Acervo: {len(news)}; links originais: {existing}; pendentes: {len(pending)}; tentativas: {len(batch)}', flush=True)
+    print('RADAR_RECUPERADOR_V4: tentativas limitadas e acervo preservado', flush=True)
+    print(f'Acervo: {len(news)}; links originais: {existing}; pendentes elegíveis: {len(pending)}; tentativas: {len(batch)}', flush=True)
     successes=0; errors=Counter()
     with ThreadPoolExecutor(max_workers=max(1,min(args.trabalhadores,6))) as pool:
         futures={pool.submit(buscar_fonte_por_titulo,article) if args.busca_fonte else pool.submit(resolver,url):(article,url) for article,url in batch}
@@ -192,7 +199,9 @@ def main():
                         continue
                     status += '+' + alt_status
                 article['url_original_status']=status
-                article['tentativas_url_original']=int(article.get('tentativas_url_original',0))+1
+                try: anteriores = int(article.get('tentativas_url_original') or 0)
+                except (TypeError, ValueError): anteriores = 0
+                article['tentativas_url_original']=anteriores+1
                 errors[status]+=1
     if batch:
         temp=ARQUIVO.with_suffix('.json.tmp')
