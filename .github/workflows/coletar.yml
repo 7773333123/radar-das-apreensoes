@@ -1,73 +1,102 @@
-name: Atualizar noticias
-
+name: Coletar notícias e recuperar imagens
 on:
   workflow_dispatch:
     inputs:
       ano_historico:
-        description: 'Ano historico para coleta opcional (deixe vazio para coleta normal)'
+        description: 'Ano histórico opcional (vazio para coleta normal)'
         required: false
         default: ''
         type: string
   schedule:
-    - cron: '17 * * * *'
-
+    - cron: '17 10 * * *'
 permissions:
   contents: write
-
 concurrency:
   group: atualizar-noticias
   cancel-in-progress: false
-
 jobs:
   coletar:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
-      - name: Baixar repositorio
+      - name: Baixar repositório
         uses: actions/checkout@v4
-
       - name: Preparar Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
-      - name: Coletar noticias
+      - name: Instalar decodificador e HTTP2
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'httpx[http2]' googlenewsdecoder
+      - name: Verificar arquivos essenciais
+        run: |
+          test -f coletor.py
+          test -f recuperar_links.py
+          test -f enriquecer_imagens.py
+          python -m py_compile coletor.py recuperar_links.py enriquecer_imagens.py
+      - name: Coletar notícias
         env:
           ANO_HISTORICO: ${{ inputs.ano_historico || '' }}
         run: |
           if [ -n "$ANO_HISTORICO" ]; then
             case "$ANO_HISTORICO" in
-              2020|2021|2022|2023|2024|2025|2026|2027|2028|2029|2030) ;;
-              *) echo 'Ano invalido'; exit 1 ;;
+              2020|2021|2022|2023|2024|2025|2026) ;;
+              *) echo 'Ano inválido'; exit 1 ;;
             esac
             python coletor.py --historico --ano "$ANO_HISTORICO"
           else
             python coletor.py
           fi
-
-      - name: Instalar decodificador de links do Google Noticias
-        run: |
-          python -m pip install "selectolax==0.3.21" "httpx>=0.27,<1" requests beautifulsoup4 lxml
-          python -m pip install --no-deps "googlenewsdecoder==0.2.1"
-          python -c "from googlenewsdecoder import gnewsdecoder; print('Decodificador importado com sucesso')"
-
-      - name: Recuperar links originais das noticias
+      - name: Coletar fontes diretas (se disponível)
         env:
-          RADAR_DIAGNOSTICO: '1'
-        run: python recuperar_links.py --limite 10 --diagnostico
-
-      - name: Buscar fotografias das matérias originais
-        run: python enriquecer_imagens.py --limite 40
-
-      - name: Analisar noticias e gerar estatisticas
-        run: python analisar_noticias.py
-
-      - name: Salvar noticias e analise no repositorio
+          ANO_HISTORICO: ${{ inputs.ano_historico || '' }}
         run: |
+          if [ -f coletar_fontes_diretas.py ]; then
+            if [ -n "$ANO_HISTORICO" ]; then
+              python coletar_fontes_diretas.py --ano "$ANO_HISTORICO" --paginas 2
+            else
+              python coletar_fontes_diretas.py --paginas 2
+            fi
+          else
+            echo 'Coletor de fontes diretas não instalado; mantendo coleta RSS.'
+          fi
+      - name: Recuperar links originais
+        run: python recuperar_links.py --limite 60 --trabalhadores 4 --diagnostico
+      - name: Buscar fotografias originais
+        run: python enriquecer_imagens.py --limite 60
+      - name: Gerar estatísticas (se disponível)
+        run: |
+          if [ -f analisar_noticias.py ]; then
+            python analisar_noticias.py
+          else
+            echo 'analisar_noticias.py não encontrado; estatísticas anteriores mantidas.'
+          fi
+      - name: Salvar alterações sem sobrescrever outras execuções
+        run: |
+          set -e
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add noticias.json analise_nacional.json
-          if ! git diff --cached --quiet; then
-            git commit -m 'Atualizar noticias e estatisticas automaticamente'
-            git pull --rebase
-            git push
-          fi
+          for tentativa in 1 2 3; do
+            git add noticias.json
+            for arquivo in analise_nacional.json cobertura_historica.json; do
+              if [ -f "$arquivo" ]; then git add "$arquivo"; fi
+            done
+            if git diff --cached --quiet; then
+              echo 'Nenhuma alteração a salvar.'
+              exit 0
+            fi
+            git commit -m 'Atualizar notícias, links e imagens'
+            if git push origin HEAD:main; then
+              echo 'Acervo atualizado.'
+              exit 0
+            fi
+            echo 'Conflito de atualização; recarregando dados remotos.'
+            git fetch origin main
+            git reset --hard origin/main
+            python recuperar_links.py --limite 60 --trabalhadores 4
+            python enriquecer_imagens.py --limite 60
+            if [ -f analisar_noticias.py ]; then python analisar_noticias.py; fi
+          done
+          echo 'Não foi possível salvar sem conflito.' >&2
+          exit 1
