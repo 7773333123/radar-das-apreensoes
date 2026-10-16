@@ -6,6 +6,7 @@ Uso:
   python coletor.py --historico --ano 2024 --mes 6
 """
 import argparse
+import base64
 import json
 import html
 import re
@@ -209,6 +210,27 @@ def extrair_url_original_descricao(descricao, dominio_fonte):
     return ''
 
 
+def extrair_url_codigo_google(url, dominio_fonte=''):
+    """Decodifica apenas URLs explícitas presentes em identificadores antigos.
+
+    Identificadores recentes podem não conter URL; não inventar destino.
+    """
+    try:
+        codigo = urllib.parse.urlsplit(url).path.rstrip('/').split('/')[-1]
+        bruto = base64.urlsafe_b64decode(codigo + '=' * (-len(codigo) % 4))
+        dominio = (dominio_fonte or '').lower().removeprefix('www.')
+        for encontrado in re.findall(rb"https?://[^\x00-\x20\x7f\"<>]+", bruto):
+            candidato = encontrado.decode('utf-8', 'ignore')
+            host = (urllib.parse.urlsplit(candidato).hostname or '').lower().removeprefix('www.')
+            if host and host not in ('news.google.com', 'google.com') and (
+                not dominio or host == dominio or host.endswith('.' + dominio)
+            ):
+                return candidato
+    except (ValueError, UnicodeError, TypeError):
+        pass
+    return ''
+
+
 def coletar(query, categoria=None):
     parametros = urllib.parse.urlencode({'q': query, 'hl': 'pt-BR', 'gl': 'BR', 'ceid': 'BR:pt-419'})
     requisicao = urllib.request.Request(BASE + parametros, headers={'User-Agent': 'Mozilla/5.0 RadarDasApreensoes/2.0'})
@@ -228,8 +250,9 @@ def coletar(query, categoria=None):
             noticia['dominio_fonte'] = urllib.parse.urlsplit(fonte_elemento.get('url')).hostname or ''
         if urllib.parse.urlsplit(url).hostname == 'news.google.com':
             noticia['url_google_noticias'] = url
-            original = extrair_url_original_descricao(item.findtext('description'), noticia.get('dominio_fonte'))
-            noticia['url_original_status'] = 'identificada_no_rss' if original else 'nao_identificada'
+            original = (extrair_url_original_descricao(item.findtext('description'), noticia.get('dominio_fonte'))
+                        or extrair_url_codigo_google(url, noticia.get('dominio_fonte')))
+            noticia['url_original_status'] = 'identificada_na_coleta' if original else 'aguardando_resolucao'
             if original:
                 noticia['url_original'] = original
         else:
@@ -337,7 +360,7 @@ def deduplicar(itens):
             # Preserva imagens e URLs originais descobertas em coletas posteriores.
             for anterior in unicos:
                 if url_base(anterior) == u:
-                    for campo in ('imagem_url', 'imagem', 'url_original'):
+                    for campo in ('imagem_url', 'imagem', 'url_original', 'resumo', 'descricao'):
                         if not anterior.get(campo) and n.get(campo):
                             anterior[campo] = n[campo]
                     break
@@ -348,7 +371,7 @@ def deduplicar(itens):
         iguais = [i for i in candidatos if mesma_materia(n, unicos[i])]
         if iguais:
             anterior = unicos[iguais[0]]
-            for campo in ('imagem_url', 'imagem', 'url_original'):
+            for campo in ('imagem_url', 'imagem', 'url_original', 'resumo', 'descricao'):
                 if not anterior.get(campo) and n.get(campo):
                     anterior[campo] = n[campo]
             descartadas += 1
