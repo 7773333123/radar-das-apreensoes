@@ -62,7 +62,7 @@ jobs:
             echo 'Coletor de fontes diretas não instalado; mantendo coleta RSS.'
           fi
       - name: Recuperar links originais
-        run: python recuperar_links.py --limite 60 --trabalhadores 4 --diagnostico
+        run: python recuperar_links.py --limite 40 --trabalhadores 4 --busca-fonte --diagnostico
       - name: Buscar fotografias originais
         run: |
           if [ -f enriquecer_imagens.py ]; then
