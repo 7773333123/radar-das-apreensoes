@@ -62,7 +62,9 @@ jobs:
             echo 'Coletor de fontes diretas não instalado; mantendo coleta RSS.'
           fi
       - name: Recuperar links originais
-        run: python recuperar_links.py --limite 60 --trabalhadores 4 --busca-fonte --diagnostico
+        run: |
+          echo "RADAR_WORKFLOW_V3: busca alternativa ativada"
+          python recuperar_links.py --limite 60 --trabalhadores 4 --busca-fonte --diagnostico
       - name: Buscar fotografias originais
         run: python enriquecer_imagens.py --limite 60
       - name: Gerar estatísticas (se disponível)
