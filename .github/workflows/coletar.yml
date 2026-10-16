@@ -51,7 +51,9 @@ jobs:
           python -c "from googlenewsdecoder import gnewsdecoder; print('Decodificador importado com sucesso')"
 
       - name: Recuperar links originais das noticias
-        run: python recuperar_links.py --limite 60
+        env:
+          RADAR_DIAGNOSTICO: '1'
+        run: python recuperar_links.py --limite 10 --diagnostico
 
       - name: Buscar fotografias das matérias originais
         run: python enriquecer_imagens.py --limite 40
