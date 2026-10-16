@@ -9,7 +9,7 @@ import re
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from urllib.parse import parse_qs, urlencode, urlparse
+from urllib.parse import parse_qs, urlencode, urlparse, unquote
 from urllib.request import Request, urlopen
 
 ARQUIVO = Path(__file__).resolve().parent / 'noticias.json'
@@ -54,9 +54,12 @@ def google_rpc(url):
     if not re.fullmatch(r'[A-Za-z0-9_-]{20,}', token): return '', 'codigo_invalido'
     try:
         _, page = fetch('https://news.google.com/rss/articles/'+token+'?hl=pt-BR&gl=BR&ceid=BR:pt-419')
-        ident = re.search(r'data-n-a-id=["\']([^"\']+)', page)
-        sign = re.search(r'data-n-a-sg=["\']([^"\']+)', page)
-        if not ident or not sign: return '', 'assinatura_ausente'
+        # O Google alterna aspas, escapes e serialização de atributos.
+        normalized = html.unescape(page).replace('\\"', '"')
+        ident = re.search(r'data-n-a-id\s*=\s*["\']([^"\']+)', normalized)
+        sign = re.search(r'data-n-a-sg\s*=\s*["\']([^"\']+)', normalized)
+        if not ident or not sign:
+            return '', 'assinatura_ausente' 
         # Estrutura garturlreq: id e assinatura pertencem ao mesmo vetor interno.
         request = ['garturlreq', [['pt-BR','BR',['FINANCE_TOP_INDICES','WEB_TEST_1_0_0'],None,None,1,1,'BR:pt-419',None,180,None,None,None,None,None,0,None,None,[1608992183,723341000]], 'pt-BR','BR',1,[2,3,4,8],1,0,'655000234',0,0,None,0], ident.group(1), sign.group(1)]
         body = json.dumps([[['Fbv4je', json.dumps(request, separators=(',',':')), None, 'generic']]], separators=(',',':'))
@@ -78,6 +81,16 @@ def resolver(url):
     for key in ('url','u','q','target'):
         for candidate in parse_qs(urlparse(url).query).get(key, []):
             if valida(candidate): return candidate, 'recuperada_parametro'
+    # Tenta também o decodificador mantido pela comunidade, quando instalado.
+    try:
+        from googlenewsdecoder import gnewsdecoder
+        decoded = gnewsdecoder(url, interval=0)
+        if isinstance(decoded, dict):
+            candidate = decoded.get('decoded_url') or decoded.get('url') or ''
+            if decoded.get('status') and valida(candidate):
+                return candidate, 'recuperada_decoder'
+    except (ImportError, Exception):
+        pass
     candidate, status = google_rpc(url)
     if candidate: return candidate, status
     try:
@@ -93,6 +106,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--limite', type=int, default=int(os.getenv('LIMITE_DECODIFICACAO','60')))
     ap.add_argument('--trabalhadores', type=int, default=4)
+    ap.add_argument('--diagnostico', action='store_true', help='Exibe amostra de erros sem revelar dados privados')
     args = ap.parse_args()
     if not ARQUIVO.exists(): raise SystemExit('noticias.json ausente; nada alterado')
     data = json.loads(ARQUIVO.read_text(encoding='utf-8'))
@@ -132,5 +146,6 @@ def main():
         temp.replace(ARQUIVO)
     print(f'Recuperados: {successes}/{len(batch)}; falhas: {dict(errors)}; acervo preservado: {len(news)}',flush=True)
     if batch and not successes: print('AVISO: nenhuma URL recuperada. Consulte os códigos de falha acima.',flush=True)
+    if args.diagnostico: print('Diagnóstico:',dict(errors),'| notícias preservadas:',len(news),flush=True)
 
 if __name__=='__main__': main()
