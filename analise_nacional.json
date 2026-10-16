@@ -1,21 +1,21 @@
 {
-  "gerado_em_utc": "2026-10-15T23:58:11.898680+00:00",
+  "gerado_em_utc": "2026-10-16T00:14:23.664973+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "materia_sem_informacao_quantitativa": 6396,
+    "materia_sem_informacao_quantitativa": 6399,
     "pendente_verificacao_apreensao": 3909,
     "com_informacao_quantitativa": 791
   },
-  "materias_sem_informacao_quantitativa": 6396,
+  "materias_sem_informacao_quantitativa": 6399,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
   "noticias_multicategoria": 1246,
   "noticias_com_quantidades": 791,
-  "noticias_analisadas": 11096,
+  "noticias_analisadas": 11099,
   "fontes_distintas_informadas": 1367,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 4190,
-    "Armas e munições": 2956,
+    "Drogas e entorpecentes": 4192,
+    "Armas e munições": 2957,
     "Contrabando e descaminho": 647,
     "Dinheiro e valores": 364,
     "Veículos": 115,
@@ -136,7 +136,7 @@
     "2026-07": 34,
     "2026-08": 47,
     "2026-09": 34,
-    "2026-10": 2208
+    "2026-10": 2211
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -147,15 +147,15 @@
     "2023": 1786,
     "2024": 2177,
     "2025": 2519,
-    "2026": 2348
+    "2026": 2351
   },
   "status_processamento": {
+    "classificacao_automatica": 7158,
     "outras_apreensoes_a_revisar": 32,
-    "pendente_evidencia": 3909,
-    "classificacao_automatica": 7155
+    "pendente_evidencia": 3909
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 11042,
+    "aguardando_url_original": 11045,
     "lida": 54
   },
   "noticias_sem_data_valida": 0,
@@ -166,6 +166,19 @@
   "leituras_pendentes": 0,
   "resultados_leituras_externas": {},
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxOWmpGVzZFWmljSzJ5QXFGS3hzOWZZUThJOEVJX3kzVklKWjUwcHJBX3RoVTV6NWpGZTY0OEhKdjQtOVp4Z3hwZ2FiVnZFRzhUdGZRTWFXdmdBdGZ4dk9HM0J0MGdZMmNMNmN2QkpGbEFGQmF3NTlxT3EtVVFNeTdtQ2JxN08ybTY0SC1pU2tBNkpxdEcwSlpfTGpwUmk2OWhSajlhQ0llcW5ZelVfcG1RbkdZeDF0TThyLTI1WFpYZTBoUTdPMUZhNVhXTjYyVFJNdDRhbk9wSlBXWnl2WEszUdIB7wFBVV95cUxOcEtnZkgzajJYMGpvOXhLSFZKRDFJRXV1c25JZjZZbkNHN2MxdjZEVUhGbW5WV09ENndqOUVZNU52T05ybVhBMnZDTHoxN3k5dGFTd0tVWU9PeXpjWG1zMDFWVVRvUnFReFltRGFKX05RVUhpLWUyTzYxQi0yWEEzUDlFbWI1dDA1UmFfdHhYSWFOcXRfQXZzTkQ2cGdISjlydEVyaVNxMFBGMkE5QzB4MUFQZXU2MjZCZ1JzMFA3YWdfVEZTVGF2OXJkcVBkTlhkeDhKcXhWTUZwR1JscnRJUGd4cUVxcndTSThIcDVnaw?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "suspeitos de trafico sao presos em investigacao que apreendeu armas e municoes no ma - g1",
+          "dois suspeitos de trafico sao presos em investigacao que apreendeu armas e municoes no ma - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNeWZXVDJGYmR0NlhOR2s2Q2hjTm41Uk8tZTRmTktoUTJ0NlhlY1c2QWRETzNEdWsyZjFLUk9TMUlGcVAxbklIVmNtVkcwUTZIYnk1RmppYmRzN2JiUHlxSVRLQzdkejk4TG1zYXFUX1NQcmoxbC0wVWljMThKWkRSd3ljUjlGTFd2d1VhNFJiWjNuX2phMWxsX05TYw?oc=5",
       "categorias_sugeridas": [
@@ -3347,6 +3360,19 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOMnBUS0Zzb0tlVVNPRWJmdUUzRzNsQ3RicDV4WXo5WXMzR3pyeElibHJZUWZuNW9welpBOGR3T0VVUXJUR2NnVl9iZW9VS0xPbURVbDluU0FzRkJDRzlzMVJ4S0liY0UwelFfYmRRMVhPVnFLMjZtZF95RGlNQS1NTHdGeDY?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "operacao cavalo de troia resulta em prisoes por trafico de drogas em marituba - portal & tv gurupi",
+          "operacao cavalo de troia resulta em prisoes por trafico de drogas em marituba - portal & tv gurupi"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQemxzV1F2Q3pmR3U1aFota2xPUlR4NERKWDhIN2JBS3NidjhhN0o2TUZ6eXFrRWxLanVpMVdjRExCeDRiX3Awd3cta081d2FZRDZ5RW5hSnFvY2YxVnBXV2lYX2VLRENxVmxGREhfUlFYTDdRbnJYWU0xWWJMUHYyMldRVWRUcDAza1ozc0VldnU?oc=5",
       "categorias_sugeridas": [
         "Contrabando e descaminho"
@@ -4011,6 +4037,18 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1IUkVocHdKcHdIZ2YtbDl6YVhLSmF3R1hSNmFabzRMaU15WHpVU3dvTUlzQW8wTi1WaUxSWlhCV0NoWWFvY3lCY3BaRDU5Ym1LTDVIWW9wQnV6bG5abVk5ZFRRbEJHZG1aM3V2LUd0Qk1BWlpaLUNsRnl3?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia federal e pm apreendem meia tonelada de maconha em caminhao em agua branca - clickpb"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
