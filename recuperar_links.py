@@ -84,33 +84,44 @@ def normalizar_titulo(t):
     return re.sub(r'[^a-z0-9]+', ' ', t.lower()).strip()
 
 def buscar_fonte_por_titulo(artigo):
-    """Fallback verificável: aceita apenas correspondência forte de título e domínio."""
+    """Busca em índices públicos; só aceita links do domínio da fonte com título compatível."""
     titulo = (artigo.get('titulo') or '').strip()
-    dominio = (artigo.get('dominio_fonte') or '').lower().removeprefix('www.')
     fonte = (artigo.get('fonte') or '').strip()
-    if ' - ' in titulo and fonte and titulo.lower().endswith(' - ' + fonte.lower()):
+    dominio = (artigo.get('dominio_fonte') or '').lower().removeprefix('www.')
+    if fonte and titulo.lower().endswith(' - ' + fonte.lower()):
         titulo = titulo[:-(len(fonte)+3)]
-    # Remove sufixos editoriais frequentes sem alterar o título no acervo.
-    if ' - ' in titulo:
-        titulo = titulo.split(' - ')[0]
     alvo = normalizar_titulo(titulo)
-    if len(alvo) < 28 or not dominio or dominio in ('news.google.com','www.gov.br') and len(alvo)<35:
+    if len(alvo) < 25 or not dominio or dominio in ('news.google.com', 'google.com'):
         return '', 'busca_sem_dados'
-    try:
-        query = 'site:' + dominio + ' ' + titulo[:105].replace('"','')
-        _, body = fetch('https://www.bing.com/search?format=rss&q=' + quote(query), timeout=12)
-        root = ET.fromstring(body)
-        for item in root.findall('.//item')[:8]:
-            candidate = (item.findtext('link') or '').strip()
-            h = (urlparse(candidate).hostname or '').lower().removeprefix('www.')
-            if not valida(candidate) or not (h == dominio or h.endswith('.'+dominio)):
-                continue
-            found = normalizar_titulo(item.findtext('title') or '')
-            if SequenceMatcher(None, alvo, found).ratio() >= .75 or (len(alvo) > 32 and alvo[:32] in found):
-                return candidate, 'recuperada_busca_titulo_dominio'
-        return '', 'busca_sem_correspondencia'
-    except Exception as exc:
-        return '', 'busca_' + type(exc).__name__
+    # Google Notícias pode fornecer o nome do portal, mas não a URL original.
+    # Pesquisas independentes no índice web e no índice de notícias do Bing.
+    consultas = [
+        ('https://www.bing.com/search?format=rss&q=', 'site:' + dominio + ' "' + titulo[:100] + '"'),
+        ('https://www.bing.com/news/search?format=rss&q=', 'site:' + dominio + ' ' + titulo[:95]),
+        ('https://www.bing.com/news/search?format=rss&q=', '"' + titulo[:110] + '"'),
+    ]
+    erro = 'busca_sem_correspondencia'
+    for endpoint, consulta in consultas:
+        try:
+            _, body = fetch(endpoint + quote(consulta), timeout=12)
+            root = ET.fromstring(body)
+            for item in root.findall('.//item')[:15]:
+                candidate = html.unescape((item.findtext('link') or '').strip())
+                if not valida(candidate):
+                    continue
+                host = (urlparse(candidate).hostname or '').lower().removeprefix('www.')
+                if not (host == dominio or host.endswith('.' + dominio)):
+                    continue
+                encontrado = normalizar_titulo(item.findtext('title') or '')
+                # Evita atribuir matérias parecidas a notícias diferentes.
+                palavras_alvo = set(alvo.split())
+                palavras_encontradas = set(encontrado.split())
+                cobertura = len(palavras_alvo & palavras_encontradas) / max(1, len(palavras_alvo))
+                if SequenceMatcher(None, alvo, encontrado).ratio() >= .82 and cobertura >= .75:
+                    return candidate, 'recuperada_indice_titulo_dominio'
+        except Exception as exc:
+            erro = 'indice_' + type(exc).__name__
+    return '', erro
 
 def resolver(url):
     embedded = codigo_embutido(url)
@@ -160,19 +171,19 @@ def main():
         if valida(url):
             article['url_original']=url; article['url_original_status']='direta'; existing+=1
         elif isinstance(url,str) and (urlparse(url).hostname or '').lower() == 'news.google.com':
-            try: tentativas = int(article.get('tentativas_url_original') or 0)
+            try: tentativas = int(article.get('tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original') or 0)
             except (ValueError, TypeError): tentativas = 0
             if args.max_tentativas == 0 or tentativas < args.max_tentativas:
                 pending.append((article,url))
     # Distribui o trabalho: notícias nunca testadas primeiro; depois falhas antigas.
     # A ordem do JSON é mantida, e nenhuma notícia é descartada.
     def prioridade(pair):
-        try: n = int(pair[0].get('tentativas_url_original') or 0)
+        try: n = int(pair[0].get('tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original') or 0)
         except (TypeError, ValueError): n = 0
         return (n, pair[0].get('url_original_status') not in ('aguardando_resolucao', None, ''))
     pending.sort(key=prioridade)
     batch=pending[:max(0,args.limite)]
-    print('RADAR_RECUPERADOR_V4: tentativas limitadas e acervo preservado', flush=True)
+    print('RADAR_RECUPERADOR_V5: busca em indices independentes e acervo preservado', flush=True)
     print(f'Acervo: {len(news)}; links originais: {existing}; pendentes elegíveis: {len(pending)}; tentativas: {len(batch)}', flush=True)
     successes=0; errors=Counter()
     with ThreadPoolExecutor(max_workers=max(1,min(args.trabalhadores,6))) as pool:
@@ -202,9 +213,9 @@ def main():
                         continue
                     status += '+' + alt_status
                 article['url_original_status']=status
-                try: anteriores = int(article.get('tentativas_url_original') or 0)
+                try: anteriores = int(article.get('tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original') or 0)
                 except (TypeError, ValueError): anteriores = 0
-                article['tentativas_url_original']=anteriores+1
+                article['tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original']=anteriores+1
                 errors[status]+=1
     if batch:
         temp=ARQUIVO.with_suffix('.json.tmp')
