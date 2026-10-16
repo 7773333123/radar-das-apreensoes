@@ -59,6 +59,8 @@ def google_rpc(url):
         ident = re.search(r'data-n-a-id\s*=\s*["\']([^"\']+)', normalized)
         sign = re.search(r'data-n-a-sg\s*=\s*["\']([^"\']+)', normalized)
         if not ident or not sign:
+            candidate = url_no_html(page)
+            if candidate: return candidate, 'recuperada_canonical'
             return '', 'assinatura_ausente'+('_id' if ident else '_sem_id')+('_sg' if sign else '_sem_sg')+('_html' if '<html' in page.lower() else '_outro')
         # Estrutura garturlreq: id e assinatura pertencem ao mesmo vetor interno.
         request = ['garturlreq', [['pt-BR','BR',['FINANCE_TOP_INDICES','WEB_TEST_1_0_0'],None,None,1,1,'BR:pt-419',None,180,None,None,None,None,None,0,None,None,[1608992183,723341000]], 'pt-BR','BR',1,[2,3,4,8],1,0,'655000234',0,0,None,0], ident.group(1), sign.group(1)]
@@ -122,7 +124,6 @@ def main():
             article['url_original']=url; article['url_original_status']='direta'; existing+=1
         elif isinstance(url,str) and 'news.google.com/' in url:
             pending.append((article,url))
-    pending.sort(key=lambda x: (x[0].get('url_original_status') not in ('aguardando_resolucao',None,''), x[0].get('url_original_status','')))
     # Alterna as tentativas ao longo do acervo para não insistir sempre nas mesmas URLs.
     pending.sort(key=lambda x: (x[0].get('url_original_status') not in ('aguardando_resolucao', None, ''), str(x[0].get('url_original_status', ''))))
     batch=pending[:max(0,args.limite)]
