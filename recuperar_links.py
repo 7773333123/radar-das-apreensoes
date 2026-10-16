@@ -90,11 +90,14 @@ def buscar_fonte_por_titulo(artigo):
     fonte = (artigo.get('fonte') or '').strip()
     if ' - ' in titulo and fonte and titulo.lower().endswith(' - ' + fonte.lower()):
         titulo = titulo[:-(len(fonte)+3)]
+    # Remove sufixos editoriais frequentes sem alterar o título no acervo.
+    if ' - ' in titulo:
+        titulo = titulo.split(' - ')[0]
     alvo = normalizar_titulo(titulo)
     if len(alvo) < 28 or not dominio or dominio in ('news.google.com','www.gov.br') and len(alvo)<35:
         return '', 'busca_sem_dados'
     try:
-        query = 'site:' + dominio + ' "' + titulo[:115].replace('"','') + '"'
+        query = 'site:' + dominio + ' ' + titulo[:105].replace('"','')
         _, body = fetch('https://www.bing.com/search?format=rss&q=' + quote(query), timeout=12)
         root = ET.fromstring(body)
         for item in root.findall('.//item')[:8]:
@@ -103,7 +106,7 @@ def buscar_fonte_por_titulo(artigo):
             if not valida(candidate) or not (h == dominio or h.endswith('.'+dominio)):
                 continue
             found = normalizar_titulo(item.findtext('title') or '')
-            if SequenceMatcher(None, alvo, found).ratio() >= .87:
+            if SequenceMatcher(None, alvo, found).ratio() >= .75 or (len(alvo) > 32 and alvo[:32] in found):
                 return candidate, 'recuperada_busca_titulo_dominio'
         return '', 'busca_sem_correspondencia'
     except Exception as exc:
