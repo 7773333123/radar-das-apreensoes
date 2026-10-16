@@ -1,21 +1,21 @@
 {
-  "gerado_em_utc": "2026-10-16T10:43:32.254443+00:00",
+  "gerado_em_utc": "2026-10-16T10:51:59.629129+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "materia_sem_informacao_quantitativa": 6441,
-    "pendente_verificacao_apreensao": 3976,
-    "com_informacao_quantitativa": 798
+    "com_informacao_quantitativa": 800,
+    "materia_sem_informacao_quantitativa": 6443,
+    "pendente_verificacao_apreensao": 3979
   },
-  "materias_sem_informacao_quantitativa": 6441,
+  "materias_sem_informacao_quantitativa": 6443,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
-  "noticias_multicategoria": 1257,
-  "noticias_com_quantidades": 798,
-  "noticias_analisadas": 11215,
+  "noticias_multicategoria": 1259,
+  "noticias_com_quantidades": 800,
+  "noticias_analisadas": 11222,
   "fontes_distintas_informadas": 1380,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 4226,
-    "Armas e munições": 2975,
+    "Drogas e entorpecentes": 4230,
+    "Armas e munições": 2977,
     "Contrabando e descaminho": 650,
     "Dinheiro e valores": 365,
     "Veículos": 115,
@@ -26,7 +26,7 @@
   },
   "noticias_por_uf_explicita": {
     "PA": 750,
-    "BA": 313,
+    "BA": 315,
     "PR": 162,
     "SP": 130,
     "PI": 106,
@@ -136,7 +136,7 @@
     "2026-07": 34,
     "2026-08": 47,
     "2026-09": 34,
-    "2026-10": 2318
+    "2026-10": 2325
   },
   "noticias_por_ano": {
     "2018": 1,
@@ -147,25 +147,54 @@
     "2023": 1788,
     "2024": 2179,
     "2025": 2523,
-    "2026": 2459
+    "2026": 2466
   },
   "status_processamento": {
-    "classificacao_automatica": 7206,
-    "pendente_evidencia": 3976,
+    "classificacao_automatica": 7210,
+    "pendente_evidencia": 3979,
     "outras_apreensoes_a_revisar": 33
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 11161,
+    "aguardando_url_original": 11168,
     "lida": 54
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 3976,
-  "noticias_pendentes_revisao": 3976,
+  "noticias_sem_classificacao": 3979,
+  "noticias_pendentes_revisao": 3979,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 0,
   "leituras_pendentes": 0,
   "resultados_leituras_externas": {},
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPRU5raHlzT3BPUHhhakpMcTV2ckVyOGI4N3lpLS1pZGdlaEN4UVRiTWhqWkNJQVpEUUFTdE1CMGdRR0M1djYxeGh6MVJNeEpadlJWUWFxRVJFcHJ0WmdtR0wxSV9LXzdtV3NaRW1fUzl1czFOa0lHNUIwYWRHQ3VuZHAtb3BQWnEyVmtPWFVzSWFzYU1QbFZpLVJuYWVvUFFxVkYycld1dEZ1WlFP?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "cpe apreende 200 porcoes de crack e 150 gramas de maconha durante acao em catalao - zap catalao",
+          "cpe apreende 200 porcoes de crack e 150 gramas de maconha durante acao em catalao - zap catalao"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOVkhQeXBlbVl4bmllT3IzVWdsVmlZbFFyazNyMkMwbWhVT0dzSm41NUVEaDFBc040TWp2blo2STRCbE5mMEZwWjdXams4YjVncFV5VV8wNy1GdkppYjRJMTJDN0hfejliZXFXUU9Rc3RCcHJlT2VXTGs3ampWalhIZXFmaDZmT0Z5TzdVQk44dDhaTl9LaDNkbXpQbENGdmQ5Y0pEVUwtVUFBRXRWaFRfd1pCdzRYaVpwX01oRnZB?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pm liberta familia refem, apreende armas, granada, drogas e prende suspeitos no vale das pedrinhas - policia militar da bahia - pmba"
+        ],
+        "Armas e munições": [
+          "pm liberta familia refem, apreende armas, granada, drogas e prende suspeitos no vale das pedrinhas - policia militar da bahia - pmba"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQVlJjeEkzajFEUFZZelJLSFJOSUc5S1BRT0xmcVZ2T25WOGtmZTBnY1kzc2dQdkJaeVZtNWhiWGJZTVpjM2tpU2Z2X2prbklOd0RGb2E1b0dzSFFscUJCLXluVzdBYnppRWJnOGYxdzJGTGJfRlpHTGtoTU03RDdxXy1sQ1h2bGN2RHk5YndpSVQzYUhiQzBBbFUxcUt3V21HbDV4dVJhaw?oc=5",
       "categorias_sugeridas": [
@@ -175,6 +204,35 @@
         "Drogas e entorpecentes": [
           "romu apreende adolescente por trafico de drogas com 475 porcoes em cosmopolis - policial padrao",
           "romu apreende adolescente por trafico de drogas com 475 porcoes em cosmopolis - policial padrao"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPRHlwZklaTWZ5VG5FMWQxRGZaVXdSbHFLbGVVRU5fY1JHQzZQQ19JR2xKUFFMMGd6THNQaV9aSTVETWZ1eEtucHVsZ2x4YnpHcnE2RUFGN3FIa3VKYmxPalUwaUFoU3lOR3NhUVlNaTNLeWlMSUJ2bTY4T3hxWUFBb0M2aFNsTU5zTXVvNm4xQm5ydjk3REdfRm9BM0RnMnkyTlFycHl6WGJ3QU5Jc2RWTlplbzdsbFBUejhPMWZfT0XSAbsBQVVfeXFMT2d5SzhVZHFqNzhSMW1PVURCT19FZFZwbFdpV2d1d3pSaVZCSl9xcEtGQm1XUXJuU1B1clRCcklBaXN4dlFhMnMyX2t0eGpIYkRqdU1Gc3RDZ2JKREJzVG05YldjWGlydWZZUDlrV2xZR1ZvcVBha1N1NnZfUUhUeUJzNjRDZ2drYlFWUEFWSDRUOC1XMnRGb081UmhZdUdNTmVSekh5NFVUaWkwc2l6cXkxa29YU3c0cWYxWQ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "investigado por trafico, “gg” e preso com 10 kg de cocaina e tres armas de fogo em maceio - tnh1"
+        ],
+        "Armas e munições": [
+          "investigado por trafico, “gg” e preso com 10 kg de cocaina e tres armas de fogo em maceio - tnh1",
+          "investigado por trafico, “gg” e preso com 10 kg de cocaina e tres armas de fogo em maceio - tnh1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNVW0zM2lGOHhvU3AxWDJqY0tvaEc1Z2JqdTVYMTB6NnNjZ3FRRjdTVm8tNG9SX2tHbEpjTXB0RFdnbXJOQWQ0SWswV3Z4TzY0MmFpQVhzem42aHkxU283YlJ0SG9lNk1jSEZ0VGpfQ3BwcDNCRG45aWtfdUVrNXd6dWZqRnRVQjZMek5selVqbFBUSURzSjJqUnNGYkk1Wmh6dXN5bExteEIybU1GRnRVMHdDcTA?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "dupla e presa com drogas e dinheiro durante operacao policial na zona sul de manaus - am post"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -200,6 +258,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQQTFtSVFRRGZjTnJSTVJLbnlxYXRzMjJvZXhHQ3dYZHM5alFqR0hvb0xwdVZOVVpWVFg5UHBvMTdPRWV2SnhnVTBpQkUwclE2NjRmUjZHWDJMM0g0MnhRWFJwSG5qZUhrNEIxVXZPYXN5V2ZjTFVHcF9EWGl0OVZGaElLUUVMZjByOTMzN3V4em5FOGdKa2hjdTlDZGlqeDZINXFORzY2cDh1WVJkc2NpNnBoNTh4R01CMjh6cG5vVVFnX01kMkQ0a3FfVlJUQkxDTVhtaNIBzwFBVV95cUxOTm9qUDlQdlZKRmJMX1BXSFRjQV92cG0zV1VCd0tyOU9Yc1M4LXFhc0RYdFZLQkxITklUZnN1SVhPZVFJdFJUdUQ3RFhvYU9sdjNoNThGZEJDN0VnZnd2UEwxSUJIZEg0U1ByU1YtbDdtT1BibnlISndlVFhIWk83V3BpZTZuUk53a2EtaDVkenJhazYwUG8wSE9yTUlBWjcwU2l1NGFSRlhFT21Ia3NqSTk5LWVLWE9UbG5WQ1ZpRVVITjZydnFUVlc4aXFjNlU?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQM1p4Q1JhUHpaeXZqZ2liel82bGdzZlNHY1YwdkZfdG0tcEM2ZEhEWGMwOUZscFQxMWhDX2ZvNDdtWjg3Q1l1ZVB5Y3UyTjgzWGx3TzRpVXR1QTJoM29MRW9VNFFDOFByd0NETGQ4Z19qblAyOVoxR003bmRXZlNDMGxkTW5oaS1EaVVsNHN3V3lJUUp2aXlqbDM1VU96dUxoZVVXNi1UM1E0UkozOEZaMFZ4RTFTZHM1NlpJUzBVMjh1V1NG?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -221,6 +287,14 @@
           "policia apreende submetralhadora e drogas enterradas na mata do cuia - clickpb"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxPNlc5dC1FLXQ5cG8xMjNiaEJpMzUwYTJyYXlaOGlfLVoyQi1ZSm9oTlh4UTRxc3RsUUg2enFDWGs1YkdzTURYc2tTWGlBc2dCVlFtdnlwLUhXVUVYVHVHR3BTYkxzQXdTbVRhYmhxbTdCYWVaTGRiRWJ6d0ZPMDZiLUFrT2p2cWhwUEdrUGFwcDE2dk4tN2tYNjc2MjZXcDhWckwzbnRncmdsSXFmaG1MYURuZGtNMnJNZVRObFZmNnMzbl9UOUhBb21tcmdWZVNBOFZKZ0R3TVRINGpaWGEtcUhsMkc?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -2833,6 +2907,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOQ1NZelpBNnhlSGZCSkVMQnFob2xHYmZLLUV3RUM3OXNITDc0eS1rdExjejAxVTRISGd3QUxENDZUNVdLNk9MeHZiT3kwZHZsRUFwaWRZZXM2UFBEdll1bWpJbXJnQXRrVVhpOV83M3BjMWVoT3VtWlpUN3d0UU5oTnlfY0Vmc0ZjSG9pckJEaEU3Z2lqa0VTUVJ3a2FMQ3NJdVhWWFpkcmtZbmc3YnpYYTBQRDAxMFE?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxNT1VPYjVCNm5tdHprWjFOdnhNWDJhYzJjbkQ3Sk1mc3JsUjBHWXhzSGNyc1E5eEZQZnJPY002d1haTXpvVzY4U1p1MnhpNXNhemNfX01WWEtLNE1KamJYMEVOd0gyRUlqX3M3cHBocG9RdDNISWsxdVRMT0pkMFlsZ1JDV2hHTE81NVEtcUVVYnZwY21MaEV2cEZTOXJSbVl6TmdLdWVycWxPSklISVlZSlQ5WUxKc2x2QzFUNVM5MnJNSGFTZEtnRTBlc0hkME1icDZYMnRMWVBzbnBTN3k2TDBLcU1BZWo3QjZleG9LQU1yeXpQaTBZTFBxbWVNRDU5TFHSAZACQVVfeXFMTjB4cm5mM0N2OWpFYXVVUXpEYV9aSGZ6bVhsWGg5RzQ2R2NhSjFHbFhoZWk2TTBPcGxVUkxCLTBHeDl0Tk5YRkdFWkdRXzBmUlVpdFNOMXhSVnEwblRMN2IxcVJqcVZtRXlDT3MwYjhJZnV2WWMyNGpvendHOUtCa0tYUGJzOHZhWTBEZlFyc3M4TnZWSmZXcy1Lay1iN3lfOS04ZVdKU0NUZXNVbnA0aXh0WlFqNG43ZGZfREJseFRnS1pCNnhuakdzYkRrQ2ROTENEZ196WGJNWVEwUHpLNlZHQjF6WkZUTC1JTU5RZXdueEpnR2xrYTV4a1NyNHNHenJPSFNZN3dkR01jSnB0NE0?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -119888,7 +119970,7 @@
     }
   ],
   "quantificacao": {
-    "itens_extraidos": 841,
+    "itens_extraidos": 843,
     "totais_preliminares": [
       {
         "categoria": "Armas e munições",
@@ -119948,7 +120030,7 @@
         "categoria": "Drogas e entorpecentes",
         "material": "Cocaína",
         "unidade": "kg",
-        "quantidade": 386530.8747
+        "quantidade": 386540.8747
       },
       {
         "categoria": "Drogas e entorpecentes",
@@ -119960,7 +120042,7 @@
         "categoria": "Drogas e entorpecentes",
         "material": "Maconha",
         "unidade": "kg",
-        "quantidade": 1559348.486
+        "quantidade": 1559348.636
       },
       {
         "categoria": "Drogas e entorpecentes",
