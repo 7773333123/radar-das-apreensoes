@@ -101,7 +101,8 @@ def extract_rows(data):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--limite', type=int, default=40)
-    ap.add_argument('--timeout', type=int, default=10)
+    ap.add_argument('--timeout', type=int, default=8)
+    ap.add_argument('--max-tentativas', type=int, default=3)
     args = ap.parse_args()
     path = Path(__file__).resolve().parent / 'noticias.json'
     if not path.exists():
@@ -116,6 +117,8 @@ def main():
         if any(isinstance(n.get(k), str) and n[k].strip() for k in IMAGE_FIELDS):
             already += 1
             continue
+        if int(n.get('tentativas_imagem') or 0) >= args.max_tentativas:
+            continue
         urls = [n.get(k) for k in URL_FIELDS if isinstance(n.get(k), str) and valid_url(n[k])]
         url = next((u for u in urls if not google_news(u)), None)
         if not url:
@@ -127,17 +130,19 @@ def main():
         if consulted >= max(args.limite, 0):
             break
         consulted += 1
+        n['tentativas_imagem'] = int(n.get('tentativas_imagem') or 0) + 1
         try:
             image, reason = get_image(url, args.timeout)
             if image:
                 n['imagem_url'] = image
+                n['imagem_status'] = 'metadados_da_fonte'
                 found += 1
             else:
                 print(f'[{consulted}] Sem imagem: {reason} | {url[:100]}', flush=True)
         except Exception as exc:
             print(f'[{consulted}] Falha na página: {type(exc).__name__}: {str(exc)[:100]}', flush=True)
         time.sleep(0.2)
-    if found:
+    if consulted:
         temp = path.with_name(path.name + '.tmp')
         temp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
         temp.replace(path)
