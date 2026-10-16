@@ -1,26 +1,26 @@
 {
-  "gerado_em_utc": "2026-10-16T11:56:06.647160+00:00",
+  "gerado_em_utc": "2026-10-16T12:06:57.603993+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "pendente_verificacao_apreensao": 3989,
-    "materia_sem_informacao_quantitativa": 6448,
+    "pendente_verificacao_apreensao": 3992,
+    "materia_sem_informacao_quantitativa": 6450,
     "com_informacao_quantitativa": 803
   },
-  "materias_sem_informacao_quantitativa": 6448,
+  "materias_sem_informacao_quantitativa": 6450,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
-  "noticias_multicategoria": 1264,
+  "noticias_multicategoria": 1263,
   "noticias_com_quantidades": 803,
-  "noticias_analisadas": 11240,
+  "noticias_analisadas": 11245,
   "fontes_distintas_informadas": 1382,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 4237,
-    "Armas e munições": 2981,
+    "Drogas e entorpecentes": 4238,
+    "Armas e munições": 2980,
     "Contrabando e descaminho": 653,
     "Dinheiro e valores": 366,
     "Veículos": 115,
     "Medicamentos e produtos": 97,
-    "Crimes ambientais": 59,
+    "Crimes ambientais": 60,
     "Operações patrimoniais": 38,
     "Outras apreensões": 33
   },
@@ -35,13 +35,13 @@
     "AM": 69,
     "PE": 68,
     "TO": 66,
-    "RO": 55,
+    "RO": 56,
     "GO": 54,
     "PB": 46,
     "AL": 44,
-    "SC": 41,
+    "SC": 42,
     "MG": 40,
-    "RJ": 34,
+    "RJ": 35,
     "AC": 30,
     "MT": 28,
     "AP": 21,
@@ -92,7 +92,7 @@
     "2022-09": 78,
     "2022-10": 82,
     "2022-11": 67,
-    "2022-12": 98,
+    "2022-12": 99,
     "2023-01": 120,
     "2023-02": 115,
     "2023-03": 166,
@@ -136,31 +136,31 @@
     "2026-07": 34,
     "2026-08": 47,
     "2026-09": 34,
-    "2026-10": 2342
+    "2026-10": 2346
   },
   "noticias_por_ano": {
     "2018": 1,
     "2019": 2,
     "2020": 617,
     "2021": 751,
-    "2022": 895,
+    "2022": 896,
     "2023": 1789,
     "2024": 2179,
     "2025": 2523,
-    "2026": 2483
+    "2026": 2487
   },
   "status_processamento": {
-    "pendente_evidencia": 3989,
-    "classificacao_automatica": 7218,
+    "pendente_evidencia": 3992,
+    "classificacao_automatica": 7220,
     "outras_apreensoes_a_revisar": 33
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 11184,
+    "aguardando_url_original": 11189,
     "lida": 56
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 3989,
-  "noticias_pendentes_revisao": 3989,
+  "noticias_sem_classificacao": 3992,
+  "noticias_pendentes_revisao": 3992,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 2,
   "leituras_pendentes": 0,
@@ -168,6 +168,14 @@
     "lida": 2
   },
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOeWY4dDdPQWxjdkgyaEQ2blJLeGU3WkhMN21TcFNyX2l4U3pvbFN5eEM4aEZpVE80T3RiOXUyYldNVGR1dGVGRS1TR1QyaFNjeDNQa1NLVDVMOWFscngtZjlJZ1ZGa0lLZjdLV1pZdUFaR0ttQ2xBLUs1NVNVY3JyZnh0NjBhYTdYVmdBcmtScjNxczNqbUhOQnhzenNBYURiN3FBbWh2bXFreG1lWXNSSg?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxOOGd6d25Ld0U4U2VsYlo1QkEtOTU4M0daSWY3SC1PMTExVkVETEw3cHpmYzZtQWR0a205Z001eXJ5MEhPWXd1QTlaYkRaa1F0X0ZOb3NXQlF4cXVQbEo3c3prT3NBNjhsVUtPeUdxcGRHWnVTcjVPQWdsaDF5b3ZkTkx3VVR0dHFncEVBMmFmT2x1Q0NhbmxzMjE5Q3JTc1d5cnVkOVExNzdUd3QzZ2poRnNPXzE0ZVotSmNqM3ZSY1RZYW1xY1MtVlF2WGpEaDdKdWptdUYwMXAwR1U?oc=5",
       "categorias_sugeridas": [
@@ -278,6 +286,19 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPdVEwZGN3NUdyOENUTXFWeFhhMDZiZU8wX2xGVGRSRDVsOWJmeDJDOXg2cFVpVFdtY0lvTzRLMEl3LUN5Sy0yNWJ4d2tnOUhKcFZSN3NIR1RBOVZqN3RUclI3QXp2a3VZeEl3R2dBc0RRamJmMElrWGMydlpjQngxSmJhOEVPMTFRSVhBRThoSEt2MGtrNTdiLXRIeVYyQ2xaLXZNTlFCN2xRTjE4LXhsUF9EMjd6RnVIN2tJdGZJaVFNdw?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia prende dois homens por trafico de drogas em comunidade de marica (rj) - r7",
+          "policia prende dois homens por trafico de drogas em comunidade de marica (rj) - r7"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxObExXc1AzX0dXTGZObUVPQlRFVXRxdzQxR29VTVFwb0RyQncxN0V3MS01cFZMYjZoN0VOMjBkRXM4N1FtdTJfTmZ4ZF9SQ3BEM252amp5UlBhSFhrMHVxbHVzcjFnTy1HdnN5WHZ5YjlqVnFDNkFYcm80eURrRjZydGRObFV1RmI5cGltclkzTWU1UFZhNXNIRmgxMWFHNHVUa3NQMklGX1djSUFwN2k2SGxvSGxOWUFWNmc?oc=5",
       "categorias_sugeridas": [
         "Contrabando e descaminho"
@@ -361,6 +382,18 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxQb1FTeURLUndlQ3NBYkxoWDFOd1NRN1hlVEppZGNZUXZ6SjR0RGZFZDVRVmI2M1dBQ0tjdnhGd2dkaHAxQy1teG44Nll0ZVlBMFJGQmZZdUVmeUM3cDFUd3lMeWRMWFhPRTBhY3B2VFRUb0EwQVh2cFg4ZGpDaTVXZG51NWpQZzdPbVd5UDB2dXFNeTJ3cTdteE5BVHVtR290ZGFraVZjWXZnaExYOFVzcXQ2TXJuRjAxYkVzSEhlb2VPaWt0QUhrbGRGcnpuWDY5YjdYR3NxYk9CN2dzRFVLUHFzVdIB8gFBVV95cUxOb0l5T09zV1YydFNtQVJYeHhFUFNGRUF5SGppLTBjdi1tT1NzV1g0NVJWNlZLLUxCYl95LUdhV2ZTekoya1Vxd1BsQlczVEdOTjN5UGRvYUkwUU00ZmxwRDhrYmNqdWozSm5QYVJlb1lOTGk2MUtELXlGREZSYTJ4aVFhRnBKTW1TSXQ0VTViQi05WTBHNWVoZkFhbFduNDY3WTQwZllqN2pzTVhwdDJlbWV3OTM4SjdrWThHQnBPa2k5SjVPSXh4MU9wZGh0b09MS1dxczloVGZFcG9ZQ2lEVG9uclBmNFpObjVsaFJkVy1UZw?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia militar apreende fuzil ak-47 e drogas apos troca de tiros em angra dos reis - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxNdWRESFN5U1pTbGRUM2xraVNaWWUyOUs1RDZwa1FfRGhRV24wZms2dFZZR3MtRlN1UGVyZXpsVUItb3BjNFhpZDFUZVVOMl8xZDVySk1BanlEcy1Rd0Eyc0hFMEJmcVhPWlZreUhkdHpkdUpLdWRFeWVQVEU4d3hlaXdPNmNyWmFRNTBBZnp6QmNnM2swaXNNN1BjaWtDbHEyd1pSZDhlQW45a2NiRV90cG1Va2VUTTBFTkMwQmFtajBFV2RUWnpfeENKeHRKNU9jUEh3Tlg2N2dibUVVZzZjT2J2OFJIQQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -436,6 +469,19 @@
       "evidencias": {
         "Drogas e entorpecentes": [
           "forca tatica apreende mais de 300 porcoes de drogas, balancas de precisao e replica de fuzil em araras, sp - reporter beto ribeiro"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQRC0weWRTd25EUGdSVDBweWdXZW5lbklXcGhuNDVZcXNobHBtNVI1MzFBR0NxZHdweVNLTGFyRllQdkdjZ0NKODlhblZDd29rTmJUV2Q1UG9jRlpURXZDdWxtdFlTcEt1a2kwZnJpU0c2NGZmeVZNXzBBNlU3UHJrM25HT0wzM0lVVzRFSjBmNXpVekdMQlZRSVpyTHJicHpBNUNnUmU4S2tNS1Q0TklPOFk0YlNJa2d3bjZnNNIBvAFBVV95cUxQRC0weWRTd25EUGdSVDBweWdXZW5lbklXcGhuNDVZcXNobHBtNVI1MzFBR0NxZHdweVNLTGFyRllQdkdjZ0NKODlhblZDd29rTmJUV2Q1UG9jRlpURXZDdWxtdFlTcEt1a2kwZnJpU0c2NGZmeVZNXzBBNlU3UHJrM25HT0wzM0lVVzRFSjBmNXpVekdMQlZRSVpyTHJicHpBNUNnUmU4S2tNS1Q0TklPOFk0YlNJa2d3bjZnNA?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pj desmantela grupo ligado ao trafico de droga e a burlas informaticas - renascenca",
+          "pj desmantela grupo ligado ao trafico de droga e a burlas informaticas - renascenca"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -648,6 +694,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxObWY1M0hjMWJqWFlxTHZuZi05TUdvVHdxbElJd0ZIeU9GVF9WeENJQmt6Z3BzVXNBNEhkVGR5bEhrM2V0X3pRMnlkcENPNEh2YzRXaXFVMmtJSWgxaDN1LXh6LW1tVS00V3g5YWFLMWdlb2VzZW1DSjdDQ0cxTU9kWFR5aGZ1NVFhZjFoTWFBVWJSOWxqajEzUzlwU2dOUHJoRU5LanVnUkpkSHB5YWdEMGlINU4zQ3dP0gG4AUFVX3lxTE5tZjUzSGMxYmpYWXFMdm5mLTlNR29Ud3FsSUl3Rkh5T0ZUX1Z4Q0lCa3pncHNVc0E0SGRUZHlsSGszZXRfelEyeWRwQ080SHZjNFdpcVUya0lJaDFoM3UteHotbW1VLTRXeDlhYUsxZ2VvZXNlbUNKN0NDRzFNT2RYVHloZnU1UWFmMWhNYUFVYlI5bGpqMTNTOXBTZ05QcmhFTktqdWdSSmRIcHlhZ0QwaUg1TjNDd08?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPZW1CUXRkYTdIWG5YVTNLdjViLUl4LXFrbEJHV2dScEcwT1VOLUcwRzVtSjdEekFxNEJVVWxTZ2p6MjduZ1JFa2lhTTZXM0kyeGc1MnBfVHBZcHhuZXBuNEdFdmQzb0xSZzd3dW43V0VkSlV3eU1zRWFaY3lJOG5PbF9R?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -2050,6 +2104,18 @@
       "evidencias": {
         "Armas e munições": [
           "pf apreende quatro pistolas ocultas em caixas de som em cascavel/pr — policia federal - governo federal"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPaFZOMWVvQ1hFcC1sVkhmQnk5djVtZ29QZmhUTV9hREFfMjgtWXBnbjVGaHRyMHZMTlRHcUxFOUdBUGFUSkJ2Q05uVDlhWnZlTjdXT0RWVXhQcTBNbF90Q1B0ZUk1WGE2Rmx0Zjg1MTlxMGVxeTFWc0dlYjhiMEdXeFNFYnNTZENFbmNMVVR4dThjZGhUN3BDYm8wSjEyeTFqQnFKQ1dZWlVGbXZxa2tDeHZzVV9LWE3SAbwBQVVfeXFMTnhrTktZTGVROXo2X3NxZk9qVG4ta1NvTTFwVktra19QbWxhRTlXaGhFWGd1WTZydm5nSDlJQ1hZeE5kYklDWVdFbkxGU3doVjY2d3VSYU9EQU5RcU56aVFBbGtEVHZmTy1ILU5qNnIxOE1EdEZvcmxkdmJQamRCcUFGR3VVYTRlWTFVaXlUTm9pclgyd2V3NVBFRVdOSTNIQnFmT0lFUzhIUmllS3ZJOGtUb25jYldsQzZmVUY?oc=5",
+      "categorias_sugeridas": [
+        "Crimes ambientais"
+      ],
+      "evidencias": {
+        "Crimes ambientais": [
+          "policia ambiental apreende material de pesca ilegal em araruama - o dia"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -17439,14 +17505,19 @@
     {
       "url": "https://news.google.com/rss/articles/CBMirgJBVV95cUxQTHR6d2doRjlUVWxQV1d0NWZjLWtIWUJPNHN0VDVCbF8xUk9mbjdUb1cwelBxal9sd25wOTIzYjh0a3lGSldkaE1HbEZsWEc3TEFGdnJqeXBXZ0VRNEhWUW5aVHRoQVNDNjE3UDl0ZGRmbl9hMi1lNE9KNmNwVTlwOTVtTUY3UXg5TUlVQ1BHYXBFdmFfNVg0ZWxtekJhemg4cmpnd3NnTVJpV3plU0JISmhjSnp3d3lOZ1R5bTVyWXFVZm50aHgxbDdtc1lxZjN6b3p1NHI4end4bDVKWDJEZVh6d0d5YVNMM2dSaHNyRFBaUGJiMlozZzdqX1B0Qm5oRTR3ZDhZYWgtMmZyb0dXclIyV3V0VlVGclpubGdjVGw5Vy1uRHV6THJSNnBWdw?oc=5",
       "categorias_sugeridas": [
-        "Drogas e entorpecentes"
+        "Drogas e entorpecentes",
+        "Contrabando e descaminho"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
-          "roximadamente 17 toneladas de insumo quimico utilizado na producao de cocaina em corumba - governo federal"
+          "roximadamente 17 toneladas de insumo quimico utilizado na producao de cocaina em corumba - governo federal       receita federal e policia federal apreendem aproximadamente 17"
+        ],
+        "Contrabando e descaminho": [
+          "participacao da equipe de analise de risco da divisao de repressao ao contrabando e descaminho da receita federal do brasil da 8ª regiao fiscal, em sao paulo/sp (direp08), da equip",
+          "a equipe de analise de risco da divisao de repressao ao contrabando e descaminho da receita federal do brasil da 8ª regiao fiscal, em sao paulo/sp (direp08), da equipe de vigilanci"
         ]
       },
-      "leitura_fonte_status": "aguardando_url_original"
+      "leitura_fonte_status": "lida"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPaklDc2VMOUMtVG5FcEltUnNFd3dpbWh6ak56SUZXSXhhY05WNEN0UWVxcEREdFRkaDducmpnLTNfalNpN2tNSEtKNThHOHNodThTOWZlaUFpcl9Kd2tQRmJzallGSzhWZFFvaDcyNWo1NFByaklGUldJUnlJQ29ocTlYcWxwcE1Hd2Vlc2NxTVdqR1lGU3dmanIyY3ZXUmRVRjJaRDM1NV9ScW52YWYyMdIBtgFBVV95cUxPT1plR3BiU0Zfb2JWU2lEeHktUGtYaXZMQU5HejhFT05MbU1XeGV3TDJjVzljV2ktbWVxdTV5UXhNWlliZkxjUFowUnQ0VS1EdFlaVXdTT3FPeXdCQ2FlU0FzZjhLOF9CSW1WUUV3TVhzMkRNcjdUSGJkQVpTOEFySTlSbDZ1YV9xd2xHbk1xeXBOaUVyOUZGQk5wUlJncDZZdXpUb0Z4OWxTYWxvQjlaWVRBVDNxQQ?oc=5",
@@ -24655,18 +24726,25 @@
       "url": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxQOE9WSjFrdjdtWk5SMmVOOXBKTVEzUmpTbWRiS3VEV3llT1BKeENFNUhiNVF5N04zbXpxWWhYcG1ZbS1yeURTQXc0V3JqYmVvbllLdnRFOE0zNkQ5NXdaNUNSRnJQYUpFand3VDUzSTBJMkR6aDNfa29IV25ENXFQT1FOZlo3WWxVcndYbmhKLWRmbFd2M2dlYlZhVGFwQXpwWVQ2NVE5UlRhamhIbzBSYkJ4bkJORUlQZ3dTdW85LW1jZ3VYSE5QUGVTUTRZcXo0N2FFckd2d1hMUTFyTGFxZDgwbEpfRTJzU3hselhwNVdDMmFYRXpMbg?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes",
-        "Armas e munições"
+        "Armas e munições",
+        "Contrabando e descaminho",
+        "Dinheiro e valores"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
-          "receita federal apreende armas de fogo, haxixe, eletronicos e medicamentos em onibus de turismo - governo federal"
+          "receita federal apreende armas de fogo, haxixe, eletronicos e medicamentos em onibus de turismo - governo federal       receita federal apreende a",
+          "au apreenderam, na data de 30 de setembro, eletronicos, medicamentos, droga, armas e municoes, em um onibus de turismo. o onibus havia sido retido, apos ser abordado, no munic"
         ],
         "Armas e munições": [
-          "receita federal apreende armas de fogo, haxixe, eletronicos e medicamentos em onibus de turismo - governo federal",
-          "receita federal apreende armas de fogo, haxixe, eletronicos e medicamentos em onibus de turismo - governo federal"
+          "contrado um fundo falso embaixo dos bancos. nele havia, 1 revolver, 1 pistola, 1 submetralhadora, municoes e medicamentos, com valor estimado e de r$1 milhao de reais. tambem fo",
+          "culo, foi encontrado um fundo falso embaixo dos bancos. nele havia, 1 revolver, 1 pistola, 1 submetralhadora, municoes e medicamentos, com valor estimado e de r$1 milhao de reais"
+        ],
+        "Contrabando e descaminho": [
+          "entos em onibus de turismo — receita federal info noticias combate ao contrabando receita federal apreende armas de fogo, haxixe, eletronicos e medicamentos em onibus de turismo co",
+          "iscalizar o veiculo, as equipes encontraram indicios de transporte de mercadorias irregulares, e encaminharam o onibus, apos lacra-lo, ao deposito da receita federal em itajai/sc. nesta quarta-"
         ]
       },
-      "leitura_fonte_status": "aguardando_url_original"
+      "leitura_fonte_status": "lida"
     },
     {
       "url": "https://www.gov.br/pf/pt-br/assuntos/noticias/2026/10/ficco-pr-apreende-mais-de-uma-tonelada-de-maconha-em-matelandia-pr",
@@ -95253,6 +95331,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE8ycVBRNTlvak5pNEZyMUJSdWRCUWZTSXNnZXNvdGpSWHc1TGcwbVBsaFpPMDJvM3ZyNmladHlBSEw5eGhYTWNlYzVBbHB2dmFYcDYxMmJWMmRxM0dfSWJzdHR2UQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxQUVFRcVFET3dOS25KTFBzQ2MwZExUdFF2RzFmRG9XR182WFlCRHlmMVVqclNJRXBXd05zU1IyN0tMVC1URkY5bklNX205Y1NTSnQ3cGg3RGVyMWRSWmNibmwxZUw2dklPU1VHVlFzelV1UE44WnM0Z3RMTWxvMHc1WlZEUWQ4Wnh2b1VJcGp6UVBENVcwR1hxTFVpVzNoYW9FLUpzWFV3RGFzcm9oT21BX0NfdF9GcTJjYkJ2MVRpR2hSZTNYNmh0REdHRmpXa0FWa2pFWndZdi1ITjI3X0MwR2VjMNIB8gFBVV95cUxOLTc5eG5vX1BxSy0xd2E0ZXBFOEs2bWxmUWRkRnpKWDhuTW0yV2hidlhyaldPR2ZpWmNxOEdBVDQ1eTVTa3Z5Y0VjVXNBOHRtUHNWejM4UTdHRGdXTXYxVTJMeWw4Ymg1a2xfT0ltclc5cFFWNE9MMHRDNlo4Z1ZtNU1YQzZMUVZ5eEpSdTlCUnZxYTVCMTdLTGZxOGsyRHlNeXAxWDZwSTZhaVI4OGoxcFNPN0FuZXYyMFJKTllHSy1RSF9DZHAwZkMwYnE4cUtFa3dwdFA4TzRCQ1JkX1hZa09pd19iMUJZYTI0RDNxREtQdw?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -120130,47 +120216,6 @@
       ],
       "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
-    },
-    {
-      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/setembro/receita-federal-apreende-armas-de-fogo-haxixe-eletronicos-e-medicamentos-em-onibus-de-turismo",
-      "categorias_sugeridas": [
-        "Drogas e entorpecentes",
-        "Armas e munições",
-        "Contrabando e descaminho",
-        "Dinheiro e valores"
-      ],
-      "evidencias": {
-        "Drogas e entorpecentes": [
-          "receita federal apreende armas de fogo, haxixe, eletronicos e medicamentos em onibus de turismo       receita federal apreende armas de fogo, haxi",
-          "au apreenderam, na data de 30 de setembro, eletronicos, medicamentos, droga, armas e municoes, em um onibus de turismo. o onibus havia sido retido, apos ser abordado, no munic"
-        ],
-        "Armas e munições": [
-          "contrado um fundo falso embaixo dos bancos. nele havia, 1 revolver, 1 pistola, 1 submetralhadora, municoes e medicamentos, com valor estimado e de r$1 milhao de reais. tambem fo",
-          "culo, foi encontrado um fundo falso embaixo dos bancos. nele havia, 1 revolver, 1 pistola, 1 submetralhadora, municoes e medicamentos, com valor estimado e de r$1 milhao de reais"
-        ],
-        "Contrabando e descaminho": [
-          "entos em onibus de turismo — receita federal info noticias combate ao contrabando receita federal apreende armas de fogo, haxixe, eletronicos e medicamentos em onibus de turismo co",
-          "iscalizar o veiculo, as equipes encontraram indicios de transporte de mercadorias irregulares, e encaminharam o onibus, apos lacra-lo, ao deposito da receita federal em itajai/sc. nesta quarta-"
-        ]
-      },
-      "leitura_fonte_status": "lida"
-    },
-    {
-      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/outubro/receita-federal-e-policia-federal-apreendem-aproximadamente-17-toneladas-de-insumo-quimico-utilizado-na-producao-de-cocaina-em-corumba",
-      "categorias_sugeridas": [
-        "Drogas e entorpecentes",
-        "Contrabando e descaminho"
-      ],
-      "evidencias": {
-        "Drogas e entorpecentes": [
-          "roximadamente 17 toneladas de insumo quimico utilizado na producao de cocaina em corumba       receita federal e policia federal apreendem aproximadamente 17 toneladas de insum"
-        ],
-        "Contrabando e descaminho": [
-          "participacao da equipe de analise de risco da divisao de repressao ao contrabando e descaminho da receita federal do brasil da 8ª regiao fiscal, em sao paulo/sp (direp08), da equip",
-          "a equipe de analise de risco da divisao de repressao ao contrabando e descaminho da receita federal do brasil da 8ª regiao fiscal, em sao paulo/sp (direp08), da equipe de vigilanci"
-        ]
-      },
-      "leitura_fonte_status": "lida"
     }
   ],
   "quantificacao": {
