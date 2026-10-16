@@ -17,7 +17,7 @@ concurrency:
 jobs:
   coletar:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 55
     steps:
       - name: Baixar repositório
         uses: actions/checkout@v4
@@ -34,6 +34,7 @@ jobs:
           test -f coletor.py
           test -f recuperar_links.py
           python -m py_compile coletor.py recuperar_links.py
+          if [ -f coletar_fontes_diretas.py ]; then python -m py_compile coletar_fontes_diretas.py; fi
           if [ -f enriquecer_imagens.py ]; then python -m py_compile enriquecer_imagens.py; fi
       - name: Coletar notícias
         env:
@@ -63,12 +64,12 @@ jobs:
           fi
       - name: Recuperar links originais
         run: |
-          python recuperar_links.py --limite 25 --trabalhadores 4 --busca-fonte --diagnostico
-          python recuperar_links.py --limite 15 --trabalhadores 3 --diagnostico
+          python recuperar_links.py --limite 35 --trabalhadores 4 --busca-fonte --diagnostico
+          python recuperar_links.py --limite 35 --trabalhadores 4 --diagnostico
       - name: Buscar fotografias originais
         run: |
           if [ -f enriquecer_imagens.py ]; then
-            python enriquecer_imagens.py --limite 60
+            python enriquecer_imagens.py --limite 60 --timeout 8 --max-tentativas 3
           else
             echo "AVISO: enriquecer_imagens.py não encontrado. Etapa de fotografias ignorada."
           fi
