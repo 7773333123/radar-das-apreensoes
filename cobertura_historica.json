@@ -1,24 +1,31 @@
 {
-  "atualizado_em": "2026-10-31T10:53:19.316214+00:00",
+  "atualizado_em": "2026-11-01T10:45:30.234252+00:00",
   "periodo_solicitado": "2020-2026",
-  "acervo_antes": 15907,
-  "acervo_depois": 15907,
+  "acervo_antes": 16060,
+  "acervo_depois": 16060,
   "adicionadas_nesta_execucao": 0,
   "por_ano_data_publicacao": {
-    "2020": 620,
+    "2020": 621,
     "2021": 753,
-    "2022": 898,
-    "2023": 1809,
-    "2024": 2206,
-    "2025": 2575,
-    "2026": 7028,
-    "sem_data": 18
+    "2022": 901,
+    "2023": 1810,
+    "2024": 2207,
+    "2025": 2576,
+    "2026": 7172,
+    "sem_data": 20
   },
   "contagens_da_coleta": {
     "2026_candidatas": 157,
-    "2026_paginas": 40
+    "2026_paginas": 42
   },
-  "falhas_de_acesso_amostra": [],
-  "total_falhas_acesso": 0,
+  "falhas_de_acesso_amostra": [
+    {
+      "fonte": "Receita Federal",
+      "ano": 2026,
+      "mes": 11,
+      "erro": "HTTPError"
+    }
+  ],
+  "total_falhas_acesso": 1,
   "aviso": "Cobertura parcial: arquivos indisponíveis e publicações não indexadas não são contabilizados; ano da publicação não é necessariamente ano da ocorrência."
 }
