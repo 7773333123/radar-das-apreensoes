@@ -1,53 +1,53 @@
 {
-  "gerado_em_utc": "2026-11-14T16:38:37.461707+00:00",
+  "gerado_em_utc": "2026-11-15T17:06:47.339215+00:00",
   "metodologia": "Regras textuais e leitura progressiva de HTML público. Não utiliza IA generativa. Uma notícia pode ter várias categorias. Ausência de quantidade não exclui a notícia.",
   "aviso": "Contagens de notícias, NÃO de operações únicas. Notícias sem evidência não são exibidas como categoria pública. Categorias se sobrepõem; quantidades são preliminares.",
   "situacao_quantitativa": {
-    "com_informacao_quantitativa": 1631,
-    "materia_sem_informacao_quantitativa": 10249,
-    "pendente_verificacao_apreensao": 7627
+    "materia_sem_informacao_quantitativa": 10297,
+    "com_informacao_quantitativa": 1647,
+    "pendente_verificacao_apreensao": 7677
   },
-  "materias_sem_informacao_quantitativa": 10249,
+  "materias_sem_informacao_quantitativa": 10297,
   "nota_situacao_quantitativa": "Sem informação quantitativa: notícia classificada em tema de apreensão, sem quantidade explícita extraída. Não significa fora do escopo nem quantidade zero. Pendentes de evidência são contabilizadas separadamente.",
-  "noticias_multicategoria": 2043,
-  "noticias_com_quantidades": 1631,
-  "noticias_analisadas": 19507,
-  "fontes_distintas_informadas": 1850,
+  "noticias_multicategoria": 2056,
+  "noticias_com_quantidades": 1647,
+  "noticias_analisadas": 19621,
+  "fontes_distintas_informadas": 1853,
   "noticias_por_categoria": {
-    "Drogas e entorpecentes": 7503,
-    "Armas e munições": 4338,
-    "Contrabando e descaminho": 1047,
-    "Dinheiro e valores": 565,
+    "Drogas e entorpecentes": 7548,
+    "Armas e munições": 4363,
+    "Contrabando e descaminho": 1049,
+    "Dinheiro e valores": 569,
     "Medicamentos e produtos": 177,
-    "Veículos": 170,
+    "Veículos": 171,
     "Crimes ambientais": 140,
     "Outras apreensões": 68,
     "Operações patrimoniais": 39
   },
   "noticias_por_uf_explicita": {
-    "PA": 1109,
-    "BA": 728,
-    "PR": 473,
-    "CE": 263,
-    "SC": 223,
-    "SP": 210,
+    "PA": 1115,
+    "BA": 736,
+    "PR": 476,
+    "CE": 267,
+    "SC": 230,
+    "SP": 212,
     "PI": 176,
-    "AM": 136,
+    "AM": 137,
     "MA": 131,
     "RO": 122,
     "PB": 121,
     "PE": 108,
+    "GO": 102,
     "AL": 101,
-    "GO": 100,
     "MG": 95,
-    "TO": 91,
-    "MT": 84,
+    "TO": 92,
+    "MT": 86,
     "AC": 83,
-    "RJ": 76,
-    "AP": 41,
-    "SE": 36,
+    "RJ": 77,
+    "AP": 42,
+    "SE": 37,
+    "RR": 36,
     "DF": 36,
-    "RR": 35,
     "ES": 31,
     "MS": 25,
     "RS": 21,
@@ -63,8 +63,8 @@
     "2017-12": 1,
     "2018-11": 1,
     "2018-12": 2,
-    "2019-08": 4,
-    "2019-09": 5,
+    "2019-08": 5,
+    "2019-09": 6,
     "2019-10": 4,
     "2019-11": 5,
     "2019-12": 1,
@@ -99,7 +99,7 @@
     "2022-05": 87,
     "2022-06": 83,
     "2022-07": 76,
-    "2022-08": 83,
+    "2022-08": 84,
     "2022-09": 78,
     "2022-10": 84,
     "2022-11": 69,
@@ -107,7 +107,7 @@
     "2023-01": 123,
     "2023-02": 118,
     "2023-03": 171,
-    "2023-04": 137,
+    "2023-04": 138,
     "2023-05": 140,
     "2023-06": 148,
     "2023-07": 151,
@@ -137,20 +137,20 @@
     "2025-07": 267,
     "2025-08": 225,
     "2025-09": 263,
-    "2025-10": 274,
+    "2025-10": 275,
     "2025-11": 239,
     "2025-12": 229,
     "2026-01": 20,
     "2026-02": 17,
     "2026-03": 16,
     "2026-04": 23,
-    "2026-05": 32,
+    "2026-05": 33,
     "2026-06": 38,
     "2026-07": 36,
     "2026-08": 47,
     "2026-09": 36,
     "2026-10": 7295,
-    "2026-11": 2975
+    "2026-11": 3083
   },
   "noticias_por_ano": {
     "2006": 2,
@@ -159,28 +159,28 @@
     "2016": 2,
     "2017": 1,
     "2018": 3,
-    "2019": 19,
+    "2019": 21,
     "2020": 640,
     "2021": 759,
-    "2022": 911,
-    "2023": 1821,
+    "2022": 912,
+    "2023": 1822,
     "2024": 2221,
-    "2025": 2591,
-    "2026": 10535
+    "2025": 2592,
+    "2026": 10644
   },
   "status_processamento": {
-    "classificacao_automatica": 11812,
-    "pendente_evidencia": 7627,
+    "classificacao_automatica": 11876,
+    "pendente_evidencia": 7677,
     "outras_apreensoes_a_revisar": 68
   },
   "status_leitura_fonte": {
-    "aguardando_url_original": 19332,
+    "aguardando_url_original": 19446,
     "lida": 172,
     "erro_rede_ou_timeout": 3
   },
   "noticias_sem_data_valida": 0,
-  "noticias_sem_classificacao": 7627,
-  "noticias_pendentes_revisao": 7627,
+  "noticias_sem_classificacao": 7677,
+  "noticias_pendentes_revisao": 7677,
   "versao_extrator": "extrator_v4",
   "leituras_externas_tentadas": 1,
   "leituras_pendentes": 0,
@@ -188,6 +188,406 @@
     "lida": 1
   },
   "classificacoes": [
+    {
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPc0hCaU1FNVBNeWNQNVZuT1Q1UE9NQ3A3QlFBUnFTelhVNDVHYnJ4WEo2d2tuV0toaXpSY3NTM0VUd05ZUzlrS2hvRTBpTlpBRDFFdFpxSlNHQ0tHTkpQdUdvck1zeUowV1MyT1ctc1drdjV3ajlrYWdwMlBpSkdWbW83UUtmRzVQWXM0YkVLdGw1NTBYTUpzUEJPbF9Yc2M3TkR2SVRLMC1GWjFSd3o0Y09rTDY5QXA3VHc?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia militar apreende 1.417 porcoes de drogas no residencial novo mundo em campinas - tododia"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQZy1PLXlaSFQwUEtXYm5XS1o2aHA0ZHh3X0ZDekt2b3NKZExFWV92VUc4X1NTTFRVWU1fTTl6Ry1JTmdab0hUVmdvVGJIM3V2U0RSdGxDMmlUU21JWDV6VUI4ZUJ4eHRFd0lxNENLaTdoc05zYklMdW90NU1WUzI4eDZiemdSMTZ2SldIY09lWmg3UGhJTUgzRkZ4VTNIeUwxNjdqWm1FMUVmSEFLUVphdlF1S3ZJT1pRVE54OUdLZUduZHFiWGItVldUTUFpcjBQRXpBNmRLLUdqV1Fy0gHrAUFVX3lxTE5wRzYydGdoMFptQVZ5Q2ZlYWk2cUlhcGo4Tm9tSmIzbmE2Z2lJaFZBYjZhdnVnUDhJQzV0WXpydkI0djVGUEpoM0hNbE9nWWRqYk50QlFJaUJmd091VlJGTGo3QkU0cjNBNEhJY1F1eGtiMzdWVmRDM0dhX1FhcXJPS0dXbGhVdFJmT0xyRTdWbmV1TEFYZFBlY3FZUGk3TVZqVWt1b2hVUnlOZkMtanltSG5fM2J2ZnoyenY2YkZiOHc4VmIycU5sWXNocmV4aHFhS3RuNlc0U3lzZldCVUR0NkJGcFl3NVotUUE?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pm apreende mais de 15 quilos de drogas escondidos em embarcacao no porto de parintins - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQLWx2SUlGYjRFMzVBY2VIOFR3Q1dRR3NyelRNei1jaWVsbXBkOWtObVdWdUdKZ3R4cWlCVXVNdDRvc2JTM2FsLUdLWlY2akw4dEhzVUJHZVozZEtCa3RUWjY4QjJ5VTFzSUdpTktVR3hCVGk4ZmNwOF8yVDBLZ1lJM2tjbHU2NklEdWhqYVA1bTJPd3FXZ25oRXJEcmc1OGJIREFxM1prblQzSkc5U3pqY0pWdEhQNXc?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "ficco/rr prende cinco pessoas por trafico de drogas em roraima — policia federal - governo federal",
+          "ficco/rr prende cinco pessoas por trafico de drogas em roraima — policia federal - governo federal"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxPTkFmMno4Y2xscl9GVXBHSXo4SnhUNE5jaXI4ZE9UZW8zaF9GaDk2UTBGS3l1TTFrb2t1Y0JyNzI1QW9KY3dGR2NtZS11U0Jxd2RUbjlMNDhIaXd6Z0dWZ3dfSEtHeGJrRVRvNmozYnMxMk9NR1BrNXFGNHozX2ZsWHQwcG5mdHk3X0t5UzB3aWRIa2prOVJFZ0ZoQUhuQ0NWTlVqZ1l4dmJ5VldkZzVkZk1QLVhUX3JjaFJXSTlVVkNFMjlVRUxnYmlia0FZVGg3bk93YmdTYmkxdw?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pm prende homem e apreende cocaina, crack e maconha durante operacao no bairro juca rosa, em itabira - as noticias online",
+          "pm prende homem e apreende cocaina, crack e maconha durante operacao no bairro juca rosa, em itabira - as noticias online"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxQb0d6cVdmdDFnUm8wZVVGa25DQTd6a09SWlVXS25FeWkwNkNGTTdjSWVFNkhuTzNPYjA2QkI0Ukk2U3UtdkNaNENkQjlfelhtYjdzdXc2a1JhTGtDWTZWMkZGV192dEJIM2tPR3lqbEFUc3lPYmpvZE5ab3FFRFBxYWR4T0c5REFQWE9GRU80cy1HUkdTMXBFbDZ3R2pqQ0dJYUdaSFg1clA4amF6ZGJSb3lESmExd19sUGQ5MWs0YVpiaEdwM2JfbnpEX0kxM3ZzWWhkWjJTRG91SS1JVjVn?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "2º baep apreende quase 10 quilos de maconha em imovel utilizado para armazenar drogas em santos - policia militar do estado de sao paulo",
+          "preende quase 10 quilos de maconha em imovel utilizado para armazenar drogas em santos - policia militar do estado de sao paulo"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiqwJBVV95cUxNal9FNUpqT2daVFp3ZTF6NjBuTmpqa3JDUHdHbklJdUpic0pjSjk0anRqQW45NGgybjVKVDBnQkMzME1DXzBwUHpfbUViR3QwZ25SX3NIejVlOTZwSTZ1QWVjNFBqdXFDRXNoM3lhdFlKdEdMSjMxVUVINlpnQW12Y0wwcGlsZnB4bExRQXhYQ2xCV1ljMnBRZEdpY2VsbXItYUpORDZieTNpaER3M0Z2V1pvM3hOT3hjcjdablhRMUxiVnZJdk1wc2phN3NHTERTT09QeUFObUpSUnNaNlp2bGp0OGVGeEdYOUVNaVlrWGpKT3NaWHRkMzZvN3dBb0s1dVBuenIyYXpoR3F6ZlNJd0hkRnNGRG9EZlNBM3U5OG1wYW5RcHVVM0lqOA?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "e e apreende produto vencido durante o esquenta micareta - prefeitura municipal de feira de santana"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxQZW5MT0tBdUF0bHIwRF9URnQ0ZWpvMm1GaHNwUnJFOVdob2lNSDI4NTltUjBWaFdDaS1qS0tIY01zX2FmR1otZVpWTkYzWlQwZ0YyVHJES2J5aGVyVlltSXpteTdHVEhZYmVxOFNjSW1ZVG10dDcta1h0dURiRzhsZHdvdGFLQzBtb1hKMHpvWm5mWVlmYXpsdVEzVFZ4SFdhc3VEQmJrakNBLWFIN3p0RElRRG9wZW82dlNWdnBIWi0yWXl5UGxpQ2ZjTC1aMlZCMzhDRmhnMA?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "preende fuzil, duas pistolas, mais de 1,2 mil municoes e 35 quilos de drogas em sobral; casal e preso - www.pm.ce.gov.br"
+        ],
+        "Armas e munições": [
+          "pmce apreende fuzil, duas pistolas, mais de 1,2 mil municoes e 35 quilos de drogas em sobral; casal e preso - www.pm.ce.gov.br",
+          "pmce apreende fuzil, duas pistolas, mais de 1,2 mil municoes e 35 quilos de drogas em sobral; casal e preso - www.pm.ce.gov.br"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxObVNaSTJVektXenN4TFphb0hEVWRGYnN4SmxaMVdyNXNQZVJURlNOTzAtUVpGWnEwWW5ibWlrajBXbEMzTG5fdHdmSzVPNWMwb0ZaMGE4NEFYRVV1ME1VLTRreGtrR2ZoX214cHVjRzQzaXZZWjZ3amhTb3A5a1FMSnBrSVlzeU16Sm5pMk00SnozQWVzdWZPREp5N2FKRmtPTzh1X2plWXBrMm1ZWDZF?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "forca tatica apreende mais de 30 quilos de maconha em bauru - policia militar do estado de sao paulo"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxNMnduNzVzbWJEam5jeldRVktMaWw5eEptZXhraWk5RkZYZVJnSnFrTjZQQlhXazNiM0RjQUFJUWE2eTJIY2wybnM5RDVYMmQyMkstcDNWUWlXa091dFVSQlVIdVhfREo1V2xjZkVhMmtyUFZQVUVsVHpJN2Jsc0RoMkNlYWpwaHh1OUplalpwSFVFZHRFNURvQjRjX2c5cF9EMm0wZno0c3hJVTltNHdqN1JDcE5ubnY4SG9XUlZoTU90MDVzQlJUUzJWeFdhZnNBVlZDMWl4QQ?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "pmce apreende duas armas de fogo e captura dois suspeitos em ocorrencias distintas em juazeiro do norte - www.pm.ce.gov.br",
+          "pmce apreende duas armas de fogo e captura dois suspeitos em ocorrencias distintas em juazeiro do norte - www.pm.ce.gov.br"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPTFgzNTZvd2ZpREc1Sm5CMFN2N2pOZzhmYUtwNmEyb3I4RmNsdXN6bmV0S2JoV3hsME9ndDQtOXY3MjFaMmgyN0RtZ3pRLTNpa3FjVnNVNFE1TGxHMlNlWmZOTzVrLVRIbzZIOTBFMW9Ocmoxd1FENlJJR1FIbDNxWXJ1b2p4VUZ4Y0NiS29TYjRFSU9STUtNQ09ySHZoVmRCN1BwT2VpUmZINjFZbkFlQlhUOXVPSkhDdFhXMWpna3ZhYVpB?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pmce prende dois homens e apreende duas armas de fogo, 100 municoes e drogas em maranguape - www.pm.ce.gov.br"
+        ],
+        "Armas e munições": [
+          "pmce prende dois homens e apreende duas armas de fogo, 100 municoes e drogas em maranguape - www.pm.ce.gov.br",
+          "pmce prende dois homens e apreende duas armas de fogo, 100 municoes e drogas em maranguape - www.pm.ce.gov.br"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQc3ZENEdfMF9wamo2U2J4QldMdUUycmkyb2tVUTdGdU5kMFpwQnVZV3RqWVY5WFZMTTRfYktlQWw0TktPSGo4dGwzT2dPcWNUNFJwVzBuRXA2QVlxN2w1NWVOUmZVaHBqVjlWUmg3bDBybWhMcHpQV3NMdnFKR0hUamZqWFdQWXN6Qm5oZWtRRVdjcWRSaXJWYdIBpwFBVV95cUxQenEwdlFkWEd3UElHT1VOaWJXWDhEODM4ZDhCX3MzOWRydUJJX1ZrVGJSNlR0OFRJV3Y5V25seGpuV2pxNDY1SHNFQ1NtY3FSekcwQlQ4X3R6RnR6TklqV0Z2NlZRZGxVck5wcllLYW1wNnpkWE1YOXZNUEdNSXJJUkRKR0hHc05HTzJDdWRCLXBqa3BsbEllc0Q0MHVQZkxYdGhXRl9raw?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "flagrante de som alto e apreensao de pistola, municoes, celulares, e drogas em teresina - g1"
+        ],
+        "Armas e munições": [
+          "bar e interditado apos flagrante de som alto e apreensao de pistola, municoes, celulares, e drogas em teresina - g1",
+          "bar e interditado apos flagrante de som alto e apreensao de pistola, municoes, celulares, e drogas em teresina - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQQ2pmZFNMeDlRaE11Vmp4bnQzbVo3TkN0T3B0V0R0RGxaREJtZEtyNDBMUjBXSEtIdGNpVlhRbkxwdXBSNFZZRnFaOWw1aFQ5Y2pqX2wwLWpyTVhEWGdIb0RDTGxGRDFwUjFvR2NVY3FSRkpxUFZqb18wZy1GNGdfX3FobzNFb21oR191emk3Y29zbnpmWlE4SUE3VExvek1NRjJIV2VKOEVpZ0ROR0E?oc=5",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNZVNVYXkxUFA1T2YwZjlRNlhxb3JVdXM3QUE3ZlE0V24xb2hxOW1RaXV3ZTlVMUhXSlJNRGZXRVZwME1yckJIYkxmd0RqcU5lVlFrWW9WNGp6QzJqeDFYV2hrM3VHN3l0YWdoZV9aVFdxT2w4dFlteFU4ZEdJUFA3REx1YlROOUw2bEJKYVJlMUtuVUk?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "pm apreende arma e detem homem apos denuncia de ataque em sao pedro - rc24h"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOWjVUTGdaVlY5cV9aSmdtR0JGamYxMUQ0RTV4NUlUVk5JdXNYelVaNy1jZ1F0VlBic2g4LWxZei0wTGpXTm11YkFzZy04dVFuMWo1QzlFTW12X1hKQzJkWHNmY0ZwMGNBaU9fMG5LZ1B2d182cHlGQk42N1pwLV9KazJoYk8wbHQ2RVBJ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia flagra cadeirante vendendo drogas em macapa - selesnafes.com"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNUTBXXy1ZVGlobjJZT3FsZ0J2Z013NXpBMDQzZFYwcnFNeHEwWHVnNnVUdWhFQm9VbkR3bFF6bzBOTjdTc0FZX25NRXVuSUhhUWw3SEZYMEwwS04xNS1zRTNsbUtvSUlkblNWTHZRTFhlckNuSEF1UTdWZUhmdzNFWWJyYjZBaTBNdkZXRXVJVU9uem9FQzJwaERhalNPV2xMM0JzN1c4SkowOXZFWVQ2bmVsUUZ5MzVGSllBbDZTak1kQUM5QjlRTi00X1N3d0lZ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "tor apreende quase uma tonelada de maconha na rodovia raposo tavares, em itapetininga - policia militar do estado de sao paulo"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxPcWk5Y1NMVzB3QV96V1pyU2IwQU0tWm5GUVI2V1pfX1NGcUo3MU1sblNlOURDZTRWNjF3U09JcDlOemxFYTEySWN6VEMwYjVLREJvQl90bFRNLVBvTGgtVkkxMTczVjZsRGV2bktSS2hQeVpoLWQ0ekl0QktSaFMwdk12Vk5BcTVoUFZ0ZnpCa0dxWkx6OTc2UkdRck1PWVJlajhfYzdGZno0OEcyLTgydVdRU3RpWXRGRFg5S2JIU01wcURsQTFkVEFTRE1LZTVBaWVock5VWmNvZmNO?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "apreendidas drogas, arma e municoes durante operacao no bairro judith bhering, em coronel fabriciano - portal diario d"
+        ],
+        "Armas e munições": [
+          "apreendidas drogas, arma e municoes durante operacao no bairro judith bhering, em coronel fabriciano - portal diario do aco",
+          "apreendidas drogas, arma e municoes durante operacao no bairro judith bhering, em coronel fabriciano - portal diario do aco"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1vWjJRTzBQU1BUTnAyaWN1OURldVotNDNWcEVRYTdkbkhZVzBYc3ZRQUJlOUo3YUQwbWJLWEtfa0FIbHlPT0dsN2RoWDlVWjlTUXNCRXVYcGl5aDFNWE9sWVlIQzBmV0hzMXo0Wkp5RUVUUmN3OS1N?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOQ1pRQWNiUVREbkJpWnBQQm1mWElPU0wyTklSVUdPWjlkNEtIYXVPQ0RNMW1WTDBVLU9RQnZGVjdyZnhhYzdveXJKUVM3OWkxbC1aY2JfVmR6VUJWV2xlM3gzTnRta0lqMnNyWU40aGJDaEtvXzg3OTdEaXZTbVBhZGFqNS11SVVsV2VlRk44WURVd2phT3Yyek95X1NJa2ZvUGZ6Q1FvUy1QTHd5TXFjenl3VTdBeXdrdXdRWFB3QldYVm5PUXZwRmJlRHFJUmV5bWg5WHVFcnNBN283M0E?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "apos denuncia de desordem com arma de fogo, pm apreende revolver, em itaporanga - reporter pb",
+          "apos denuncia de desordem com arma de fogo, pm apreende revolver, em itaporanga - reporter pb"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiiwJBVV95cUxPZ2Z3dkU2a3llbnVWRU1RXzJGUkRvNjBxSk1CZEQxWEU5Mm9qcUJsR0pmOVpNOVctaUVaZTVFME16WUFwcmpvUjhYRnluMVQtTGs5TUtLcDNnWG9YdHRMelRPYmM4dkFBeldKUkJHLU1ValRjV0szV01ZVmNmRWpadFRBY0F2RDBsa3JOVFc0VERiVnpJWlY0YXFUSFBlY0FUVzFubzBva1BJWmpyRUU1TnllSW1sSDdXNEJFczZuNDNUNW5FcnZCYUw3dUtzTmoxVDRSbTNDS1ZFaE5LOW42M0RsejBPZGNPZzZJUmZsR3RpVUJNRkFpT19OVEtCcGZjQllJWFlVaHlGMFU?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "rf e forcas de seguranca parceiras apreendem mais de meia tonelada de maconha na br-425, em guajara-mirim/ro - governo federal"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOZUtkS0dKaG13QmY4bldYd2RYMm1PQ1JlNHZrUjAxUmx5eFRub19lLXJ2d3IwWDVGTjlWREd5cXVySTRFMV91XzBPdkNqR1RqWnRtQndKa25ZR2ZRMjR4aGxIZDFSbDl5eGo1LWRyMWxXZE1DMi1HYmJsM2xPb1BIZFVwdV9HMXJZUVMxZV96OEJCMGdsVGdpLXJBMjUzaXp6cXlQNTU0cXRmalNXcS0tLU1INE1kY0c0dERzTUlUWnNrMXRVa1VoTlhMRjdqVTA?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPVjZGOG9VVUNnR1REV1d2SXdmLTg0VEh6T0NoSDdibEg5YUQwbTZzSHpYdUZfRnhYbGRuU194Ui1STlN6eDZhYlBIUmFWWnhTN2E1Q2lfb05BQUVieGt1ZDRHX19kS2tVOTNfbkpfZlIyYnJxV0pMTzRUblprVzYxbkRPNW4xNTFUY1pJTVRfSE1mSU5Xa0VWdFg3R2gwWDlUZS1pbzJJdFFhQWRTdmx3aTdwZHFsQQ?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "policia civil apreende fuzil, carabina, espingarda e 125 municoes em tijucas - topelegance",
+          "policia civil apreende fuzil, carabina, espingarda e 125 municoes em tijucas - topelegance"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNRjMxNkt5aS1uMFFCbG0xQXlCbFhOdWsyaS1md2QxcGtDdlR5RmZnT0F6WFFMdzkwWXQyaEtSbllwSXJlWl9FejVUWGhBTVZaMkJFeXFVWnV5S0x1ZWZwa29VSU1JMWo1S3BiMU5mZlJXbzJQSlY4T010Nld6U1lHMzVCLXQxZTNSbnpNdnBDUS1JVjBuQkVRUGtERUc2LUNRbjZTeVNjWU5NeEU3a3ptejhpUWZLU2N2aGVHWlNkRmVmZUFBU0VXSG1GNl9CdW5SSHc3QW54clFqZFnSAdsBQVVfeXFMTUYzMTZLeWktbjBRQmxtMUF5QmxYTnVrMmktZndkMXBrQ3ZUeUZmZ09BelhRTHc5MFl0MmhLUm5ZcElyZVpfRXo1VFhoQU1WWjJCRXlxVVp1eUtMdWVmcGtvVUlNSTFqNUtwYjFOZmZSV28yUEpWOE9NdDZXelNZRzM1Qi10MWUzUm56TXZwQ1EtSVYwbkJFUVBrREVHNi1DUW42U3lTY1lOTXhFN2t6bXo4aVFmS1NjdmhlR1pTZEZlZmVBQVNFV0htRjZfQnVuUkh3N0FueHJRamRZ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia apreende meia tonelada de drogas apos perseguicao em ro - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQclp4X09yeXJodFRydFVINk81MWEwN2pJM0p2Ym5ORjFzNHBwMG0zMlItNTBJOHBDd3lTWDJKYWZZQTZ0Q1ZPeEZRVlRoSEl1RW5XMWdSUFoybWNWT3hnaWlqelRQVThZczJDa3VQZHF5SWxTbG4xZ1Q1ZVRReVlKbHhmYWZaS3Y1dnl0eE5ZNjhJMGR1bWJKWVJkQUFJOEQ2cXdUcWJCWS1ZWDQzWVBoaVlDVGVwTG8?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "prf faz apreensao de cocaina em caminhao que ia de mato grosso para o df - diario goianiense"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxNOUM4NS1UeHJDdm9WeWZXc2JrcHdYTDNuNkI2SC1fX3QwUS0xa1QzbUV2cUxtODhNREtPU0tpWUgya2tEWk40YUFWcXlGbVZwa2UydFZxNWVNTzdFczNzTDVEanhGLVU1QmZ5QUxUSU9OSFJiSGpQNlZLX2xHb0ZkRWx0TVNaQWFSZ2U3dThGMEI5NS1IeWhCbmZoYURfZ0NKSTBZOHZtZ0hrYWM3OEIzRXNGVWoxTXJDeWNkSEgzbklDR3JJMC13WVlDa3NfRGFwNFlZZE9sZkRueWZFbzJ0WVExSHhfN1RMSVo2OE4xNTJ5TlXSAfMBQVVfeXFMTTlDODUtVHhyQ3ZvVnlmV3Nia3B3WEwzbjZCNkgtX190MFEtMWtUM21FdnFMbTg4TURLT1NLaVlIMmtrRFpONGFBVnF5Rm1WcGtlMnRWcTVlTU83RXMzc0w1RGp4Ri1VNUJmeUFMVElPTkhSYkhqUDZWS19sR29GZEVsdE1TWkFhUmdlN3U4RjBCOTUtSHloQm5maGFEX2dDSkkwWTh2bWdIa2FjNzhCM0VzRlVqMU1yQ3ljZEhIM25JQ0dySTAtd1lZQ2tzX0RhcDRZWWRPbGZEbnlmRW8ydFlRMUh4XzdUTElaNjhOMTUyeU5V?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pm apreende cocaina, crack e maconha escondida em laje de casa em volta redonda - g1",
+          "pm apreende cocaina, crack e maconha escondida em laje de casa em volta redonda - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxObDFxNzlGdTZVNVZ5R0w4QTF0OTdKOVRfZXZFNl9VWWg4MTNnX3FTQ0N0ZnRPakwzMzRFNzVOLXJPVmpUdkg2N2hNeGFGLXdQcy1pckJUYi1WVTdGNTlfa2hsbUxaUEtDdUlDR3Q1YWg0aEdJdVdXVE9vZjRUdkQ1clRtV3JVMEhINGxCSU9VOFpZMmZuZG03YmpFS3dIWGhkdU9xR3N4Qks?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "pmce prende homem e apreende pistola com numeracao suprimida em taua - policia militar do ceara"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxONU5EbDdPSHZrY1c4Umg4b1ZXUmRzVXo3RHlYT0FKNTdCbjh1NkZBazBiVDBpT2lad2NxZ01GNGRmWEJLekF1eC13NDBObHM0UGJ6QkQtcWZPUDlNRDFMeUZjRzFOQmxLTWl6VTlqcmFlWEdtcVl0b210ZUFVSVJMdWpsbHNlTUxsY1lZaTY0SUpUd2pWeVh0NWZkYnJsZw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOSjFaaEN0ZTdQaGxNcWFBaGI0Yks1YUMwZ3NabkZLbFVvcHFBOHlZcUZWVlY4OUpmMzlNN3lJZVdjT3M3ODJCSWpqTUpmWjMtNmhBcDlneG9KZzFkang2cDdObXhBUDFoZHl1cjVrVGxkNVFmM1dpOGZIbFZsT21mVlRUVVFXd3VzSnpFY3YySTJJazNIRHR6Y1RYeHVLdXR1U0MzckNpUk1PUU5lbnhoV1ZXZFVFX3gzSWxKWg?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQOVlWTWlfUDI4NHdsVFU5bllDV0VoYU53YTJ0RWF6ZjRzQlhxaGp0VDc2aC05a3B5SFdYR2NQTl9Ecm9QYS1IeHBlQ3o1QkZQLV93UTUwd2x6aEtENk9BWHVSU3k2RjNxV3BBSm82QUpqR0pOZXZieHNhcmdRZ2FDaElhd1FJYVBxVy1sODNnN0l4cVp5U2xEMnZmQWc3NFNzVXhUWlYzY0YzekFQdENpZ3N1M0VnUQ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Veículos"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "dois jovens sao detidos por trafico de drogas e tem carro apreendido em cascavel - cgn",
+          "dois jovens sao detidos por trafico de drogas e tem carro apreendido em cascavel - cgn"
+        ],
+        "Veículos": [
+          "dois jovens sao detidos por trafico de drogas e tem carro apreendido em cascavel - cgn"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPWWxVeFV3em9YSzFPRDJUSU5wYmV4RUZ0VmtxSlBpcFRDRTRFOUtIWVBQNlEzeG5zY0cyckFPWTNTVDN1OGU5N2IySWxwRFY2M3hMcjIwY3dfR1piSWhNSHJ6MzUtU1pnUmhzbXhOT2piS0p1SGUycWhhVTE2WlBnM3Q2S1VWa1AtTGdvYmRGYnd5NFNlUkFBS1ktWVlCYk11TkVVdnBRME5Qcmw1Q1pN?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOaWc0dnhDaWdRN29MYlM3Qm1VdF9uOG1ycHRpcGRPYURoUVZfRUdXOHk5X1JzN24wUG9vRkdvRE9yZlJxdzVsbmZqbnZhQUpGYWxtWmFUdUdEcFlsMTNLQ2JscVVvaFB4QlJha1gtazc5SkRabDhaUDZDSXNxbTNXbFI1OTZ1ZXFndG5NWHlBX2x0Z2lSdVJvSWhfUzdyYTZ2OXFxWVBmN3Z2TXl0cGVXU0w5dXBMVlJCMEdV?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "homem e preso com 34 kg de cocaina e quatro armas em taxi que seguia para rio branco - ecos da noticia"
+        ],
+        "Armas e munições": [
+          "homem e preso com 34 kg de cocaina e quatro armas em taxi que seguia para rio branco - ecos da noticia"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOa0ZpXzJoTUlfdjdtZzQ5eUxTV3p0WEhIanhXTmZIVGNHYU5EdUI1blMwWllqX0VaZnJabjdkUldMX0I1T3B1QzZDT1NBdmdUeWxFT2lYeENRSUtZMURRM2dmdm1xVjNRaHU1Q3dLRk82cDEwYlRVZE9pY3BiaGltS0JhZHlhWjVYcngtQkU2UmtvVlN4Um9wSVF4cFV2eHRiRDJYQ1FGVjdUUnJuYnNieWllbmtIWGlkdXBmbkdSQXVBTVE?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "irmaos do \"bagulho\" sao presos por comandar comercio de drogas no entorno - metropoles"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQRG9ReHE3MXNaOGd1OGt0VTJUaFVZY0FMaUMyd0dvTDVVdHlPRFRjQk1RUXJXVC11amQyeThUVnlwdXMtLUZidm8yQWlTZHZYTVVCd1dyeWF2QUlmUDRRRTRMTXVnX3piLUU2TFAxYS11Y0I3NVpzYXM5dmtCRXlEdmxZd3d6MUYyQjhvems4djhTeEp6dDhXMllrR1JwbGdqdlZLWXJKWlF0Sjl5aWxxM2dUOFUtelJhREJybU5EVXlWejZ3MWlJbUtuZUHSAccBQVVfeXFMUFhJNWEzTm5wUTRoNU1Db0hHUEQ1QVA1SUFtczZsbG1XVU5pWVduOEZOZHJmVHFMMU1rOW1SMm1PZHFqS3MtRkVtc2xkcTU4anFMUDRpVjRFZ2JhNU5QNUl1MFdEc05FVGQ2aFVXQTJyRmlxcDFyUV9wbDJfNFRnUXY4MEdKOVppeFpmTUJvYmZnZ2hsNzFhb3NVMFppajhwcWJXTlJCaFZnNFYxNGExazdzendTMmUxQkd4cER1Wk1RWmg1SnFqQQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxORkxfQUg1RE9VcGROWmd5M2ZFYm11TEJxSVBsY1QzTmtENEhlR0RHVWpIN3FvZTN2ZDVvYV9ZUWk5WE1NZXVOUGc1eGhpZnJ4blJGeUxDelV6NXBadEliNnZoT21jRmFVS2lQdDRYYnFZajZUQzlBb3lGUThzUk1oalA1Sl9JT3JDRHFnUDRBSFBROC1hc0N0UUdNNmc5Rm82aldyS2FpbFh2OWFxWmdJU3F3Rk5uWWJo?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
     {
       "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPTzBZUFBUS3hfcTdUVnY4TjlyVmhHeTNyU0U4YW5DeUpmV3hWZUtOX2NEcmpCdEQzbVdUdDg0cjd5T281NXZSREJCaDdET0NJZmhBZ2pIeUVFTVpzLVR5N1VqWUdfdXI3SlFaemc3RGpLcHpuYV83U3VjVU9Xb21wTXRKRzViZmJ1LUJNQUVNVnZ4cnNYeURZbk1EOU53MzNzYTEwcjYxZw?oc=5",
       "categorias_sugeridas": [
@@ -198,6 +598,14 @@
           "ficco/se apreende 1 kg de cocaina e prende casal por trafico em lagarto - fan f1"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxOa3dOWEFneGJjanQtYzczeU9sSVRyd3ZSOXJDVnlZdGV5a2kwcF9tVUZBV0ZtYkRjX0hvNHdvRjZ2emZiX2FNZ0xFVGh5cWVWcEl3VWZPUVB0V2xLM2NVLWtNTTBwTDVFOElFMDRmRl9BYWZEYWoxNmt0MTN6QXZ1VmFDaHdiMEdBcEpiVlBDb2ZqUENnZnNpQ1Rra2RfVEI4WVp1TDktekFhMFhQQ3YxZjNNTlk3QnhORndLQ1FNUmxkME41TE1vN3RrV1lZWDRHZ040N2pUSQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -213,6 +621,27 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxOcXkycklZYmc1WGlZSUpFeGMydVYxQm5pSkxKNllUZElJNGNvdDB1M1oxb2tUOC1LVVc1SWprcXVhS0R3SHMzYmRocktwdTROYm9jZmQ0M2hLVXFPSmN4LWo1cVBFTUU3UUdCTnBlQURZRlVtcC1VUHpXTnd3OFphU2xLSHJMWnBuQ1gxQVFILWJsWFhJRUxVQUtZM3lqY29UWjhYaTA5U0tFWEZ6TG5CbDNoZ3FuYmRWQnhKeVZIRW94VlExOVRURjNULUxjajNLaXNYSDJtMF91dw?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "plano de homicidio e interceptado com pistola, 82 municoes e colete balistico - selesnafes.com",
+          "plano de homicidio e interceptado com pistola, 82 municoes e colete balistico - selesnafes.com"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxNNjVaODR6LXhEY0hTZ2xLc3ZKUUtaMk0tT2YwSFU2dzVZeFZCTTh6bmJtMlB5SGM4WWRuazdlNjNPdXdUU29yangzX2E4QnNqSHdmeWwycUgxTHNpdFROcEVFM053UDlSa1c2M2YtVEViZW5ibEh0aVZRNnRsMklFbldyd0N2QXoxUTRJTmQzV2Fidjd3Q0FaRDB1NFRRQWkyeHZJczJNWHhJX3cwSHhpNmNUQl9tamxjMjdsU3BrS3ZWWnVJQldVWXppQmN2SmI3SnozR0lHalZldHhjS2txVDRmMS1meE8xamtLWG01ZHk0Zw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxQekFNUGNGN1lmdU9XWGhnQi1hbTZoangwTGF4RlRMNjBZT1JSM2g3dXRwNm94MTB6Y1lzeEFpSHRCQ3ZLOGFJQnZhWVQ5X0hnRGY3cFdYYldZeEl5ck11bEp6TTdvaEtWMGk0b0dKSEhCTmlEZzVkM2xwLXVyZk54a3RVc0gteXJfRS1XQ2xuS21VNmgzU2xHMU9kdHpWc2p0c29IMTB2QWpqaW9rMGFBS0JLazJyRlF2Z2EyUzdKUklNQ0JxYzhqa25Kcm9jQjFyQWM3OWFQZGJtM0JveHRHSzAwWnQwYTNUWk9V?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -221,6 +650,39 @@
         "Drogas e entorpecentes": [
           "ois adolescentes e conduz homem de 21 anos por suspeita de trafico de drogas em aripuana - topnews",
           "apreende dois adolescentes e conduz homem de 21 anos por suspeita de trafico de drogas em aripuana - topnews"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMikgJBVV95cUxQRTk4U1hCTVZoWDgteFZERGZ6dklEZUE5bWtMSmE2eXpKaHREOEpQdDlHei1Wd3lzN3hvclRkNEdtYmVPZnVpVFdNNWdoNGN4czZRYUliZWVMZXlVNjlDRjM4NWw0V2hrbHlvZ25vRmlNeG9hT0MycVUta2o5bFNRS1E4WHpNT1AyRGJIOWF2XzdybC1mZzVIbF8zUnFfLUNiNWJHbTdJOEhRTXoxVUFFZ1pldDg4RmtCb19fZ1U0SHNMSldWNV9NOExlTDltNkkyb2RGV1ZnNGs0bGVjUGFMX253dVl1dFhHZXhabzZtWFNnS1JWS09HeTZKSkx4cHE3QjZQU1d5bndFa080cWhtTTdB?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxORGRIWmQteFZiYm9ZYkhZTVZRc0pUbFZVYldfajNfYWc0cDZXOE5vYTJ6ZVpZX0ZLampaUHdlVzFFWnRKblR3d3YzSDh3WWNLNjM2bkNIS0FwX1NINVRJaXJVd2Y1YmFKU1cxTnV6MWw3TUZZblBwRHBNMlU5dHNuMGltdmZxZTFNbENQaFloYlBLNXZKdEpySE8yVUh4QQ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "brigada militar prende duas pessoas por trafico de drogas em torres - litoral na rede",
+          "brigada militar prende duas pessoas por trafico de drogas em torres - litoral na rede"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPdTNxTGNTTHU3Q1JNVGt2dlBsVENCMy1oakRFYVFseWNUWFpOSlIxbm1fVHoyOTg3cDVsQkVFOHpKT0c5V2g1RDZhRWMzTzFfOEs0aW1kNGVDRTRLbVNEZ3JJcWY2aTBFQngxbW9DMDVwTWdPTWxMUERWdS1SVUNiR09hanVIWmdZSjdkMC1GcFp5czhGeDY0OTFkLU1veXN0eDctdEhBaWphamNZTGhGN2dTWmxZUV90R00yYmhOT1g?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "detento do semiaberto e preso suspeito de usar barbearia para vender drogas no df - jornal de brasilia"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -251,6 +713,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxNYUI5aTQ5M2R6WEl3Tk5EX3dwNG1IWHJXVFNwd1Z2Nks2TUpCTEdsWFh4TWd2M0djNHJDQnRPVGZ6RWRuUU9PaDZkM0JzNVJEdjMxTTFjTnhQbnZTV0wweUR0ZGRUVk5jYTZYekd6akU5RjJlaG9RV1lnSGY0bGNIYXhVQkxUc1d4SnBORHhDZkM4M2gtdXFkMDhSdmFlZzdkbGw0ZDNYcjU1Ymg3aVRvOHU3QW01NHBYdF9YSEdRekhNUkNoNm4yandoZEhjellDLURrTg?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOV2ItYUFUNUk1NmJpTktOeTd0UktuVDhXbkpCd1pOTU1acFVmT1cwRmFlZVhDODhCLWZkNmFEMWIxOTlGSmU2ZjVxNGIwTnMxRUxOa1dOU0RSbkN2MDM2cmxGTllrSzg0b0g3WU9Pb3ZXaEFDSkRDN3A1TUJ6VlVHQzZn?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -259,6 +729,22 @@
         "Drogas e entorpecentes": [
           "tatica prende homem por trafico de drogas e apreende mais de 5 kg de entorpecentes em palmital - assiscity",
           "forca tatica prende homem por trafico de drogas e apreende mais de 5 kg de entorpecentes em palmital - assiscity"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQV25ZYVVRSE5NZlFsaHdMVWpXaHV6ajJfLVl3ZW9nTkd4RzBnR0VHM3dqcHJKcjNyVFNreGE4WHNBWEFLVEJsNVExUVhVbmIxVTBISG1pSUU0Uk50RWZJS2dkTEl5X3MzT3l1ZFBZdkZUanhEZ1c1MUxoVjVLWVllZ3MzTUQ2NWNWTmFITVl2UW9mSzZNY0htSGpUa0ZQLTh6ajRDbmcxRG05WHZ1U2diUzdpZWxaMGJaRC1iRFh1Zw?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "cinco pessoas sao presas e armas e drogas apreendidas em acoes da pm, em maceio e no interior - portal nn1"
+        ],
+        "Armas e munições": [
+          "cinco pessoas sao presas e armas e drogas apreendidas em acoes da pm, em maceio e no interior - portal nn1"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -320,6 +806,40 @@
         "Armas e munições"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOQm5NcFBCMHlHTEFJQm1fMkZEVldyaWd5M19ZQW10MlZpcnF2UFZiTUJ0cTM0WW1IODRjRWl6WnJGSHNNc0RLV2ZiclRWZGloa1BCUTNxcmluWmhodXVLazhVLVVkZ1MxQkVMMTlHTUdGeVJjSjB6SmJOUFdyc2V1TEJRTUx5V0VNSWdyZFFjRi1adEVLVHBVNHZWZ0hfd1dmVDZMSHkwZ0g?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pm prende por armas de fogo e trafico de drogas em queluz - policial padrao",
+          "pm prende por armas de fogo e trafico de drogas em queluz - policial padrao"
+        ],
+        "Armas e munições": [
+          "pm prende por armas de fogo e trafico de drogas em queluz - policial padrao",
+          "pm prende por armas de fogo e trafico de drogas em queluz - policial padrao"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNRU9FOGd0SjFWT2hXWWR2NWdWQV83N3lQNV90MVJyVWNmZk1lVFBkbDZ5STBBWnBmY2JNQ3J0blMyeTluZ19wandtcnNPWHVMbGZDZjVBcUFXaUc3dXc4cWoxNURRVklSQ0ZpUEFCdjM4eUhyV3gyTVVpSlVsQjMxLTluM01QRzR4UXFhbk9kRzU2SjRpdXpINUoxVHVIclRiUzRlYzhUTGFqQdIBpAFBVV95cUxQQUNyUWRBeWJzNGFXT1BlYXM1dGJJTmtzdF9BaVpJUmtqUWR6RTVDNzFuYUJBanl2dXZZYkpoaXdVOVp2VWZ6QVlJNS12WG4wWmZqZklmbW4weldpbFZnQXE2VWVGZHBIQTN0SEdGbXpXT3JZYno3a1FfXzVIclBwSTljblZOZVI2bE5TOUZqOTNQZGNFU3ZlakZrV29OWVhNbjVEMg?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia apreende armas, drogas e recupera veiculos com queixa de roubo - tnh1"
+        ],
+        "Armas e munições": [
+          "policia apreende armas, drogas e recupera veiculos com queixa de roubo - tnh1"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -392,11 +912,36 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQZF9uelFWWHdZSmh2aTdVcHFrT3FHRmR4SE9fQlJqbl8ybnhEQXk1dFRuRHFfTFk4SGZxTlVZTHNGVUpiQUluRVVOMnJucmYwVGc0WEJteDZrYXQ1RDgzSFMtNzV2Nkw5UFQwR3JQREpJcjZKbHRsUXRpblloTXZ6R1ZqYVhVYlEtN1poRFp4dTJ1eW05RzFfQ0FidDRWbGtqSWFTcw?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "dupla suspeita de financiar faccao e presa com pistola e municoes no nova lima - midiamax",
+          "dupla suspeita de financiar faccao e presa com pistola e municoes no nova lima - midiamax"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPNWEyb0hFR1k4dlZBY0FSbURzN1JNWThjcHVsSk9DRmg2V2tPaGswbmgyczg5TU5KVkJXSXFuUmtNMlhYUUlLaEtkSld4bmNOUlV3Q2hLZEQzN081VUVqU0NQZ2hJNXpSZS1tQ2xQTHZVak1ocWNIOXc0dGFkU3Bxa3dpd2ZUVmFQM2dwTWFXRmVtWVVzbkhQVVBGODcyN3FabmVoRnFfT2UtTHJaTkgwQndaX2JBM3Q3Zzdvd1BEY2pBQ1lncjRLTFVoX2E3amc?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxON0Fsd1FiOE9FUE5TMENhYWVxdGdaeVl0akMyRHJqeUI5cTRvWThGMjNDSHYzLVBYUWdGWWpHandhVjhJN2ZNZHk3UnlIMUpsRHJ1Z3JFNm9qR2syY3poR1pCYXdoQzdiOXV0R09vQTBaMkpiRGN1dU1fWEhlZEhfYnZ3UElMNEYySjNyX2NiUUtvbVdsaVpadWhNODdTVlZjUHRXSU5McEZZdXVkaU1JMlpB?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "prf apreende cerca de 30 kg de pasta-base de cocaina em caminhao na br-070, em jussara - zap catalao"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -543,6 +1088,26 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQTUc4aVBSaUFxY1JzdXlWT1V4d3l1OHA4Ny1VOUxHSDVNZ0JLUEJIalN3cEdrZ1F1MHg4ZTZ5cExTUG8wUEc3WjB4MV9ubHF2NWRsSkR4TVg0dWpqaXNhQ2xPUkNIWUpzOHlzTWl2QjRFaWJrQnFBQ0N5MExOUVU0dDYwSjh6MzBkLXNTSGJ6amRiQ19HdEpGWUU4M0FkUW11MWhxUVFnV2ZXYkJpMXE4c2NoZnVxZzBpWFctU1ozYnJHN1BGOTBjb1JRWmE?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "o cerco contra o trafico e prende quatro suspeitos com 67 porcoes de drogas em alta floresta - lapada lapada"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQRGlXOFg4R2hkVDdJRjlsTGZzRlBzMjlIWnFJQlk2QWxXNVNEWEFLUzdJTEotbmNyeW9yU0pEdjk3UHoxY19PcWY1ZUdIOWIwdTBDdDNwQjdSZjhTTXZNaDhNUVp6VDdCV29aTkpIeGttSVJxS0h3UmxyOEswTEZRcG5vWFlYOE8yamozblBhakhFRk40OW1hNmF2NE10YUVxenBPYVRyN1F6dktLRjZVWXk4UUllYVE?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPSHdvOWxRMHJUZzVYQVQyZ3NZb055TC15cTF6NlExc05CU1MzZjVmYTNncHQ2OXcxcGFKb1VlQWVjbGpIbkdpU1p0VTlfVjFIWHJuZjlHSnJmMVpjc0RYQ3FwV1F3M0RFRV92QnlERjJ1SDJWU2NwU0VLMjkwb3hQV1JVXzhVdjVxLXhvVXZUNkRKVEh0dHlTN0hHV0ViYkZROFpheldfZGM1NERtRWdCV0NkWUo3eTFUcjZ6LVMyaDE2SkhVUUQ0MklWMDE?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -580,6 +1145,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOaE4wU1lPSExCSW1XNHpicXZmR0tRWDk5TzhhMlUtVmNqOERPS1R1TURSUjhkNDloZXhCTHVLUUd0SzRMdTAxaGhENXYzVG9wTzh6THJ2bm5lSHdmRVQ4SGd4a1QyUGhaVm5KZHJrUXVtY3BReUFsejJCS2l5aW04WmhNaXZmMzFpbUNKVW04VEJ6dF9YWkRqNWNnS3FaZ0lQV2Q0RUpoYi1MaUt4Y1lraGNkRDF5aHFSSm1GeGVaX1FSZ3psT04wUQ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPaVhIbDdUWmFYOE1xX19oakwtTWViUFdPcEhNR0hWWUktSVBSMHMxLWpST0N2Rlc4Zm9LTGZWZHBLVDNZaFpfMldJY1RvNW5qeTNsdFc0Njl5TXFBb3I5U2dLQ1JyTXZfNWJUaXVXUWRKZ1c5WEVOMnVsWFZqYk0wX0NKV0x2UGJSaExXT3Y4c0w1clRNVnVReG0wNkMzaGFjY1NKNG5hUDAtazFkOUFESU1oZzR0UlBuS2ZXY3FVeUhiMjZRRS1QbTA0UHpRTkpkemc?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -628,6 +1201,19 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQckxQSF9fNGIzWHZLUzk0bmVoSVYxNmpZY3VrMmJoMzN5RmZER1I1aDFPSi1uTzY0WjJNdm15d19iems0TERfVFZfVjUtRWNTOW95bVdmemZJT2V2Z3FqVzJPRF9Hejlqd2RKQVpTMDlmV3l6RnlHNVpuRklDZkZLNXRGZktaREQ0TG1RSnBR0gGcAUFVX3lxTE9rMGgwYk55V3N0WWJHbG51Y2lTT0V6VlRZZGFZTEx6NnQ3ZFFfYndvSnoyWVBBdktPMF8xdUxMaGNxYktKVmo3dUk1VnB6NGpMNFZhU1M2c3hDRUZoVzZLeWRBZV9maHVtZkJGbTVJa3VJY0N3MkJsMkpmYUFwanAxZXdvSk04YkU1QVlCaFJDX2dxcVEwQl9odlJrYw?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "morre e outras tres pessoas sao presas em operacao contra trafico de drogas na bahia - g1",
+          "homem morre e outras tres pessoas sao presas em operacao contra trafico de drogas na bahia - g1"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -792,6 +1378,19 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxPNXhkdW5WZEMtMUNSUlBjMHBOUTdKQmQ3eWtSWkY3VmRlLUdqMEtuX3Jfc0lCeUVWcGttSWVvUVlvNlotRm1vVlVKNzlRa1lBaTdBNl93YTUwZ0hGUW02ZVl5NkhLVkF3Unh6MXZqNzViQ2NzVjlGUDlkX0hzV1FMYmlMV1VOQTd3MFB5Vmp3bVVEQUdDTnMtUlhZYklWb2pxRTNRZEdpbnRKTXlGZjBhWkJRTUJBRVcwckUyWEx5MklXckxaTWxlZzYtYW1UcTlreF9LVlhpazZueHNhMDFxWWxfMnJObnc4R0lvdNIB7AFBVV95cUxPNXhkdW5WZEMtMUNSUlBjMHBOUTdKQmQ3eWtSWkY3VmRlLUdqMEtuX3Jfc0lCeUVWcGttSWVvUVlvNlotRm1vVlVKNzlRa1lBaTdBNl93YTUwZ0hGUW02ZVl5NkhLVkF3Unh6MXZqNzViQ2NzVjlGUDlkX0hzV1FMYmlMV1VOQTd3MFB5Vmp3bVVEQUdDTnMtUlhZYklWb2pxRTNRZEdpbnRKTXlGZjBhWkJRTUJBRVcwckUyWEx5MklXckxaTWxlZzYtYW1UcTlreF9LVlhpazZueHNhMDFxWWxfMnJObnc4R0lvdA?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "homem e preso com espingarda, revolver e arsenal com mais de mil municoes em mg - g1",
+          "homem e preso com espingarda, revolver e arsenal com mais de mil municoes em mg - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxOamxVRERpN0NFUkJHYUJtc0J1d0hkT0NaT2RlNEVyOXoydzA0VlBaR0VVZEtrTTF5YXRYUkl4YW5sTFFTWlRMazJwaFVDVU1yajFTNnp3MlF2cTVqZnliUXNtZURQQ1l1eDZjai1jZUs2YTRjV0FWell3SERGQUpoOURsd09Oc0Uwb2NON3dTSHRhYnFmQ3pOR2pDUmFoc3JQekpmeklXSGZncmtmaDQtYjlsdGxMMTVmd05ONkJGUWwxMnQ3Z3p2blZualJZQXlQbW12Q3RwQmQ3NTlOVjRtZ3d5M0NzWENSZXdkVQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -913,21 +1512,52 @@
       "url": "https://news.google.com/rss/articles/CBMigwJBVV95cUxPRTVPdkFOZWZpekFfVUhPaGI4ZHdnZXFvbmptNzkwdjdRc0JHejRDRGFoY2NSX0F0dUJMekVHQzNzZHN4SWVVdW5sai1fT0xMVG1EZWl3Z1RnRUF0eEhfOVRQWmMyaFVTajA0NTJxdGZSSGtBQWlxVnBjVGRmSUNCWW9qVVBhcXdBaVlnZnFDY0NodHlROEhvX2U5MkVITVA3eDBYdnIzZTY5ZHBlTWxNMWo0dk81N2I4cGtPellLbXBLczZXQUxQYU1TenVXcGxjd2xQWVNUSURuMVJ3bi16ZTJ1cXZfUkV0d0JabjRvc3dDZFhKbDdycVdfOFJuTUNZdUJV?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes",
-        "Contrabando e descaminho"
+        "Contrabando e descaminho",
+        "Dinheiro e valores"
       ],
       "evidencias": {
         "Drogas e entorpecentes": [
-          "operacao fronteira: receita federal apreende drogas e cigarros contrabandeados em corumba e mundo novo - governo federal"
+          "as capsulas contendo 190 gramas de substancia analoga a pasta-base de cocaina, avaliadas em mais de r$ 10 mil. na mesma operacao, agentes do ministerio da agricultura e pecuari",
+          "ao lsd. na outra, havia 38 gramas de sementes de substancia analoga a maconha, escondidas dentro de um bule. os entorpecentes tinham origem em diferentes estados brasileiros e s"
         ],
         "Contrabando e descaminho": [
-          "operacao fronteira: receita federal apreende drogas e cigarros contrabandeados em corumba e mundo novo - governo federal",
-          "operacao fronteira: receita federal apreende drogas e cigarros contrabandeados em corumba e mundo novo - governo federal"
+          "operacao fronteira: receita federal apreende drogas e cigarros contrabandeados em corumba e mundo novo - governo federal       operacao fronteira: receita federal apreende d",
+          "operacao fronteira: receita federal apreende drogas e cigarros contrabandeados em corumba e mundo novo - governo federal       operacao fronteira: receita federal"
+        ]
+      },
+      "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMirwJBVV95cUxQMnZyRWFUN1lWZ3VEajkwYTJDSHh5S0o2Y0tTY0ExMm5MZFNPY1RJelg4aGRKZGRyd0dXZXdUdFVlMm9TT1ZXWXVOaUg3dVY1aDY4SXIzTlJwOExFSGVkVXZjX2RvVWNuaVhaODd6UjlJM3ZVbnpYbXRtZWJPVWd4bEE2NVZrM3BKYjNWTXlrZGNGMVgyRjZhbUVVaVJIQ0RfRjUydEptUzd0eGpaYWZkTTlkUUVPa3hBT21ianprYTlGaldWRXNicWRSLUFQNTI0eXZBaXN6WkpOSUYySTctNlZNelBoNzBfM3RpdmNGTlZMV0RJVWdqb0l6VUs1eUI4SDlzN2ctWjJPM1luN1ZNYjliYVNTdTZZRUhfVF91Y0hIZFBxYzJRcWo2MXkzVVU?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOU1pFVWs0cGNWZWdvMkdPMXFiNFUyWXlBcXNKdDZRczZKOXFfZjNiWTI5T3dJUmtMcDlTcFZUV25XTUZXb1ZrY2d5cHM0WDdPOWJHUlBDQUNwdmxmMUZLS2FoQmRjR1F5Vkl3WkV6X3dSY2V1YXFBTzY5dzF3dW1xT1VLaTVNdlItdXRCTnlHUC0wX1NvQVJzNlZlWHg3U2RGTXhSWm5mN1E0SHZZNExZRUZmaXEwWF80dWV3Q3JKbjI?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "adolescente e apreendido com armas artesanais e municoes em baldim - sete lagoas .com.br",
+          "adolescente e apreendido com armas artesanais e municoes em baldim - sete lagoas .com.br"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOcFJNVmkzWURlRnA0dTVtWEVtRWlfLTh2VTVrTUMwdXh5bi00a2MxMWRSS3ZwMUVyUEIyX1lISmk4Qjh5WGpUZTZ6Yng3UFMwMVl4cUZWcFFQYWxON2VaX0lCWm0wcXZoMnBUZGluWENWbXozSGxQLTQxVUhFcGhxZmpBY2Y4cTk3LXNHM0I0bS1YSWQ2b0pNUUtwSzVnYUtINDl5YlZUNUQ0eVU?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxORjdyclU3NlRnNzR1Uzh3dTlZN1FEMUh0UTBMQ3JFU2lBZjJTbnBaRlVpS1h4TjFqc1NqbHhQbi1femxfX3RLaktQcDhRd0ZxVi1Xd1VfdktJNUR4M243QWV0X1hrZWFzdURTWFhBT2EtSVpJZVYtUllQWEIwRjczQ0d2aWZ2UThodHpKNUF5NkJzbjlhR096U254REpJeVNsTTAzZlFmTk5fdmliY1BTdW16WE1ocDlwQUZBRmZTQThiOUp5?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -980,6 +1610,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPelYwa3dZY3ZDbjZNeDJ1UUJ6eEpIWTZ3T3hUMW9TbHRWc01JdWZYWENOOWxTbVd1STlQcTk5WmVnZTd5bkp1R2hFby1IaVZ2QmZrbThUQ0VDc0ZVbjFxX3hzWDExamI2a3BIeVdyMVdGMHd5aXN5Ung5YV9rUUthVWFNYw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPN2VuWlVIakRGYzI4VEJNWEkySVZ4cF8tY3JzbXAwajltZ3lteFdRSENkaFgySFM2bFZIMnVLMngtM2Fsb29SZTVKVGw5VFRPLU5YSXZkWDB2V3RqSndPTnVIX09iRzRFY0liQnhGNXA5ZUZ6VVF0cVE4MVN1ZktVdEIydERHTmU4MVV0b0VUR1JIMjRrUkRQOVFFR2RoUHVpdjJwaDV5SENCajdPRWFqa08tU29HcC00ay02eUFPZ2U3d2NHb0Z4VXhWT19nQQ?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -989,6 +1627,14 @@
           "policia militar apreende drogas em tres locais e detem mulher durante abordagem em ro - news rondonia"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxPS3p4c1Q5dVlCRl9nMnhnUEpoTm1Cb19rMEwzTVI4R0tqX1BaeU9zVGVVWVBtTkhsZXo3MU9WUk1reWxNck9fTDBlXzhTLXlXX1VYemV1YzBVMThnR3NKdnpOVFpsSE11V09ITldaTnpIbHZOYURxWnNKUlBRbkRLY3NKN3ZYUGpmNDlDTHo2dDlpSnZwVFFOQk8ya3NuWF9qcmFfcVh2LVZjd3Zia0hVUEotajZ0NDVSeDhpMThBZVZtYmNzd0x4MWNGYnUzZ28zNWItZlJ5V2Q0Y2duNVljWWZnNVLSAfMBQVVfeXFMUF93U2lsYnBPaFpMaG5fZjJWTTlhWHZ1dWJ2SFdrNjE2MVpqRm5GX3l6OWhxRjQxa0RqVFNfN2I5Q1I5M09HVnRYZ1VFb3BPTDBhV1FHalFCQ1FydlZvTHRPSl8zdlR3dEVKZXJ6bUtLS1Rtamx2YVBBXzdrYmVSNkV4OUItc1U5Y294TTkyYnFnaWlRR2U5MFVhVGNPT0M0RjBackNVUUZyaXhKbmtmYXJSTzFzcmx0NEtTb1FuN3J4djVZSkk4b0Z1VlpOWkRDRy1yOUpta3A5c20wZzdWd1U3UEpTbllQendHSWlrQmkyaE5j?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -1012,6 +1658,18 @@
         ],
         "Armas e munições": [
           "afico de drogas com maquina de cartao? pm prende suspeitos e apreende arma em pouso alegre - terra do mandu"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQVkxvdnRDa0VHM01OVlNKNjdQTEdzSDJ3b2xmcUdkdGJVUzc1bENuRDJpOGtmRXp0V1Vtc0xlOWhyUVEtcWdTNUhQU010djdIcGFCOTZ2eVJtai1iSjNwVTdRQWpIR01VNHdIdFJnMzhmZlNyRVF3TjJCeExxRnM3OE4tRElxNUl1aTRFZUJIM1liSm16Y2ZsYzhZSkcxN2J4d3YzMU16TUZZR0lrM0NtRjB2MUFCMWU4TWxlakxac0lJV3MydmY5bC0tQ1JtQ2Q4ZFE?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "prf apreende mais de 50kg de cocaina durante fiscalizacao na br-364, em jatai (go) - jornal populacional"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -1163,6 +1821,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNZWVTVG5Ub1U3ZUd1bWd0TFY4QWswdXhtQTJXTndwUHh1azFYT3JDQjBJWnBGNzNiT29Wd2NDMzd2TnFPR29xQXBZbFZuR0RSaUF6dXdIR04xaWlUYk0tUnA5dTNEb3BZT1J4WU9GOFluNEVwME1RLU9xNU5ZVHl4Z1VIQ3JEWE1zaUtoakNHTllOZkRPQ212clE5WnkzRkI3eW8yc253Ri1xOXF1RHE5TA?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxPNWc2dERWZVJuNjZfTUw0a2d2cG9BNkdxT3pxU2t0YkRaazdsTEZ0TENZcUdmdDduMU1Nd09SUHpBdWNvMjVOX0hSalE4aWpubnZ0YTZuQWtLXzhFQlNjY3JmYWpjUHVoQVlXdUxaSUhlVEZfcUEyOHNieWQ4RmVyX0ZzQXJxMFNGa0pja2ZpTzJvd0prdEI1OG85TFV1SHBhSlNieQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -1198,6 +1864,18 @@
         ],
         "Armas e munições": [
           "pm apreende mais de 6 quilos de drogas e arma em limeira - tododia"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNWjN3UE1YNG9LYTV4dk5FTFZKT2VDVG9BM3Y4MHhaOV9mWGk1cXNlRkUtMkl5S2NKVjlKSG9qYndNc1EtNzRwSUtEZnJOMmE0ZkJFblpHd0RXQU5NSGQtRGx0MHpWZ3g3WlFHODAyQjB5ay1pNkVFSDdSMHFtX2N2dDl3bV9YZ1BRUEJrTFFvR3UzTlBUNVlzcjJDQmkySXdydWg5SHQ3bDVwQmxoMlhUS1ItMk5jYTVDZG11OG9GcVFQNGFxNldJQlZtRVR3aWl6dEFHLUhiMHFLelE?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pcce prende foragido com dois mandados em aberto e apreende joias, drogas e dinheiro em fortaleza - policia civil"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -1304,6 +1982,18 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOSlpOcGd4b0h1NXBZcFFod0w4TWRpVWI4dmkwSDVwS0s0TDlGSkQ1aXRBSEwzQ0tULUdSQnh1dW5KdE1sRU96RUpmNE1zU0N0Uk9jOEVzZWZfVkZYMXl0QTgtRTNqMldSVndoWHQ2dkdNRmZySE15V2hqeW9qNWdkQU1Lc3dkNDk2ZS1fN1Zrd0JEdHg2Y1Zkal9zUnNuNUxyb3NiLVRpVC1uRnhoYXdNSHlyTXFtel9OaEhNa2phMFFFWjY2alFWTW8yVkYyVEQz?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "operacao codigo vermelho prende dois homens e apreende seis quilos de cocaina em vitoria da conquista - rede brasil de televisao"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFA0QklrMEJVb0VEVVBNYm1LS09ZTzBWT0d6YVhzcFZ5aUxJRUV2cUVoaVB3djdQYll3aUFPUkkxZ2hEdktJNnhTenhtMnZTbFBHcUtlbkZISHNyYjRKcEl6d3daeVByN3pMUlQ2NEYtaEsxQ211c1NMcjdmQ2dFTEE?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -1329,6 +2019,19 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQdVdwTGZxaGg5dGJQRm5BLU1fS2lFNTdSWXgxQy1Hb0t1dW5sTVkwa181eDR1bnRENUgxNkt4YjVXRW1tTVR5X1BwZVkyc05DMkNpNWFnTTNzaG1EaVV1cXNqLW5aTm5DbzctMjU4a1dFU1NkWnJoQ2RJNDhVNTVMaDFGWEg2eWRSTXFEeWk0X3JFSGE0bFl2dUgtbVhmZ29JVUJwZ25xNzRyVm9nWmNkTHp0UXI3MDNNNXYybUNlZ0JObV83aWFsMg?oc=5",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho",
+        "Dinheiro e valores"
+      ],
+      "evidencias": {
+        "Contrabando e descaminho": [
+          "receita federal apreende r$ 1 milhao em mercadorias irregulares em vitoria da conquista - jornal conquista"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -1434,6 +2137,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxORllQRDl6VW9TUDBwY1M4VWdhOV9SSnROaVRUTHA5UkVPT1J6b24wQjRlNDVDSE1Ua21kdVhQQzJqLVRuUzdCMzZueXZYWWZWcm1kY3MtRlJlUEMwZFNWUGxjOGNjczdqT1BZVlg4T1JaYThlZ2p4SEVRZUk4bHo2cXpJQWxiZThMeF9PcTd5eWh0NVk5ZzAxLUloWlBpcW95aUZtOERFQUxtVUhKRllvRDJzeG5ycEg1N3FjckVMRXFOaDJOM3NJaE9KODc0Z9IB3AFBVV95cUxNeGZZUVJRb01CNTBDX0Z3MDVvZ2V2SWJXQ0tKUW91dTk4ckhKeDBBeV9qUElBWmFITW5NOEI4S2hwOEVaYkVXS0tQZ2VmNk5WVjZJTFJ6eHFXNmxUSHRpVm05ek94eDhmNEx0TVljVlFjU3VTbjR1UHRINUZaOHBvQ21MbERBalZHSnd3a3ZCb3BPYWJJZzRIV1RXYnRUNW41cUctNXNWN09ObVhadHVkeWdoZlZtcXFRSUhPZkhOLWJ2YV9MX3BUd3ZUS21aNEhzNVo5cE1rQXk1d0c5?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQNjBNOXRpeUNtenRhQTR3ZEhVdEtCMFB4ZXp6clhfVFViV2hOdGpJNnpvSHR3OHVNdzBtQ3NFNXFmdDVCaTV2X2ZzNE96NXVNeFctdFFaSWdacm1UNkdYYloxVlhPQk5BN2JWWkE4cGNJQTRsY0hnQjltcDNDc2VESm9OVjdpbEpCd2RzdlB6a3ByUlJlVko4NlVVMGpNM2N3SWZzXzhaQU9kTmpkZjF3NGNNONIBswFBVV95cUxQZjJXdXZaZFd4ekhrMW9OQUNRM0hzOVZET1E5VTVSMi1Ub0o4UndCdFlzYktuSFo3bkxSMEpWd3N4WEI1cUxUbnptTHZTejQ0MVFKRFU0WVgwd0VoRnV2NHlwMU1VS2dIaWNOdXRMalJqREI0TEYzaGh5Tnp2aDVPa2poNmY3dFZkZXVOeDRFS2tvZ2ItMk5xaGxxaUk5bGF6MUJsSGUtSGd3aFI4TXJoNG12VQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -1451,6 +2162,14 @@
           "cao da gcm de sorocaba localiza maconha durante operacao policial em pilar do sul - prefeitura de sorocaba"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOOUFIbzQxTUVPamx2SzhMRTBubjkzenN5ekw4eE90emlieXBEa0NOQy04TzNjNkZVeS1na01la0VBNWlWY29lZERzeFc4a0hicC1PMThnU3F2M2xmN2FEeXo0cV9MVFZ1ZkZjeDhxZzE5MWhwSnNZSXo4TGJpbHJRaVVySGJYUDBTdlBmcDJGUmJ1Qzkxbzdna21EWFBlVUxLQWZXeGRhUFFBRFNCSXJMRFJHSE16Mm9FcWRMbUhrQ3VCNVdVa3hKeTdBbmNvUHByeW9PVmNn?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -1544,6 +2263,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxPLVpJQUJ1Nnd2ZHo1ZXQ1dWZOTnAyaGl5VU9vN182eUVVdVI5bmU3RkJGWldmcG1acmt5VUppZ0h1QUxnWUFzV0JtRWpVa1FKa2lGTnNKQzdHc19sVkxyNDlWY2R6T2FOX1JOU3V3VHczTGRfVlI1d1BkVVdOdzA0U18wX3BndDk1QV9leXZTSk9USzdIclVQbkZyQkJ5VllIZmhvd0R3UVVkajMwMVZvYXExdFVadHVxSmdJMkRFY25GdXJnTzBPM0FCdEQzcV92TmpfNklsUlY0R01TSkNPcXVPNnJjWjQwQ05zTWthZVRncXVwZTNrbTlvemdYaXZBUmFYZEs5YnlFbU5uRm9jVA?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNaVNEbnBVZExUVHpXbE9jYmFlc0ItNkJxV1NxMWRLSjhnOVV1dkdMaktCWWxYdk0zeDhFVU1xN2FvcU9kbUZ5Ynl1UktrWEthRHV5VXJtMXV0LTl5YUVSXzR0S0J1a3VZVjRZZmlST0xoTDZZZks3aXh0RTE5NnNvaEl5Q1AwWTZKcVJpM1hrMENLWEpVNGRKZUpvUktXNU9HSVhMdHFiUVZaay1DMGM1dFlXR3RnbTlOZmxj?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -1599,6 +2326,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQSUtGc290UzdXaDNaa0pQR21GdXNSa21faWFjOEVGVVhuTjNaZk1kQmQ5M2dSSHMxQTVHWXFqQ3VJendId012MFVsQURPRHg0b2FYT2tCUVpQMW15SmpGSzBYck8xOW16aUgtdFd3RGVFbVZTUDZDLXVoa1N3SmF2NGp5TU9SWGxPLW92djFOdXZsX3NyVEI1UVFIRTdxZy1MNEFZc0t2ajhGOGJPU1BCLUNubEtIY3JlMkQxaWFLY0RIS3VVVUxFR0tkaw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxOOC1lR2NRZUdTcVNIRHAtMEpyaXUxU2YyN3EtUGp0SHkzQ01WMk9iR3MwOTloaTBGQThPVVpIdEtSTE9iQ2dZSEVsV3UzMXdxTDlZZm1vR21Ncmt4MEo3dGNVSlFWRTdNdEJmVHl1T2hEWUx1TzFWRERfdzFjYkhESTlxcU5vOXVhQmF2Vmx2UUJTSzB6U1dnUkJJYm5ZaTJ0Mk9mYUNFOU1oTzgwYlotbHdub1BvazAzMnFmVUNBdEhPeFRsMzBJMDhGZXpTU2IzMU45NDJZRkd2ZVZuT1ptWA?oc=5",
       "categorias_sugeridas": [
         "Contrabando e descaminho"
@@ -1643,6 +2378,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxPdFR1c3dfMExzN2dnNG9wLXVOSzhLM1p1cms4UFpvcUVsRVhlYVA1MlhlRTJmTFFwU2ZUU1Q2UTNremFfbWJsem9kTVlseXIydUFOdXVHazJvamVOd2JLcGU2NkJZZjRzanNfbklzeGY1ZW93YXljcEY3clJrTlJoaVU2YWNOd3ppeXZqQnRza1RfXzN2ejFJajlKWDV1QU9fWmprbmJUN2Y1cWo4VWFHSUJ4SDFXMmlFXzVmMndhMVVpWHlwd3JxdU4yOEFZekNtcnpDYVdSWk5zeWxfVkRvWlE5VjlXbHpTTkww?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNZFBpd05QNmJ5ZE9VakdycHFGYjl4Z2Q4UWRsdTdpTTNyMmN4OXRtT0FFSS1mZkpZZWFhTG00RnUxaGhuREJhQ0VTalBTNG1MM2Rqa2Z2NUpqZHR1RGZYMjdXVlpHXy1MRU1aOUhhSWZmYUJ3bjNwLUVQNHZoWHlsLTFnNnNmVV9RTEd6amtpenZaY05ZM3ktVlF2b2NBWF9nMWRxeDBqSGtQVGZZd2NGcUg0OWVpZnZoMHJPUXlRRWE1NVN6WUFnQjBQRk9XcnVYX3k4SlIxQXdLQ2FGMERMYnJaTlBtclRhT0Jr0gHrAUFVX3lxTE1kUGl3TlA2YnlkT1VqR3JwcUZiOXhnZDhRZGx1N2lNM3IyY3g5dG1PQUVJLWZmSlllYWFMbTRGdTFoaG5EQmFDRVNqUFM0bUwzZGprZnY1SmpkdHVEZlgyN1dWWkdfLUxFTVo5SGFJZmZhQnduM3AtRVA0dmhYeWwtMWc2c2ZVX1FMR3pqa2l6dlpjTlkzeS1WUXZvY0FYX2cxZHF4MGpIa1BUZll3Y0ZxSDQ5ZWlmdmgwck9ReVFFYTU1U3pZQWdCMFBGT1dydVhfeThKUjFBd0tDYUYwRExiclpOUG1yVGFPQms?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -1711,6 +2454,18 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxPUk1PUXUzRkNYM3VlMlBDQV9JN3lIUzhwUlFta2I3cVZEZ0dXVGZJdTdVSk5aUjIwZkc5b0pMTmhGZF93bDQwbjlhTVk2SldsWlVBV1I3X09NREtCdGRDNncyUkNhZGdSVzd5aXVlekRJd2hVRmp2c3JBT1FwQW1YaVpUei1BelBhVE81UzhvdHd5M2xUT0RCX1V1cm5ZeGp6V29pVy1kN3hIT083VDVfNFU0bGF0ckdlNDZSZUdEWjN3NmtRRHFmWVpONnJRQlFuOHpoQkMtTlFQaVY2bHdndWNoZ1FLWFMyRzlLMA?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "acao da policia militar apreende arma durante reforco da seguranca na cidade de bayeux - reporter pb"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -1948,6 +2703,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMipwJBVV95cUxPNGg5cnZGUVR2YUF5OV8zRTJKa0JXeGdfVUJHT2NsUHNxZWVVQ3VYTmFTZ2x3N1RwVVNTQU1ob2JBdzhIaVpqTGc2TkNBZ0dvN0ZfbmEyX3gyejBmTTVpeDJHb20zbkcxRTZOMVRkU3BQX05rX25GaU9hNWNMaENpazA4ektiMUJNNkZBM2cxbDhIN2FmR2p3N29WTllxWXB0VmZ0SkpQX0hLcTRkZTNvaHpYWjJMYWRob2l2SXlKWkVIYVE0SVJBSUdNWlBPMEp1TmtuTXlMRWYyQ2VUUjdocVpuOERIX2U3Y2gtemJVdnRobnVUckhnYTFoZWRtWm5odUlTMmlkNDBJTDFlYV8zZEFQTTVSUlZiQW9DQ2U2V2xINGgwdldn?oc=5",
+      "categorias_sugeridas": [
+        "Dinheiro e valores"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxOaVVRRHJBOWZYbXduTVU4MzNVNng1N09zbTMyazFJMHRVT2FQelNPYUVXMG1hWEs1U0dOOHV1ek1hd3JBNm51MUVyVWoxTmN5NkdNSHNERERBRUFBb2ZqQWQtV1FLdzh2Z1M5N25rNWhUSmtpUlllNlNIcEZDMm9mSXFzRDg0REhScHR2MXRaSDd2WnhvYzhqbVMwSV9pR0tpemVldXpOLTVOUHdtUk1ybUdHd1NxdFdmWjRIakk2UGRLZU5INVlPLWo3ekRQNlBwWUVsR2JQOHc?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -1957,6 +2720,14 @@
           "policia militar apreende drogas em tres locais diferentes apos abordagem a motociclista em ro - news rondonia"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNUlVjckdGMFhTS2tINlF4ek5xc2VRNjhwUGt0dEdPRDBKMkVtUHJaVC10eWZkeFZ0UWJhWHpEcGFpSjQ4RVpyclJNdEFYTzVxOXBJTThNMmF3Q29fc2NsY3EyemUwMnl1ZGdJYWxlamoyZklmcjlfV3oydEowVmJXU20xLWs3Q3BoOF83N3ZVQlF2QjlXS2VTNTJPaWJVaEFMRG1XWm1SWEtRY0gwSkpiSFRtOURjcUVMYW0xMVlsaDhVb0VVS3c?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -2018,6 +2789,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMijwJBVV95cUxOTEg2SW9lMnhYM0c5LTQ2MGJNVFZ2Y0lIRTl5QVplWElmQnJPSkRSLXVuamZBRV9lWEdOdHViaGFtcFV2T1RHZUVPRU51TmlfT2I0a3otYTJEbGRWTmExRDVEaXVoOVR3RVIyLURsTFBzRndMQ0RnWjNDeElEUGx4eVJtOUxYOEo4d3Bid0JweWp6Zy1CaU55dmlMZjZlZklFdU16dGR2a3B1V1hJVmRPRmdjT04xVmdrdjNRdzUzTUE1U3czcnRISUFIaWhxZlNROVNzdm5aaW5wWXFVbHlJc25zYWFrSVpVQTdxUWhyVktFaGFaZ2lraFl4T0lTMkJYNlVkenZMU2l6bG1oQU9v?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMimAJBVV95cUxQbGRfUW95dnRIbExsTVpuZnYzbWxPTWhIOWRGN0RRR0xSZllydmhqRERUSnRuZE9ZRnRTUXlXdWZHbUFJcFRza3ZaN0JwZVRaRFZMdGxRbHozSURzeXJlQjhRa1hFa1lyUHdKUk94V0RRSnRwQXo1SGR5ZlhuWFYwRlRKNzFXYlcyTGxOYmJLODY3UjRmTXVfb2kzcGFVd24tbHgtTVZjOW9mbXJiSlVXcEZHSjVlMmx5d3NLVGxWUlh6cTlkWXI4S2ZOVThQXzVoaXJPTU45dG1kVVlfd3l3cDJ0cHF3UDNZQ2hQenFaOXB3Nk5nUkZxVFYtdUplNmotQzBadFc4bmk5YVY0NnB6Y3BlWUd5eTdW?oc=5",
       "categorias_sugeridas": [
         "Armas e munições"
@@ -2047,6 +2826,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMingJBVV95cUxOSlNOQWMzM1JPUkVNN3FmZUE3R2ZGaUJiX09HSExJZ2RiVGpoUm9ZYkoza3hmUWRmUzMwZkQ4Wl9ZQ2dqM0dRbHVhTHptNlp0UHhPWDhnWXBQb0hDYU1ubkh3NDlZc3JCaEFwd1EtVU1pVXFzeEZraERBQlo1Qm45czJVckVZbEdCbWVVVDFFWlJHOUpfWVVWbEpNdEhiajVRZ0hMLWZXUTlMZkZnODRDdUlTNHMxUVpvdUZuTnp3My1aLVc3TXBOclhocEN2bUg5UFVOVGZ0eDZ6Q3BWN0dyeHREY0Q3WnU5Qzhyb3Z6bklwRUl2dFN6NkdmcHhEdmp4UkpTT29QNkVrYXV1cmMwbnpmVXItc1pXWEd0aHl3?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxOb1BDZUNRTTktQVVjU1NpSmdBRHREM1RZYVN5X0xYVFVJNFlLWGl4eklwcTN1NE5NV0dRVElWQ3VHdnBKVG1zdmZ2aEpYQ2RLWFdWQjhreXBObWdsZUhmeHdOXzZ2eUpFUDg0UDFOTE9NQ2h3SW5rUVlHUV94cmVieVpKclZQclNaRGFoMzBOTGQ5eFgtVFdXVzkwT01IOGNOeVBEcEZYelBieVVKZENiT0k5RlJFWGw2bHNuTXp2Ujhsai13OTNiWloxMkFwTFhva0hOWnZFUm42R0dUOWg4LUFCNHNZVWs?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -2061,6 +2848,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxNQS1iaFNPSVBPWWdQQWpfaV9VRUU4T3ZNamJDYzZwcEdxOTlWbklSbU5HU3lSdWlpaHJNcF9WRWpnMkdQTzZidHpCbVFqNS1jazVwNEJUOWw0MnluUmV5clFqS2w2Y2VZOXhmaGxtNy1rUVY5MjQ3bWxwVkM1aHdvTjQyZk5VSFFmQ2tseW5USUZMR2VxQU1wOTVyNDZhRG0yVlItZndIMjFpb05fWmw4eE9XcG5fLXFuSFd0MVNtYUZHTkhQVWd5Y2hNZzVKeWQxTmp5cDlWeUNRZHF6QWpzdDhQcDRSd1RsdlRBTU1CamtmWEk1V0t3cFRzUno?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQbWF3M3JWaGVWdDFDZWQwNElwQXNtMWVXM2NhU2lrS29qZ1F4bjBYV0UyWGhUZUQ5a2k3VWYyaERxbkppRjdwVjhsUDRUWHJNZElWVjBlZU5TNHo5T1VxOUZ3YzBEeFNCcG11SWh0dnZPYXB2NGQxUnVWR3p6b3kwaHoxWllKcHk2TzZDZTIxU0JPNGFsWnozRzZ5Zkg0MVZfeVg5SlhGVUF5RU5tLVE?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -2202,6 +2997,19 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQR00tYmdxcTVWVjdQcUpXemctV0VqQUcxM3YyME1JaDFVcGNMcnI4cmpxdEREQnFSa2YxYmNmYlVNMlN5X01URXROdEdocjhYbEpUY1NzS2lRYi1wM1dNbXdJLXRZdWZtdHdKc1ZpRm9QWF9DcEl6bjVwT3czcFRibHU3NXh0Nm1LS09HZlVrVEt2OVdXRTVxX2lBdnBidUo2MnY3a09WLWVGNFFuQm5NSzJWYzNJU2dMU0tmVG1zYXppZGNoNkFYQkx6VQ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "lta a araucaria para cumprir mandados em operacao contra o trafico de drogas - o popular do parana",
+          "curitiba volta a araucaria para cumprir mandados em operacao contra o trafico de drogas - o popular do parana"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQQXJYYnJQTUdZS2R2RWRwWE9USzFUeEdWXzVkM3U2cEFSM3RqQTJOVGlxQ3YyOFp6MlZqOEhKRG9zOXpXTFRmTndzVlpGdk1WOGVyLS0yTGRjNUQwQ1oxM3VZMmt2WHJkQXRZUThoQnFQX1oyZ1EycS1QeDFENEZJOWlMd0J5RTBkdTJEYkFkVEM4cVFXVVc5XzFZbWNPb29Uc3doMXpiRU42QzhkRFFvNlFBUQ?oc=5",
       "categorias_sugeridas": [
         "Armas e munições",
@@ -2284,6 +3092,14 @@
           "prf detem dupla com revolver e carro roubado no cabo de santo agostinho - governo federal"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPLS1ob0ltYkpHSXI4NTBTd3hhVE03SXI1enJUc2lBSGtGT1dBR0F1Z3JVMmdzc1hCOWYtaERLYTN3NWF1NXN6c1lhRFhmcDlUWi1ub3BzOHU3QVFUZnV5QUlGWXd2Tzl4T1dIOVExVm5oUkpXYWp5enc0aDg2TEVPaXAwMFJBczN0d1RFZmdSczRIQWd5UWhmNlpJenE0VEZMd3FOTU1mSW9sSHdKT2J6Wkk3NA?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -2471,6 +3287,19 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNWVN6TEFpZjVWaTNDOFY2aTloajhaZld3QUdxMWFURklVbFFRMUViVnBoSEd0UTFuM3A4NkN1WkNacFlkbXhqY3NVY2JFbk1fZ0V6VlphMjVaLVJTbFFpRFJZcnY5MmdTNFVjanl0TFVjSXZLN0tnVldoSEdlOFBiYXdxbGZydkZLOXptSjFHRUNOV3ZIbmszQ1hTZ1Z4MTNNTzA3NjRaX3FEQQ?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "pm apreende oito armas e 700 municoes apos ameaca entre vizinhos em rio preto - votunews",
+          "pm apreende oito armas e 700 municoes apos ameaca entre vizinhos em rio preto - votunews"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQc0lWVFpzSGNjV01KU0x3TFRPWHBIUjYxaXQya2gwZTVmUV9RWWc1WFV4QV95M25JUmRqUlBiZ3h3TlVYSnVOOThTaWxEcDVSV2U0SVhvdDZqX3h3MzY5RjFsclBUakJHc2ZGN1M2X21xVmRwdzBqREVtdzFzZl9mb3JXYVpYcmhhcnp5eFYyYTd5eUhndk1tTEJRVUd1b3lRV3JkakRmQ202NmdxN000cng1VnUxOElBSHFWZGxhX01GUQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -2611,6 +3440,18 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNYk54MmM4M1plSTZBaTlvZGJDclJKM0owdkVKRl8wOVAxMEdkTmdaWEZUN25hRHRaR3pXMzduVXNnYkFnRXlnUHRCaTc5UWJnWlNVUFIyX1NFQTA1dWRVRTN4aEkzaGRfRVhJUnlhUGhGNFFPNlJvakhlSWl5U01PaTh3eGhVYmVsWElrQTViYnVYTFVsRnpYSEp3QkVkSzdW?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "pf incinera 9,8 toneladas de drogas no parana — policia federal - gov.br"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -2760,6 +3601,22 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOcnJGblRmbVhVOFB6cm5NVE5iNlUxUVBYRFE2cXlwZHJZWXRja1N3MWliOTc2d1NwUkZBVHFsQUVnS0hIYnNKMUROZmlEb3NsZmVqT2xZX0hUb3ZKYlJSc2RsN2hWSmdoRnRUSDV2bmZTQ1B4NUh4V3k4QTNBeDcwenpFQ3QwLWk2TlRYSy1EbF8zTjctSXpCVHM5cTZQaDRsekNjQ3hiVG1za0EtQjRZbk5vbXYzeC1oSTk2eXJpZTR0eHN5T3AzV21Oamo5YnVB0gHfAUFVX3lxTFB4VjNaTzNZTThhUk9GbXpFX2N2WEJBN194Q0w5U2xZSERhUnlURkR6LVp2cWgySExVR1JyYU5UM3dtbW9UVzlmdGcxNTdjd0lFRUZoUkFHdi1xTFJ3OVVNaWFocjRwaTZXdXEyVDVzcmZQZkhqMlZJelNGX052RFlRWk5LUHk0Y1poZGMzWGNtLTdJQlNaRUtmUFRxYWNxSVVYV2VxUVFoenVFYlZ1YXBubzhvSmc1NU1xTy1tVkMwNEc4b3dMRlZlRmMzcEVxRUs0Y0tlT3NWV2xxQ2RKTk0?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "foragido da justica de 19 anos e preso com arma e drogas em balsas - g1"
+        ],
+        "Armas e munições": [
+          "foragido da justica de 19 anos e preso com arma e drogas em balsas - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiowJBVV95cUxQY3Bra1VqWTdzVkgwbWlLV1RxM0hJazdvTmRERl9yY3ZvV1FzQTltS2pkZkRaekRkOGdtWE14aU5JZzlSRnl1TWNiaTlzcFlQQ3pMNUlVZktuM1p5Yi1BbGVfV3lmZGVpaEw4ZDNsWGxpSzlvQk16VmxMb0RYRWxnMTNiMWJJUFFpNmtDb191SEk4UVgyd2xBRTRQTHpaeUxGOTZ0aS13MFNkcGJqa01xR1gwbS1PeUhDOTgxbGRmaUdtWmhNc3Z5NXFLdVVVeF8wTUtXWlZFaFVUSDhmZkIxRlJ0TGR5NENYallHU1g5TTlacE1DcGp3NkZoZ2dqT2VLMWpGaG1FMXF3UTF3VElZOU95eFpsY05UYWFTR3JUWEFZNTQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -2788,6 +3645,18 @@
       "evidencias": {
         "Drogas e entorpecentes": [
           "ga fazenda de associacao medicinal usada como fachada para trafico de maconha em itatinga - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxOeFhCSVJMeHRFc3pjRFpPMWkwUHpBYWR4RjAyTVJRSjFFNk5EZVM4VThLSUYxV1NhaDVHTzBJel80dk1xYmpmZnFJQmhRdEwwOGkyY1hsNFVPaXBEMFJCVms4cVNmSVV5UzRpSDU5VjQ1dkM4NlVFNHYzdFBEUUhBV2NnRlBnZUFkWEZFcE1SUHd3ZGRIUnJoTThMNm9GUUpDWlRULTY1ODJXZ2pndEtQZ3NoY21tRU9sWnQ3ZmYtYVAzUGhy?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "boletim: policia de sp apreende mais de meia tonelada de maconha no interior do estado - agenciasp.sp.gov.br"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -3169,6 +4038,30 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxPMGpXNzJtemU3bVJsdG5MWjRpNnB3djRidHk2TTI4QTRYS29WWndGQWJLZGpQSjFwdE14ZHFMbWU4SFlyUUl2clNCT3ZSNzNmcFM1VzA2NFdCckJRMi0zN043Ti1xVFhmZkNuTDhPOTFJSjFhX3ltWWtLdFJCYzVoWTBWN2tfYnI2eEt1a3Mwd0FJNVVZUTVfNzFtUEhBbFlDS2JmSUJlanl0ZFFCcjRRU3RKVjZBN2swVVlLWjg5SUNDdFdmdncweUhaOTZ3Nk8xX2FZX2lXMWhUT2ZMYXNDbFNBMnZIQdIB9AFBVV95cUxNc2NjTUpUUkNQd2lLTkN3YlZ1bVBuNEVCMkR2UlBreDZoUzdXTGh4Z1lQWDRVbkk3d0tqVDFmdE9fRVJSN2hlUmhyV3FvVnFsWEhXWF9hVng2QmRpcHBvdjhKcG13YVRET0xBb2pJUEpoMW5jbkRNdjRKNVpYYmt6OTVVV2VWSC1mTGlQNU1tYkJUS2pCZFJheE1BTjA0d2ZuTHduUU1hWVhlak5Sd2trOS1kUThpTGxoUWZZaUxjOEZRODZzS2V3TnhwX2V5U3pSbUNlMDkta0FxZGZPN0RPZEhMbjdyb0FpTERwZm1xcWRWYXBr?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia apreende dez quilos de crack enviados dos correios com destino a anapolis - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxOd2N0U3VKRFpobVIxYkw1SXZCRmFfaThwMndQNlVpck9paHUwY2pnQjFWal8zNFJtb3RjXzR1UU1QTDZENlZ4VHpUTGl5Y1pqSWdnRVFqcjVpR1BSYk1XMHV5ZzRDOERDWVNKYXJwLV9zV3ZoYWN2dWJMWjZvcTFUUXAzQlNIcmJ4ZTYtNzV5QUxPVUtwdjlNTmdlZUhMWXNpVUdsWlM2M3VkbFdGWVh2OTlUMU84bldCVDBoakNkUkNHaV9kTFZKOVhCNUtfRDFSRmFGbEc4TU9pODlT0gHrAUFVX3lxTFB1MmRwdkFsZlRzZ0ZRd3NiYm5CUS1fN1lrdFF6SjlxcS1SY2k3SVEtSXRUVFJuT1ZERldBTjhYazlncnFleGpEeDRNUUhJdl9XdEdZWTd0LS1EMmxpbFY4QkxKMFFibkhTcnFlcU5CSmRTOXN5amk3Q2pOYVBvZjBuSWhtWXBTdWVwZUgwdW02UEc5S1dWaWNEZGRSRktsQ28yVEhYX2t3cE1nbU1IZkFVcFZqT3JjVDlUdVJuWUN6WFVRRHdOMXBBaHpHXzVaMjJoZXMxa1B0QWtsRkljZUJlUkg2VGRpd2pIMmc?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia civil apreende vasos de maconha escondidos em milharal em mineiros - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPRjE5ZG9KRV9kV05VaGZlYUVpV0E2Y01VX1RDTlVHSWJZY1Y4YTEzS2dLMG5zZy15cVpYNU1aalFrRzg4ZFhaUlItTTkxZGdyNG01TF85RkRSaktUVkplZm1PQUR3WW1iUjBnYUpxOFdhaVA3eFJJblNfZUlfdjNQc2E3TGtiVXNWQWFXYXkyMnM5OTY2azBvRGFUZXBERGMzaXlF?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes",
@@ -3286,6 +4179,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxOS3Z3RFVQVllVOWVvMWdCRThJYXViWkRQME5GdzhJbWcyMExoUTNxYUFEMnE5Z0J6Q1JHS0Z1RF96Zk9xOUt3R0t6bFpSOGF1UHJkODNEaDFsamdQa3F0TkZ0WUc0bGNpQXhGN2I5YXlacnE2NzBuakhDbVpSaVZMOGQ4TGNoWklVc2JweWlreWpjVFZsRWQtcUl1VlhvYlV0MjdpZ2ZacEFIR3M2UWdlNVRRMVgtZzZ1LWM2X0JvVlNwLTdOSmltZEVsYTRqM1k4Y1BWYWN5QjFBcmhwNTcySFFZOA?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQWE92bTR3dzRNRWppa25HdHh1UmZuZXV3NnNsZ3FyY19IMlRodGV3NG51aTYzME5YTFVaTVQ0VXFpazZxbVU2M2YzSW1OV0E4eGhrTnNobnRTUGItNWNGMXllbURxdHVMRkNYRjJhcWpkNVVTOUFNdkNSaklPLU9YVFcxZ1p1STJHRVVpMjVPbERYYU1FRXBPMVdYQ2NjVkk4blRud1Q3akxocW5Yby1RQ3Y0cjJNejRBRFVKWk9n?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -3568,6 +4469,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxQZ3c3eWxubncydnR4dlJ4S1QyLXVDa0V5b3VNTk9KdWM4Yk1iNVBROGFvQzBSR1pKOU9nYmJuUmZBRXNhMFRITUNPQ1UtNWotYTlOQ1hSZUNRb09XaXdDYUUyQ0hOYXJwRGhpX2lVRE0tbmhUSF8wU184ejFmSkVyalRwcjA5SC1UNDVINHNaSE1fR29DVi11RU5RWW5scnpHbE5wUktKQ2RkZEJfQ2h1RkpTWVJPNkFBbFYySjBGUnYtUmgzYlpnQU5LdXJSby00MFF1Y3diSjZsdkdNTXRtOVZHWmQxTWJLQTljRw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5FeDhGU19ZLXZnT1l4YWlBTTZ6Yk1sWE5Xb3Z0Umc4QkRfX2xLQW5JcGhhLTJsRU44WXNwZWpzM3daM20wSVZ3aDJtcFNaS3lMaWJyclg3NVUzOXp4d3BOd01tYUdHNEp0eDkyeG5Td3N4OUVZdGc?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -3581,6 +4490,22 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxOZjlyMWZBZHJZSFdKcjBZdWNsSW0xSkxTYXVLcmR4cmZVWTZhU2dSV3hySmV6dXVEOWVCUFZ6dGNiYU52TjZWU0htajFRSHExVTRFMGlYNkhBNkpsVUpaZ2F6WThhNXNsb1NfVXN1VXoxQ3RENVBZT1pQa29FMDNVTDZvVVdNNzJXQUNwRmlPN3Fwd3c5X21BaVdYRjRHQk5ndmVfdHlfVFNIZlhhRG1BWW5OdlVETFdVUk16Mk1wYUg5d0l5Ujh4UHVNQm44MVFOb1pDRTRSWDRHZ0MwV2JYNm1nU19UZUtjTmc?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições",
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "jovem de 24 anos e preso com drogas e duas armas durante operacao policial em palmeira dos indios - ja e noticia"
+        ],
+        "Armas e munições": [
+          "jovem de 24 anos e preso com drogas e duas armas durante operacao policial em palmeira dos indios - ja e noticia"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -3673,6 +4598,19 @@
       "evidencias": {
         "Drogas e entorpecentes": [
           "tem nove homens armados nas caldas da rainha e apreende 434 quilos de cocaina - renascenca"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNeVM4RWNjclBNXzRBZVlVVEpidlhxVjZOWkdzM3ptajNoZVFseWFGTnBuYzZJQlFPOHBxYUw4SmhfeEVpSmZQeUdzZjNZQkdLV2pUZlhJYUdfS19uakV1RjU1elo4OXRXZVJ5d3lwTUZaVWx4VTlBTlFUeENIczhpYWNFNkl0eFptcjZLVHhSOVdoVzVDS19iMXNQWldQcGdKVEE3STNMbjZ0Nm8?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Dinheiro e valores"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "base arpao 1: forcas de seguranca apreendem cerca de r$ 750 mil em drogas em jutai - ssp-am"
         ]
       },
       "leitura_fonte_status": "aguardando_url_original"
@@ -3809,6 +4747,14 @@
       "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNbmlaN2pWZmQ4Nm9VTEZFdnVYVVhVSVl3dnVDcDlzSkxleE9PSmFFLXBiZHJaSUZpbm1PeG1FUEJXZ0NJQ2c4a0RjYkJMUjN3S2djWE8xOTF5TUlIa2lYNTNmWkNqSWFhREczOHFCaDBraHF6eFRXZDVsQ3otUnBWSElkQ2VOTTJBVkRkaGNnTk9ERWhZTW42SVBvVFM0clZaSTVuaHdKRFR4dnMxdWV0LUhhaGZ6UjQxUzVXUklnWWJib2xEMndjeA?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxONkdxS2RJdXo2dWhlb0VKTUgwX0ZpLTJIV2JBbjQwdGpqWTZZbENzVDRENkZGUS1ZQWpzVkltNTliYWY3WEpkMGJrQV9NdjJldEJuQzNsaWFlVEZrcGVBUldWZnVRLWFlQ2VCX1A1TGdRT1NOSk1KZWFXWC1nbmhmb2hqRFQ0X1NONGNxTUNjU2FjeDJGQlRiSUVRSU5CenlFQjIzSkpEdzM0c3M5bFFiSEh5b1V5Ri1rbUMtN0JhaWg0RlRFTlVJN09iekdnRWFFcFhxUlZSeC1SNTQ?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
       ],
       "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
@@ -3960,6 +4906,19 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOUGFyNkl2dnRhTjlDNmExUFM1VlZBRHJsdHYwcmNOdFpCNjFjak9vNUZ0X2k1VlN3dk9iRkhCUm9VMm5yckd0d2lZaHVYcUxMRFVDc0ZINnhwZXI2Wk9XUk5XX0lSZDBpV0pZTVI1NFRMQTF3dWZRb1d2blFzSVliM2dsVGVpVUxaZEd4dG9BaHM2c01qSmtRbDk0M2JUZ0MtY2xjbWZTOHZUSERJZE1RUFBocDFlTWN5TjZhdXZCaDRycXPSAcMBQVVfeXFMUHFuSkc5WG1FdUs2S3c3T3FXTkpiRzJjcGVhUzJSa294UlNTQ3pnay1vSDBoZjV2Z3ViQzFzR0pIX2l5MFZISG5DXzBmX0hvdG9PMVpSdVAwZUM2ZFh0bFp0Z3JyTlFOMHcyLXZxSkFTM1g3YkU5cjB6TkpTWWFRWXhrcWhQX1hyY0d0UTFoOE53NFBKU3VZR0lNcXYwLUN0Ykp4VmlmbkxZUUp0QXVxUlp6cm5OWUI4MUNwU3ozbDRrM3ZR?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "casal de campo grande e procurado por trafico de drogas - campo grande news",
+          "casal de campo grande e procurado por trafico de drogas - campo grande news"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPQzNqb2JGcjI0Z1c2cERhVldHQ1NUS3F3LUNUN2FSZ3FPRTB5a2E2N1l2X1VJVXFydEktbl9UbzBpLURDbXU5c0JjUUZld0FuSVp2VG5wYW9sX21sQnFRejJBamxya0JXVlUyREU1LVhkbHl6akMweEs1VGw5VzRMeU0taldreG9rU1c2LXpJelFfck1JNEJWenR5bVBmY0pRMTJTMjlQQjA2bUt0bVRwNg?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -3973,6 +4932,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxPdHZGYnR3NWtTSWF0SUZ3OU9tamVCQTBmbHlUMTdUQ1ZaT2x1dGcwSHQ2TDFqNlktNjN0MXhhZnl0ZmtNSzlwdVBUOXFDYVRmSHdWTmptdDM4Q0c4UzhZYUFBTlhsdG5BaGRyYjZvRVJKTTQyRm42QU1yU1ZWRTRsREgzcDVVejBGNFNQOGROVjhxRWxVVFV3Mm9KQjA1c19qaGJDRElHb2FkaU8zN0JJWGNNLVFUU3h3QklIUExuVUlxS2xpeGxJcFllOU9xRElzYm51QmU5V2RRdUZCa2VyNkl5V3JITUHSAfYBQVVfeXFMUFhRNUJKNVc5YVNPWEpGa1FnQ0M3cmd4Q0ZWTmxpb0xLYVYwTnVqUWlZSEZ4dFdkYkl5WV9QdEtsWVpXN1hkdFVFZkw0UVN1V3BvOWdrVm5SNERIdEF1WjBlY0hldHM4eGt3VE1ablBfaTJabVY3WnFYdW90c2pzWVBuYmJ2bzB3WjlkWGp6cTM5QWp0QnA1UFpTNG5TbnQzZU9vMjloZEJFVkdJcm01ZUw0X2t4SzdZbDZBc2ktRURpRjZJQnVkSlRCNlNUNk1EOVMxQVhvWXZFZGxXN1VCaDJ3akI2aXNHWjhsNXcxLTFkWkc3UUtR?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNaERYNndjQ1V5NU1qcmhSZXJ2WXBmek1fUE1OMGJlVzcyMVJkZzJ1czFOZi1GcVFsQUZKSGFSMnRqTWlwQzR2ZlJ3NlM2c2x3MHNYbHZ6TGVBQXN3WmtLYUJQNVVyT3JKRG5PMlBJbFpVZGhNR21FbnFfX1VmaUpSZjVZZHF3WkNGTzBhVTNnUDRpVV8wNDdYWE5hOW1PSHlWWWJCeGdQSW5zXzVjTDRubnUtR1UwaXJ5Qmpn?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -4105,6 +5072,27 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQWjNSV1pVV2hja0ctNWtKSVpWQWtkTWRwVTJZRFozVHhSSjl0UE9xeDBfcGZvZGRZa1pKYUxndUpWT2RMU05lVXhneDB1RWdBY2hNUG5zeDlWekVFWmxwTlpMNEFweHBtMW1RMnd6R29naWNwT2dkczAwNHZUMVhfeE9XVGNPaFNlWjNfLXJhNjFNLVhMbkY1TGhYQ3NOT3dGVzBKbVZIaS11VW1XNmtadHNYNTdzLVFkeGlhRWhmMnZxbmM?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "r publico e mais dois sao presos por lavagem de dinheiro e trafico de drogas em porto seguro - ba.gov.br",
+          "servidor publico e mais dois sao presos por lavagem de dinheiro e trafico de drogas em porto seguro - ba.gov.br"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNWEoyamNmR1pLLVR6WjNUQjRpNVRxTjdoQmdZN1BIYVZ6SHFSdUYtaEhobFczY2RQTWhtTzM4QWJ5bzJ3Z1dlR2VZYVNSbnktcE1zV29uOUh4YmFsUE05SllWaFYyM2I5ODZCdkJnUzBCUGRNM0RvOFpFeXNxeHhlRkxNcS1qNTZONjVfTXBOSFh2V1IzTm40U1MzUUpCVlh6bTZBTWpicjJGRkxLMWpydjFvTzhuaWVzVU5fMFBrT3JPRlk?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPb28yOVlFUmZuYmpZQmsyWTlGSlRtNm5RZk9Kal9KOWhmaDJGRWJSTk41X2tGLUhGYndIOEpHWi1nQldZUEdxa0p6OXQ3NDhJN1FJTXJzT21OT2xxQnVsR3EtcFh2MW1PZ3Bydkxlc2dMZnZkdEU3WXY0SFY0dlZ3aHRhRVU4U2RWY0RtN0h2RVVvWWoxRGJrNDZQOTR5N0c5TW00?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -4168,6 +5156,19 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE92MWx5b3hhMVpvTTRURF9zTW01RENSdXR4NUNmV1RNamJUUFpueXpESFBfMmY2dG5ZU1RxemMxd0VHRTZ5MlJoYmgyS21zNG02bG5PUEx3?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "um servidor publico, por suspeita de lavagem de dinheiro e trafico de drogas em porto seguro, no sul da bahia. alem das prisoes, cinco mandados de busca e apreensao foram cumpr",
+          "entre elas um servidor publico, por suspeita de lavagem de dinheiro e trafico de drogas em porto seguro, no sul da bahia. alem das prisoes, cinco mandados de busca e apreensao foram cumpr"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNYVBOa1dTdFJFZTI5MDg5dVdSOHllTTNpQ2g5bmJQbUJMWmFzb3AyT1N5Zmc3U0RlTGxsNVVieEZVaHZ5VFVOMmJpWF9BcTUzMXN2dThPeU9DMlZ5YlEwdjZjckRYaWV4NE1aUFJROUItMnpWc0Z2Y205cWVmdFN2YklONEhfU3hlSURQMk5DS29IZWxYNl9GTC1abEtzSjI5bUZENTdOQjQydzZlcFMzYVVWSUdsRzVfVG9hMmRBeElraHlONDB1MXVR?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -4189,6 +5190,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQWDlXNTY1c1o3MjEzOXFSdllEaGs4TGE3QmlfRlg2Z1g3UUh4dzZZRHRicndfblRobTVIQm5hZEplRUtVSmh4SUxDOERBZTY1a3BKMVdpZkpIeGhXRWctQ2ZTN2pnZUpTRUZEVGhkcklPdVhsR002OF90bTlhQml0amdtLThJbmJZQTVMS0I4SEVHSmlRY3Rza0EyVFUwLVBockpn?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPaEFnbTZMcHFuM3NHMWFRUjR2WG9vMXgzd3B6UnpyUFo5bjRWYlY5MU1relFtOWt3MUdscnVuMWc2WGdzTUdnNk5zV0N2M3FZckxzbWo3aU5URlBpWFh1SlN5akF2NjhVd05sVk94MVFONjFaU1JmSng2LUl1WjQ4N21kcVlncXhKTk5KVE13NmNZRGczN1JJdF9nMGpZZTVjV1lHeEgyekMzOTRwUlE?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -4199,6 +5208,14 @@
           "policia - homem e preso por trafico de drogas apos acao policial em xanxere - le noticias"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQTkIyRXl4Q0tlS19qWWNxaGRVVzZtR3FnZFFHQkJGVDJQeVlKMnBQQnB4aWduc3Z5ZVJOdXhvWmhPQTlPREpKeFBtQ2l2STFNRWNDckxTXzQ0bHM3ZFZYWWZ6NkRuTERoeEVaclRGVDlQZ2tQeUtIcFBES044UVVlNEsyd1Q?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -4629,6 +5646,18 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOdTJuWmJHQ3hNYzRVM3JUYWdYQndzbGgxTi1GV2JnNXlGaGotdERraWhnZzZvNjdwc0xMeUJLWmJsNUJCa2t1RHZVQlZ2c0o1MHNyazEzZVpOZXBjcFZCcTk3cklOekQyOVp3dkV5elNrQzF3OUJjTFVoLWRTdHlCcU44RjUyNU5nbF9oQ2Z6YnZ5c2ZwcUtQUmNDaS1SVHhLQ1p3Z3AwU1VJdWJvYXB5eXhkb1czbGRFSk5DbjFpazV1N3FSd1p5ZDJESmRQTHVWTkhtWWJ3?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "prf apreende mais de 200 kg de skunk em duas ocorrencias em mato grosso - agua boa news"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPYmhCU1pGaVVKMnljWGpzZmppMUNLSEFlUXNOMURubEMtbUY4TmN2UWs1UHJvQ2hITWVWNVl6ajFpWjN3ZmRKSk5SczN4ZmpPeXY5TjR1c2l1cHI5UVhJd0lpU0FMMmxwRTNIZG84d0FtYlhGcWJ1VnRtVFljcDRUeVBqSFlzWHBnT3BfQUY3Z2o2ZEhwX2xhNw?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -4942,6 +5971,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPNUJSajdjZjNZSXN2dnJBRzE3el9RUGV2SFpsdXhGalFqZkhaR2x3a2hTaUFwSHF3LWc4a2FHbERNV19zRzVyVUcyOENFMWRzTk52anNiaVJSOWt4QjludFBFdlVQMlp6ZUF3ZXY5cEtDMWY5OTNRSmxuY1BfZldaQW1fQ2taTEEtSlZsd2NtTEtadXEzMlpEYWNhdkRIOGp0dGJYaDhzTHdWZDdRVVlNZWl4b1dwbHhmZlN3ZC1oa2hJcmt6ZnVmX2dLaGI?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQSjBqZ2hjTmpCLUVITVdkZmxZQ25LcGllRnNWTTVyVzVJVjdVOC1KVzIzTS1vTjlPN0VyNXpHekoyRGdUVkUycGVSV1hBaDg0WjJDUFY2VWQwMnl2M3J3U0dTYXROQWc4VnBrLUZya2d4U3NLYlVJRmhoZWJ2cW11RjB1QXU5WEZia2piN2dCSTZZRmRnajZmSU8zenlSbGE1VzBWeHdaQ1dWSnBRWE5EMA?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -4988,6 +6025,18 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMigAJBVV95cUxNb2k3WGRHSEFBdFlnbzhjTkhxVDV5bkw1anB0aXdTWEsxUWY1ZFJpRno1ZUV0VW15WVRyVjU0dU53c3NkRE53eFF0Y19EaXZINUpVeGZWZExlMDdTWlBCQWVtZWt5cC1jN0tTdE8xYkJTbFRWWHEyakVVcG8zU0stS1lXdDdWWDI2aHRzZ0QxendSc2I1M1lmNUZqVnFNamRBby1ubndEZnRhaDFwODh0X2JpWXlab2VKMnlTMFpCei0zZ09jTl9sc0hseVoyN3ZpaHRzbVd5eUZyOFlhYW5iVnMxcHFadDcyc083M2czRHhadFN6SnJhSTV0YTNrVnlp0gGAAkFVX3lxTE1vaTdYZEdIQUF0WWdvOGNOSHFUNXluTDVqcHRpd1NYSzFRZjVkUmlGejVlRXRVbXlZVHJWNTR1Tndzc2RETnd4UXRjX0Rpdkg1SlV4ZlZkTGUwN1NaUEJBZW1la3lwLWM3S1N0TzFiQlNsVFZYcTJqRVVwbzNTSy1LWVd0N1ZYMjZodHNnRDF6d1JzYjUzWWY1RmpWcU1qZEFvLW5ud0RmdGFoMXA4OHRfYmlZeVpvZUoyeVMwWkJ6LTNnT2NOX2xzSGx5WjI3dmlodHNtV3l5RnI4WWFhbmJWczFwcVp0NzJzTzczZzNEeFp0U3pKcmFJNXRhM2tWeWk?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "estudo aponta que 100% dos municipios do amazonas registram acao de faccoes; cv domina 55 cidades - g1"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -5125,6 +6174,18 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOTlhpVktscUJZV2p5TTZ0cEVQdWp6bzVDVkN3U0h5STJRcHl5T0lsWDVobWRnMlFhcTFGaTl1TkRmS1NRZmZ2Uk5iS1BlRWRaTVU0TlBpaGY0VTJudWUyTlcwcGZ3ZFN5Vjg0bDdZR0xDX2JnTURHNXY3REU3Q0dYaUh6TGxtT2I1Mmt6VlIwTUc4Y0c0aU1tcFRqRkw4OGJEejNvN0xicFBKVFdHTTFEV2pSMkc2Ti1NdElv0gHAAUFVX3lxTE1DdVQxSU9RR3FLSjZEX2NJRFNoZ0psX1E5SE84b1BNdGcybkJicnlhNEJOWWtaVVVxaENSY3dWTkVwNzBzQUkzTzJIUWtjSUxJdE50NmRyMUhhLWlVNmswOUx2bml5cnZIWXRreV9IbV9JTjdBNVJrSEVQSS1KSG5nSnFCYnRoNmJkWGlSUzY0aW9PMVNPOTJXQUt1eHBUM1UwMFI2UnZZaDZSWk9KTnE1cEcteUVzOXFPemFudnRKeg?oc=5",
+      "categorias_sugeridas": [
+        "Armas e munições"
+      ],
+      "evidencias": {
+        "Armas e munições": [
+          "pf apreende fuzil e 2 mil municoes em acao contra falsos cacs - ig ultimo segundo"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQbTZMQ2ZralBuZW5jMndlNVRRN1EzYnFNZTBqVU5pSEdVMVBVNnNtSGhaNndrQkVRRWxRM0pBZ3MyUXc4bDh1UnNxclpKTnNxZUxEMXUyQ2I1WVcyUUVWMEJuQTN6YW9nMnhUdFlkUXRZaUo4TjBWWDNkdktGcFZpaGl1ZTBxSnZVTUdaQkl6TDlkY3ZfLWdSZ1V1WHprU3VBQ210MTNuTjN3R1JXMEZyLVZQUlFVOW1XM1lzZGNJb1laakHSAcMBQVVfeXFMUHRqcXBXQXN0WEdSUXBJbTM2VlU2bERyMmQ5TzdZazFTWGJ5Qm55WGxQSHBRRmUwMlY3Y3lZUFkxRXczMW9XX0NqLVlzNklIRXZWUmE5U3RGSEstWjczTmVvcWVGMk1KNHI1LURhUElwLVhTd2JtcmFSa1BxMXZGNjlOMGZEWVlDcVV1RG1Wb1gxeV9UakpBRlNTNVVfOWQ1S2Fua3loaHlnYzBIanROaERTdXBhc2VEMXFaSnhIdU1jaTdj?oc=5",
       "categorias_sugeridas": [
         "Contrabando e descaminho",
@@ -5179,6 +6240,14 @@
           "bepi da pmce prende homem e apreende dois revolveres e drogas em morada nova - policia militar do ceara"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNbFlyMUh0di01MjRzbS13TS1DSE5EclZsRmdGSV9xU0tZZVhpNlE2N2JlcHZJRWk5QzV6Sm1qUnpMeVhhV1NpN2ZXakRUMFQ4aWQ5S3YteXlrNWF0cFdfaUEyVFFRbUdDRmU1WXFYbGhPLVlkNjZGcS1iYVNENElNdWtEaXZySVdmZk5IV1p6Q0hiMVFFaVJ1b2lYUy1kT2t0b092VnF2WlVzWDV1QXZKWHRYTXhLR3ZZQU9Z?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -5255,6 +6324,14 @@
           "policia apreende 646 kg de cocaina apos denuncia de pouso de aeronave no ma - g1"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPcFE0M1dhYmloRi1zVElwMXI0ejlJUWJJcUp4TmtoMEtQT0xMX2pLQWZDb19JRDNvQy1ibVFmUmdfeGxUVW11dmxQWkVfNjRGa2JWMTVOblRCMTdrMHJ3aTBxZHJKN3Z5cERUNW4tR3ZBb05Md1hPeW5ocUlmR2k2d0pBT0ZKOVRtajFTdHEzSlpRQWJfQVo5UERycw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -5392,6 +6469,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPVFZxWU9rTl83dVctZWctcDJ4V2dOaXBqcUdwSUY0Mlo2czFNd25sTGxxR1AzV1lqVlQtVWpzUDQ3UTk2bVVTY2xOQXl2dF9BTXRkbVJSTV9BMFNRM21ad1VUY054bnBHTU01WGVBWUdFZUlscUNwbGl4cHdVRGQ5UnNmQi02SDJsZjFPeEg4UDhsVmpMMzBsTWdmQnJsYUE5elh3R05ZRWN2U1FfcVJCd3k5MkFsb3M3M0FZ?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE5ObVgyU1BTOHZHNFppLXJjUkRlSUdsc0lKeFIxbkVNNEZyMVdZQThKbHlrTmVoWTdndUFuZEY5a1RuMjZHVkpMd0xhcFdZOGZoY3dieFR4SEJ0bzI5aWREVHFKWkZXV3hwaFQtLUhn?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -5913,6 +6998,19 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOaC1hdHcyRHhIV216U1FFSWQ5a0hFMFZFOUVkUFJ4WUZJNkNUdFdMT1RhTUZJMGtCT29MRnI1bVdEbll0UVNmTWpDT2lFRXB4QUJPV2lLSjhCZjg1SGNBS01BMDhUREZyM0lCVEtIdlB1WW5FeTBVUnp5SE9BZjc3SVRieDFqOXF1cUNPZFVFVk5yODJQY2E4eENB?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "dupla e presa por trafico de drogas e roubo na zona leste de manaus - d24am",
+          "dupla e presa por trafico de drogas e roubo na zona leste de manaus - d24am"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -6566,6 +7664,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxQQ0lGNGNoVHdheHNucmwzY1VTMVJhQnNfTlQ1LVZLQ1R5eDNuOTF1LWhMSzZyTURULXk0QS12ZEotdmxSMzNQMWhqeXdIbDJ0bENuSHNuWkpHdHpKWkJ2RlVYcEhjMGI2LVdDZWVYWGwtSE1JbWw1N2ZYeTZkU0djZWg3MDBzTlBBdXlSY2pQX3dnUWtfVkpVZXBIVnpibGs0ektCd2tRTUFvam1yNXU5dkg3U2M0Yk1SMFo0bzRRRUJNaGRvSWNmS3RZcDF4bjlPcmxKQVhyd0xsX1dqc3ZrUDZ3VlJ3eGRuVjBBUmJyMWpOdm1uZ0NGTHdLR1c4N3c0NVZVXzBRdUvSAZcCQVVfeXFMUEJnMTBubG8tb1NGY1VJZk1TajdCazF5ellSVXllMGVzNnlFZGJuTHVuMm1sa2FtbVBFSmF0TUp1bTFHbjF2cFhDTXdwWGUzemFsWXZ0RU9ld3RvU1o1cjlMNUpBWFVOdlV0RDZWX3FvTHRXY0lmVnZjUUtwdzBmeUd6c3FCTzNwcVFHdWZKaDcwTmYxLVBvNnVrNzFvaXNjMGlobFRvZlNRU1RoU1JXVWw1YjVqaWU4eXdXQWxIbUZlZ0ZtX2Q4T0xqUDRWaE40eTV2bEp0Q1QyU1o1c1p6N09wWENvTHpObFBlY0NLWm4zWXBRYmtxVVhwZXlKNzktYllzclp6dzlhTlU0ZkJLeXpSNkNPRlBj?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxNSHV2eFhDUThxM0E5UzBOc2RQM3duSC1hUVlyVS1pOFdxRzNhYnNxNkp2UTRIYWRiVkU2cW54WlY1Z0lqR3JRNTF0QjF4dXNPaGtndXI3aVNrcUpjV05ObUNjMkRFVmNaU2FHWWNjS2xfcFd6dFdTMzU4Q2ZGYi1MM0c5UWtmVVR6d3FHNEZTSXJTT3I4N3AwenB3QzlIQmE1Z1BXS3VwYk5FVGpwQVpwUm1LQnRpNERhM0RwS1RvNGZYWWQtT0Z3V29xOUd5cm5WUEJtd1dlRHB0S3NGTVVWLVVrMEdYdw?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -7233,6 +8339,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxQYURFUWU0TDUtVUZFNTR6cnU4d2ZnSkhvY0pBS2NiTExyZURNNi1aQjIzTkRtRDd4c1NWVHJHTldjOVhsc1BNR2lYSkE1WnowamNXcXB3NDFuV3RDOEJTYWtqSTFDZnFKSVNWZjhQVkgxdTV1Z2p6Nll6WDV5eDk0WnVOMkJZTTZ0eUhBN0N1SUJnaVZEMzJ1RGR1OGExRXVQcVFreHBCcEJFNnZVMFNpV1pJUzkyd2ZSYUVXa2JJa1lreGJEYnhqazlDQzc5OE5rN182djh4QzMzWmRtdHc4cXJvaURKRFlSUHA3SdIB-wFBVV95cUxNa0xaWGJQOTh4bzhybEhHcGY2LXJDYVladHV4REY4bUc3andZRGZaeHpRUGNLeXNrSjJNd3YweEdLN2l3QmZvdXFQZVNtNWxFXzZPMnBocElCRVlLTUVhMEpIamplZlN6d3ZEWjNUeUtnTTUyWTlJYzBZWlJKMFRuZDRES1Y5OGljcWdtQ0NLVmNQbW5kSXY2bjYwdUVDcHFHaGhYVm9UMFlGTDNYMHYtY0dhdjRwTnZLMm9HamlJaUVpWWFySVdMTy1HZ2dWQ2oxc3FmV3dUakJTVk5xVHNKSzNHaHBfNjJvb2NoWXVrSi1vOTg5MXNoaklsdw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPUUNwbkxpZzRZWmItc29TNGNnMTNjTnoxNGRCMkZneUhXNVJUa3EwWFFaMzVjdFpkaUQyT042cWVYVmREUFhtanRzQXJlZGZJNlZfd2lfM3kzNGZFc3hURHVBVTdDY210ekN2dU11UXpKQjg4bDgyT21LX2xzN2ZXR1lYeEh3VU8xRmw2eVF1SzFuUWpDSmlWTWpvNDdsa0tKektYbkFPX3o0VmhyY24zeVJnMGJZUWtwMjVzLXZnNEpBenRocW1MSzEyTXM5UQ?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -7408,6 +8522,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxNWEQ4cUNNSTRKcDZCWkNiUFFwQWRrdUtnUDNhcGkyQVA3TTB3WTVOY0xHb3RtY0pRTXc2RVFIS21vZVFrMFNEVjhvaEROUFFDenJXQVNBN0dGX252WmpXdjBDbjViNnVkYzljSjB0cFp5NlhJVUdPMk9OOG44Vldhc0xHZWp2TmZSZTJCWC1YV3k3VncwakdjY0FiTWQ0S1FkMXlHQnRPczBJZEpFYThBVTlOakpGN1hIQmdfSGVmMk5LNWhLSUlTUFJjdjlZTmZMbHBkdnRyN3lkUUFiUEVnbFphYw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOVElNSmpiWXFiNV9MMUwzMkpKN3c1eHVVMFFhRG5PdDBmd1BqM080WVRlbmtrbi1VbnplYXdCRjJSUEpONHdFMTRKcV9pUkZ2YVl5eFg5bFdENzB5bl9BMTl5Rk9vbGtmY0JpZ2Y2Uk5zOUlTZmRqb0dPeHhJeUFBMGJDZGtDUWFLWm02YWlwOVpIelJQRTBzcElWVElYRVdrZGpjZnVR?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -7878,6 +9000,20 @@
         ]
       },
       "leitura_fonte_status": "lida"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOdC1qNE1WMm04Qzc5TmJCUGQyX3pQdml4SDQzVFlaT0VILVFjMk9BZ3pfTlZzbzFBRjNyRFd6SURFbE1wa3dtRHBabTRuYnAzQUNya0VsU1pfYUtoOGlqZXBXeXJVZ2NFQ1Y2c01BQlN3M2lLeFk3MUFnZXk1SDAyVk53NGs5NTJLME1kQk1zb3FRVl9VQmRoc0ljVnVwWk9CV3FLLUNhV2w4TVNPVks0WXl6d1ZKYlJJcEFqcG9pUldoOHpjSlNiSF9Pa9IB2gFBVV95cUxNUWFvZktnWWlaYTZYWGJQSlRmV204X3hBaUNOdEwtNHlDNUJIVFQxRVl0SFFuYXFuZjM2aVd4UE8tTUN1T28ybVQ4Z3l2NHljMTcxd2wzWlB6TXZVc0N4ZWJhdmFjRWpubUlCTlJ6MW1EX1dhb3NQUkJQdHZpc216TEthSlJaYUNRLUtkQXZIWEVmcGVuYzJ4aW1od2poZFBYcndVQXZtWURoMndKLU5MQ0lUVGVpZVlzMEUyekhyQWNaNVU3SFlkc0pVOUhWUmdFcGlmcXpwZXNmQQ?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes",
+        "Dinheiro e valores"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "e carros de luxo e bloqueia r$ 4,2 milhoes de suspeitos de trafico de drogas em cinco estados - g1",
+          "cao apreende carros de luxo e bloqueia r$ 4,2 milhoes de suspeitos de trafico de drogas em cinco estados - g1"
+        ]
+      },
+      "leitura_fonte_status": "aguardando_url_original"
     },
     {
       "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxOZURXV1BwRm1mcGt4UXNSMEJJc19oRHVlRGwwTkxkWW5qZUpkeFBsXzJJcVBBVGlodHJid2tpRllHTUdyOWZLNzBZcmJLVklrUGpZa0RDcUp0Wm9lZFV0cV9JUGoyNXhVX0VkWm5ORmc3S1d2V200S25YSWlnRkMzMy1GRklWdmhGWlIzN01KN0lwX3NFTF9YR0VCaTE3cmJvWGJjWkdzUk5lTEhVRl9FaXFrNWxFLXA4ajlxcTNOYmtaMGhDbm5hQjhBM2FsNGFrSU4wMTA0R1JfaEJpRGFPQ2JB0gHnAUFVX3lxTE1CY3R5bHE4Q18tMkVJTUJlRFhNVWM4bnV4QkJwRjhDLXNCakp0aDVkbjVMMTktbERJNW9FUnNWMDZ3eEZBbnFJTVhPRHdFTlh2LUhCdVBNSi1xTENPRTNlck5nbU53U2dpcFJSX2xBR0dRdnhXa25CN3FpdzRXUE5OYmZDczE3QlB4bFgxV1h2VlU4eXBxZ3EwNWdNcjdrWk8tNzRDNGpEMmhjM0liZjNIdGhvb1FzY3VvZGxQR0I3VmNtNmZSRnJ2aUpfR2QyQkpxT2tDYkhNZENQNTJUZGltNGtyaGcycw?oc=5",
@@ -9047,6 +10183,14 @@
           "atualizada - assista: dois sao presos e grande quantidade de drogas e apreendida em operacao da policia civil em campos altos/mg - tv kz"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNOW1xR2lnN0IzbHN1YzVNVFFDd1o0bDdXU2NYWTB1YVUzbGtCWUEweDQyWnRwX25hemM4MnB3blVlaDBMUlZOOUZaQzJibjZEZ0dJODhJT1JnSk9pa0c4b09QQVNKN0oydnJRaHZqZ3VnYlFMcG55LWQxbS13STc1UVZmUHZnd09qTEtJdnFzYw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -10235,6 +11379,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxOVGRIR2ZrZk5PMHJDc2FxM3JKZEFINGZsZmFNalBMVEhfN1l6LW02bE9tTkpWckpIMXpWMVFtX2pHVmwxb1NYRlQ0WG4xTTdRTHFjVW9mbVBQZHc3d19wZXMySGN5VkN1UjhBNVY4SXpGNkNGQkdaQm5wTVdpckRlRlRfWXNQS19qZFZSaFdFZkJsY3AwN3ZwTmFRMGM3WlRpODFCVHhRNkptY2VadFhRQ1FvV0padkhVN0RidlVrZ05tZ0FjbHdEel9qRjZVYmFXdWVIaGJ4MFFsejZhZ3BrZ2ZXNzY4T3N0cGd3MWJB?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPN2lqWUU0eW9sTFN5dHdyQmNyMW1nZGhEdmdYYmZLQVZCVC1NaEozc1QzMjQwQTUySHhwZllsdGJuWkVjeDVjV1dkX0JFLXlQR1Atc2FfR1lFampnZm82MUoxN1E5SFozcU8xRUE5bHhianhLYzZWMHpDb21qRDdiZGRhd3Uxc1dDWWI1V3p6V1RfbW9LMzhMeWVkUlFLaWplUkFnbkxHdHBUaE1qQktPd3hLdExJSC1WZzk0MXNxQWoxalpwdkwxemZDN0YxcENLdkVDeHRqVV9PUklxTDBNMmRB0gHwAUFVX3lxTE5ZM2Eybjh1YzhJRFpaQXlrN1Mtc0k3MW5zQWttenAta0pIaHU2VFlmalQ3QmRYWUh0dWtiS2NvRVJoVl9pN1MwcWdObmhPenlHaDZFTi1xUnQwSnRpRmNtRzJmcGM2ZDNpUHlqLXc1bUdPVXVzVUhPaDB5UHVHNDFidUhuNl9sM1RvbTl1UEYxZUNzMU5jUGJOMjQ2aDlvYVNnTVRQOVFCQ004MTRpeS1xSEFzZnFlT1BJZ1g1THRiM29EckRBQTQxNXl5azhhd1AtTGlheEw5NWc5NkpkckxXdktQaWNCUWtjbmNKcFpPag?oc=5",
       "categorias_sugeridas": [
         "Dinheiro e valores"
@@ -10723,6 +11875,14 @@
           "denuncia leva a apreensao de 3 kg de maconha e 500 g de cocaina em operacao contra o trafico - vipsocial"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMilwJBVV95cUxPNWpzaVZmczl3LWo4dFZaYUVsaVhfMF9xVVU0NlM0ZXBvR21FUjhpc1MyWUhndkpOMEZVTVJpNWpHZ0RQQUN2ejNmWEZXLTdnYk9kOVNTbWJzb29yMTJQTHJwZEJwN2R5SzdaQWdvdHN6WUtjcW1QMklrMUs2MjR3THhaYk92VU5IMEN6Sy1jcjBEOUFsRnUtQURIQ2dUbTlpOHV0Z0tOZU52cWNnS2FLaVdlRWxNNk12RjI1cnZKdnFXODdaREdfMUVxcXdnaTk4bUVDWGN3M3JQMU9uRVlCQmQ0bnpGQXlGUm9JMURwczAxdVVhZG8zWnFEb3dZYW9LeFdsT0NlbkZ3a0hISGVBQVdkYklLMzDSAZcCQVVfeXFMTzVqc2lWZnM5dy1qOHRWWmFFbGlYXzBfcVVVNDZTNGVwb0dtRVI4aXNTMllIZ3ZKTjBGVU1SaTVqR2dEUEFDdnozZlhGVy03Z2JPZDlTU21ic29vcjEyUExycGRCcDdkeUs3WkFnb3RzellLY3FtUDJJazFLNjI0d0x4WmJPdlVOSDBDekstY3IwRDlBbEZ1LUFESENnVG05aTh1dGdLTmVOdnFjZ0thS2lXZUVsTTZNdkYyNXJ2SnZxVzg3WkRHXzFFcXF3Z2k5OG1FQ1hjdzNyUDFPbkVZQkJkNG56RkF5RlJvSTFEcHMwMXVVYWRvM1pxRG93WWFvS3hXbE9DZW5Gd2tISEhlQUFXZGJJSzMw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -11232,6 +12392,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQNk03c0FNRTVOMFBLX3ZsbS1ocFRWcVhIMmdRUGlPc0ZWTGhSUHlqVlMtREtZcEgtOC1HelNiYnJ2ZGNxSnBiYVk2RllWaENtRld0RlVPTnBpY3ZlLWJKZDVMVUJZWGJCZkhXblJ0UnFvUFEyd3VkbWttWS1mc29HXw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOQ2JnS3VLV00yX1c2YlBOZ3JXMjdDaDI0bjN1aTdBcS1hNGZKd3EwNy1JZTJLNV9VS21KX0NLTTIxOHBRTmluTGVKTDdSNzZWbW5GbUZUVkVXMlVkbW45bms4VUlRRlh1TGVOMUpFeFlrY3BFR2pzWkpZbVJkaW9FeW1naUJMWHdXMnJVQ2lVWXNjaXVsRmxNQXpxaVU3TnZrZWhMUlNuckpweDRYdENyTW9MM0ZwWXZjWnhiZktSc0xNdlhJSVVMY3gybGtQUQ?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -12188,6 +13356,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxPTEhyOFd4RkozQjVYVHBCUVozRmxpTGNrLUdLN2Jyc01WUlJLUjhNVG95Wm5FZkVTYndGVzRLenNMYUNfeDBxTDA5NWJSVGdpdGFSczlsWU9NT09KcTBRalRqU1R4Vk5memdBVXB3SkcwZ0hrWHdMVEZ3VzA2SDFuQ1lYbjhjbk9uTUsxWFQ5dlIyZmloT0RmN3llUUFrZDNIME1CSjZxN0hNV2dNZm1jWG85MGFVSi1VcEFsZmVWZDBKTUVwMEZvc29Uem5Jb20tT2hXeA?oc=5",
+      "categorias_sugeridas": [
+        "Contrabando e descaminho"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNNGpfb0djYmZSaVhRMTdFSFg0amNfQ3U1cEgtYlFaV0hHX2dCR2tldWNtZ0V0RHl1LXl4ZFhLbVk4N2p2YXJNYzh5dWdxcFYteVl6UkZsVUNaV1YxWl9iajNFTFlzUmtEREV4Tl9BV1pfQmhiSTRiRXYwSWU4NHdJdnVOdEc3UUJMMEYzaFA3WkpGc0VKX0lyYVgtTjZ2eFBoMFdqZ2FPRmExdw?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -12700,6 +13876,19 @@
         "Não classificada"
       ],
       "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNZ1Ric3RsZWZrSndpUjhGMDFVWGhDVXlwWVk4RnF0amxSSnJWNnpQdU40TXU4NDRzLXhNa2tRUDR3TFNGWmxBdWNmWEp0bFJENk90Y3kxbjZxaHZRTDdJZ3BhVk5CdVlZUTNYTEI3QUNYamNubmFheExkc09KNjNEM0dTelplS0xRLTVjQlNyMmlNcjMwaDNlZW9ocTZqczdWV29SY1dxaHdia09UQlpFM0ptMW5Va0NETU9WeGZn?oc=5",
+      "categorias_sugeridas": [
+        "Drogas e entorpecentes"
+      ],
+      "evidencias": {
+        "Drogas e entorpecentes": [
+          "policia civil apreende mais de 12 quilos de skunk, crack e cocaina em cariacica - es 24 horas",
+          "policia civil apreende mais de 12 quilos de skunk, crack e cocaina em cariacica - es 24 horas"
+        ]
+      },
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -111403,6 +112592,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFAtRUVLSjdVTm14cTlqazFHZXFXbVJxNi16STlLSTVUcHZBRFVFc2h6YjdmcjZOajFzenBXd3MtQjVaWW9TZWlibDVSQVFkOEwxcHlmTzRFbl9fYk5yUU8xaGdJQTVFUi01?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNVmxLVlZuUXllV0dDWW9TMWtDcDdqVDZqTFVya0R5RjhKMF93R19FXy1yWVEtN0gwamRLZnotLXIyZEJDYmo0WVZiWkxZbGhxOUJKOXdMQTUxY3JkTW5XWEJydEF2MDJ3TEpEckhLenlvenlGS1FCSFU2elh5b1VQZWRJUUpzYWFOZ2VkQWxsXzZqbmFVNkdqcVhIUVRaXzNkUC1yVjZJekZ0NzlHc2NKTkE1dHR5OW8?oc=5",
       "categorias_sugeridas": [
         "Drogas e entorpecentes"
@@ -119694,6 +120891,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiswJBVV95cUxPQXhMV2dwM2JZWUtMRThNanA1ejRrNFBTWUZvLXFDS3B6MmtCa2lPanliZjdpUzhDd29xSEp1SG1kLXFGTWN1RlYyMTNuUDhpeVM4UmdRYTB1eVNHNkpwZlpzOUVwTVZrNElaMHhWekVKUlZQUnNPWHNaQ1dqZHNhZi12YnN1U2d3eXlCX1hjblEyVTBYVVczelJzQ25zeWtudTQzcWNERUxEX1RPeU9QQndQdnV3LVZfUi1mU0hhRzhCOUFSZld4THVNZF9pcEtXaloxRGVtWC1tamlIRUZPLTgzVTAydW1hVTU4b3RmSXFCbVB2TmdzcG9rTHYxbDhJTFJibWdtT3VJVnZUUHBCNzFaay1Gdk9mX1NwLWM5U2FjYVVaSUJVVUNNcWJoZjhhaWln?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPS1NvMmR0N1lIUGFYYkI5bVhzWkRqMlY5ZUd1ekxxSTNLVHdIaVBXNHlvRk55eS01dmlYeU11Smcwb3dZempsWEhfakxLdmFmMTFMTElLenA0M0QzSkVYQ1A3MVZhTHJIdUg0ejZrNHFMczRRanM0cVQxYmRmdFdlOHZ3S0pkZFYxSVJGNTRUdmpLYlBJczhkeUVsUmNLS3ZaaHhlb2VQTWtrMG8?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -178146,6 +179351,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPeHZNZTBmM2RMZHRKU3BFRXdIUGllbGVyeTIwVnFVN2pXY3p1bnY2M08zSk85dFRQQWgzdmpCTGNfcFNtVFNUa1pSTWNCLW9MQUt3QkllNU1Jb1ppQVM4d1dvVG1yN3FIVDZSODVqMzRWRm54eTFoazRqTkI4bDE4bHVfRXBsaXhqSTRoUmVrUmw?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOM1Z4OEZzY3BVU3JzUUo2LWZhUVA5MlFOa29weGloTElGRGtITU5WVElWZ3kweS1oemtPTTR1QjlSNUNTLXN0b0pNeWRWZ3RqYlBTcHdYUXhFZ2w4SzBORlpEanVDbzVqSU52UFE3YmEyVjVNOElUVkhVemFGeTN3cUNMUXNNN1U5YmYyQlhhODVwU2NHUXpIQVZRbWN3S1AtNmlxNWg2YVVRMTlXclNFY0VSREoxUEJsdjBXMHlR?oc=5",
       "categorias_sugeridas": [
         "Armas e munições"
@@ -186963,6 +188176,14 @@
           "lider da maior organizacao criminosa do trafico de drogas no es e preso - folha vitoria"
         ]
       },
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPOE9wVTdJYWZvcFdYVjhNLXpmOUNwUDdJWFcwdldCbzNuczByZlJNRVUxblpJdkhJQU0wOEpYa0dJM0o3VTlkUGtYTkNmZnRNdHhac2hjZUE5UkFZVjlKUFdjeFNVRXZsQVBoTTFrOVFTdmh0bGl2X2pwc01nSUFrYVRsMjZDLXdMR2owMTgxU19DangxLXJ0eWFwOXBUdDVpdkE?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
@@ -208458,6 +209679,14 @@
       "leitura_fonte_status": "aguardando_url_original"
     },
     {
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBoTzVpSUJaQ3IxTDFFN1JQcEhhblVkZXJkVzhGTEEtUUk0Z05pd1dsVXNWckFlWkNpM3FTR3A5Y0cxLUtNNkVvUjhkOWVrUlE2NlVVUzJZalYxaEc5NzBrWGFR?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
       "url": "https://news.google.com/rss/articles/CBMiPkFVX3lxTE8zNnhtZGdkX1c3dVZDTWpUV1piTzVOczE2SzlacWdCeEZEeU1vSVRBODl4bkpnT0c4MkFDT3Jn?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
@@ -208491,6 +209720,14 @@
     },
     {
       "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9jUXdKZEtTYWM0TEthMWpxR0Utbi1sbnYzdi1PRWttR29ZeVRJWnNOVThmNFVSTUxlNW50aFh1Y1BvOWhKWnVhWXpzbXJQVDcyUDFRaHRB?oc=5",
+      "categorias_sugeridas": [
+        "Não classificada"
+      ],
+      "evidencias": {},
+      "leitura_fonte_status": "aguardando_url_original"
+    },
+    {
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE13cy1kN012LUp0RGpLd2Rjb0xNV2hNRlM2Z1FlczNlOFlrRkFnaTZuMlBTZDdRdU4yNFhOWlFvaUtsWWdyQ0xaMDVlRlkzcVhXbWt5d0JGS0s4SU1jbk5CdUxoZXM?oc=5",
       "categorias_sugeridas": [
         "Não classificada"
       ],
@@ -208584,29 +209821,10 @@
       ],
       "evidencias": {},
       "leitura_fonte_status": "aguardando_url_original"
-    },
-    {
-      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/novembro/operacao-fronteira-receita-federal-apreende-drogas-e-cigarros-contrabandeados-em-corumba-e-mundo-novo",
-      "categorias_sugeridas": [
-        "Drogas e entorpecentes",
-        "Contrabando e descaminho",
-        "Dinheiro e valores"
-      ],
-      "evidencias": {
-        "Drogas e entorpecentes": [
-          "as capsulas contendo 190 gramas de substancia analoga a pasta-base de cocaina, avaliadas em mais de r$ 10 mil. na mesma operacao, agentes do ministerio da agricultura e pecuari",
-          "ao lsd. na outra, havia 38 gramas de sementes de substancia analoga a maconha, escondidas dentro de um bule. os entorpecentes tinham origem em diferentes estados brasileiros e s"
-        ],
-        "Contrabando e descaminho": [
-          "operacao fronteira: receita federal apreende drogas e cigarros contrabandeados em corumba e mundo novo       operacao fronteira: receita federal apreende drogas e cigarros c",
-          "operacao fronteira: receita federal apreende drogas e cigarros contrabandeados em corumba e mundo novo       operacao fronteira: receita federal apreende drogas e"
-        ]
-      },
-      "leitura_fonte_status": "lida"
     }
   ],
   "quantificacao": {
-    "itens_extraidos": 1727,
+    "itens_extraidos": 1743,
     "totais_preliminares": [
       {
         "categoria": "Armas e munições",
@@ -208624,7 +209842,7 @@
         "categoria": "Armas e munições",
         "material": "Munições",
         "unidade": "unidades",
-        "quantidade": 416464.0
+        "quantidade": 420671.0
       },
       {
         "categoria": "Armas e munições",
@@ -208660,13 +209878,13 @@
         "categoria": "Dinheiro e valores",
         "material": "Dinheiro em reais",
         "unidade": "BRL",
-        "quantidade": 25309998982.12
+        "quantidade": 25316148982.12
       },
       {
         "categoria": "Drogas e entorpecentes",
         "material": "Cocaína",
         "unidade": "kg",
-        "quantidade": 844231.5367
+        "quantidade": 844315.5367
       },
       {
         "categoria": "Drogas e entorpecentes",
@@ -208678,13 +209896,13 @@
         "categoria": "Drogas e entorpecentes",
         "material": "Maconha",
         "unidade": "kg",
-        "quantidade": 1730137.299
+        "quantidade": 1730177.299
       },
       {
         "categoria": "Drogas e entorpecentes",
         "material": "Skunk",
         "unidade": "kg",
-        "quantidade": 47543.895
+        "quantidade": 47755.895
       },
       {
         "categoria": "Medicamentos e produtos",
