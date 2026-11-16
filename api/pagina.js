@@ -95,7 +95,7 @@ ${indexar ? '' : '<meta name="robots" content="noindex">'}
 <meta name="theme-color" content="#ffffff"><link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/source-serif-4.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/assets/radar.css">
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, '\\u003c')}</script>` : ''}
-<script type="module" src="/assets/pagina.js"></script></head>
+<script type="module" src="/assets/pagina.js"></script><script defer src="/_vercel/insights/script.js"></script></head>
 <body data-pagina="estatica">${cabecalho(atual)}<main id="conteudo" class="wrap" tabindex="-1">${corpo}</main>${RODAPE}</body></html>`;
 }
 
