@@ -136,13 +136,13 @@ def _indice():
     return entradas, blocos
 
 
-def _ufs_no_texto(texto):
-    """Retorna (ufs_por_estado_ou_sigla, ufs_por_municipio)."""
+def _ufs_no_texto(texto, detalhado=False):
+    """Retorna (ufs_por_estado_ou_sigla, ufs_por_municipio[, ufs_de_municipio_apos_'em'])."""
     if not texto:
-        return set(), set()
+        return (set(), set(), set()) if detalhado else (set(), set())
     texto = OPERACAO.sub(' ', texto)  # "Operação Natal" não é Natal/RN
     texto = re.sub(r"\b[Dd][’'´`]", "d'", texto)  # "São Jorge D’Oeste" = "São Jorge d'Oeste"
-    estados, cidades = set(), set()
+    estados, cidades, local = set(), set(), set()
     for m in SIGLA_EXPLICITA.finditer(texto):
         estados.add(m.group(1))
     entradas, blocos = _indice()
@@ -159,7 +159,10 @@ def _ufs_no_texto(texto):
             ocupado[k] = True
         tipo, ufs = entradas[nome]
         (estados if tipo == 'estado' else cidades).update(ufs)
-    return estados, cidades
+        # "... em Campinas": a cidade depois de "em" costuma ser o local do fato.
+        if tipo == 'municipio' and re.search(r'\b(?:em|no município de|na cidade de)\s+$', texto[max(0, ini - 25):ini]):
+            local.update(ufs)
+    return (estados, cidades, local) if detalhado else (estados, cidades)
 
 
 def uf_da_fonte(noticia, fontes_cadastradas=None):
@@ -198,13 +201,15 @@ def inferir_uf(noticia, fontes_cadastradas=None):
     fonte = str(noticia.get('fonte') or '')
     if fonte and titulo.endswith(' - ' + fonte):
         titulo = titulo[:-len(fonte) - 3]
-    estados, cidades = _ufs_no_texto(titulo)
+    estados, cidades, local = _ufs_no_texto(titulo, detalhado=True)
     if not estados and not cidades:
-        estados, cidades = _ufs_no_texto(str(noticia.get('descricao') or noticia.get('resumo') or ''))
+        estados, cidades, local = _ufs_no_texto(str(noticia.get('descricao') or noticia.get('resumo') or ''), detalhado=True)
     if len(estados) == 1:
         return next(iter(estados))  # estado explícito vence município
     if not estados and len(cidades) == 1:
         return next(iter(cidades))
+    if not estados and len(local) == 1:
+        return next(iter(local))
     return ''
 
 
