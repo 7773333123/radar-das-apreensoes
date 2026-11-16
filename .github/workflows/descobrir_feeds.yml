@@ -14,8 +14,6 @@ jobs:
   descobrir:
     runs-on: ubuntu-latest
     timeout-minutes: 40
-    env:
-      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Baixar repositório
         uses: actions/checkout@v5
@@ -26,4 +24,4 @@ jobs:
       - name: Procurar feeds
         run: python descobrir_feeds.py --limite 1500 --trabalhadores 24
       - name: Salvar
-        run: python acervo.py salvar --sem-dados 'Atualizar feeds descobertos das fontes' feeds_descobertos.json
+        run: bash salvar_acervo.sh 'Atualizar feeds descobertos das fontes' feeds_descobertos.json

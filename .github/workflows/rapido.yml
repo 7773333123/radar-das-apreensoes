@@ -46,8 +46,6 @@ jobs:
             inicio=$(date +%s)
             echo "::group::Rodada $ciclo de $CICLOS ($(date -u +%H:%M) UTC)"
             git fetch -q origin main && git reset -q --hard origin/main
-            if ! python acervo.py baixar; then echo 'Acervo indisponível; rodada pulada.'; echo '::endgroup::'; sleep 60; continue; fi
-            antes=$(sha1sum noticias.json | cut -c1-40)
             python coletar_feeds_estaduais.py || echo 'Feeds com falha; seguindo.'
             # 15 sites por rodada: as 1.100+ fontes giram em ~1 dia.
             python coletor.py --limite-fontes 15 --limite-estados 4 || echo 'Busca com falha; seguindo.'
@@ -55,10 +53,10 @@ jobs:
             # Notícias novas primeiro; o restante relê páginas antigas (trecho de abertura, fotos).
             python ler_materias.py --limite 300 --trabalhadores 10 || true
             python hash_imagens.py --limite 600 --trabalhadores 16 || true  # fotos: duplicatas por imagem
-            if [ "$(sha1sum noticias.json | cut -c1-40)" = "$antes" ]; then
+            if git diff --quiet -- noticias.json; then
               echo 'Nada novo nesta rodada.'
             elif python testes/test_duplicatas.py && python gerar_feed_site.py && python compactar_acervo.py; then
-              python acervo.py salvar "Coleta rápida (rodada $ciclo)" || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
+              bash salvar_acervo.sh "Coleta rápida (rodada $ciclo)" || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
             else
               echo 'Falha ao gerar o site; nada foi gravado nesta rodada.'
             fi

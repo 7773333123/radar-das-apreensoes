@@ -24,8 +24,6 @@ jobs:
   publicar:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    env:
-      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Baixar repositório
         uses: actions/checkout@v5
@@ -33,11 +31,9 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: Baixar o acervo (release "dados")
-        run: python acervo.py baixar
       - name: Testar a regra de duplicidade
         run: python testes/test_duplicatas.py && python classificar.py
       - name: Regenerar o feed do site
         run: python gerar_feed_site.py
       - name: Salvar
-        run: python acervo.py salvar 'Regenerar o site com a regra atualizada'
+        run: bash salvar_acervo.sh 'Regenerar o site com a regra atualizada'
