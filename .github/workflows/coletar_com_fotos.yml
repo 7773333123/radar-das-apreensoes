@@ -74,6 +74,8 @@ jobs:
           else
             echo 'analisar_noticias.py não encontrado; estatísticas anteriores mantidas.'
           fi
+      - name: Gerar feed enxuto do site
+        run: python gerar_feed_site.py
       - name: Salvar alterações sem sobrescrever outras execuções
         run: |
           set -e
@@ -81,7 +83,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           for tentativa in 1 2 3; do
             git add noticias.json
-            for arquivo in analise_nacional.json cobertura_historica.json; do
+            for arquivo in analise_nacional.json cobertura_historica.json feed.json feed_links.json; do
               if [ -f "$arquivo" ]; then git add "$arquivo"; fi
             done
             if git diff --cached --quiet; then
@@ -99,6 +101,7 @@ jobs:
             python recuperar_links.py --limite 60 --trabalhadores 4 --busca-fonte
             python enriquecer_imagens.py --limite 60
             if [ -f analisar_noticias.py ]; then python analisar_noticias.py; fi
+            python gerar_feed_site.py
           done
           echo 'Não foi possível salvar sem conflito.' >&2
           exit 1
