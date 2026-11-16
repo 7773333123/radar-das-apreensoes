@@ -148,13 +148,18 @@ function renderInicio() {
     `</section>` +
     `<div class="editorias">${editorias.map(([c, itens]) => {
       // Cada matéria aparece em uma só editoria da página inicial.
-      // Na editoria: as maiores apreensões dos últimos 7 dias primeiro (daquele tipo).
+      // Na editoria: sempre o mais recente. Janela = últimas 24 h (amplia para
+      // 48 h, 72 h ou 7 dias só se o tipo tiver menos de 4 matérias). Abre com a
+      // maior apreensão da janela (com foto); a lista ao lado vem por data.
       const porTamanho = (a, b) => (desdobramento(a) - desdobramento(b)) || (tamanhoNo(b, c) - tamanhoNo(a, c)) || (b.data - a.data);
-      const semana = itens.filter((n) => !usados.has(n) && horas(n) <= 7 * 24).sort(porTamanho);
-      const livres = semana.length >= 4 ? semana : itens.filter((n) => !usados.has(n));
+      const porData = (a, b) => (desdobramento(a) - desdobramento(b)) || (b.data - a.data);
+      const livresTodos = itens.filter((n) => !usados.has(n) && n.data && n.data.getTime() <= agora + 3600000);
+      const janela = [24, 48, 72, 7 * 24].map((h) => livresTodos.filter((n) => horas(n) <= h)).find((l) => l.length >= 4)
+        || [...livresTodos].sort((a, b) => b.data - a.data).slice(0, 8);
+      const livres = [...janela].sort(porTamanho);
       const primeira = livres.find((n) => n.img) || livres[0] || itens[0];
       usados.add(primeira);
-      const resto = livres.filter((n) => n !== primeira && !usados.has(n)).slice(0, 3);
+      const resto = janela.filter((n) => n !== primeira && !usados.has(n)).sort(porData).slice(0, 3);
       resto.forEach((n) => usados.add(n));
       return `<section class="editoria"><div class="section-head"><h2>${esc(st.ctx.categorias[c])}</h2><a href="#cat=${c}" data-cat="${c}">Ver tudo →</a></div>` +
         `<div class="first"><a class="story" href="${urlNoticia(primeira)}" data-read="${primeira.i}">${midia(primeira)}<div>${kickerHTML(primeira, st.ctx, c)}<h3 class="headline">${esc(primeira.titulo)}</h3>${metaHTML(primeira)}</div></a></div>` +
