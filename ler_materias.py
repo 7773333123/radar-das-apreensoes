@@ -2,7 +2,8 @@
 """Lê a página original das notícias e traz foto, resumo e, quando permitido, o texto.
 
 Para cada notícia com link original (não Google Notícias):
-  - foto: og:image / twitter:image / JSON-LD da própria matéria;
+  - fotos: a principal (og:image / JSON-LD) e as demais fotos do corpo da
+    matéria (<figure> e imagens do texto), sem logos, ícones e "leia também";
   - resumo: og:description / description publicados pelo veículo;
   - texto integral: SOMENTE se a página declara licença Creative Commons que
     permite reprodução (ex.: portais gov.br, CC BY-ND 3.0). O texto é guardado
@@ -33,6 +34,10 @@ LICENCA = re.compile(
     r'Creative Commons Atribui[çc][ãa]o(?:-SemDeriva[çc][õo]es|-CompartilhaIgual)?\s*[\d.]*(?:\s*N[ãa]o Adaptada|\s*Internacional|\s*Brasil)?',
     re.I)
 NAO_COMERCIAL = re.compile(r'N[ãa]oComercial|licenses/by-nc', re.I)
+VERSAO = 2  # 2 = também coleta a galeria de fotos; notícias lidas na versão 1 são relidas
+MAX_FOTOS = 12
+NAO_FOTO = re.compile(r'logo|icon|icone|avatar|sprite|banner|placeholder|blank|pixel|spacer|loading|selo|'
+                      r'whatsapp-share|/ads?/|publicidade|video\.glbimg|/x240/|\.svg(?:$|\?)|\.gif(?:$|\?)', re.I)
 CONTATO = re.compile(r'^(?:Comunica[çc][ãa]o Social|Assessoria de|Ascom|Tel\.?:|E-?mail:|Fonte:|Fotos?:|@)', re.I)
 
 
@@ -80,6 +85,55 @@ def corpo_da_materia(pagina):
     return []
 
 
+def melhor_do_srcset(srcset):
+    """Escolhe a maior versão até ~1200 px de largura num srcset."""
+    opcoes = []
+    for parte in srcset.split(','):
+        bits = parte.strip().split()
+        if not bits:
+            continue
+        largura = int(bits[1][:-1]) if len(bits) > 1 and bits[1].endswith('w') and bits[1][:-1].isdigit() else 0
+        opcoes.append((largura, bits[0]))
+    if not opcoes:
+        return ''
+    ate = [o for o in opcoes if o[0] <= 1200]
+    return max(ate or opcoes)[1]
+
+
+def fotos_da_materia(pagina, base):
+    """Fotos dentro de <figure> e do corpo do texto, na ordem em que aparecem."""
+    trechos = re.findall(r'<figure\b.*?</figure>', pagina, re.S | re.I)
+    for padrao in (r'property="rnews:articleBody"[^>]*>(.*?)</div>\s*</div>',
+                   r'itemprop="articleBody"[^>]*>(.*?)</(?:div|section)>'):
+        m = re.search(padrao, pagina, re.S | re.I)
+        if m:
+            trechos.append(m.group(1))
+    fotos = []
+    for trecho in trechos:
+        for tag in re.findall(r'<(?:amp-)?img\b[^>]*>', trecho, re.I):
+            atributos = dict((k.lower(), html.unescape(v)) for k, _, v in
+                             re.findall(r'([\w:-]+)\s*=\s*(["\'])(.*?)\2', tag, re.S))
+            url = (melhor_do_srcset(atributos.get('srcset') or atributos.get('data-srcset') or '')
+                   or atributos.get('data-src') or atributos.get('src') or '')
+            largura = atributos.get('width', '')
+            if not url or url.startswith('data:') or NAO_FOTO.search(url):
+                continue
+            if largura.isdigit() and int(largura) < 200:
+                continue
+            fotos.append(urljoin(base, url))
+    return fotos
+
+
+def sem_repetir(urls):
+    vistos, saida = set(), []
+    for u in urls:
+        chave = re.sub(r'[?#].*$', '', u).rsplit('/', 1)[-1].lower()  # mesmo arquivo em tamanhos diferentes
+        if valida(u) and chave not in vistos:
+            vistos.add(chave)
+            saida.append(u)
+    return saida[:MAX_FOTOS]
+
+
 def imagem_jsonld(pagina, base):
     for bloco in re.findall(r'<script[^>]+application/ld\+json[^>]*>(.*?)</script>', pagina, re.S | re.I):
         try:
@@ -125,6 +179,10 @@ def ler(url, timeout):
     resumo = m.get('og:description') or m.get('description') or m.get('twitter:description') or ''
     if resumo:
         resultado['resumo'] = limpar(resumo)[:500]
+    resultado['imagens'] = sem_repetir(([resultado['imagem']] if resultado.get('imagem') else []) +
+                                       fotos_da_materia(pagina, base))
+    if resultado['imagens'] and not resultado.get('imagem'):
+        resultado['imagem'] = resultado['imagens'][0]
     licenca = LICENCA.search(pagina)
     if licenca and not NAO_COMERCIAL.search(pagina[max(0, licenca.start() - 300):licenca.end() + 300]):
         texto = corpo_da_materia(pagina)
@@ -136,16 +194,16 @@ def ler(url, timeout):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--limite', type=int, default=400, help='Páginas lidas por execução')
+    ap.add_argument('--limite', type=int, default=1500, help='Páginas lidas por execução')
     ap.add_argument('--timeout', type=int, default=12)
-    ap.add_argument('--trabalhadores', type=int, default=6)
+    ap.add_argument('--trabalhadores', type=int, default=8)
     ap.add_argument('--max-tentativas', type=int, default=3)
     args = ap.parse_args()
     dados = json.loads(ARQUIVO.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
     pendentes = []
     for n in noticias:
-        if not isinstance(n, dict) or n.get('materia_lida'):
+        if not isinstance(n, dict) or int(n.get('materia_lida_v') or 0) >= VERSAO:
             continue
         url = n.get('url_original') if valida(n.get('url_original')) else (n.get('url') if valida(n.get('url')) else '')
         if url and int(n.get('tentativas_leitura') or 0) < args.max_tentativas:
@@ -154,7 +212,7 @@ def main():
     pendentes.sort(key=lambda p: p[0].get('data_iso') or '', reverse=True)
     lote = pendentes[:max(0, args.limite)]
     print(f'Notícias com link original ainda não lidas: {len(pendentes)}; lendo agora: {len(lote)}', flush=True)
-    fotos = textos = resumos = falhas = 0
+    fotos = textos = resumos = falhas = galerias = 0
     with ThreadPoolExecutor(max_workers=max(1, min(args.trabalhadores, 10))) as pool:
         tarefas = {pool.submit(ler, url, args.timeout): n for n, url in lote}
         for futuro in as_completed(tarefas):
@@ -169,6 +227,10 @@ def main():
                 falhas += 1
                 continue
             n['materia_lida'] = time.strftime('%Y-%m-%d')
+            n['materia_lida_v'] = VERSAO
+            if r.get('imagens'):
+                n['imagens'] = r['imagens']
+                galerias += 1
             n['leitura_fonte_status'] = 'lida'
             if r.get('imagem') and not n.get('imagem_url'):
                 n['imagem_url'] = r['imagem']
@@ -186,7 +248,7 @@ def main():
         tmp.write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding='utf-8')
         tmp.replace(ARQUIVO)
     print(f'Lidas: {len(lote) - falhas}/{len(lote)}; fotos novas: {fotos}; resumos novos: {resumos}; '
-          f'textos integrais (licença aberta): {textos}; falhas: {falhas}')
+          f'notícias com galeria: {galerias}; textos integrais (licença aberta): {textos}; falhas: {falhas}')
 
 
 if __name__ == '__main__':

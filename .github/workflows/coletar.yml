@@ -8,7 +8,7 @@ on:
         default: ''
         type: string
   schedule:
-    - cron: '17 10 * * *'
+    - cron: '17 10,22 * * *'
 permissions:
   contents: write
 concurrency:
@@ -66,9 +66,9 @@ jobs:
         run: python coletar_feeds_estaduais.py
       - name: Recuperar links originais
         run: |
-          python recuperar_links.py --limite 300 --trabalhadores 4 --diagnostico
+          python recuperar_links.py --limite 600 --trabalhadores 4 --diagnostico
       - name: Ler matérias originais (foto, resumo e texto de licença aberta)
-        run: python ler_materias.py --limite 400 --trabalhadores 6
+        run: python ler_materias.py --limite 1500 --trabalhadores 8
       - name: Gerar estatísticas (se disponível)
         run: |
           if [ -f analisar_noticias.py ]; then
@@ -85,9 +85,10 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           for tentativa in 1; do
             git add noticias.json
-            for arquivo in analise_nacional.json cobertura_historica.json feed.json feed_links.json textos; do
+            for arquivo in analise_nacional.json cobertura_historica.json feed.json feed_links.json; do
               if [ -e "$arquivo" ]; then git add "$arquivo"; fi
             done
+            for pasta in detalhes textos; do git add -A -- "$pasta" 2>/dev/null || true; done
             if git diff --cached --quiet; then
               echo 'Nenhuma alteração a salvar.'
               exit 0
