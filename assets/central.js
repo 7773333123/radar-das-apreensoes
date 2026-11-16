@@ -47,16 +47,24 @@ function renderInicio() {
     `<li><button type="button" data-read="${n.i}"><time>${esc(agora - (n.data?.getTime() || 0) < DIA ? horaBR(n.data) : relativo(n.data))}</time>${esc(n.titulo)}</button></li>`).join('');
   $('agoraFaixa').hidden = false;
 
-  // Manchete: entre as de 48 h com foto, a mais repercutida (mais veículos), depois a mais recente.
-  const r2 = recentes(2).filter((n) => n.img);
-  const pool = r2.length >= 5 ? r2 : ns.filter((n) => n.img).slice(0, 40);
-  const manchete = [...pool].sort((a, b) => b.outras.length - a.outras.length || (b.q ? 1 : 0) - (a.q ? 1 : 0) || b.data - a.data)[0] || ns[0];
+  // Relevância com prazo de validade: repercussão (mais veículos) e quantidade
+  // apreendida pesam, mas a nota cai pela metade a cada 6 horas. Assim a
+  // manchete é sempre do dia, e uma notícia de ontem não fica no topo.
+  const horas = (n) => Math.max(0, (agora - (n.data?.getTime() || 0)) / 3600000);
+  const nota = (n) => (1 + Math.min(n.outras.length, 8) * 0.5 + (n.q ? 0.5 : 0)) / (1 + horas(n) / 6);
+  const comFoto = ns.filter((n) => n.img && n.data && n.data.getTime() <= agora + 3600000);
+  const janela = (h) => comFoto.filter((n) => horas(n) <= h);
+  const pool = [12, 24, 48].map(janela).find((l) => l.length >= 5) || comFoto.slice(0, 20);
+  const manchete = [...pool].sort((a, b) => nota(b) - nota(a) || b.data - a.data)[0] || ns[0];
   const usados = new Set([manchete]);
-  const lado = pool.filter((n) => !usados.has(n)).slice(0, 4);
+  // Ao lado da manchete: as mais recentes com foto, em ordem cronológica.
+  const lado = pool.filter((n) => !usados.has(n)).sort((a, b) => b.data - a.data).slice(0, 4);
   lado.forEach((n) => usados.add(n));
 
-  // Em alta: notícias de 3 dias publicadas por mais veículos.
-  const alta = recentes(3).filter((n) => n.outras.length && !usados.has(n)).sort((a, b) => b.outras.length - a.outras.length || b.data - a.data).slice(0, 5);
+  // Em alta: publicadas por mais veículos nas últimas 24 h (ou 48 h, se houver poucas).
+  const repercutidas = (h) => recentes(h / 24).filter((n) => n.outras.length && !usados.has(n));
+  const alta = (repercutidas(24).length >= 3 ? repercutidas(24) : repercutidas(48))
+    .sort((a, b) => nota(b) - nota(a) || b.data - a.data).slice(0, 5);
 
   // Panorama de 30 dias (apreensões noticiadas).
   const r30 = recentes(30);
@@ -78,7 +86,7 @@ function renderInicio() {
     `<section class="band">` +
       `<div class="panel"><h3>Em alta</h3>${alta.length ? `<ol class="trend">${alta.map((n) =>
         `<li><a class="story" href="#noticia-${n.i}" data-read="${n.i}"><h4 class="headline">${esc(n.titulo)}</h4><div class="meta"><span class="sources">${n.outras.length + 1} veículos</span> · ${esc(relativo(n.data))}</div></a></li>`).join('')}</ol>`
-        : '<p class="note">Sem matérias repercutidas nos últimos 3 dias.</p>'}<p class="note">Matérias publicadas por mais veículos nos últimos 3 dias.</p></div>` +
+        : '<p class="note">Sem matérias repercutidas nas últimas 48 horas.</p>'}<p class="note">Matérias publicadas por mais veículos nas últimas 24 horas.</p></div>` +
       `<div class="panel"><h3>Últimos 30 dias</h3><dl class="kpis">` +
         `<div class="kpi"><dt>Notícias</dt><dd>${num(r30.length)}</dd></div>` +
         `<div class="kpi"><dt>Cocaína</dt><dd>${qtd(soma('coc'), 'kg')}</dd></div>` +

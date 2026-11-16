@@ -84,7 +84,13 @@ def categorias(n, titulo):
         atuais = [CATEGORIAS[k] for k, regra in enumerate(REGRAS) if regra.search(titulo)]
         if len(atuais) > 1 and 'Outras apreensões' in atuais:
             atuais.remove('Outras apreensões')
-    return [CATEGORIAS.index(c) for c in dict.fromkeys(atuais)]
+    idx = [CATEGORIAS.index(c) for c in dict.fromkeys(atuais)]
+    # A primeira categoria (a que aparece no selo) é a citada primeiro no título:
+    # "apreende mercúrio e fecha garimpo ... munições" -> Crimes ambientais.
+    def posicao(k):
+        m = REGRAS[k].search(titulo)
+        return (m.start() if m and k != 8 else len(titulo) + 1, k)
+    return sorted(idx, key=posicao)
 
 
 PALAVRAS_VAZIAS = set('''para pela pelo pelos pelas com sem sobre apos após entre durante contra como mais menos
@@ -243,7 +249,8 @@ def agrupar_duplicatas(itens):
             for campo in ('uf', 'img', 'r'):
                 if outro.get(campo) and not principal.get(campo):
                     principal[campo] = outro[campo]
-            principal['c'] = sorted(set(principal.get('c', [])) | set(outro.get('c', [])))
+            # Mantém a ordem da versão exibida (a 1ª é o selo) e acrescenta as das outras.
+            principal['c'] = list(dict.fromkeys(principal.get('c', []) + outro.get('c', [])))
             if not principal['c']:
                 del principal['c']
             if outro.get('f', '') not in vistas:
