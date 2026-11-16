@@ -88,7 +88,8 @@ SEM_QTD = [  # itens citados sem quantidade: ainda informam o que foi apreendido
     ('dinheiro', r'\bdinheiro\b|em esp[ée]cie'),
     ('celulares', r'celulares?'), ('medicamentos', r'medicamentos?|rem[ée]dios?|anabolizantes?|canetas? emagrecedoras?'),
     ('madeira ilegal', r'madeira'), ('animais silvestres', r'animais silvestres|aves silvestres|p[áa]ssaros'),
-    ('joias', r'\bjoias\b'), ('mercadorias irregulares', r'mercadorias?'),
+    ('joias', r'\bjoias\b'), ('mercúrio', r'merc[uú]rio'), ('ouro', r'\bouro\b'),
+    ('dragas e balsas de garimpo', r'\bdragas?\b|\bbalsas?\b'), ('mercadorias irregulares', r'mercadorias?'),
 ]
 
 
