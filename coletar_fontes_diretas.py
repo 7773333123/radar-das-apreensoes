@@ -123,7 +123,7 @@ def collect(years, max_pages):
       time.sleep(.08)
     if isinstance(original,dict):
         original['noticias']=rows;original['total']=len(rows);original['atualizado_em']=NOW.isoformat()
-    tmp=DATA.with_suffix('.json.tmp');tmp.write_text(json.dumps(original,ensure_ascii=False,indent=2),encoding='utf-8');tmp.replace(DATA)
+    tmp=DATA.with_suffix('.json.tmp');tmp.write_text(json.dumps(original,ensure_ascii=False,separators=(',', ':')),encoding='utf-8');tmp.replace(DATA)
     distribution=Counter()
     for r in rows:
       if not isinstance(r,dict):continue
@@ -144,7 +144,7 @@ def collect(years, max_pages):
             'contagens_da_coleta':dict(sorted(totals.items())),
             'falhas_de_acesso_amostra':failures[:30], 'total_falhas_acesso':len(failures),
             'aviso':'Cobertura parcial: arquivos indisponíveis e publicações não indexadas não são contabilizados; ano da publicação não é necessariamente ano da ocorrência.'}
-    REPORT.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+    REPORT.write_text(json.dumps(report,ensure_ascii=False,separators=(',', ':')),encoding='utf-8')
     print('Acervo preservado:',initial,'->',len(rows),'| Novas diretas:',len(rows)-initial)
     print('Distribuição por ano:',report['por_ano_data_publicacao'])
     print('Falhas de acesso:',len(failures))

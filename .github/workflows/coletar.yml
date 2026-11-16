@@ -33,7 +33,7 @@ jobs:
         run: |
           test -f coletor.py
           test -f recuperar_links.py
-          python -m py_compile coletor.py recuperar_links.py localizar_uf.py coletar_feeds_estaduais.py gerar_feed_site.py ler_materias.py
+          python -m py_compile coletor.py recuperar_links.py localizar_uf.py coletar_feeds_estaduais.py gerar_feed_site.py ler_materias.py compactar_acervo.py
           if [ -f coletar_fontes_diretas.py ]; then python -m py_compile coletar_fontes_diretas.py; fi
           if [ -f enriquecer_imagens.py ]; then python -m py_compile enriquecer_imagens.py; fi
       - name: Coletar notícias
@@ -41,10 +41,9 @@ jobs:
           ANO_HISTORICO: ${{ inputs.ano_historico || '' }}
         run: |
           if [ -n "$ANO_HISTORICO" ]; then
-            case "$ANO_HISTORICO" in
-              2020|2021|2022|2023|2024|2025|2026) ;;
-              *) echo 'Ano inválido'; exit 1 ;;
-            esac
+            if ! [[ "$ANO_HISTORICO" =~ ^[0-9]{4}$ ]] || [ "$ANO_HISTORICO" -lt 2006 ] || [ "$ANO_HISTORICO" -gt "$(date +%Y)" ]; then
+              echo 'Ano inválido (use 2006 até o ano atual)'; exit 1
+            fi
             python coletor.py --historico --ano "$ANO_HISTORICO"
           else
             python coletor.py
@@ -77,7 +76,9 @@ jobs:
             echo 'analisar_noticias.py não encontrado; estatísticas anteriores mantidas.'
           fi
       - name: Gerar feed enxuto do site
-        run: python gerar_feed_site.py
+        run: |
+          python gerar_feed_site.py
+          python compactar_acervo.py
       - name: Salvar alterações sem sobrescrever outras execuções
         run: |
           set -e

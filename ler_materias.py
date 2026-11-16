@@ -245,7 +245,7 @@ def main():
                 textos += 1
     if lote:
         tmp = ARQUIVO.with_suffix('.json.tmp')
-        tmp.write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding='utf-8')
+        tmp.write_text(json.dumps(dados, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
         tmp.replace(ARQUIVO)
     print(f'Lidas: {len(lote) - falhas}/{len(lote)}; fotos novas: {fotos}; resumos novos: {resumos}; '
           f'notícias com galeria: {galerias}; textos integrais (licença aberta): {textos}; falhas: {falhas}')

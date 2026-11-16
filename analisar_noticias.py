@@ -440,8 +440,8 @@ def main():
  # Gera arquivos temporários e substitui somente depois de concluir o processamento.
  out=BASE/'analise_nacional.json'
  ptmp=path.with_suffix('.json.tmp');otmp=out.with_suffix('.json.tmp')
- ptmp.write_text(json.dumps(raw,ensure_ascii=False,indent=2),encoding='utf-8')
- otmp.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
+ ptmp.write_text(json.dumps(raw,ensure_ascii=False,separators=(',', ':')),encoding='utf-8')
+ otmp.write_text(json.dumps(result,ensure_ascii=False,separators=(',', ':')),encoding='utf-8')
  ptmp.replace(path);otmp.replace(out)
  print(f'Analisadas {len(details)} notícias; {pending} não classificadas; {multi} multicategoria; {quant_count} registros quantitativos; {read_count} leituras externas tentadas; acessos: {dict(read_status)}; revisão: {dict(review)}.')
 

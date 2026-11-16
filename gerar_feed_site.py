@@ -17,11 +17,13 @@ Formato de cada notícia em feed.json (chaves curtas para reduzir o tamanho):
   u   link original     img foto da fonte    r   resumo
   uf  sigla do estado   c   índices em "categorias"
   x   1 quando há texto integral (licença aberta)    g   nº de fotos (quando > 1)
+  o   outras fontes da mesma matéria: [[fonte, link, i], ...] (duplicatas agrupadas)
 Texto integral e galeria ficam em detalhes/<i // 1000>.json, baixados ao abrir a notícia.
 """
 import json
 import re
 import shutil
+import unicodedata
 from pathlib import Path
 
 from localizar_uf import inferir_uf
@@ -81,6 +83,98 @@ def categorias(n, titulo):
     return [CATEGORIAS.index(c) for c in dict.fromkeys(atuais)]
 
 
+PALAVRAS_VAZIAS = set('''para pela pelo pelos pelas com sem sobre apos após entre durante contra como mais menos
+    que uma umas uns dos das nos nas aos este esta esse essa isso isto pode podem diz afirma'''.split())
+
+
+def _normal(texto):
+    texto = unicodedata.normalize('NFKD', texto or '')
+    texto = ''.join(c for c in texto if not unicodedata.combining(c)).lower()
+    return re.sub(r'[^a-z0-9]+', ' ', texto).strip()
+
+
+def _palavras(texto):
+    return {w for w in _normal(texto).split() if len(w) > 3 and w not in PALAVRAS_VAZIAS}
+
+
+def _pontos(item):
+    """Qual versão da matéria mostrar: texto integral, fotos, link original, estado."""
+    return (item.get('x', 0) * 8 + min(item.get('g', 1 if item.get('img') else 0), 5) * 2 +
+            (3 if item.get('u') else 0) + (1 if item.get('uf') else 0) + (1 if item.get('r') else 0))
+
+
+def agrupar_duplicatas(itens):
+    """Une a mesma matéria publicada mais de uma vez (mesma fonte ou veículos diferentes).
+
+    Duplicata = título igual, ou >= 65% das palavras em comum (mínimo 4), publicada
+    com até 1 dia de diferença e sem estados conflitantes. Mantém a versão mais
+    completa e guarda as demais em 'o' ("Também noticiado por").
+    """
+    pai = list(range(len(itens)))
+
+    def raiz(k):
+        while pai[k] != k:
+            pai[k] = pai[pai[k]]
+            k = pai[k]
+        return k
+
+    por_dia, palavras, normais = {}, [], []
+    for k, item in enumerate(itens):
+        palavras.append(_palavras(item['t']))
+        normais.append(_normal(item['t']))
+        dia = item.get('d', '')[:10]
+        if dia:
+            por_dia.setdefault(dia, []).append(k)
+    por_titulo = {}
+    for k, t in enumerate(normais):  # título idêntico: mesma matéria, mesmo sem data
+        if len(t) > 25:
+            if t in por_titulo:
+                pai[raiz(k)] = raiz(por_titulo[t])
+            else:
+                por_titulo[t] = k
+    dias = sorted(por_dia)
+    for posicao, dia in enumerate(dias):
+        atuais = por_dia[dia]
+        vizinhos = atuais + (por_dia[dias[posicao + 1]] if posicao + 1 < len(dias) else [])
+        for a_pos, a in enumerate(atuais):
+            pa = palavras[a]
+            if len(pa) < 4:
+                continue
+            for b in vizinhos[a_pos + 1:]:
+                pb = palavras[b]
+                comum = len(pa & pb)
+                if comum < 4 or comum / len(pa | pb) < 0.65:
+                    continue
+                ua, ub = itens[a].get('uf'), itens[b].get('uf')
+                if ua and ub and ua != ub:
+                    continue
+                pai[raiz(b)] = raiz(a)
+    grupos = {}
+    for k in range(len(itens)):
+        grupos.setdefault(raiz(k), []).append(k)
+    saida, removidas = [], set()
+    for membros in grupos.values():
+        membros.sort(key=lambda k: _pontos(itens[k]), reverse=True)
+        principal = itens[membros[0]]
+        outras, vistas = [], {principal.get('f', '')}
+        for k in membros[1:]:
+            outro = itens[k]
+            removidas.add(outro['i'])
+            for campo in ('uf', 'img', 'r'):
+                if outro.get(campo) and not principal.get(campo):
+                    principal[campo] = outro[campo]
+            principal['c'] = sorted(set(principal.get('c', [])) | set(outro.get('c', [])))
+            if not principal['c']:
+                del principal['c']
+            if outro.get('f', '') not in vistas:
+                vistas.add(outro.get('f', ''))
+                outras.append([outro.get('f', 'Outra fonte'), outro.get('u', ''), outro['i']])
+        if outras:
+            principal['o'] = outras[:8]
+        saida.append(principal)
+    return saida, removidas
+
+
 def url_publica(valor):
     valor = str(valor or '').strip()
     return valor if re.match(r'https?://', valor) else ''
@@ -90,12 +184,16 @@ def main():
     dados = json.loads(ORIGEM.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
     fontes = json.loads(FONTES_JSON.read_text(encoding='utf-8')).get('fontes', []) if FONTES_JSON.exists() else []
-    saida, links, ocultas = [], [''] * len(noticias), 0
+    saida, links, ocultas, portugal = [], [''] * len(noticias), 0, 0
     detalhes = {}
     for i, n in enumerate(noticias):
         if not isinstance(n, dict):
             continue
         fonte = str(n.get('fonte') or '').strip()
+        # Notícias de Portugal (o Google Notícias em português mistura os dois países).
+        if str(n.get('dominio_fonte') or '').lower().endswith('.pt'):
+            portugal += 1
+            continue
         titulo = limpar_titulo(n.get('titulo'), fonte)
         if not titulo:
             continue
@@ -142,6 +240,13 @@ def main():
         if detalhe:
             detalhes.setdefault(i // LOTE, {})[str(i)] = detalhe
         saida.append(item)
+    antes = len(saida)
+    saida, removidas = agrupar_duplicatas(saida)
+    for lote in list(detalhes):
+        for chave in [c for c in detalhes[lote] if int(c) in removidas]:
+            del detalhes[lote][chave]
+        if not detalhes[lote]:
+            del detalhes[lote]
     saida.sort(key=lambda x: x.get('d', ''), reverse=True)
     feed = {
         'atualizado_em': dados.get('atualizado_em') if isinstance(dados, dict) else None,
@@ -159,6 +264,7 @@ def main():
             antigo.unlink()
     for lote, conteudo in detalhes.items():
         (DETALHES / f'{lote}.json').write_text(json.dumps(conteudo, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+    print(f'Duplicatas agrupadas: {antes - len(saida)}; notícias de Portugal excluídas: {portugal}')
     print(f'{DESTINO.name}: {len(saida)} notícias ({ocultas} sem relação com apreensões ocultadas), '
           f'{DESTINO.stat().st_size / 1e6:.1f} MB')
     print(f'{LINKS.name}: {LINKS.stat().st_size / 1e6:.1f} MB (carregado só ao abrir uma notícia)')

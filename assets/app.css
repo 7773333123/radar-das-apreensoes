@@ -181,6 +181,8 @@ h1 { margin: 0; font-size: clamp(30px, 4.6vw, 52px); line-height: 1.06; letter-s
 .reader-credit { color: var(--muted); font-size: 12px; }
 .reader-text { font-size: 17px; margin: 16px 0; }
 .reader-source { margin-top: 18px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; display: grid; gap: 12px; }
+.also { border-top: 1px solid var(--line); padding-top: 10px; }
+.also ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; }
 .reader-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .reader-actions .btn { display: inline-flex; align-items: center; text-decoration: none; }
 

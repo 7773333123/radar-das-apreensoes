@@ -225,7 +225,7 @@ def main():
                 errors[status]+=1
     if batch:
         temp=ARQUIVO.with_suffix('.json.tmp')
-        temp.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8')
+        temp.write_text(json.dumps(data,ensure_ascii=False,separators=(',', ':')),encoding='utf-8')
         temp.replace(ARQUIVO)
     print(f'Recuperados: {successes}/{len(batch)}; falhas: {dict(errors)}; acervo preservado: {len(news)}',flush=True)
     if batch and not successes: print('AVISO: nenhuma URL recuperada. Consulte os códigos de falha acima.',flush=True)

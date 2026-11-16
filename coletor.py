@@ -21,6 +21,7 @@ from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 ARQUIVO = Path('noticias.json')
+ANO_INICIAL = 2006  # acervo de 20 anos
 BASE = 'https://news.google.com/rss/search?'
 TEMAS = {
     'Drogas': 'apreensão drogas cocaína maconha tráfico',
@@ -397,7 +398,7 @@ def deduplicar(itens):
 def executar():
     parser = argparse.ArgumentParser()
     parser.add_argument('--historico', action='store_true', help='Busca mês a mês em um ano específico')
-    parser.add_argument('--ano', type=int, help='Ano histórico de 2020 até o atual')
+    parser.add_argument('--ano', type=int, help='Ano histórico de 2006 até o atual')
     parser.add_argument('--mes', type=int, choices=range(1, 13), metavar='1-12', help='Mês específico da busca histórica (opcional)')
     parser.add_argument('--limite-fontes', type=int, default=24, help='Fontes extras consultadas por execução (padrão: 24)')
     parser.add_argument('--limite-estados', type=int, default=9, help='Estados consultados por execução (padrão: 9)')
@@ -406,8 +407,8 @@ def executar():
     ano_atual = hoje.year
     if args.limite_fontes < 0 or args.limite_estados < 0:
         parser.error('Os limites de consultas não podem ser negativos')
-    if args.historico and (args.ano is None or not 2020 <= args.ano <= ano_atual):
-        parser.error('Informe --ano entre 2020 e o ano atual')
+    if args.historico and (args.ano is None or not ANO_INICIAL <= args.ano <= ano_atual):
+        parser.error(f'Informe --ano entre {ANO_INICIAL} e o ano atual')
     if args.mes is not None and not args.historico:
         parser.error('--mes exige --historico e --ano')
     if args.historico and args.ano == ano_atual and args.mes and args.mes > hoje.month:
@@ -477,7 +478,7 @@ def executar():
         'rodizio_fontes_proximo': proxima_fonte,
     }
     temporario = ARQUIVO.with_suffix('.json.tmp')
-    temporario.write_text(json.dumps(resultado, ensure_ascii=False, indent=2), encoding='utf-8')
+    temporario.write_text(json.dumps(resultado, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     temporario.replace(ARQUIVO)
     print(f'Rodízio: próximo estado {proximo_estado}; próxima fonte {proxima_fonte}.')
     print(f'Concluído: {novos} novas; {len(noticias)} no acervo; {erros} consultas falharam.')

@@ -46,6 +46,7 @@
     const n = {
       i: raw.i, titulo: raw.t, fonte: raw.f || 'Fonte não informada', resumo: raw.r || '',
       url: urlSegura(raw.u || ''), img: urlSegura(raw.img || ''), uf, cats, data, texto: raw.x === 1, nFotos: raw.g || (raw.img ? 1 : 0),
+      outras: Array.isArray(raw.o) ? raw.o.filter((o) => Array.isArray(o) && o[0]) : [],
       ano: data ? data.getUTCFullYear() : null,
     };
     n.busca = fold([n.titulo, n.resumo, n.fonte, uf, NOME_UF[uf], cats.map((c) => categorias[c]).join(' ')].join(' '));
@@ -102,7 +103,8 @@
   function tagsHTML(n) {
     const cats = n.cats.slice(0, 2).map((c) => `<span class="tag">${esc(state.categorias[c])}</span>`).join('') +
       (n.texto ? '<span class="tag full">Texto completo</span>' : '') +
-      (n.nFotos > 1 ? `<span class="tag photos">${n.nFotos} fotos</span>` : '');
+      (n.nFotos > 1 ? `<span class="tag photos">${n.nFotos} fotos</span>` : '') +
+      (n.outras.length ? `<span class="tag muted">+${n.outras.length} ${n.outras.length === 1 ? 'fonte' : 'fontes'}</span>` : '');
     const uf = n.uf ? `<span class="tag uf">${esc(NOME_UF[n.uf])}</span>` : '<span class="tag muted">Estado não identificado</span>';
     return `<div class="tags">${cats || '<span class="tag muted">Em classificação</span>'}${uf}</div>`;
   }
@@ -283,7 +285,10 @@
       `${tagsHTML(n)}<h1 id="leitorTitulo">${esc(n.titulo)}</h1>${metaHTML(n)}${foto}${texto}<div id="leitorMiniaturas"></div>` +
       `<div class="reader-source"><div class="meta">Fonte: <strong>${esc(n.fonte)}</strong>${n.uf ? ' · ' + esc(NOME_UF[n.uf]) : ''} · ${esc(cats)}</div>` +
       `<div class="reader-actions"><a class="btn" id="leitorLink" href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer"${n.url ? '' : ' aria-disabled="true"'}>Ler na fonte original ↗</a>` +
-      `<button type="button" class="btn-ghost" id="compartilhar">Compartilhar</button></div></div>`;
+      `<button type="button" class="btn-ghost" id="compartilhar">Compartilhar</button></div>` +
+      (n.outras.length ? `<div class="also"><span class="meta">Também noticiado por:</span><ul>${n.outras.map(([fonte, url, i]) =>
+        `<li><a href="${esc(urlSegura(url || '') || '#')}" target="_blank" rel="noopener noreferrer" data-outra="${Number(i)}">${esc(fonte)} ↗</a></li>`).join('')}</ul></div>` : '') +
+      '</div>';
     $('leitorConteudo').dataset.i = String(n.i);
     montarGaleria(n, n.img ? [n.img] : []);
     if (n.texto || n.nFotos > 1) {
@@ -297,6 +302,10 @@
             `<p class="reader-note">Texto reproduzido integralmente de <strong>${esc(n.fonte)}</strong>, sob a licença ${esc(t.l)}, que permite a reprodução com crédito.</p>`
           : (n.resumo ? `<p class="reader-text">${esc(n.resumo)}</p>` : '<p class="reader-text">Texto indisponível no momento. Leia na fonte original.</p>');
       });
+    }
+    const semLink = [...document.querySelectorAll('#leitorConteudo [data-outra]')].filter((a) => a.getAttribute('href') === '#');
+    if (semLink.length) {
+      carregarLinks().then((links) => semLink.forEach((a) => { const u = urlSegura(links[a.dataset.outra] || ''); if (u) a.href = u; else a.replaceWith(a.textContent.replace(' ↗', '')); }));
     }
     if (!n.url) {
       carregarLinks().then((links) => {
