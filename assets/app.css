@@ -107,6 +107,9 @@ h1 { margin: 0; font-size: clamp(30px, 4.6vw, 52px); line-height: 1.06; letter-s
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tag { font-size: 12px; font-weight: 700; color: var(--accent); background: rgb(56 189 248 / .1); border-radius: 999px; padding: 2px 9px; }
 .tag.uf { color: #c4b5fd; background: rgb(167 139 250 / .12); }
+.tag.full { color: #6ee7b7; background: rgb(52 211 153 / .12); }
+.reader-note { color: var(--muted); font-size: 13px; border-left: 3px solid var(--line); padding-left: 10px; }
+.reader-full .reader-text { margin: 0 0 14px; }
 .tag.muted { color: var(--muted); background: var(--surface-2); }
 .meta { color: var(--muted); font-size: 13px; }
 

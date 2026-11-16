@@ -16,6 +16,7 @@ Formato de cada notícia em feed.json (chaves curtas para reduzir o tamanho):
   t   título            f   fonte            d   data ISO (UTC)
   u   link original     img foto da fonte    r   resumo
   uf  sigla do estado   c   índices em "categorias"
+  x   1 quando há texto integral (licença aberta) em textos/<i // 1000>.json
 """
 import json
 import re
@@ -28,6 +29,8 @@ ORIGEM = PASTA / 'noticias.json'
 DESTINO = PASTA / 'feed.json'
 LINKS = PASTA / 'feed_links.json'
 FONTES_JSON = PASTA / 'fontes.json'
+TEXTOS = PASTA / 'textos'
+LOTE_TEXTOS = 1000
 
 CATEGORIAS = [
     'Drogas e entorpecentes', 'Armas e munições', 'Contrabando e descaminho', 'Veículos',
@@ -86,6 +89,7 @@ def main():
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
     fontes = json.loads(FONTES_JSON.read_text(encoding='utf-8')).get('fontes', []) if FONTES_JSON.exists() else []
     saida, links, ocultas = [], [''] * len(noticias), 0
+    textos = {}
     for i, n in enumerate(noticias):
         if not isinstance(n, dict):
             continue
@@ -120,6 +124,10 @@ def main():
             item['uf'] = uf
         if cats:
             item['c'] = cats
+        paragrafos = [str(p) for p in (n.get('texto_integral') or []) if str(p).strip()]
+        if paragrafos and n.get('licenca_texto'):
+            item['x'] = 1
+            textos.setdefault(i // LOTE_TEXTOS, {})[str(i)] = {'p': paragrafos, 'l': str(n['licenca_texto'])}
         saida.append(item)
     saida.sort(key=lambda x: x.get('d', ''), reverse=True)
     feed = {
@@ -130,9 +138,17 @@ def main():
     }
     DESTINO.write_text(json.dumps(feed, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     LINKS.write_text(json.dumps(links, separators=(',', ':')), encoding='utf-8')
+    # Textos integrais (só de páginas com licença aberta), em lotes por índice.
+    TEXTOS.mkdir(exist_ok=True)
+    for antigo in TEXTOS.glob('*.json'):
+        if int(antigo.stem) not in textos:
+            antigo.unlink()
+    for lote, conteudo in textos.items():
+        (TEXTOS / f'{lote}.json').write_text(json.dumps(conteudo, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     print(f'{DESTINO.name}: {len(saida)} notícias ({ocultas} sem relação com apreensões ocultadas), '
           f'{DESTINO.stat().st_size / 1e6:.1f} MB')
     print(f'{LINKS.name}: {LINKS.stat().st_size / 1e6:.1f} MB (carregado só ao abrir uma notícia)')
+    print(f'textos/: {sum(len(v) for v in textos.values())} notícias com texto integral de licença aberta')
 
 
 if __name__ == '__main__':

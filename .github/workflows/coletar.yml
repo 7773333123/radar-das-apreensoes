@@ -33,7 +33,7 @@ jobs:
         run: |
           test -f coletor.py
           test -f recuperar_links.py
-          python -m py_compile coletor.py recuperar_links.py localizar_uf.py coletar_feeds_estaduais.py gerar_feed_site.py
+          python -m py_compile coletor.py recuperar_links.py localizar_uf.py coletar_feeds_estaduais.py gerar_feed_site.py ler_materias.py
           if [ -f coletar_fontes_diretas.py ]; then python -m py_compile coletar_fontes_diretas.py; fi
           if [ -f enriquecer_imagens.py ]; then python -m py_compile enriquecer_imagens.py; fi
       - name: Coletar notícias
@@ -68,13 +68,8 @@ jobs:
         run: |
           python recuperar_links.py --limite 35 --trabalhadores 4 --busca-fonte --diagnostico
           python recuperar_links.py --limite 35 --trabalhadores 4 --diagnostico
-      - name: Buscar fotografias originais
-        run: |
-          if [ -f enriquecer_imagens.py ]; then
-            python enriquecer_imagens.py --limite 60 --timeout 8 --max-tentativas 3
-          else
-            echo "AVISO: enriquecer_imagens.py não encontrado. Etapa de fotografias ignorada."
-          fi
+      - name: Ler matérias originais (foto, resumo e texto de licença aberta)
+        run: python ler_materias.py --limite 400 --trabalhadores 6
       - name: Gerar estatísticas (se disponível)
         run: |
           if [ -f analisar_noticias.py ]; then
@@ -91,8 +86,8 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           for tentativa in 1; do
             git add noticias.json
-            for arquivo in analise_nacional.json cobertura_historica.json feed.json feed_links.json; do
-              if [ -f "$arquivo" ]; then git add "$arquivo"; fi
+            for arquivo in analise_nacional.json cobertura_historica.json feed.json feed_links.json textos; do
+              if [ -e "$arquivo" ]; then git add "$arquivo"; fi
             done
             if git diff --cached --quiet; then
               echo 'Nenhuma alteração a salvar.'

@@ -45,7 +45,7 @@
     const uf = NOME_UF[raw.uf] ? raw.uf : '';
     const n = {
       i: raw.i, titulo: raw.t, fonte: raw.f || 'Fonte não informada', resumo: raw.r || '',
-      url: urlSegura(raw.u || ''), img: urlSegura(raw.img || ''), uf, cats, data,
+      url: urlSegura(raw.u || ''), img: urlSegura(raw.img || ''), uf, cats, data, texto: raw.x === 1,
       ano: data ? data.getUTCFullYear() : null,
     };
     n.busca = fold([n.titulo, n.resumo, n.fonte, uf, NOME_UF[uf], cats.map((c) => categorias[c]).join(' ')].join(' '));
@@ -100,7 +100,8 @@
 
   // ---------- renderização ----------
   function tagsHTML(n) {
-    const cats = n.cats.slice(0, 2).map((c) => `<span class="tag">${esc(state.categorias[c])}</span>`).join('');
+    const cats = n.cats.slice(0, 2).map((c) => `<span class="tag">${esc(state.categorias[c])}</span>`).join('') +
+      (n.texto ? '<span class="tag full">Texto completo</span>' : '');
     const uf = n.uf ? `<span class="tag uf">${esc(NOME_UF[n.uf])}</span>` : '<span class="tag muted">Estado não identificado</span>';
     return `<div class="tags">${cats || '<span class="tag muted">Em classificação</span>'}${uf}</div>`;
   }
@@ -198,6 +199,12 @@
   }
 
   // ---------- leitor ----------
+  const textosCache = new Map();
+  const carregarTexto = (i) => {
+    const lote = Math.floor(i / 1000);
+    if (!textosCache.has(lote)) textosCache.set(lote, fetch(`textos/${lote}.json`).then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
+    return textosCache.get(lote).then((d) => d[String(i)]);
+  };
   let linksPromise = null;
   const carregarLinks = () => (linksPromise ??= fetch('feed_links.json').then((r) => (r.ok ? r.json() : [])).catch(() => []));
 
@@ -207,13 +214,25 @@
     const dlg = $('leitor');
     const cats = n.cats.map((c) => state.categorias[c]).join(' · ') || 'Em classificação';
     const foto = n.img ? `<img class="reader-photo" src="${esc(n.img)}" alt="Foto da reportagem" referrerpolicy="no-referrer" data-hide-on-error><p class="reader-credit">Imagem: ${esc(n.fonte)}. Direitos reservados à fonte.</p>` : '';
-    const texto = n.resumo ? `<p class="reader-text">${esc(n.resumo)}</p>` : '<p class="reader-text">O resumo desta notícia não está disponível. Leia a reportagem completa na fonte original.</p>';
+    const texto = n.texto ? '<div class="reader-full" id="leitorTexto"><p class="reader-text">Carregando o texto…</p></div>'
+      : n.resumo ? `<p class="reader-text">${esc(n.resumo)}</p><p class="reader-note">Resumo publicado pela fonte. A reportagem completa está no site de origem.</p>`
+        : '<p class="reader-text">O resumo desta notícia não está disponível. Leia a reportagem completa na fonte original.</p>';
     $('leitorConteudo').innerHTML =
       `${tagsHTML(n)}<h1 id="leitorTitulo">${esc(n.titulo)}</h1>${metaHTML(n)}${foto}${texto}` +
       `<div class="reader-source"><div class="meta">Fonte: <strong>${esc(n.fonte)}</strong>${n.uf ? ' · ' + esc(NOME_UF[n.uf]) : ''} · ${esc(cats)}</div>` +
       `<div class="reader-actions"><a class="btn" id="leitorLink" href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer"${n.url ? '' : ' aria-disabled="true"'}>Ler na fonte original ↗</a>` +
       `<button type="button" class="btn-ghost" id="compartilhar">Compartilhar</button></div></div>`;
     $('leitorConteudo').dataset.i = String(n.i);
+    if (n.texto) {
+      carregarTexto(n.i).then((t) => {
+        const alvo = $('leitorTexto');
+        if (!alvo || $('leitorConteudo').dataset.i !== String(n.i)) return;
+        alvo.innerHTML = t && Array.isArray(t.p)
+          ? t.p.map((p) => `<p class="reader-text">${esc(p)}</p>`).join('') +
+            `<p class="reader-note">Texto reproduzido integralmente de <strong>${esc(n.fonte)}</strong>, sob a licença ${esc(t.l)}, que permite a reprodução com crédito.</p>`
+          : (n.resumo ? `<p class="reader-text">${esc(n.resumo)}</p>` : '<p class="reader-text">Texto indisponível no momento. Leia na fonte original.</p>');
+      });
+    }
     if (!n.url) {
       carregarLinks().then((links) => {
         const u = urlSegura(links[n.i] || '');
