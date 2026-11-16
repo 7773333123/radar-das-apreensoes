@@ -93,8 +93,62 @@ def _normal(texto):
     return re.sub(r'[^a-z0-9]+', ' ', texto).strip()
 
 
+# Palavras que aparecem em quase toda notícia policial: não ajudam a dizer se
+# dois títulos falam do mesmo fato.
+GENERICAS = set('''policia policias policial policiais militar militares civil federal rodoviaria
+    apreende apreendem apreendeu apreendido apreendida apreendidos apreendidas apreensao apreensoes
+    prende prendem prendeu preso presa presos presas prisao flagrante suspeito suspeitos suspeita
+    homem mulher jovem jovens adolescente pessoas dupla trio operacao acao durante cerca mais
+    droga drogas trafico traficante bairro cidade regiao estado'''.split())
+
+
 def _palavras(texto):
     return {w for w in _normal(texto).split() if len(w) > 3 and w not in PALAVRAS_VAZIAS}
+
+
+def _informativas(texto):
+    """Palavras que identificam o fato: lugares, objetos, nomes e números (300, 1,3 t...)."""
+    palavras = set()
+    for w in _normal(texto).split():
+        if w.isdigit():
+            if len(w) >= 2 and w not in ('2024', '2025', '2026'):
+                palavras.add(w)
+        elif len(w) > 3 and w not in PALAVRAS_VAZIAS and w not in GENERICAS:
+            palavras.add(w)
+    return palavras
+
+
+EXTENSO = {'um': '1', 'uma': '1', 'dois': '2', 'duas': '2', 'tres': '3', 'quatro': '4', 'cinco': '5', 'seis': '6',
+           'sete': '7', 'oito': '8', 'nove': '9', 'dez': '10', 'onze': '11', 'doze': '12', 'treze': '13',
+           'quatorze': '14', 'catorze': '14', 'quinze': '15', 'vinte': '20', 'trinta': '30', 'cem': '100'}
+
+
+def _quantidades(texto):
+    """Quantidades citadas no título, com números por extenso convertidos (uma -> 1)."""
+    saida = set()
+    for w in _normal(texto).split():
+        if w.isdigit() and w not in ('2024', '2025', '2026'):
+            saida.add(w.lstrip('0') or '0')
+        elif w in EXTENSO:
+            saida.add(EXTENSO[w])
+    return saida
+
+
+def mesma_materia(pa, pb, ia, ib, qa=frozenset(), qb=frozenset(), mesmo_uf=False):
+    """pa/pb: palavras do título; ia/ib: palavras informativas; qa/qb: quantidades citadas."""
+    if qa and qb and not (qa & qb):
+        return False  # "três presos" e "dois presos" são fatos diferentes
+    comum = len(pa & pb)
+    if comum >= 4 and comum / len(pa | pb) >= 0.65:
+        return True
+    # Um título contido no outro: >= 75% das palavras informativas do mais curto
+    # aparecem no mais longo (ex.: "300 garrafas de vinho em Cruzeiro do Oeste").
+    # Só vale com o mesmo estado confirmado ou um número específico em comum
+    # (a PF faz operações iguais em vários estados no mesmo dia).
+    inf = len(ia & ib)
+    numero_comum = bool(qa & qb) or any(w.isdigit() for w in ia & ib)
+    return (inf >= 3 and inf / max(1, min(len(ia), len(ib))) >= 0.75 and (mesmo_uf or numero_comum)
+            and (inf >= 4 or numero_comum))
 
 
 def _pontos(item):
@@ -123,9 +177,11 @@ def agrupar_duplicatas(itens):
             k = pai[k]
         return k
 
-    por_dia, palavras, normais = {}, [], []
+    por_dia, palavras, normais, informativas, quantidades = {}, [], [], [], []
     for k, item in enumerate(itens):
         palavras.append(_palavras(item['t']))
+        informativas.append(_informativas(item['t']))
+        quantidades.append(_quantidades(item['t']))
         normais.append(_normal(item['t']))
         dia = item.get('d', '')[:10]
         if dia:
@@ -158,16 +214,15 @@ def agrupar_duplicatas(itens):
         atuais = por_dia[dia]
         vizinhos = atuais + (por_dia[dias[posicao + 1]] if posicao + 1 < len(dias) else [])
         for a_pos, a in enumerate(atuais):
-            pa = palavras[a]
-            if len(pa) < 4:
+            pa, ia = palavras[a], informativas[a]
+            if len(pa) < 3:
                 continue
             for b in vizinhos[a_pos + 1:]:
-                pb = palavras[b]
-                comum = len(pa & pb)
-                if comum < 4 or comum / len(pa | pb) < 0.65:
-                    continue
                 ua, ub = itens[a].get('uf'), itens[b].get('uf')
                 if ua and ub and ua != ub:
+                    continue
+                if not mesma_materia(pa, palavras[b], ia, informativas[b], quantidades[a], quantidades[b],
+                                     mesmo_uf=bool(ua and ua == ub)):
                     continue
                 pai[raiz(b)] = raiz(a)
     grupos = {}

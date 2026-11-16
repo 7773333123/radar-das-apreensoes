@@ -77,6 +77,7 @@ jobs:
           fi
       - name: Gerar feed enxuto do site
         run: |
+          python testes/test_duplicatas.py
           python gerar_feed_site.py
           python compactar_acervo.py
       - name: Salvar (mescla se outra coleta gravou antes)
