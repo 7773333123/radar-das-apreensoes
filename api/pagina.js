@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SITE = 'https://radardasapreensoes.com.br';
+const SITE = 'https://www.radardasapreensoes.com.br';
 const RAIZ = process.cwd();
 const ESTADOS = {
   AC: 'Acre', AL: 'Alagoas', AP: 'Amapá', AM: 'Amazonas', BA: 'Bahia', CE: 'Ceará', DF: 'Distrito Federal',
@@ -35,13 +35,13 @@ function dados() {
 function links() {
   const c = dados();
   if (!c.links) {
-    try { c.links = JSON.parse(fs.readFileSync(path.join(RAIZ, 'feed_links.json'), 'utf8')); } catch { c.links = []; }
+    try { c.links = JSON.parse(fs.readFileSync(path.join(RAIZ, 'feed_links.json'), 'utf8')); } catch { c.links = {}; }
   }
   return c.links;
 }
 function detalhe(i) {
   const c = dados();
-  const lote = Math.floor(i / 100);
+  const lote = i % 256; // mesmo LOTES de gerar_feed_site.py
   if (!c.det.has(lote)) {
     try { c.det.set(lote, JSON.parse(fs.readFileSync(path.join(RAIZ, 'det', `${lote}.json`), 'utf8'))); } catch { c.det.set(lote, {}); }
   }

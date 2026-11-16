@@ -1,7 +1,7 @@
 // /sitemap.xml gerado a partir do feed: páginas fixas, estados, tipos, relatórios e notícias.
 const { dados, urlNoticia, meses, SLUG_CAT, ESTADOS } = require('./pagina.js');
 
-const SITE = 'https://radardasapreensoes.com.br';
+const SITE = 'https://www.radardasapreensoes.com.br';
 const esc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
 
 module.exports = (req, res) => {

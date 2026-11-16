@@ -154,7 +154,7 @@ def exportar(itens, categorias, links, pasta):
             'crack_kg': q.get('cra', ''), 'outras_drogas_kg': q.get('dro', ''), 'armas': q.get('arm', ''),
             'fuzis': q.get('fuz', ''), 'municoes': q.get('mun', ''), 'valor_rs': x.get('vq', ''),
             'outras_fontes': '|'.join(o[0] for o in x.get('o', [])),
-            'link': x.get('u') or (links[x['i']] if x['i'] < len(links) else ''),
+            'link': x.get('u') or links.get(x['i'], ''),
         })
         mes = x.get('d', '')[:7]
         if mes:
