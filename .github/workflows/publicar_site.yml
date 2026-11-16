@@ -11,6 +11,7 @@ on:
       - localizar_uf.py
       - resumo_fatos.py
       - contexto.py
+      - classificar.py
       - estatisticas.py
       - testes/**
 permissions:
@@ -30,7 +31,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Testar a regra de duplicidade
-        run: python testes/test_duplicatas.py
+        run: python testes/test_duplicatas.py && python classificar.py
       - name: Regenerar o feed do site
         run: python gerar_feed_site.py
       - name: Salvar
