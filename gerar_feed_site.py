@@ -40,30 +40,8 @@ FONTES_JSON = PASTA / 'fontes.json'
 DETALHES = PASTA / 'det'  # lotes de 100 notícias (antes: detalhes/, lotes de 1000)
 LOTE = 100
 
-CATEGORIAS = [
-    'Drogas e entorpecentes', 'Armas e munições', 'Contrabando e descaminho', 'Veículos',
-    'Dinheiro e valores', 'Crimes ambientais', 'Medicamentos e produtos',
-    'Operações patrimoniais', 'Outras apreensões',
-]
-REGRAS = [
-    r'droga|tr[aá]fic|coca[ií]na|maconha|entorpecent|crack|haxixe|skunk|cannabis|ecstasy|lsd|pasta base',
-    r'\barmas?\b|fuzil|fuzis|pistola|rev[oó]lver|muni[çc]|cartucho|explosiv|espingarda',
-    r'contraband|descaminho|cigarros?|aduan|mercadorias? (?:irregular|il[ií]cit|estrangeir)',
-    r've[ií]culos?|\bcarros?\b|caminh[ãa]o|caminh[õo]es|motocicleta|\bmotos?\b|embarca[çc]|aeronave|avi[ãa]o',
-    r'dinheiro|em esp[ée]cie|\bouro\b|joias|numer[aá]rio|d[oó]lares|\bR\$',
-    r'ambient|madeira|animais silvestres|aves silvestres|pesca ilegal|pescado|garimpo|min[eé]rio|desmatamento',
-    r'medicamento|rem[eé]dio|anabolizante|falsificad|canetas? emagrecedora',
-    r'bloqueio de bens|patrim[oô]nio|bens apreendidos|lavagem de dinheiro|sequestro de bens',
-    r'apreens|apreend|confiscad|retid',
-]
-REGRAS = [re.compile(r, re.I) for r in REGRAS]
-# Sem categoria e sem nenhum destes termos no título: não é notícia de apreensão.
-RELEVANTE = re.compile(
-    r'apreen|apreend|tr[aá]fic|contraband|descaminho|lavagem|drog|coca[ií]n|maconha|crack|haxixe|'
-    r'skunk|entorpecent|\barmas?\b|fuzi|muni[çc]|pistola|rev[oó]lver|garimpo|madeira|pescado|'
-    r'animais silvestres|cigarro|medicamento|anabolizante|confisc|opera[çc][ãa]o|pres[oa]s?\b|'
-    r'flagrante|fac[çc][ãa]o|bloqueio de bens|sequestro de bens|prende|pris[ãa]o|mandados?|'
-    r'ilegal|il[ií]cit|criminos|quadrilha|foragid', re.I)
+# Tipos e relevância: classificar.py (regras próprias; ignora a classificação do coletor antigo).
+from classificar import CATEGORIAS, REGRAS, relevante, categorias as classificar_categorias
 
 
 def limpar_titulo(titulo, fonte):
@@ -79,18 +57,8 @@ def limpar_titulo(titulo, fonte):
 
 
 def categorias(n, titulo):
-    atuais = [c for c in (n.get('categorias_identificadas') or []) if c in CATEGORIAS]
-    if not atuais:
-        atuais = [CATEGORIAS[k] for k, regra in enumerate(REGRAS) if regra.search(titulo)]
-        if len(atuais) > 1 and 'Outras apreensões' in atuais:
-            atuais.remove('Outras apreensões')
-    idx = [CATEGORIAS.index(c) for c in dict.fromkeys(atuais)]
-    # A primeira categoria (a que aparece no selo) é a citada primeiro no título:
-    # "apreende mercúrio e fecha garimpo ... munições" -> Crimes ambientais.
-    def posicao(k):
-        m = REGRAS[k].search(titulo)
-        return (m.start() if m and k != 8 else len(titulo) + 1, k)
-    return sorted(idx, key=posicao)
+    texto = ' '.join(str(n.get(k) or '') for k in ('descricao', 'resumo', 'trecho'))
+    return classificar_categorias(titulo, texto)
 
 
 PALAVRAS_VAZIAS = set('''para pela pelo pelos pelas com sem sobre apos após entre durante contra como mais menos
@@ -306,10 +274,10 @@ def main():
         titulo = limpar_titulo(n.get('titulo'), fonte)
         if not titulo:
             continue
-        cats = categorias(n, titulo)
-        if not cats and not RELEVANTE.search(titulo):
+        if not relevante(titulo):
             ocultas += 1
             continue
+        cats = categorias(n, titulo)
         item = {'i': i, 't': titulo}
         if fonte:
             item['f'] = fonte
