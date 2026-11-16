@@ -72,6 +72,36 @@ def categorias(n, titulo):
 
 
 # Duplicatas: regras e métrica em duplicatas.py (texto, abertura, fatos e imagem).
+TRECHO_VEICULO = {}
+try:
+    TRECHO_VEICULO = {k.lower().removeprefix('www.'): v for k, v in json.loads(
+        (Path(__file__).resolve().parent / 'trecho_por_veiculo.json').read_text(encoding='utf-8')).get('veiculos', {}).items()}
+except (OSError, ValueError):
+    pass
+
+
+def limitar_trecho(trecho, n):
+    """Corta o trecho no limite pedido pelo veículo (fração da reportagem e/ou caracteres), no fim de uma frase."""
+    if not trecho or not TRECHO_VEICULO:
+        return trecho
+    dom = str(n.get('dominio_fonte') or '').lower().removeprefix('www.')
+    regra = next((v for k, v in TRECHO_VEICULO.items() if dom == k or dom.endswith('.' + k)), None)
+    if not regra:
+        return trecho
+    regra = regra if isinstance(regra, dict) else {'fracao': regra}
+    total = int(n.get('tamanho_texto') or 0) or int(len(trecho) / 0.7)
+    limite = int(total * float(regra.get('fracao', 0.7)))
+    if regra.get('max'):
+        limite = min(limite, int(regra['max']))
+    if limite <= 0:
+        return ''
+    if len(trecho) <= limite:
+        return trecho
+    corte = trecho[:limite]
+    fim = max(corte.rfind('. '), corte.rfind('.\n'), corte.rfind('! '), corte.rfind('? '))
+    return corte[:fim + 1].strip() if fim > 0 else ''
+
+
 from duplicatas import agrupar as _agrupar, mesma_materia, normal as _normal  # noqa: E402,F401
 
 
@@ -290,8 +320,9 @@ def main():
         if fatos:
             fatos_por_i[i] = fatos
             detalhe['f'] = fatos
-        # O que diz a fonte: abertura da reportagem (citação com crédito e link).
-        trecho = str(n.get('trecho') or '').strip()
+        # O que diz a fonte: 70% da reportagem (com crédito e link), ou o limite
+        # do veículo em trecho_por_veiculo.json, se ele tiver pedido.
+        trecho = limitar_trecho(str(n.get('trecho') or '').strip(), n)
         if nomes_presos:
             trecho = anonimizar(trecho, nomes_presos)
         if trecho and len(trecho) > len(resumo):
