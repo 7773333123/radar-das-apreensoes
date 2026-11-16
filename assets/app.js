@@ -53,6 +53,81 @@
     return n;
   }
 
+  // ---------- duplicidades (segunda barreira) ----------
+  // Mesma regra de gerar_feed_site.py, aplicada de novo no navegador: se algum
+  // dado chegar com a mesma matéria repetida, o leitor vê uma notícia só.
+  const VAZIAS = new Set('para pela pelo pelos pelas com sem sobre apos entre durante contra como mais menos que uma umas uns dos das nos nas aos este esta esse essa isso isto pode podem diz afirma'.split(' '));
+  const GENERICAS = new Set('policia policias policial policiais militar militares civil federal rodoviaria apreende apreendem apreendeu apreendido apreendida apreendidos apreendidas apreensao apreensoes prende prendem prendeu preso presa presos presas prisao flagrante suspeito suspeitos suspeita homem mulher jovem jovens adolescente pessoas dupla trio operacao acao durante cerca mais droga drogas trafico traficante bairro cidade regiao estado'.split(' '));
+  const EXTENSO = { um: '1', uma: '1', dois: '2', duas: '2', tres: '3', quatro: '4', cinco: '5', seis: '6', sete: '7', oito: '8', nove: '9', dez: '10', onze: '11', doze: '12', treze: '13', quatorze: '14', catorze: '14', quinze: '15', vinte: '20', trinta: '30', cem: '100' };
+  const ANOS = new Set(['2024', '2025', '2026']);
+  const tokens = (t) => fold(t).replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
+  function assinatura(n) {
+    const pal = new Set(), inf = new Set(), qtd = new Set();
+    for (const w of tokens(n.titulo)) {
+      if (/^\d+$/.test(w)) {
+        if (!ANOS.has(w)) { qtd.add(w.replace(/^0+(?=\d)/, '')); if (w.length >= 2) inf.add(w); }
+        continue;
+      }
+      if (EXTENSO[w]) qtd.add(EXTENSO[w]);
+      if (w.length > 3 && !VAZIAS.has(w)) { pal.add(w); if (!GENERICAS.has(w)) inf.add(w); }
+    }
+    return { pal, inf, qtd, norm: tokens(n.titulo).join(' ') };
+  }
+  const comuns = (a, b) => { let c = 0; for (const x of a) if (b.has(x)) c++; return c; };
+  function mesmaMateria(a, b, mesmoUf) {
+    if (a.qtd.size && b.qtd.size && !comuns(a.qtd, b.qtd)) return false;
+    const c = comuns(a.pal, b.pal);
+    if (c >= 4 && c / (a.pal.size + b.pal.size - c) >= 0.65) return true;
+    const inf = comuns(a.inf, b.inf);
+    const numero = comuns(a.qtd, b.qtd) > 0 || [...a.inf].some((w) => /^\d+$/.test(w) && b.inf.has(w));
+    return inf >= 3 && inf / Math.max(1, Math.min(a.inf.size, b.inf.size)) >= 0.75 && (mesmoUf || numero) && (inf >= 4 || numero);
+  }
+  const pontos = (n) => (n.texto ? 8 : 0) + Math.min(n.nFotos || 0, 5) * 2 + (n.url ? 3 : 0) + (n.uf ? 1 : 0) + (n.resumo ? 1 : 0);
+  function deduplicar(lista) {
+    const pai = lista.map((_, k) => k);
+    const raiz = (k) => { while (pai[k] !== k) { pai[k] = pai[pai[k]]; k = pai[k]; } return k; };
+    const unir = (a, b) => { pai[raiz(b)] = raiz(a); };
+    const sig = lista.map(assinatura);
+    const porTitulo = new Map(), porDia = new Map();
+    lista.forEach((n, k) => {
+      if (sig[k].norm.length > 25) { if (porTitulo.has(sig[k].norm)) unir(porTitulo.get(sig[k].norm), k); else porTitulo.set(sig[k].norm, k); }
+      const dia = n.data ? n.data.toISOString().slice(0, 10) : '';
+      if (dia) { if (!porDia.has(dia)) porDia.set(dia, []); porDia.get(dia).push(k); }
+    });
+    const dias = [...porDia.keys()].sort();
+    dias.forEach((dia, p) => {
+      const atuais = porDia.get(dia), vizinhos = atuais.concat(p + 1 < dias.length ? porDia.get(dias[p + 1]) : []);
+      atuais.forEach((a, ia) => {
+        if (sig[a].pal.size < 3) return;
+        for (let j = ia + 1; j < vizinhos.length; j++) {
+          const b = vizinhos[j], ua = lista[a].uf, ub = lista[b].uf;
+          if (ua && ub && ua !== ub) continue;
+          if (mesmaMateria(sig[a], sig[b], !!(ua && ua === ub))) unir(a, b);
+        }
+      });
+    });
+    const grupos = new Map();
+    lista.forEach((_, k) => { const r = raiz(k); if (!grupos.has(r)) grupos.set(r, []); grupos.get(r).push(k); });
+    const saida = [];
+    for (const membros of grupos.values()) {
+      membros.sort((x, y) => pontos(lista[y]) - pontos(lista[x]));
+      const principal = lista[membros[0]];
+      const vistas = new Set([principal.fonte, ...principal.outras.map((o) => o[0])]);
+      for (const k of membros.slice(1)) {
+        const o = lista[k];
+        if (!principal.img && o.img) principal.img = o.img;
+        if (!principal.uf && o.uf) principal.uf = o.uf;
+        if (!principal.resumo && o.resumo) principal.resumo = o.resumo;
+        principal.cats = [...new Set([...principal.cats, ...o.cats])];
+        for (const [fonte, url, i] of [[o.fonte, o.url, o.i], ...o.outras]) {
+          if (!vistas.has(fonte)) { vistas.add(fonte); principal.outras.push([fonte, url, i]); }
+        }
+      }
+      saida.push(principal);
+    }
+    return saida;
+  }
+
   // ---------- filtros e estado na URL ----------
   function lerHash() {
     const p = new URLSearchParams(location.hash.slice(1));
@@ -408,7 +483,7 @@
       if (!r.ok) throw new Error('HTTP ' + r.status);
       const dados = await r.json();
       state.categorias = Array.isArray(dados.categorias) ? dados.categorias : [];
-      state.noticias = (dados.noticias || []).map((n) => preparar(n, state.categorias))
+      state.noticias = deduplicar((dados.noticias || []).map((n) => preparar(n, state.categorias)))
         .sort((a, b) => (b.data?.getTime() || 0) - (a.data?.getTime() || 0));
       state.porIndice = new Map(state.noticias.map((n) => [n.i, n]));
       const quando = dados.atualizado_em ? new Date(dados.atualizado_em) : null;

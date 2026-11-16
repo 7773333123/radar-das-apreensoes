@@ -1,0 +1,34 @@
+name: Regenerar o site quando a regra muda
+# Sempre que o gerador do site, a regra de duplicidade ou a identificação de
+# estado mudam na main, o feed é regenerado na hora, sem esperar a próxima
+# coleta. Assim uma correção chega ao site em 1–2 minutos.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - gerar_feed_site.py
+      - localizar_uf.py
+      - testes/**
+permissions:
+  contents: write
+concurrency:
+  group: publicar-site
+  cancel-in-progress: true
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v5
+      - name: Preparar Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Testar a regra de duplicidade
+        run: python testes/test_duplicatas.py
+      - name: Regenerar o feed do site
+        run: python gerar_feed_site.py
+      - name: Salvar
+        run: bash salvar_acervo.sh 'Regenerar o site com a regra atualizada'
