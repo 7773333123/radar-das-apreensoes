@@ -66,8 +66,7 @@ jobs:
         run: python coletar_feeds_estaduais.py
       - name: Recuperar links originais
         run: |
-          python recuperar_links.py --limite 35 --trabalhadores 4 --busca-fonte --diagnostico
-          python recuperar_links.py --limite 35 --trabalhadores 4 --diagnostico
+          python recuperar_links.py --limite 300 --trabalhadores 4 --diagnostico
       - name: Ler matérias originais (foto, resumo e texto de licença aberta)
         run: python ler_materias.py --limite 400 --trabalhadores 6
       - name: Gerar estatísticas (se disponível)
