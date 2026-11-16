@@ -12,16 +12,18 @@ script produz, para o navegador, só o necessário e já limpo:
     feed_links.json, baixado só quando o leitor abre a notícia.
 
 Formato de cada notícia em feed.json (chaves curtas para reduzir o tamanho):
-  i   posição em noticias.json (índice em feed_links.json)
+  i   identificador permanente da notícia (hash do link; não muda quando o acervo é reordenado)
   t   título            f   fonte            d   data ISO (UTC)
   u   link original     img foto da fonte    r   resumo
   uf  sigla do estado   c   índices em "categorias"
   x   1 quando há texto integral (licença aberta)    g   nº de fotos (quando > 1)
 No detalhe: s = resumo do Radar (frases próprias), f = ficha de fatos (resumo_fatos.py).
   o   outras fontes da mesma matéria: [[fonte, link, i], ...] (duplicatas agrupadas)
-Resumo, trecho, texto integral e galeria ficam em det/<i // 100>.json, baixados ao abrir a notícia.
+feed_links.json: {i: link do Google Notícias} das que ainda não têm o link original.
+Resumo, trecho, texto integral e galeria ficam em det/<i % 256>.json, baixados ao abrir a notícia.
 """
 import json
+import hashlib
 import re
 import shutil
 import unicodedata
@@ -38,9 +40,15 @@ DESTINO = PASTA / 'feed.json'
 LINKS = PASTA / 'feed_links.json'
 FONTES_JSON = PASTA / 'fontes.json'
 DETALHES = PASTA / 'det'  # lotes de 100 notícias (antes: detalhes/, lotes de 1000)
-LOTE = 100
+LOTES = 256  # det/<i % LOTES>.json
+
+
+def identificador(n):
+    """Número permanente da notícia: hash do link (ou do título), igual em toda coleta."""
+    return int(hashlib.sha1(chave_acervo(n).encode('utf-8')).hexdigest()[:13], 16) % 10**15
 
 # Tipos e relevância: classificar.py (regras próprias; ignora a classificação do coletor antigo).
+from mesclar_acervo import chave as chave_acervo
 from classificar import CATEGORIAS, REGRAS, relevante, categorias as classificar_categorias
 
 
@@ -260,12 +268,17 @@ def main():
     dados = json.loads(ORIGEM.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
     fontes = json.loads(FONTES_JSON.read_text(encoding='utf-8')).get('fontes', []) if FONTES_JSON.exists() else []
-    saida, links, ocultas, portugal = [], [''] * len(noticias), 0, 0
+    saida, links, ocultas, portugal = [], {}, 0, 0
+    usados = set()
     detalhes = {}
     fatos_por_i = {}
-    for i, n in enumerate(noticias):
+    for n in noticias:
         if not isinstance(n, dict):
             continue
+        i = identificador(n)
+        if i in usados:  # mesmo link registrado duas vezes no acervo
+            continue
+        usados.add(i)
         fonte = str(n.get('fonte') or '').strip()
         # Notícias de Portugal (o Google Notícias em português mistura os dois países).
         if str(n.get('dominio_fonte') or '').lower().endswith('.pt'):
@@ -324,7 +337,7 @@ def main():
         trecho = str(n.get('trecho') or '').strip()
         if trecho and len(trecho) > len(resumo):
             detalhe['tr'] = trecho
-        detalhes.setdefault(i // LOTE, {})[str(i)] = detalhe
+        detalhes.setdefault(i % LOTES, {})[str(i)] = detalhe
         saida.append(item)
     antes = len(saida)
     saida, removidas = agrupar_duplicatas(saida)
@@ -343,7 +356,7 @@ def main():
     # Resumo do Radar em parágrafos: fatos, quem atuou, base legal e outros veículos.
     for item in saida:
         fatos = juntar_fatos([fatos_por_i.get(item['i'])] + [fatos_por_i.get(o[2]) for o in item.get('o', [])])
-        detalhes[item['i'] // LOTE][str(item['i'])]['s'] = resumo_ampliado(item, fatos)
+        detalhes[item['i'] % LOTES][str(item['i'])]['s'] = resumo_ampliado(item, fatos)
     for lote in list(detalhes):
         for chave in [c for c, v in detalhes[lote].items() if not v]:
             del detalhes[lote][chave]

@@ -26,7 +26,7 @@ async function iniciar() {
   promessa.then((ctx) => {
     $('tam0').textContent = `${num(ctx.noticias.length)} notícias${$('tam0').textContent ? ' · ' + $('tam0').textContent : ''}`;
     const hoje = new Date().toLocaleDateString('pt-BR');
-    $('citacao').textContent = `Radar das Apreensões. Banco de notícias de apreensões no Brasil. Disponível em: https://radardasapreensoes.com.br/dados. Acesso em: ${hoje}.`;
+    $('citacao').textContent = `Radar das Apreensões. Banco de notícias de apreensões no Brasil. Disponível em: https://www.radardasapreensoes.com.br/dados. Acesso em: ${hoje}.`;
   }).catch(() => {});
   try {
     const d = await (await fetch('dados/dicionario.json')).json();

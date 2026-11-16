@@ -21,12 +21,12 @@ const HTML = `
 
 const detalhesCache = new Map();
 const carregarDetalhe = (i) => {
-  const lote = Math.floor(i / 100);
-  if (!detalhesCache.has(lote)) detalhesCache.set(lote, fetch(`det/${lote}.json`).then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
+  const lote = Number(i) % 256; // mesmo LOTES de gerar_feed_site.py
+  if (!detalhesCache.has(lote)) detalhesCache.set(lote, fetch(`/det/${lote}.json`).then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
   return detalhesCache.get(lote).then((d) => d[String(i)] || {});
 };
 let linksPromise = null;
-const carregarLinks = () => (linksPromise ??= fetch('feed_links.json').then((r) => (r.ok ? r.json() : [])).catch(() => []));
+const carregarLinks = () => (linksPromise ??= fetch('/feed_links.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
 
 export function kickerHTML(n, ctx, preferida = null) {
   const c = preferida != null && n.cats.includes(Number(preferida)) ? Number(preferida) : n.cats[0];
