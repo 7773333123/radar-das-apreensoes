@@ -35,7 +35,7 @@ LICENCA = re.compile(
     r'Creative Commons Atribui[çc][ãa]o(?:-SemDeriva[çc][õo]es|-CompartilhaIgual)?\s*[\d.]*(?:\s*N[ãa]o Adaptada|\s*Internacional|\s*Brasil)?',
     re.I)
 NAO_COMERCIAL = re.compile(r'N[ãa]oComercial|licenses/by-nc', re.I)
-VERSAO = 4  # 2 = galeria; 3 = fatos da página; 4 = trecho de abertura citado. Versões anteriores são relidas
+VERSAO = 5  # 2 = galeria; 3 = fatos da página; 4 = trecho de abertura; 5 = trecho sem chamadas de outras matérias. Versões anteriores são relidas
 MAX_FOTOS = 12
 NAO_FOTO = re.compile(r'logo|icon|icone|avatar|sprite|banner|placeholder|blank|pixel|spacer|loading|selo|'
                       r'whatsapp-share|/ads?/|publicidade|video\.glbimg|/x240/|\.svg(?:$|\?)|\.gif(?:$|\?)', re.I)
@@ -110,6 +110,12 @@ def trecho_de_abertura(paragrafos):
     for p in paragrafos[:15]:
         p = p.strip()
         if len(p) < 40 or RUIDO.match(p) or CONTATO.match(p) or p.count('|') > 1:
+            continue
+        # Parágrafo de reportagem termina em pontuação; sem ela é chamada para
+        # outra matéria ("Internacional vence Flamengo..."): a reportagem acabou.
+        if not re.search(r'[.!?…:;)"”»]$', p):
+            if partes:
+                break
             continue
         if total + len(p) > TRECHO_MAX:
             if total >= TRECHO_MIN:
