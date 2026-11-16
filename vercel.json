@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
+  "cleanUrls": false,
   "headers": [
     {
       "source": "/(.*)",
@@ -72,6 +72,14 @@
   },
   "rewrites": [
     {
+      "source": "/observatorio",
+      "destination": "/observatorio.html"
+    },
+    {
+      "source": "/dados",
+      "destination": "/dados.html"
+    },
+    {
       "source": "/noticia/:caminho",
       "destination": "/api/pagina?tipo=noticia&id=:caminho&caminho=:caminho"
     },
@@ -98,6 +106,23 @@
     {
       "source": "/sitemap.xml",
       "destination": "/api/sitemap"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/observatorio.html",
+      "destination": "/observatorio",
+      "permanent": true
+    },
+    {
+      "source": "/dados.html",
+      "destination": "/dados",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
     }
   ]
 }
