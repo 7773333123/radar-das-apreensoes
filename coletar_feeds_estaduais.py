@@ -120,7 +120,7 @@ def ler_feed(feed):
             'dominio_fonte': re.sub(r'^https?://(www\.)?', '', link).split('/')[0],
             'data_publicacao': quando,
             'data_iso': data_iso(quando),
-            'descricao': (resumo or corpo)[:400],
+            'descricao': (resumo or corpo)[:800],
             'imagem_url': imagem_do_item(item),
             'imagem_status': 'feed_da_fonte',
             'uf': feed.get('uf') or '',

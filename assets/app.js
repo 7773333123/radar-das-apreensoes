@@ -279,16 +279,16 @@
     const cats = n.cats.map((c) => state.categorias[c]).join(' · ') || 'Em classificação';
     const foto = '<div id="leitorFotos" class="reader-media"></div>';
     const texto = n.texto ? '<div class="reader-full" id="leitorTexto"><p class="reader-text">Carregando o texto…</p></div>'
-      : n.resumo ? `<p class="reader-text">${esc(n.resumo)}</p><p class="reader-note">Resumo publicado pela fonte. A reportagem completa está no site de origem.</p>`
+      : n.resumo ? `<p class="reader-text">${esc(n.resumo)}</p><p class="reader-note">Resumo publicado pela fonte; a íntegra está no site de origem.</p>`
         : '<p class="reader-text">O resumo desta notícia não está disponível. Leia a reportagem completa na fonte original.</p>';
     $('leitorConteudo').innerHTML =
       `${tagsHTML(n)}<h1 id="leitorTitulo">${esc(n.titulo)}</h1>${metaHTML(n)}${foto}${texto}<div id="leitorMiniaturas"></div>` +
-      `<div class="reader-source"><div class="meta">Fonte: <strong>${esc(n.fonte)}</strong>${n.uf ? ' · ' + esc(NOME_UF[n.uf]) : ''} · ${esc(cats)}</div>` +
-      `<div class="reader-actions"><a class="btn" id="leitorLink" href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer"${n.url ? '' : ' aria-disabled="true"'}>Ler na fonte original ↗</a>` +
-      `<button type="button" class="btn-ghost" id="compartilhar">Compartilhar</button></div>` +
-      (n.outras.length ? `<div class="also"><span class="meta">Também noticiado por:</span><ul>${n.outras.map(([fonte, url, i]) =>
-        `<li><a href="${esc(urlSegura(url || '') || '#')}" target="_blank" rel="noopener noreferrer" data-outra="${Number(i)}">${esc(fonte)} ↗</a></li>`).join('')}</ul></div>` : '') +
-      '</div>';
+      `<footer class="reader-foot"><span>Fonte: ${esc(n.fonte)}${n.uf ? ' · ' + esc(NOME_UF[n.uf]) : ''} · ${esc(cats)}</span>` +
+      `<span class="foot-links"><a class="link-sm" id="leitorLink" href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer"${n.url ? '' : ' aria-disabled="true"'}>ver original ↗</a>` +
+      `<button type="button" class="link-sm" id="compartilhar">compartilhar</button></span>` +
+      (n.outras.length ? `<span class="also">também em: ${n.outras.map(([fonte, url, i]) =>
+        `<a class="link-sm" href="${esc(urlSegura(url || '') || '#')}" target="_blank" rel="noopener noreferrer" data-outra="${Number(i)}">${esc(fonte)}</a>`).join(', ')}</span>` : '') +
+      '</footer>';
     $('leitorConteudo').dataset.i = String(n.i);
     montarGaleria(n, n.img ? [n.img] : []);
     if (n.texto || n.nFotos > 1) {
@@ -305,7 +305,7 @@
     }
     const semLink = [...document.querySelectorAll('#leitorConteudo [data-outra]')].filter((a) => a.getAttribute('href') === '#');
     if (semLink.length) {
-      carregarLinks().then((links) => semLink.forEach((a) => { const u = urlSegura(links[a.dataset.outra] || ''); if (u) a.href = u; else a.replaceWith(a.textContent.replace(' ↗', '')); }));
+      carregarLinks().then((links) => semLink.forEach((a) => { const u = urlSegura(links[a.dataset.outra] || ''); if (u) a.href = u; else a.replaceWith(a.textContent); }));
     }
     if (!n.url) {
       carregarLinks().then((links) => {
@@ -318,7 +318,7 @@
       const link = `${location.origin}${location.pathname}#noticia-${n.i}`;
       try {
         if (navigator.share) await navigator.share({ title: n.titulo, url: link });
-        else { await navigator.clipboard.writeText(link); $('compartilhar').textContent = 'Link copiado ✓'; }
+        else { await navigator.clipboard.writeText(link); $('compartilhar').textContent = 'link copiado ✓'; }
       } catch { /* compartilhamento cancelado */ }
     });
     if (!dlg.open) dlg.showModal();

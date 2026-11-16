@@ -82,7 +82,16 @@ def corpo_da_materia(pagina):
         paragrafos = [p for p in paragrafos if len(p) > 1 and not CONTATO.match(p)]
         if sum(len(p) for p in paragrafos) > 200:
             return paragrafos[:40]
-    return []
+    # Último recurso (só usado em páginas de licença aberta): o bloco da página
+    # com mais texto em parágrafos — o corpo da matéria em quase todo CMS.
+    melhor = []
+    for bloco in re.findall(r'<(?:div|section|article)\b[^>]*>((?:(?!</?(?:div|section|article)\b).)*?)</(?:div|section|article)>',
+                            pagina, re.S | re.I):
+        paragrafos = [limpar(p) for p in re.findall(r'<p\b[^>]*>(.*?)</p>', bloco, re.S | re.I)]
+        paragrafos = [p for p in paragrafos if len(p) > 40 and not CONTATO.match(p)]
+        if sum(map(len, paragrafos)) > sum(map(len, melhor)):
+            melhor = paragrafos
+    return melhor[:40] if sum(map(len, melhor)) > 400 else []
 
 
 def melhor_do_srcset(srcset):
@@ -178,7 +187,7 @@ def ler(url, timeout):
             resultado['imagem'] = img
     resumo = m.get('og:description') or m.get('description') or m.get('twitter:description') or ''
     if resumo:
-        resultado['resumo'] = limpar(resumo)[:500]
+        resultado['resumo'] = limpar(resumo)[:1000]
     resultado['imagens'] = sem_repetir(([resultado['imagem']] if resultado.get('imagem') else []) +
                                        fotos_da_materia(pagina, base))
     if resultado['imagens'] and not resultado.get('imagem'):

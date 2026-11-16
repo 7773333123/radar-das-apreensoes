@@ -224,7 +224,7 @@ def main():
             item['g'] = len(fotos)
         resumo = str(n.get('descricao') or n.get('resumo') or '').strip()
         if resumo:
-            item['r'] = resumo[:300]
+            item['r'] = resumo[:700]  # resumo inteiro publicado pela fonte
         uf = inferir_uf(n, fontes)
         if uf:
             item['uf'] = uf
