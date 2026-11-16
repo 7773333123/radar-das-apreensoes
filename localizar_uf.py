@@ -192,16 +192,20 @@ def uf_da_fonte(noticia, fontes_cadastradas=None):
 
 def inferir_uf(noticia, fontes_cadastradas=None):
     """Devolve a sigla da UF ou '' quando não há evidência inequívoca."""
-    if noticia.get('uf_fonte') in ESTADOS:
-        return noticia['uf_fonte']
-    uf = uf_da_fonte(noticia, fontes_cadastradas)
-    if uf:
-        return uf
     titulo = str(noticia.get('titulo') or '')
     fonte = str(noticia.get('fonte') or '')
     if fonte and titulo.endswith(' - ' + fonte):
         titulo = titulo[:-len(fonte) - 3]
     estados, cidades, local = _ufs_no_texto(titulo, detalhado=True)
+    # Estado escrito no título ("em SC", "no Maranhão") vence o estado do veículo:
+    # um jornal gaúcho que noticia apreensão em SC não faz dela uma notícia do RS.
+    if len(estados) == 1:
+        return next(iter(estados))
+    if noticia.get('uf_fonte') in ESTADOS:
+        return noticia['uf_fonte']
+    uf = uf_da_fonte(noticia, fontes_cadastradas)
+    if uf:
+        return uf
     if not estados and not cidades:
         estados, cidades, local = _ufs_no_texto(str(noticia.get('descricao') or noticia.get('resumo') or ''), detalhado=True)
     if len(estados) == 1:

@@ -60,10 +60,10 @@ function render() {
   const kpi = (rotulo, valor, sub) => `<div class="kpi"><dt>${esc(rotulo)}</dt><dd>${valor}</dd>${sub ? `<div class="sub">${esc(sub)}</div>` : ''}</div>`;
   $('oKpis').innerHTML =
     kpi('Notícias', num(sel.length), `${local} · ${per.nome}`) +
-    kpi('Cocaína', qtd(soma(METRICAS.coc.valor), 'kg'), `em ${num(comQ(METRICAS.coc.valor))} notícias`) +
-    kpi('Maconha e skunk', qtd(soma(METRICAS.mac.valor), 'kg'), `em ${num(comQ(METRICAS.mac.valor))} notícias`) +
-    kpi('Armas de fogo', qtd(soma(METRICAS.arm.valor), 'un'), `em ${num(comQ(METRICAS.arm.valor))} notícias`) +
-    kpi('Munições', qtd(soma(METRICAS.mun.valor), 'un'), `em ${num(comQ(METRICAS.mun.valor))} notícias`) +
+    kpi('Cocaína', '≈ ' + qtd(soma(METRICAS.coc.valor), 'kg'), `em ${num(comQ(METRICAS.coc.valor))} notícias`) +
+    kpi('Maconha e skunk', '≈ ' + qtd(soma(METRICAS.mac.valor), 'kg'), `em ${num(comQ(METRICAS.mac.valor))} notícias`) +
+    kpi('Armas de fogo', '≈ ' + qtd(soma(METRICAS.arm.valor), 'un'), `em ${num(comQ(METRICAS.arm.valor))} notícias`) +
+    kpi('Munições', '≈ ' + qtd(soma(METRICAS.mun.valor), 'un'), `em ${num(comQ(METRICAS.mun.valor))} notícias`) +
     kpi('Veículos e órgãos', num(fontes.size), 'fontes distintas');
 
   // Mapa e ranking de estados (no período, todos os estados; o selecionado fica marcado)

@@ -40,7 +40,7 @@ async function baixar(nome, destino) {
   fs.rmSync(PUB, { recursive: true, force: true });
   fs.mkdirSync(PUB);
   const estaticos = fs.readdirSync(RAIZ).filter((f) => /\.(html|txt|xml|webmanifest|ico)$/.test(f))
-    .concat(['assets', 'img', 'feed.json', 'feed_links.json', 'det', 'dados']);
+    .concat(['assets', 'img', 'feed.json', 'feed-recente.json', 'feed_links.json', 'det', 'dados']);
   for (const f of estaticos) {
     if (fs.existsSync(path.join(RAIZ, f))) fs.cpSync(path.join(RAIZ, f), path.join(PUB, f), { recursive: true });
   }

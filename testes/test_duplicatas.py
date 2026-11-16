@@ -70,6 +70,21 @@ AVANCADOS = [
     # Mesma foto em estados diferentes: veto.
     ({'t': 'PF deflagra operação contra tráfico em Belém', 'd': '2026-11-10', 'uf': 'PA', '_h': H},
      {'t': 'PF deflagra operação contra tráfico em Porto Alegre', 'd': '2026-11-10', 'uf': 'RS', '_h': H}, False),
+    # Mesma grande apreensão com números arredondados (casos reais de nov/2026).
+    ({'t': 'Polícia apreende 4,4 toneladas de cocaína e prende seis britânicos em SC', 'd': '2026-10-30', 'uf': 'SC',
+      '_q': {'coc': 4400.0}},
+     {'t': 'Seis estrangeiros do Reino Unido são presos com 4 toneladas de cocaína em SC', 'd': '2026-10-31', 'uf': 'SC',
+      '_q': {'coc': 4000.0}}, True),
+    ({'t': 'Polícia apreende 118 armas e mais de 4 mil munições em operação no ES', 'd': '2026-10-20', 'uf': 'ES',
+      '_q': {'arm': 118.0, 'mun': 4000.0}},
+     {'t': 'Mais de 100 armas e 4 mil munições são apreendidas em operação contra facção no ES', 'd': '2026-10-21', 'uf': 'ES',
+      '_q': {'arm': 100.0, 'mun': 4000.0}}, True),
+    # Duas grandes apreensões diferentes: estados diferentes não se juntam.
+    ({'t': 'PRF apreende 1 tonelada de maconha em Dourados', 'd': '2026-10-20', 'uf': 'MS', '_q': {'mac': 1000.0}},
+     {'t': 'PM apreende 1 tonelada de maconha em Cascavel', 'd': '2026-10-20', 'uf': 'PR', '_q': {'mac': 1000.0}}, False),
+    # Mesmo estado, valores muito diferentes: não se juntam.
+    ({'t': 'PRF apreende 2 toneladas de maconha na BR-163', 'd': '2026-10-20', 'uf': 'MS', '_q': {'mac': 2000.0}},
+     {'t': 'DOF apreende 500 kg de maconha em Ponta Porã', 'd': '2026-10-21', 'uf': 'MS', '_q': {'mac': 500.0}}, False),
 ]
 
 

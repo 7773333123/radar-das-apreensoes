@@ -100,7 +100,9 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
       : (t?.s ? String(t.s).split(/\n{2,}/).filter(Boolean).map((p) => ['', p]) : []);
     return `<section class="em-resumo" aria-label="Em resumo"><h2>Em resumo</h2><dl>${linhas.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` +
       (secoes.length ? `<section class="bloco radar"><header class="bloco-cab"><h2>Resumo do Radar</h2><p>Redigido pelo Radar a partir dos fatos publicados</p></header>` +
-        `<div class="rs">${secoes.map(([tit, txt]) => `<section class="rs-sec">${tit ? `<h3>${esc(tit)}</h3>` : ''}<p class="reader-text">${esc(txt)}</p></section>`).join('')}</div></section>` : '');
+        `<div class="rs">${secoes.map(([tit, txt]) => (tit === 'O que diz a lei'
+        ? `<details class="rs-sec rs-lei"><summary><h3>${esc(tit)}</h3><span>ver</span></summary><p class="reader-text">${esc(txt)}</p></details>`
+        : `<section class="rs-sec">${tit ? `<h3>${esc(tit)}</h3>` : ''}<p class="reader-text">${esc(txt)}</p></section>`)).join('')}</div></section>` : '');
   }
 
   function paragrafos(texto) {

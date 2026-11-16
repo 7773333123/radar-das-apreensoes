@@ -45,7 +45,13 @@ NAO_SOMAR = re.compile(r'\bbalan[çc]o\b|\btotal\b|acumulad|\bem (?:19|20)\d\d\b
                        r'procurad|\bBol[ií]via\b|\bParaguai\b|\bCol[ôo]mbia\b|\bPeru\b|\bEUA\b|\bEuropa\b|'
                        r'\bmundo\b|\bONU\b|\bInterpol\b|\bem \d+ (?:anos|meses)\b|\bsemestre\b|\bmês\b|\bsemana\b|'
                        r'^em (?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\b|'
-                       r'homenagead|incinera|incinerad|incinera[çc][ãa]o|destrui[çc][ãa]o de drogas|destr[óo]i\b|queima de drogas', re.I)
+                       r'homenagead|incinera|incinerad|incinera[çc][ãa]o|destrui[çc][ãa]o de drogas|destr[óo]i\b|queima de drogas|'
+                       # Condenação/julgamento de caso antigo e fatos no exterior não são apreensão nova no Brasil.
+                       r'condenad|sentenciad|julgad|\bpreso por \d+ anos|\bpena de\b|'
+                       r'\bReino Unido\b|\bInglaterra\b|\bLondres\b|\bEspanha\b|\bPortugal\b|\bIt[áa]lia\b|\bHolanda\b|\bB[ée]lgica\b|'
+                       r'\bFran[çc]a\b|\bAlemanha\b|\bEstados Unidos\b|\bM[ée]xico\b|\bEquador\b|\bVenezuela\b|\bArgentina\b|\bUruguai\b|\bChile\b|'
+                       r'\bem (?:janeiro|fevereiro|mar[çc]o|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\b|'
+                       r'Pol[íi]cia Nacional|\bSenad\b|\bFELCN\b|\bTail[âa]ndia\b|\bAustr[áa]lia\b|\b[ÁA]frica\b|\bbrit[âa]nic[oa]s? (?:é |foi )?pres|simulacro', re.I)
 
 
 def _numero(texto):
