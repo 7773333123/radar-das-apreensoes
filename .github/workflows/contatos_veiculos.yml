@@ -1,0 +1,26 @@
+name: Contatos dos veículos (manual)
+# Lista os e-mails que os próprios veículos publicam nas páginas de contato/expediente
+# (para pedidos de parceria). Só mostra no registro; não grava nada.
+on:
+  workflow_dispatch:
+    inputs:
+      dominios:
+        description: 'Domínios separados por espaço (vazio = lista padrão)'
+        required: false
+        default: ''
+        type: string
+permissions:
+  contents: read
+jobs:
+  contatos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Procurar e-mails publicados
+        env:
+          DOMINIOS: ${{ inputs.dominios }}
+        run: python contatos_veiculos.py ${DOMINIOS:-reporterpb.com.br cgn.inf.br campograndenews.com.br midiamax.com.br douradosnews.com.br correiodoestado.com.br progresso.com.br diarionline.com.br ndmais.com.br tnh1.com.br obemdito.com.br lenoticias.com.br zapcatalao.com.br folhadoes.com gp1.com.br plox.com.br oestadoonline.com.br policialpadrao.com.br radioculturafoz.com.br h2foz.com.br midiajur.com.br olhardireto.com.br folhabv.com.br ac24horas.com novo2026.portaldoholanda.com.br reporterbetoribeiro.com.br acritica.net rondoniaovivo.com ncnews.com.br folhadealagoas.com.br portaldoholanda.com.br}
