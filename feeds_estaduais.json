@@ -1,167 +1,474 @@
 {
-  "observacao": "Feeds RSS próprios dos veículos/órgãos. Cada item já traz o link original, a imagem e o estado. Para incluir um feed, adicione nome, fonte, uf (ou vazio se nacional) e url.",
+  "observacao": "Feeds RSS/Atom próprios de veículos e órgãos. Cada item traz link original e, em geral, foto. \"uf\" vazio = fonte nacional (estado identificado pelo texto). \"verificado\": false = ainda não confirmado; se falhar, aparece no log da coleta e é ignorado.",
   "feeds": [
     {
       "nome": "G1 Acre",
       "fonte": "G1",
       "uf": "AC",
-      "url": "https://g1.globo.com/rss/g1/ac/acre/"
+      "url": "https://g1.globo.com/rss/g1/ac/acre/",
+      "verificado": true
     },
     {
       "nome": "G1 Alagoas",
       "fonte": "G1",
       "uf": "AL",
-      "url": "https://g1.globo.com/rss/g1/al/alagoas/"
-    },
-    {
-      "nome": "G1 Amapá",
-      "fonte": "G1",
-      "uf": "AP",
-      "url": "https://g1.globo.com/rss/g1/ap/amapa/"
+      "url": "https://g1.globo.com/rss/g1/al/alagoas/",
+      "verificado": true
     },
     {
       "nome": "G1 Amazonas",
       "fonte": "G1",
       "uf": "AM",
-      "url": "https://g1.globo.com/rss/g1/am/amazonas/"
+      "url": "https://g1.globo.com/rss/g1/am/amazonas/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 Amapá",
+      "fonte": "G1",
+      "uf": "AP",
+      "url": "https://g1.globo.com/rss/g1/ap/amapa/",
+      "verificado": true
     },
     {
       "nome": "G1 Bahia",
       "fonte": "G1",
       "uf": "BA",
-      "url": "https://g1.globo.com/rss/g1/ba/bahia/"
+      "url": "https://g1.globo.com/rss/g1/ba/bahia/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 BA – Feira De Santana Regiao",
+      "fonte": "G1",
+      "uf": "BA",
+      "url": "https://g1.globo.com/rss/g1/ba/feira-de-santana-regiao/",
+      "verificado": true
     },
     {
       "nome": "G1 Ceará",
       "fonte": "G1",
       "uf": "CE",
-      "url": "https://g1.globo.com/rss/g1/ce/ceara/"
+      "url": "https://g1.globo.com/rss/g1/ce/ceara/",
+      "verificado": true
     },
     {
       "nome": "G1 Distrito Federal",
       "fonte": "G1",
       "uf": "DF",
-      "url": "https://g1.globo.com/rss/g1/df/distrito-federal/"
+      "url": "https://g1.globo.com/rss/g1/df/distrito-federal/",
+      "verificado": true
     },
     {
       "nome": "G1 Espírito Santo",
       "fonte": "G1",
       "uf": "ES",
-      "url": "https://g1.globo.com/rss/g1/es/espirito-santo/"
+      "url": "https://g1.globo.com/rss/g1/es/espirito-santo/",
+      "verificado": true
     },
     {
       "nome": "G1 Goiás",
       "fonte": "G1",
       "uf": "GO",
-      "url": "https://g1.globo.com/rss/g1/go/goias/"
+      "url": "https://g1.globo.com/rss/g1/go/goias/",
+      "verificado": true
     },
     {
       "nome": "G1 Maranhão",
       "fonte": "G1",
       "uf": "MA",
-      "url": "https://g1.globo.com/rss/g1/ma/maranhao/"
+      "url": "https://g1.globo.com/rss/g1/ma/maranhao/",
+      "verificado": true
     },
     {
-      "nome": "G1 Mato Grosso",
+      "nome": "G1 MG – Centro Oeste",
       "fonte": "G1",
-      "uf": "MT",
-      "url": "https://g1.globo.com/rss/g1/mt/mato-grosso/"
+      "uf": "MG",
+      "url": "https://g1.globo.com/rss/g1/mg/centro-oeste/",
+      "verificado": true
     },
     {
-      "nome": "G1 Mato Grosso do Sul",
+      "nome": "G1 MG – Grande Minas",
       "fonte": "G1",
-      "uf": "MS",
-      "url": "https://g1.globo.com/rss/g1/ms/mato-grosso-do-sul/"
+      "uf": "MG",
+      "url": "https://g1.globo.com/rss/g1/mg/grande-minas/",
+      "verificado": true
     },
     {
       "nome": "G1 Minas Gerais",
       "fonte": "G1",
       "uf": "MG",
-      "url": "https://g1.globo.com/rss/g1/mg/minas-gerais/"
+      "url": "https://g1.globo.com/rss/g1/mg/minas-gerais/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 MG – Sul De Minas",
+      "fonte": "G1",
+      "uf": "MG",
+      "url": "https://g1.globo.com/rss/g1/mg/sul-de-minas/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 MG – Triangulo Mineiro",
+      "fonte": "G1",
+      "uf": "MG",
+      "url": "https://g1.globo.com/rss/g1/mg/triangulo-mineiro/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 MG – Vales Mg",
+      "fonte": "G1",
+      "uf": "MG",
+      "url": "https://g1.globo.com/rss/g1/mg/vales-mg/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 MG – Zona Da Mata",
+      "fonte": "G1",
+      "uf": "MG",
+      "url": "https://g1.globo.com/rss/g1/mg/zona-da-mata/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 Mato Grosso do Sul",
+      "fonte": "G1",
+      "uf": "MS",
+      "url": "https://g1.globo.com/rss/g1/ms/mato-grosso-do-sul/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 Mato Grosso",
+      "fonte": "G1",
+      "uf": "MT",
+      "url": "https://g1.globo.com/rss/g1/mt/mato-grosso/",
+      "verificado": true
     },
     {
       "nome": "G1 Pará",
       "fonte": "G1",
       "uf": "PA",
-      "url": "https://g1.globo.com/rss/g1/pa/para/"
+      "url": "https://g1.globo.com/rss/g1/pa/para/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 PA – Santarem Regiao",
+      "fonte": "G1",
+      "uf": "PA",
+      "url": "https://g1.globo.com/rss/g1/pa/santarem-regiao/",
+      "verificado": true
     },
     {
       "nome": "G1 Paraíba",
       "fonte": "G1",
       "uf": "PB",
-      "url": "https://g1.globo.com/rss/g1/pb/paraiba/"
+      "url": "https://g1.globo.com/rss/g1/pb/paraiba/",
+      "verificado": true
     },
     {
-      "nome": "G1 Paraná",
+      "nome": "G1 PE – Caruaru Regiao",
       "fonte": "G1",
-      "uf": "PR",
-      "url": "https://g1.globo.com/rss/g1/pr/parana/"
+      "uf": "PE",
+      "url": "https://g1.globo.com/rss/g1/pe/caruaru-regiao/",
+      "verificado": true
     },
     {
       "nome": "G1 Pernambuco",
       "fonte": "G1",
       "uf": "PE",
-      "url": "https://g1.globo.com/rss/g1/pe/pernambuco/"
+      "url": "https://g1.globo.com/rss/g1/pe/pernambuco/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 PE – Petrolina Regiao",
+      "fonte": "G1",
+      "uf": "PE",
+      "url": "https://g1.globo.com/rss/g1/pe/petrolina-regiao/",
+      "verificado": true
     },
     {
       "nome": "G1 Piauí",
       "fonte": "G1",
       "uf": "PI",
-      "url": "https://g1.globo.com/rss/g1/pi/piaui/"
+      "url": "https://g1.globo.com/rss/g1/pi/piaui/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 PR – Campos Gerais Sul",
+      "fonte": "G1",
+      "uf": "PR",
+      "url": "https://g1.globo.com/rss/g1/pr/campos-gerais-sul/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 PR – Norte Noroeste",
+      "fonte": "G1",
+      "uf": "PR",
+      "url": "https://g1.globo.com/rss/g1/pr/norte-noroeste/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 PR – Oeste Sudoeste",
+      "fonte": "G1",
+      "uf": "PR",
+      "url": "https://g1.globo.com/rss/g1/pr/oeste-sudoeste/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 Paraná",
+      "fonte": "G1",
+      "uf": "PR",
+      "url": "https://g1.globo.com/rss/g1/pr/parana/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 RJ – Norte Fluminense",
+      "fonte": "G1",
+      "uf": "RJ",
+      "url": "https://g1.globo.com/rss/g1/rj/norte-fluminense/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 RJ – Regiao Dos Lagos",
+      "fonte": "G1",
+      "uf": "RJ",
+      "url": "https://g1.globo.com/rss/g1/rj/regiao-dos-lagos/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 RJ – Regiao Serrana",
+      "fonte": "G1",
+      "uf": "RJ",
+      "url": "https://g1.globo.com/rss/g1/rj/regiao-serrana/",
+      "verificado": true
     },
     {
       "nome": "G1 Rio de Janeiro",
       "fonte": "G1",
       "uf": "RJ",
-      "url": "https://g1.globo.com/rss/g1/rj/rio-de-janeiro/"
+      "url": "https://g1.globo.com/rss/g1/rj/rio-de-janeiro/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 RJ – Sul Do Rio Costa Verde",
+      "fonte": "G1",
+      "uf": "RJ",
+      "url": "https://g1.globo.com/rss/g1/rj/sul-do-rio-costa-verde/",
+      "verificado": true
     },
     {
       "nome": "G1 Rio Grande do Norte",
       "fonte": "G1",
       "uf": "RN",
-      "url": "https://g1.globo.com/rss/g1/rn/rio-grande-do-norte/"
-    },
-    {
-      "nome": "G1 Rio Grande do Sul",
-      "fonte": "G1",
-      "uf": "RS",
-      "url": "https://g1.globo.com/rss/g1/rs/rio-grande-do-sul/"
+      "url": "https://g1.globo.com/rss/g1/rn/rio-grande-do-norte/",
+      "verificado": true
     },
     {
       "nome": "G1 Rondônia",
       "fonte": "G1",
       "uf": "RO",
-      "url": "https://g1.globo.com/rss/g1/ro/rondonia/"
+      "url": "https://g1.globo.com/rss/g1/ro/rondonia/",
+      "verificado": true
     },
     {
       "nome": "G1 Roraima",
       "fonte": "G1",
       "uf": "RR",
-      "url": "https://g1.globo.com/rss/g1/rr/roraima/"
+      "url": "https://g1.globo.com/rss/g1/rr/roraima/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 Rio Grande do Sul",
+      "fonte": "G1",
+      "uf": "RS",
+      "url": "https://g1.globo.com/rss/g1/rs/rio-grande-do-sul/",
+      "verificado": true
     },
     {
       "nome": "G1 Santa Catarina",
       "fonte": "G1",
       "uf": "SC",
-      "url": "https://g1.globo.com/rss/g1/sc/santa-catarina/"
-    },
-    {
-      "nome": "G1 São Paulo",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/sao-paulo/"
+      "url": "https://g1.globo.com/rss/g1/sc/santa-catarina/",
+      "verificado": true
     },
     {
       "nome": "G1 Sergipe",
       "fonte": "G1",
       "uf": "SE",
-      "url": "https://g1.globo.com/rss/g1/se/sergipe/"
+      "url": "https://g1.globo.com/rss/g1/se/sergipe/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 SP – Bauru Marilia",
+      "fonte": "G1",
+      "uf": "SP",
+      "url": "https://g1.globo.com/rss/g1/sp/bauru-marilia/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 SP – Campinas Regiao",
+      "fonte": "G1",
+      "uf": "SP",
+      "url": "https://g1.globo.com/rss/g1/sp/campinas-regiao/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 SP – Itapetininga Regiao",
+      "fonte": "G1",
+      "uf": "SP",
+      "url": "https://g1.globo.com/rss/g1/sp/itapetininga-regiao/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 SP – Mogi Das Cruzes Suzano",
+      "fonte": "G1",
+      "uf": "SP",
+      "url": "https://g1.globo.com/rss/g1/sp/mogi-das-cruzes-suzano/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 SP – Piracicaba Regiao",
+      "fonte": "G1",
+      "uf": "SP",
+      "url": "https://g1.globo.com/rss/g1/sp/piracicaba-regiao/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 SP – Presidente Prudente E Regiao",
+      "fonte": "G1",
+      "uf": "SP",
+      "url": "https://g1.globo.com/rss/g1/sp/presidente-prudente-e-regiao/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 SP – Ribeirao Preto Franca",
+      "fonte": "G1",
+      "uf": "SP",
+      "url": "https://g1.globo.com/rss/g1/sp/ribeirao-preto-franca/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 SP – Santos Regiao",
+      "fonte": "G1",
+      "uf": "SP",
+      "url": "https://g1.globo.com/rss/g1/sp/santos-regiao/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 SP – Sao Carlos Regiao",
+      "fonte": "G1",
+      "uf": "SP",
+      "url": "https://g1.globo.com/rss/g1/sp/sao-carlos-regiao/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 SP – Sao Jose Do Rio Preto Aracatuba",
+      "fonte": "G1",
+      "uf": "SP",
+      "url": "https://g1.globo.com/rss/g1/sp/sao-jose-do-rio-preto-aracatuba/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 São Paulo",
+      "fonte": "G1",
+      "uf": "SP",
+      "url": "https://g1.globo.com/rss/g1/sp/sao-paulo/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 SP – Sorocaba Jundiai",
+      "fonte": "G1",
+      "uf": "SP",
+      "url": "https://g1.globo.com/rss/g1/sp/sorocaba-jundiai/",
+      "verificado": true
+    },
+    {
+      "nome": "G1 SP – Vale Do Paraiba Regiao",
+      "fonte": "G1",
+      "uf": "SP",
+      "url": "https://g1.globo.com/rss/g1/sp/vale-do-paraiba-regiao/",
+      "verificado": true
     },
     {
       "nome": "G1 Tocantins",
       "fonte": "G1",
       "uf": "TO",
-      "url": "https://g1.globo.com/rss/g1/to/tocantins/"
+      "url": "https://g1.globo.com/rss/g1/to/tocantins/",
+      "verificado": true
+    },
+    {
+      "nome": "Receita Federal",
+      "fonte": "Receita Federal",
+      "uf": "",
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/ultimas-noticias/RSS",
+      "verificado": true
+    },
+    {
+      "nome": "Ibama",
+      "fonte": "Ibama",
+      "uf": "",
+      "url": "https://www.gov.br/ibama/pt-br/assuntos/noticias/RSS",
+      "verificado": true
+    },
+    {
+      "nome": "Ministério da Defesa",
+      "fonte": "Ministério da Defesa",
+      "uf": "",
+      "url": "https://www.gov.br/defesa/pt-br/centrais-de-conteudo/noticias/RSS",
+      "verificado": true
+    },
+    {
+      "nome": "Agência Brasil",
+      "fonte": "Agência Brasil",
+      "uf": "",
+      "url": "https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml",
+      "verificado": false
+    },
+    {
+      "nome": "Metrópoles",
+      "fonte": "Metrópoles",
+      "uf": "",
+      "url": "https://www.metropoles.com/feed",
+      "verificado": false
+    },
+    {
+      "nome": "CNN Brasil",
+      "fonte": "CNN Brasil",
+      "uf": "",
+      "url": "https://www.cnnbrasil.com.br/feed/",
+      "verificado": false
+    },
+    {
+      "nome": "Folha – Cotidiano",
+      "fonte": "Folha de S.Paulo",
+      "uf": "",
+      "url": "https://feeds.folha.uol.com.br/cotidiano/rss091.xml",
+      "verificado": false
+    },
+    {
+      "nome": "R7 Notícias",
+      "fonte": "R7",
+      "uf": "",
+      "url": "https://noticias.r7.com/feed.xml",
+      "verificado": false
+    },
+    {
+      "nome": "Agência SP",
+      "fonte": "Agência SP",
+      "uf": "SP",
+      "url": "https://www.agenciasp.sp.gov.br/feed/",
+      "verificado": false
+    },
+    {
+      "nome": "Agência Pará",
+      "fonte": "Agência Pará",
+      "uf": "PA",
+      "url": "https://agenciapara.com.br/rss",
+      "verificado": false
+    },
+    {
+      "nome": "Agência Minas",
+      "fonte": "Agência Minas",
+      "uf": "MG",
+      "url": "https://www.agenciaminas.mg.gov.br/rss",
+      "verificado": false
     }
   ]
 }

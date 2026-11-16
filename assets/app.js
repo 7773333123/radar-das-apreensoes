@@ -45,7 +45,8 @@
     const uf = NOME_UF[raw.uf] ? raw.uf : '';
     const n = {
       i: raw.i, titulo: raw.t, fonte: raw.f || 'Fonte não informada', resumo: raw.r || '',
-      url: urlSegura(raw.u || ''), img: urlSegura(raw.img || ''), uf, cats, data, texto: raw.x === 1,
+      url: urlSegura(raw.u || ''), img: urlSegura(raw.img || ''), uf, cats, data, texto: raw.x === 1, nFotos: raw.g || (raw.img ? 1 : 0),
+      outras: Array.isArray(raw.o) ? raw.o.filter((o) => Array.isArray(o) && o[0]) : [],
       ano: data ? data.getUTCFullYear() : null,
     };
     n.busca = fold([n.titulo, n.resumo, n.fonte, uf, NOME_UF[uf], cats.map((c) => categorias[c]).join(' ')].join(' '));
@@ -101,7 +102,9 @@
   // ---------- renderização ----------
   function tagsHTML(n) {
     const cats = n.cats.slice(0, 2).map((c) => `<span class="tag">${esc(state.categorias[c])}</span>`).join('') +
-      (n.texto ? '<span class="tag full">Texto completo</span>' : '');
+      (n.texto ? '<span class="tag full">Texto completo</span>' : '') +
+      (n.nFotos > 1 ? `<span class="tag photos">${n.nFotos} fotos</span>` : '') +
+      (n.outras.length ? `<span class="tag muted">+${n.outras.length} ${n.outras.length === 1 ? 'fonte' : 'fontes'}</span>` : '');
     const uf = n.uf ? `<span class="tag uf">${esc(NOME_UF[n.uf])}</span>` : '<span class="tag muted">Estado não identificado</span>';
     return `<div class="tags">${cats || '<span class="tag muted">Em classificação</span>'}${uf}</div>`;
   }
@@ -109,13 +112,13 @@
   const imgHTML = (src, alt, extra = '') => `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" ${extra}>`;
 
   function cardHTML(n) {
-    const ilustracao = `img/categorias/${IMG_CATEGORIA[n.cats[0] ?? 8]}.webp`;
-    const media = n.img ? imgHTML(n.img, '', `data-fallback="${ilustracao}"`) : imgHTML(ilustracao, '');
+    const media = n.img ? imgHTML(n.img, '', `data-fallback="${ilustracao(n)}"`) : imgHTML(ilustracao(n), '');
     return `<button type="button" class="card" data-read="${n.i}"><div class="card-media">${media}</div>` +
       `<div class="card-body">${tagsHTML(n)}<h3>${esc(n.titulo)}</h3>${metaHTML(n)}</div></button>`;
   }
   function itemHTML(n) {
-    const thumb = n.img ? `<div class="thumb">${imgHTML(n.img, '', 'data-hide-on-error')}</div>` : '';
+    const thumb = n.img ? `<div class="thumb">${imgHTML(n.img, '', `data-fallback="${ilustracao(n)}"`)}</div>`
+      : `<div class="thumb ilustr">${imgHTML(ilustracao(n), '')}</div>`;
     return `<li class="item"><button type="button" class="item-btn" data-read="${n.i}"><div>${tagsHTML(n)}` +
       `<h3>${esc(n.titulo)}</h3>${n.resumo ? `<p>${esc(n.resumo)}</p>` : ''}${metaHTML(n)}</div>${thumb}</button></li>`;
   }
@@ -199,12 +202,73 @@
   }
 
   // ---------- leitor ----------
-  const textosCache = new Map();
-  const carregarTexto = (i) => {
+  const detalhesCache = new Map();
+  const carregarDetalhe = (i) => {
     const lote = Math.floor(i / 1000);
-    if (!textosCache.has(lote)) textosCache.set(lote, fetch(`textos/${lote}.json`).then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
-    return textosCache.get(lote).then((d) => d[String(i)]);
+    if (!detalhesCache.has(lote)) detalhesCache.set(lote, fetch(`detalhes/${lote}.json`).then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
+    return detalhesCache.get(lote).then((d) => d[String(i)] || {});
   };
+  const ilustracao = (n) => `img/categorias/${IMG_CATEGORIA[n.cats[0] ?? 8]}.webp`;
+
+  // ---------- galeria ----------
+  const galeria = { fotos: [], atual: 0, fonte: '' };
+  function galeriaHTML(fotos, fonte) {
+    const slides = fotos.map((src, k) => `<figure class="slide"><button type="button" class="slide-btn" data-foto="${k}" aria-label="Ampliar foto ${k + 1} de ${fotos.length}">` +
+      `${imgHTML(src, `Foto ${k + 1} da reportagem`, k ? '' : 'fetchpriority="high"')}</button></figure>`).join('');
+    const nav = fotos.length > 1
+      ? `<button type="button" class="gal-nav prev" data-gal="-1" aria-label="Foto anterior">‹</button><button type="button" class="gal-nav next" data-gal="1" aria-label="Próxima foto">›</button><span class="gal-count" id="galContador">1 / ${fotos.length}</span>`
+      : '';
+    return `<div class="gallery"><div class="gallery-track" id="galTrilho" tabindex="0" aria-label="Fotos da reportagem">${slides}</div>${nav}</div>` +
+      `<p class="reader-credit">${fotos.length > 1 ? `${fotos.length} fotos · ` : ''}Imagens: ${esc(fonte)}. Direitos reservados à fonte.</p>`;
+  }
+  function miniaturasHTML(fotos) {
+    if (fotos.length < 2) return '';
+    return `<section class="thumbs" aria-label="Todas as fotos"><h2>Fotos da reportagem <span>(${fotos.length})</span></h2><div class="thumbs-grid">` +
+      fotos.map((src, k) => `<button type="button" class="thumb-btn" data-foto="${k}" aria-label="Ver foto ${k + 1} de ${fotos.length}">${imgHTML(src, '')}</button>`).join('') +
+      '</div></section>';
+  }
+  function irParaSlide(k, suave = true) {
+    const trilho = $('galTrilho');
+    if (!trilho || !trilho.children[k]) return;
+    trilho.scrollTo({ left: trilho.children[k].offsetLeft, behavior: suave ? 'smooth' : 'auto' });
+  }
+  function abrirVisor(k) {
+    galeria.atual = (k + galeria.fotos.length) % galeria.fotos.length;
+    const src = galeria.fotos[galeria.atual];
+    $('visorImg').src = src;
+    $('visorImg').alt = `Foto ${galeria.atual + 1} de ${galeria.fotos.length}`;
+    $('visorContador').textContent = `${galeria.atual + 1} / ${galeria.fotos.length}`;
+    $('visorCredito').textContent = `Imagem: ${galeria.fonte}`;
+    $('visorOriginal').href = src;
+    document.querySelectorAll('#visor .gal-nav').forEach((b) => { b.hidden = galeria.fotos.length < 2; });
+    if (!$('visor').open) $('visor').showModal();
+    irParaSlide(galeria.atual, false);
+  }
+  function montarGaleria(n, fotos) {
+    galeria.fotos = fotos;
+    galeria.fonte = n.fonte;
+    galeria.atual = 0;
+    const alvo = $('leitorFotos');
+    if (!alvo) return;
+    if (!fotos.length) {
+      alvo.innerHTML = `<figure class="slide only">${imgHTML(ilustracao(n), 'Ilustração da categoria')}</figure>` +
+        '<p class="reader-credit">Ilustração da categoria — esta reportagem não tem foto disponível.</p>';
+      $('leitorMiniaturas').innerHTML = '';
+      return;
+    }
+    alvo.innerHTML = galeriaHTML(fotos, n.fonte);
+    $('leitorMiniaturas').innerHTML = miniaturasHTML(fotos);
+    const trilho = $('galTrilho');
+    trilho.addEventListener('scroll', debounce(() => {
+      const k = Math.round(trilho.scrollLeft / Math.max(1, trilho.clientWidth));
+      galeria.atual = Math.min(fotos.length - 1, Math.max(0, k));
+      const c = $('galContador');
+      if (c) c.textContent = `${galeria.atual + 1} / ${fotos.length}`;
+    }, 60));
+    trilho.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); irParaSlide(Math.min(fotos.length - 1, Math.max(0, galeria.atual + (e.key === 'ArrowRight' ? 1 : -1)))); }
+    });
+  }
   let linksPromise = null;
   const carregarLinks = () => (linksPromise ??= fetch('feed_links.json').then((r) => (r.ok ? r.json() : [])).catch(() => []));
 
@@ -213,25 +277,35 @@
     if (!n) return;
     const dlg = $('leitor');
     const cats = n.cats.map((c) => state.categorias[c]).join(' · ') || 'Em classificação';
-    const foto = n.img ? `<img class="reader-photo" src="${esc(n.img)}" alt="Foto da reportagem" referrerpolicy="no-referrer" data-hide-on-error><p class="reader-credit">Imagem: ${esc(n.fonte)}. Direitos reservados à fonte.</p>` : '';
+    const foto = '<div id="leitorFotos" class="reader-media"></div>';
     const texto = n.texto ? '<div class="reader-full" id="leitorTexto"><p class="reader-text">Carregando o texto…</p></div>'
       : n.resumo ? `<p class="reader-text">${esc(n.resumo)}</p><p class="reader-note">Resumo publicado pela fonte. A reportagem completa está no site de origem.</p>`
         : '<p class="reader-text">O resumo desta notícia não está disponível. Leia a reportagem completa na fonte original.</p>';
     $('leitorConteudo').innerHTML =
-      `${tagsHTML(n)}<h1 id="leitorTitulo">${esc(n.titulo)}</h1>${metaHTML(n)}${foto}${texto}` +
+      `${tagsHTML(n)}<h1 id="leitorTitulo">${esc(n.titulo)}</h1>${metaHTML(n)}${foto}${texto}<div id="leitorMiniaturas"></div>` +
       `<div class="reader-source"><div class="meta">Fonte: <strong>${esc(n.fonte)}</strong>${n.uf ? ' · ' + esc(NOME_UF[n.uf]) : ''} · ${esc(cats)}</div>` +
       `<div class="reader-actions"><a class="btn" id="leitorLink" href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer"${n.url ? '' : ' aria-disabled="true"'}>Ler na fonte original ↗</a>` +
-      `<button type="button" class="btn-ghost" id="compartilhar">Compartilhar</button></div></div>`;
+      `<button type="button" class="btn-ghost" id="compartilhar">Compartilhar</button></div>` +
+      (n.outras.length ? `<div class="also"><span class="meta">Também noticiado por:</span><ul>${n.outras.map(([fonte, url, i]) =>
+        `<li><a href="${esc(urlSegura(url || '') || '#')}" target="_blank" rel="noopener noreferrer" data-outra="${Number(i)}">${esc(fonte)} ↗</a></li>`).join('')}</ul></div>` : '') +
+      '</div>';
     $('leitorConteudo').dataset.i = String(n.i);
-    if (n.texto) {
-      carregarTexto(n.i).then((t) => {
+    montarGaleria(n, n.img ? [n.img] : []);
+    if (n.texto || n.nFotos > 1) {
+      carregarDetalhe(n.i).then((t) => {
+        if ($('leitorConteudo').dataset.i !== String(n.i)) return;
+        if (Array.isArray(t.g) && t.g.length > 1) montarGaleria(n, t.g.map(urlSegura).filter(Boolean));
         const alvo = $('leitorTexto');
-        if (!alvo || $('leitorConteudo').dataset.i !== String(n.i)) return;
+        if (!alvo) return;
         alvo.innerHTML = t && Array.isArray(t.p)
           ? t.p.map((p) => `<p class="reader-text">${esc(p)}</p>`).join('') +
             `<p class="reader-note">Texto reproduzido integralmente de <strong>${esc(n.fonte)}</strong>, sob a licença ${esc(t.l)}, que permite a reprodução com crédito.</p>`
           : (n.resumo ? `<p class="reader-text">${esc(n.resumo)}</p>` : '<p class="reader-text">Texto indisponível no momento. Leia na fonte original.</p>');
       });
+    }
+    const semLink = [...document.querySelectorAll('#leitorConteudo [data-outra]')].filter((a) => a.getAttribute('href') === '#');
+    if (semLink.length) {
+      carregarLinks().then((links) => semLink.forEach((a) => { const u = urlSegura(links[a.dataset.outra] || ''); if (u) a.href = u; else a.replaceWith(a.textContent.replace(' ↗', '')); }));
     }
     if (!n.url) {
       carregarLinks().then((links) => {
@@ -280,8 +354,32 @@
       if (!(img instanceof HTMLImageElement)) return;
       if (img.dataset.fallback) { img.src = img.dataset.fallback; delete img.dataset.fallback; }
       else if (img.hasAttribute('data-hide-on-error')) (img.closest('.thumb') || img).remove();
+      else if (img.closest('.slide, .thumb-btn')) img.replaceWith(Object.assign(document.createElement('span'), { className: 'img-off', textContent: 'Imagem indisponível' }));
     }, true);
 
+    $('leitor').addEventListener('click', (e) => {
+      const nav = e.target.closest('[data-gal]');
+      if (nav) return irParaSlide(Math.min(galeria.fotos.length - 1, Math.max(0, galeria.atual + Number(nav.dataset.gal))));
+      const foto = e.target.closest('[data-foto]');
+      if (foto) abrirVisor(Number(foto.dataset.foto));
+    });
+    $('visor').addEventListener('click', (e) => {
+      const nav = e.target.closest('[data-visor]');
+      if (nav) return abrirVisor(galeria.atual + Number(nav.dataset.visor));
+      if (e.target === $('visor') || e.target.closest('#fecharVisor')) $('visor').close();
+    });
+    $('visor').addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') abrirVisor(galeria.atual + 1);
+      if (e.key === 'ArrowLeft') abrirVisor(galeria.atual - 1);
+    });
+    let toqueX = null;
+    $('visor').addEventListener('touchstart', (e) => { toqueX = e.touches[0].clientX; }, { passive: true });
+    $('visor').addEventListener('touchend', (e) => {
+      if (toqueX == null) return;
+      const dx = e.changedTouches[0].clientX - toqueX;
+      if (Math.abs(dx) > 40) abrirVisor(galeria.atual + (dx < 0 ? 1 : -1));
+      toqueX = null;
+    });
     $('fecharLeitor').addEventListener('click', () => $('leitor').close());
     $('leitor').addEventListener('close', aoFecharLeitor);
     $('leitor').addEventListener('click', (e) => { if (e.target === $('leitor')) $('leitor').close(); });

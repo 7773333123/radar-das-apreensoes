@@ -65,29 +65,52 @@ def imagem_do_item(item):
     enc = item.find('enclosure')
     if enc is not None and (enc.get('type') or '').startswith('image') and enc.get('url'):
         return enc.get('url')
-    m = re.search(r'<img[^>]+src=["\']([^"\']+)', item.findtext('description') or '')
+    m = re.search(r'<img[^>]+src=["\']([^"\']+)', _filho(item, 'description', 'content', 'encoded'))
     return html.unescape(m.group(1)) if m else ''
 
 
 def data_iso(valor):
+    valor = (valor or '').strip()
     try:
         return email.utils.parsedate_to_datetime(valor).astimezone(timezone.utc).isoformat()
-    except (TypeError, ValueError):
+    except (TypeError, ValueError, IndexError):
+        pass
+    try:  # RSS 1.0 (dc:date) e Atom usam ISO 8601
+        return datetime.fromisoformat(valor.replace('Z', '+00:00')).astimezone(timezone.utc).isoformat()
+    except ValueError:
         return ''
 
 
+def _local(tag):
+    return tag.rsplit('}', 1)[-1]
+
+
+def _filho(item, *nomes):
+    """Texto do primeiro filho com um dos nomes, ignorando o namespace."""
+    for el in item:
+        if _local(el.tag) in nomes:
+            if _local(el.tag) == 'link' and el.get('href'):
+                if el.get('rel', 'alternate') == 'alternate':
+                    return el.get('href')
+                continue
+            return el.text or ''
+    return ''
+
+
 def ler_feed(feed):
+    """Lê RSS 2.0, RSS 1.0 (RDF, usado pelo gov.br) e Atom."""
     raiz = ET.fromstring(baixar(feed['url']))
-    for item in raiz.iter('item'):
-        titulo = texto_limpo(item.findtext('title'))
-        link = (item.findtext('link') or '').strip()
-        resumo = texto_limpo(item.findtext(ATOM + 'subtitle') or '')
-        corpo = texto_limpo(item.findtext('description') or '')
+    itens = [el for el in raiz.iter() if _local(el.tag) in ('item', 'entry')]
+    for item in itens:
+        titulo = texto_limpo(_filho(item, 'title'))
+        link = (_filho(item, 'link') or item.get('{http://www.w3.org/1999/02/22-rdf-syntax-ns#}about') or '').strip()
+        resumo = texto_limpo(_filho(item, 'subtitle', 'summary'))
+        corpo = texto_limpo(_filho(item, 'description', 'content', 'encoded'))
         if not titulo or not link.startswith('http'):
             continue
-        if not ASSUNTO.search(titulo + ' ' + resumo):
+        if not ASSUNTO.search(titulo + ' ' + (resumo or corpo[:300])):
             continue
-        quando = item.findtext('pubDate') or ''
+        quando = _filho(item, 'pubDate', 'date', 'published', 'updated')
         yield {
             'titulo': titulo,
             'url': link,
@@ -155,7 +178,7 @@ def main():
             dados['total'] = len(noticias)
             dados['atualizado_em'] = datetime.now(timezone.utc).isoformat()
         tmp = ARQUIVO.with_suffix('.json.tmp')
-        tmp.write_text(json.dumps(dados, ensure_ascii=False, indent=2), encoding='utf-8')
+        tmp.write_text(json.dumps(dados, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
         tmp.replace(ARQUIVO)
     print(f'Feeds: {len(feeds)} ({falhas} com falha); novas: {novas}; '
           f'notícias antigas completadas com link/foto/UF: {completadas}; acervo: {len(noticias)}')

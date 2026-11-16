@@ -1,0 +1,68 @@
+name: Ampliar acervo histórico (20 anos)
+# Percorre um ano por execução, do mais recente para 2006, e recomeça ao chegar
+# ao fim (assim pega notícias indexadas depois). O ano da vez fica em
+# historico_cursor.json. Usa o mesmo grupo de concorrência da coleta diária,
+# então as duas nunca gravam ao mesmo tempo.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '47 */3 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: atualizar-noticias
+  cancel-in-progress: false
+jobs:
+  historico:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v5
+      - name: Preparar Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Escolher o ano da vez
+        id: ano
+        run: |
+          ANO=$(python -c "import json;print(json.load(open('historico_cursor.json'))['proximo_ano'])")
+          echo "ano=$ANO" >> "$GITHUB_OUTPUT"
+          echo "Ano desta execução: $ANO"
+      - name: Buscar notícias do ano (Google Notícias, mês a mês)
+        run: python coletor.py --historico --ano ${{ steps.ano.outputs.ano }}
+      - name: Buscar arquivos oficiais do ano (gov.br, a partir de 2020)
+        run: |
+          if [ ${{ steps.ano.outputs.ano }} -ge 2020 ]; then
+            python coletar_fontes_diretas.py --ano ${{ steps.ano.outputs.ano }} --paginas 3
+          else
+            echo 'Arquivos oficiais do gov.br começam em 2020; etapa ignorada.'
+          fi
+      - name: Avançar o cursor
+        run: |
+          python - <<'PY'
+          import json, datetime
+          c = json.load(open('historico_cursor.json'))
+          c['proximo_ano'] -= 1
+          if c['proximo_ano'] < c.get('ano_inicial', 2006):
+              c['proximo_ano'] = datetime.date.today().year - 1
+              c['voltas_completas'] = c.get('voltas_completas', 0) + 1
+          c['ultima_execucao'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+          json.dump(c, open('historico_cursor.json', 'w'))
+          print('Próximo ano:', c['proximo_ano'])
+          PY
+      - name: Gerar feed do site e compactar acervo
+        run: |
+          python gerar_feed_site.py
+          python compactar_acervo.py
+      - name: Salvar
+        run: |
+          set -e
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add noticias.json historico_cursor.json feed.json feed_links.json
+          for arquivo in cobertura_historica.json; do if [ -e "$arquivo" ]; then git add "$arquivo"; fi; done
+          for pasta in detalhes textos; do git add -A -- "$pasta" 2>/dev/null || true; done
+          if git diff --cached --quiet; then echo 'Nada novo.'; exit 0; fi
+          git commit -m "Acervo histórico: ano ${{ steps.ano.outputs.ano }}"
+          git push origin HEAD:main

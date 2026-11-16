@@ -132,6 +132,20 @@
   <article class="reader-body" id="leitorConteudo"></article>
 </dialog>
 
+<dialog class="viewer" id="visor" aria-label="Fotos da reportagem">
+  <div class="viewer-bar">
+    <span id="visorContador" class="viewer-count"></span>
+    <a id="visorOriginal" class="viewer-link" href="#" target="_blank" rel="noopener noreferrer">Abrir imagem ↗</a>
+    <button type="button" class="btn-ghost" id="fecharVisor" aria-label="Fechar fotos">✕</button>
+  </div>
+  <div class="viewer-stage">
+    <button type="button" class="gal-nav prev" data-visor="-1" aria-label="Foto anterior">‹</button>
+    <img id="visorImg" alt="" referrerpolicy="no-referrer">
+    <button type="button" class="gal-nav next" data-visor="1" aria-label="Próxima foto">›</button>
+  </div>
+  <p class="viewer-credit" id="visorCredito"></p>
+</dialog>
+
 <noscript><p class="wrap state-msg">Ative o JavaScript para ver as notícias.</p></noscript>
 </body>
 </html>
