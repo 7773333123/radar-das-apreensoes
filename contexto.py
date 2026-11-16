@@ -8,7 +8,7 @@ duplicatas). Nenhuma frase da reportagem é copiada.
 import re
 
 from localizar_uf import NOMES_ESTADOS
-from resumo_fatos import PREP_UF, _data_extenso, _fmt, _juntar, redigir
+from resumo_fatos import PENAS, PREP_UF, _data_extenso, _fmt, _juntar, redigir
 
 ORGAO_PAPEL = {
     'Polícia Federal': 'que investiga crimes federais, como o tráfico internacional de drogas e de armas, o contrabando e os crimes em áreas de fronteira',
@@ -66,25 +66,146 @@ def _agentes(fatos, uf):
     return ' '.join(frases)
 
 
-def resumo_ampliado(item, fatos):
-    """Texto do Radar em parágrafos (separados por linha em branco)."""
+INTERNOS = {'em um fundo falso', 'em um compartimento oculto', 'no tanque de combustível', 'dentro de pneus', 'no porta-malas'}
+
+
+def _pessoas(n):
+    return 'uma pessoa' if n == 1 else f'{_fmt(n)} pessoas'
+
+
+def _idades(idades):
+    if not idades:
+        return ''
+    if len(idades) == 1:
+        return f', de {idades[0]} anos'
+    return ', com idades entre ' + f'{min(idades)} e {max(idades)} anos'
+
+
+def resumo_secoes(item, fatos):
+    """Resumo do Radar em seções [(título, texto)], todas redigidas pelo Radar."""
+    fatos = fatos or {}
     fonte = item.get('f', '')
     uf = item.get('uf', '')
     cats = item.get('c', [])
-    paragrafos = []
-    base = redigir(fatos, '', item.get('d', ''), uf) if fatos else ''
+    secoes = []
+
+    # 1. O que aconteceu (cidades de origem/destino não são o local da apreensão)
+    rota = [x for x in (fatos.get('origem'), fatos.get('destino')) if x]
+    local = dict(fatos)
+    if rota and local.get('cidades'):
+        local['cidades'] = [c for c in local['cidades'] if not any(c.split(' (')[0] in r for r in rota)]
+    # Presos, mandados, operação e valores ficam nas seções próprias.
+    for k in ('presos', 'presos_texto', 'mandados', 'operacao', 'valor'):
+        local.pop(k, None)
+    base = redigir(local, '', item.get('d', ''), uf) if fatos else ''
     if not base:
         quando = _data_extenso(item.get('d', ''))
         tema = CAT_NOME[cats[0]] if cats else 'apreensões'
         base = (f'{fonte or "Um veículo de imprensa"} publicou{" em " + quando if quando else ""} uma notícia sobre {tema}'
-                f'{" " + _onde(uf) if uf else ""}: “{item["t"]}”.')
-    paragrafos.append(base)
-    segundo = ' '.join(p for p in (_agentes(fatos, uf), CATEGORIA_NOTA[cats[0]] if cats else '') if p)
-    if segundo:
-        paragrafos.append(segundo)
-    if fatos and base:
-        paragrafos.append(f'Manchete da reportagem: “{item["t"]}”.')
+                f'{" " + _onde(uf) if uf else ""}.')
+    if fatos.get('periodo'):
+        base += f' A ocorrência foi na {fatos["periodo"]}, de acordo com a reportagem.'
+    secoes.append(('O que aconteceu', base))
+
+    # 2. Como foi a ação
+    frases = []
+    if fatos.get('como'):
+        frases.append('A apreensão foi feita ' + _juntar(fatos['como']) + '.')
+    if fatos.get('esconderijo') or fatos.get('veiculo'):
+        veic = fatos.get('veiculo')
+        artigo = 'uma' if veic in ('caminhonete', 'motocicleta', 'van', 'embarcação', 'aeronave') else 'um'
+        no_veiculo = [e for e in fatos.get('esconderijo', []) if e in INTERNOS]
+        outros = [e for e in fatos.get('esconderijo', []) if e not in INTERNOS]
+        if veic and no_veiculo:
+            frases.append(f'O material estava escondido {_juntar(no_veiculo)} de {artigo} {veic}.')
+        elif veic:
+            frases.append(f'O caso envolveu {artigo} {veic}.')
+        elif no_veiculo:
+            frases.append(f'O material estava escondido {_juntar(no_veiculo)} do veículo.')
+        if outros:
+            frases.append(f'Parte do material estava {_juntar(outros)}.' if no_veiculo else f'O material foi encontrado {_juntar(outros)}.')
+    if fatos.get('origem') and fatos.get('destino'):
+        frases.append(f'De acordo com a reportagem, a carga saiu de {fatos["origem"]} e seguiria para {fatos["destino"]}.')
+    elif fatos.get('destino'):
+        frases.append(f'De acordo com a reportagem, o destino seria {fatos["destino"]}.')
+    elif fatos.get('origem'):
+        frases.append(f'De acordo com a reportagem, a carga vinha de {fatos["origem"]}.')
+    if fatos.get('rodovia'):
+        rod = fatos['rodovia']
+        if rod.startswith('BR-'):
+            frases.append(f'A {rod} é uma rodovia federal, fiscalizada pela Polícia Rodoviária Federal.')
+        elif rod.split('-')[0] in NOMES_ESTADOS:
+            sigla = rod.split('-')[0]
+            de = {'no': 'do', 'na': 'da', 'em': 'de'}[PREP_UF[sigla]]
+            frases.append(f'A {rod} é uma rodovia estadual {de} {NOMES_ESTADOS[sigla]}.')
+    if fatos.get('operacao'):
+        frases.append(f'A ação fez parte da {fatos["operacao"]}.')
+    if frases:
+        secoes.append(('Como foi a ação', ' '.join(frases)))
+
+    # 3. Envolvidos
+    frases = []
+    if fatos.get('presos'):
+        frases.append(f'{_pessoas(fatos["presos"]).capitalize()} {"foi presa" if fatos["presos"] == 1 else "foram presas"}'
+                      f'{_idades(fatos.get("idades"))}.')
+    elif fatos.get('presos_texto'):
+        flagrante = ' em flagrante' if 'flagrante' in fatos['presos_texto'] else ''
+        idades = fatos.get('idades') or []
+        if len(idades) == 1:
+            frases.append(f'Uma pessoa, de {idades[0]} anos, foi presa{flagrante}.')
+        elif idades:
+            frases.append(f'Pessoas com idades entre {min(idades)} e {max(idades)} anos foram presas{flagrante}.')
+        else:
+            frases.append(f'Segundo a reportagem, {fatos["presos_texto"]}.')
+    if fatos.get('mandados'):
+        frases.append(f'Foram cumpridos {fatos["mandados"]}.')
+    if fatos.get('crimes'):
+        frases.append('Os envolvidos podem responder por ' + _juntar(fatos['crimes']) + '.')
+    if fatos.get('encaminhamento'):
+        frases.append(f'O caso foi encaminhado à {fatos["encaminhamento"]}.'.replace('à Polícia', 'à Polícia')
+                      .replace('à Delegacia', 'à Delegacia').replace('à DP', 'ao DP').replace('à Distrito', 'ao Distrito')
+                      .replace('à Plantão', 'ao Plantão'))
+    if fatos.get('valor'):
+        frases.append(f'Os valores citados chegam a {fatos["valor"]}.')
+    if frases:
+        frases.append('Pessoas presas ou investigadas são consideradas inocentes até decisão definitiva da Justiça.')
+        secoes.append(('Envolvidos e próximos passos', ' '.join(frases)))
+
+    # 4. Quem atuou
+    agentes = _agentes({k: v for k, v in fatos.items() if k != 'rodovia'}, uf)
+    if agentes:
+        secoes.append(('Quem atuou', agentes))
+
+    # 5. O que diz a lei
+    leis = []
+    crimes = list(fatos.get('crimes') or [])
+    titulo = item.get('t', '')
+    if not crimes:
+        if re.search(r'tr[áa]fic', titulo, re.I) and re.search(r'drog|entorpec|coca|maconha|crack|skunk', titulo + ' ' + ' '.join(fatos.get('apreendido', [])), re.I):
+            crimes.append('tráfico de drogas')
+        if re.search(r'contrabando', titulo, re.I):
+            crimes.append('contrabando')
+        if re.search(r'descaminho', titulo, re.I):
+            crimes.append('descaminho')
+        if re.search(r'lavagem', titulo, re.I):
+            crimes.append('lavagem de dinheiro')
+        if re.search(r'recepta', titulo, re.I):
+            crimes.append('receptação')
+    for crime in crimes[:2]:
+        if crime in PENAS:
+            leis.append(PENAS[crime])
+    if not leis and cats and CATEGORIA_NOTA[cats[0]]:
+        leis.append(CATEGORIA_NOTA[cats[0]])
+    if leis:
+        secoes.append(('O que diz a lei', ' '.join(leis)))
+
+    # 6. Repercussão
     outras = [o[0] for o in item.get('o', []) if o and o[0]]
     if outras:
-        paragrafos.append(f'O caso também foi noticiado por {_juntar(outras[:8])}.')
-    return '\n\n'.join(re.sub(r'\s+', ' ', p).strip() for p in paragrafos if p.strip())
+        secoes.append(('Quem noticiou', f'A notícia foi publicada por {fonte} e também por {_juntar(outras[:8])}.'))
+    return [(t, re.sub(r'\s+', ' ', x).strip()) for t, x in secoes if x.strip()]
+
+
+def resumo_ampliado(item, fatos):
+    """Texto corrido (parágrafos separados por linha em branco), para descrição e busca."""
+    return '\n\n'.join(texto for _, texto in resumo_secoes(item, fatos))

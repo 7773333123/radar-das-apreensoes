@@ -140,21 +140,31 @@ function paginaNoticia(i) {
     ['Onde', [(f.cidades || []).join(', ') || ESTADOS[n.uf] || '', f.rodovia ? `rodovia ${f.rodovia}` : ''].filter(Boolean).join(' · ')],
     ['Quem atuou', (f.orgaos || []).join(', ')],
     ['Presos', f.presos ? `${num(f.presos)} ${f.presos === 1 ? 'pessoa' : 'pessoas'}` : (f.presos_texto ? 'Sim, segundo a reportagem' : '')],
+    ['Como', (f.como || []).join(', ')],
+    ['Onde estava', [(f.esconderijo || []).join(', '), f.veiculo || ''].filter(Boolean).join(' · ')],
+    ['Rota', [f.origem ? `de ${f.origem}` : '', f.destino ? `para ${f.destino}` : ''].filter(Boolean).join(' ')],
+    ['Crimes citados', (f.crimes || []).join(', ')],
     ['Mandados', f.mandados || ''], ['Operação', f.operacao || ''], ['Valores citados', f.valor || ''],
     ['Publicado em', fmtData(d, true)],
-    ['Fonte', (n.f || '') + (n.o && n.o.length ? ` (também em ${n.o.map((o) => o[0]).join(', ')})` : '')],
   ].filter(([, v]) => v);
+  const secoes = Array.isArray(t.sx) && t.sx.length ? t.sx : (t.s ? String(t.s).split(/\n{2,}/).filter(Boolean).map((p) => ['', p]) : []);
+  const radar = secoes.length ? `<section class="bloco radar"><header class="bloco-cab"><h2>Resumo do Radar</h2><p>Redigido pelo Radar a partir dos fatos publicados</p></header>` +
+    `<div class="rs">${secoes.map(([tit, txt]) => `<section class="rs-sec">${tit ? `<h3>${esc(tit)}</h3>` : ''}<p class="reader-text">${esc(txt)}</p></section>`).join('')}</div></section>` : '';
+  const botao = url ? `<a class="btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Ler a reportagem completa em ${esc(n.f)} ↗</a>` : '';
+  const cab = (titulo) => `<header class="bloco-cab"><h2>${titulo}</h2><p><strong>${esc(n.f || '')}</strong> · ${esc(fmtData(d))}</p></header>`;
   let fonte = '';
   if (Array.isArray(t.p) && t.p.length) {
-    fonte = `<h2>Texto completo</h2>${t.p.map((p) => `<p class="reader-text">${esc(p)}</p>`).join('')}` +
-      `<p class="reader-note">${t.l === 'oficial' ? `Comunicado oficial publicado por ${esc(n.f)}, reproduzido na íntegra com crédito.`
-        : `Texto reproduzido integralmente de ${esc(n.f)}, sob a licença ${esc(t.l)}, que permite a reprodução com crédito.`}</p>`;
+    fonte = `<section class="bloco fonte-card">${cab('Texto completo')}<div class="fonte-texto">${t.p.map((p) => `<p class="reader-text">${esc(p)}</p>`).join('')}</div>` +
+      `<footer class="fonte-pe"><span>${t.l === 'oficial' ? `Comunicado oficial de ${esc(n.f)}, reproduzido na íntegra com crédito.`
+        : `Reproduzido de ${esc(n.f)} sob a licença ${esc(t.l)}, que permite a reprodução com crédito.`}</span>${botao}</footer></section>`;
   } else {
     const trecho = t.tr && t.tr.length > (n.r || '').length ? t.tr : n.r;
+    const pct = t.tr && t.tt ? Math.min(50, Math.max(1, Math.round((t.tr.length / t.tt) * 100))) : 0;
     if (trecho) {
-      fonte = `<h2>O que diz a fonte</h2><blockquote class="reader-quote">${paragrafos(trecho)}</blockquote>` +
-        `<p class="reader-note">${t.tr ? 'Abertura da reportagem publicada' : 'Resumo publicado'} por ${esc(n.f)}, reproduzido com crédito.` +
-        `${url ? ` A reportagem continua no site de origem: <a href="${esc(url)}" target="_blank" rel="noopener noreferrer">ler a íntegra ↗</a>` : ''}</p>`;
+      fonte = `<section class="bloco fonte-card">${cab('O que diz a fonte')}<blockquote class="reader-quote">${paragrafos(trecho)}</blockquote>` +
+        `<footer class="fonte-pe"><span>${t.tr ? `Abertura da reportagem${pct ? `, cerca de ${pct}% do texto original` : ''}, reproduzida com crédito.` : 'Resumo publicado pelo veículo, reproduzido com crédito.'}</span>${botao}</footer></section>`;
+    } else if (botao) {
+      fonte = `<section class="bloco fonte-card">${cab('O que diz a fonte')}<footer class="fonte-pe"><span>A reportagem está disponível no site de origem.</span>${botao}</footer></section>`;
     }
   }
   // Relacionadas: mesmo estado e tipo, mais próximas no tempo.
@@ -165,10 +175,10 @@ function paginaNoticia(i) {
 <div class="meta">${esc(fmtData(d, true))} · ${esc(n.f || '')}${url ? ` · <a href="${esc(url)}" target="_blank" rel="noopener noreferrer">ver original ↗</a>` : ''}</div>
 ${fotos.length ? `<div class="art-fotos">${fotos.map((src, k) => `<img src="${esc(src)}" alt="${k ? '' : esc(n.t)}" ${k ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async" referrerpolicy="no-referrer">`).join('')}</div>
 ${fotos.length > 1 ? `<p class="reader-note">${fotos.length} fotos · deslize para ver todas. Imagens: ${esc(n.f)}.</p>` : `<p class="reader-note">Imagem: ${esc(n.f)}.</p>`}` : ''}
-${t.s ? `<h2>Resumo do Radar</h2>${paragrafos(t.s)}` : ''}
-${ficha.length ? `<section class="facts"><h2>Principais informações</h2><dl>${ficha.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` : ''}
+${ficha.length ? `<section class="em-resumo" aria-label="Em resumo"><h2>Em resumo</h2><dl>${ficha.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` : ''}
+${radar}
 ${fonte}
-${n.o && n.o.length ? `<p class="reader-note">Também noticiado por: ${n.o.map(([fo, u]) => (urlOk(u) ? `<a href="${esc(urlOk(u))}" target="_blank" rel="noopener noreferrer">${esc(fo)}</a>` : esc(fo))).join(', ')}.</p>` : ''}
+${n.o && n.o.length ? `<p class="reader-note tambem">Também noticiado por: ${n.o.map(([fo, u]) => (urlOk(u) ? `<a href="${esc(urlOk(u))}" target="_blank" rel="noopener noreferrer">${esc(fo)}</a>` : esc(fo))).join(', ')}.</p>` : ''}
 </article>
 ${relacionadas.length ? `<div class="section-head"><h2>Mais de ${esc(cats[(n.c || [8])[0]])} ${n.uf ? `${PREP[n.uf]} ${esc(ESTADOS[n.uf])}` : ''}</h2><a href="/estado/${n.uf}">Ver o estado →</a></div>${lista(relacionadas, cats)}` : ''}`;
   const jsonld = {

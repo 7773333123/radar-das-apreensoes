@@ -31,7 +31,7 @@ from pathlib import Path
 
 from localizar_uf import inferir_uf
 from resumo_fatos import extrair
-from contexto import resumo_ampliado
+from contexto import resumo_secoes
 from estatisticas import MATERIAIS, ORGAOS_NOMES, enriquecer, exportar, quantidades
 
 PASTA = Path(__file__).resolve().parent
@@ -174,7 +174,14 @@ def main():
         do_titulo = extrair(titulo, resumo)
         if do_titulo:
             fatos_titulo[i] = do_titulo
-        fatos = n.get('fatos') or do_titulo
+        fatos = dict(n.get('fatos') or do_titulo or {})
+        # Detalhes da ação (como, esconderijo, rota, crimes, encaminhamento...)
+        # também a partir da abertura guardada, sem esperar a releitura da página.
+        trecho_salvo = str(n.get('trecho') or '')
+        if trecho_salvo:
+            for k, v in extrair(titulo, resumo, trecho_salvo).items():
+                if k != 'apreendido' and v and not fatos.get(k):
+                    fatos[k] = v
         # Evidências para o agrupamento de duplicatas (removidas antes de gravar).
         if n.get('img_dhash') and n.get('img_dhash_url') == n.get('imagem_url'):
             item['_h'] = int(n['img_dhash'], 16)
@@ -190,6 +197,8 @@ def main():
         trecho = str(n.get('trecho') or '').strip()
         if trecho and len(trecho) > len(resumo):
             detalhe['tr'] = trecho
+            if n.get('tamanho_texto'):
+                detalhe['tt'] = int(n['tamanho_texto'])
         detalhes.setdefault(i % LOTES, {})[str(i)] = detalhe
         saida.append(item)
     antes = len(saida)
@@ -222,7 +231,10 @@ def main():
     # Resumo do Radar em parágrafos: fatos, quem atuou, base legal e outros veículos.
     for item in saida:
         fatos = juntar_fatos([fatos_por_i.get(item['i'])] + [fatos_por_i.get(o[2]) for o in item.get('o', [])])
-        detalhes[item['i'] % LOTES][str(item['i'])]['s'] = resumo_ampliado(item, fatos)
+        secoes = resumo_secoes(item, fatos)
+        alvo = detalhes[item['i'] % LOTES][str(item['i'])]
+        alvo['s'] = '\n\n'.join(t for _, t in secoes)
+        alvo['sx'] = [list(x) for x in secoes]
     for lote in list(detalhes):
         for chave in [c for c, v in detalhes[lote].items() if not v]:
             del detalhes[lote][chave]

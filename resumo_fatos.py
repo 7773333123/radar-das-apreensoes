@@ -158,8 +158,10 @@ def extrair(titulo, resumo='', texto=''):
     tudo = '. '.join(f for f in fontes if f)
     fatos = {}
     itens, tipos = [], set()
-    for parte in fontes:  # o título manda; o resto só completa tipos novos
+    for k, parte in enumerate(fontes):  # o título manda; o resto só completa tipos novos
         for item in _itens(parte):
+            if k == 2 and re.match(r'1 ', item):
+                continue  # "um caminhão" no meio do texto quase nunca é item apreendido
             if _tipo(item) not in tipos:
                 tipos.add(_tipo(item))
                 itens.append(item)
@@ -177,8 +179,12 @@ def extrair(titulo, resumo='', texto=''):
     if itens:
         fatos['apreendido'] = itens[:6]
     orgaos = []
+    # Órgãos: título, resumo e só o começo do texto (o fim costuma citar a
+    # delegacia para onde o caso foi levado, que não é quem fez a apreensão).
+    inicio = '. '.join(f for f in (fontes[0], fontes[1], fontes[2][:700]) if f)
+    inicio = re.sub(r'(?:encaminhad|conduzid|levad|apresentad)[oa]s?\s+(?:para|à|ao|a)\s+[^.]*', '', inicio)
     for nome, padrao in ORGAOS:
-        if re.search(padrao, tudo):
+        if re.search(padrao, inicio):
             orgaos.append(nome)
     if orgaos:
         fatos['orgaos'] = orgaos[:3]
@@ -199,7 +205,8 @@ def extrair(titulo, resumo='', texto=''):
             fatos['presos'] = int(_num(grupos[0]))
         except (ValueError, IndexError):
             pass
-    elif PRESO_UM.search(titulo or '') or PRESO_UM.search(resumo or ''):
+    elif (PRESO_UM.search(titulo or '') or PRESO_UM.search(resumo or '')
+          or re.search(r'\bpres[oa]s? em flagrante|recebeu voz de pris|foi pres[oa]\b|foram pres[oa]s\b', fontes[2][:2000], re.I)):
         fatos['presos_texto'] = 'houve prisão em flagrante' if 'flagrante' in tudo.lower() else 'houve prisão'
     m = MANDADOS.search(tudo)
     if m:
@@ -213,7 +220,110 @@ def extrair(titulo, resumo='', texto=''):
     valor = _valor(tudo)
     if valor:
         fatos['valor'] = valor
+    fatos.update(detalhes(tudo))
     return fatos
+
+
+# ---------- detalhes da ação (lidos do corpo da matéria; redigidos pelo Radar) ----------
+COMO = [
+    ('a partir de uma denúncia', r'den[uú]ncia'),
+    ('durante uma fiscalização', r'fiscaliza[çc][ãa]o|\bblitz\b|barreira policial|posto de fiscaliza'),
+    ('em uma abordagem', r'abordagem|abordad[oa]s?\b|abordaram|abordou'),
+    ('durante patrulhamento', r'patrulhamento|\bronda\b|policiamento ostensivo'),
+    ('após investigação', r'investiga[çc][ãa]o|investiga[çc][õo]es|trabalho de intelig[êe]ncia|monitoramento'),
+    ('com apoio de cão farejador', r'c[ãa]o farejador|c[ãa]es farejadores|\bK-?9\b|faro do c[ãa]o'),
+    ('com uso de escâner', r'esc[âa]ner|scanner|raio-?x'),
+    ('após perseguição', r'persegui[çc][ãa]o|tentou fugir|empreendeu fuga|fugiu'),
+]
+ESCONDERIJO = [
+    ('em um fundo falso', r'fundo falso|fundos falsos'),
+    ('em um compartimento oculto', r'compartimento(?:s)? (?:oculto|falso|secreto|escondido|adaptado|preparado)'),
+    ('no tanque de combustível', r'tanque de combust'),
+    ('dentro de pneus', r'dentro (?:dos|de) pneus|\bestepe\b'),
+    ('no porta-malas', r'porta-?malas'),
+    ('na bagagem', r'\bbagage[mn]s?\b|\bmalas?\b'),
+    ('em meio à carga', r'em meio (?:à|a) carga|misturad[oa]s? (?:à|a|com a) carga|sob a carga|entre a carga'),
+    ('enterrado', r'enterrad[oa]s?'),
+    ('em área de mata', r'\bmata\b|matagal|\bbeira de rio\b'),
+    ('no corpo do suspeito', r'presos? ao corpo|junto ao corpo|amarrad[oa]s? ao corpo|nas roupas'),
+]
+VEICULOS = [('caminhão', r'caminh[ãa]o|carreta|bitrem|rodotrem'), ('ônibus', r'[ôo]nibus'),
+            ('caminhonete', r'caminhonete|camionete|picape|pick-?up'), ('carro', r'\bcarro\b|autom[óo]vel|ve[íi]culo de passeio'),
+            ('motocicleta', r'motocicleta|\bmoto\b'), ('van', r'\bvan\b'), ('embarcação', r'embarca[çc][ãa]o|\bbarco\b|lancha|balsa'),
+            ('aeronave', r'aeronave|avi[ãa]o|monomotor|helic[óo]ptero')]
+CRIMES = [
+    ('tráfico de drogas', r'tr[áa]fico de (?:drogas|entorpecentes)|tr[áa]fico il[íi]cito'),
+    ('associação para o tráfico', r'associa[çc][ãa]o (?:para o|ao) tr[áa]fico'),
+    ('porte ilegal de arma de fogo', r'porte ilegal|porte de arma'),
+    ('posse ilegal de arma de fogo', r'posse ilegal|posse irregular'),
+    ('receptação', r'recepta[çc][ãa]o'),
+    ('contrabando', r'contrabando'),
+    ('descaminho', r'descaminho'),
+    ('lavagem de dinheiro', r'lavagem de (?:dinheiro|capitais)'),
+    ('organização criminosa', r'organiza[çc][ãa]o criminosa'),
+    ('adulteração de sinal de veículo', r'adultera[çc][ãa]o de sinal'),
+    ('crime ambiental', r'crime ambiental|crimes ambientais'),
+]
+PENAS = {  # pena prevista na lei para o crime principal (para contexto, não é condenação)
+    'tráfico de drogas': 'O tráfico de drogas é previsto no artigo 33 da Lei de Drogas (Lei 11.343/2006), com pena de 5 a 15 anos de reclusão.',
+    'associação para o tráfico': 'A associação para o tráfico (artigo 35 da Lei 11.343/2006) tem pena de 3 a 10 anos de reclusão.',
+    'porte ilegal de arma de fogo': 'O porte ilegal de arma de fogo de uso permitido (artigo 14 do Estatuto do Desarmamento) tem pena de 2 a 4 anos; se a arma for de uso restrito, como fuzis, a pena é de 3 a 6 anos (artigo 16).',
+    'posse ilegal de arma de fogo': 'A posse irregular de arma de fogo de uso permitido (artigo 12 do Estatuto do Desarmamento) tem pena de 1 a 3 anos de detenção.',
+    'receptação': 'A receptação (artigo 180 do Código Penal) tem pena de 1 a 4 anos de reclusão.',
+    'contrabando': 'O contrabando (artigo 334-A do Código Penal) tem pena de 2 a 5 anos de reclusão.',
+    'descaminho': 'O descaminho (artigo 334 do Código Penal) tem pena de 1 a 4 anos de reclusão.',
+    'lavagem de dinheiro': 'A lavagem de dinheiro (Lei 9.613/1998) tem pena de 3 a 10 anos de reclusão.',
+    'organização criminosa': 'Integrar organização criminosa (Lei 12.850/2013) tem pena de 3 a 8 anos de reclusão.',
+    'adulteração de sinal de veículo': 'A adulteração de sinal identificador de veículo (artigo 311 do Código Penal) tem pena de 3 a 6 anos de reclusão.',
+}
+LUGAR = r"([A-ZÁÉÍÓÚÂÊÔÃÕ][\wÀ-ÿ'’-]+(?:\s+(?:d[aeo]s?\s+)?[A-ZÁÉÍÓÚÂÊÔÃÕ][\wÀ-ÿ'’-]+){0,3}(?:\s*\([A-Z]{2}\)|/[A-Z]{2})?)"
+ORIGEM = re.compile(r'(?:vind[oa]s?|(?:que )?(?:sa[íi]u|sa[íi]ram|partiu|partiram|vinha) d[eoa]s?|que seguia d[eoa]s?|procedente d[eoa]s?|oriund[oa]s? d[eoa]s?|saindo d[eoa]s?)\s+' + LUGAR)
+DESTINO = re.compile(r'(?:com destino (?:a|ao|à|para)|que seguia para|seria levad[oa]s? para|levaria (?:a droga|a carga|o material)? ?para|iria para)\s+(?:o |a |os |as )?' + LUGAR)
+ENCAMINHAMENTO = re.compile(r'(?:encaminhad|conduzid|levad|apresentad)[oa]s?\s+(?:para|à|ao|a)\s+(?:a\s+|o\s+)?'
+                            r'((?:Delegacia|Central de Flagrantes?|Central de Polícia|Polícia Federal|Polícia Civil|Superintendência|Distrito Policial|DP|Plantão|Depol|Deic|Denarc|Unidade)[^.;,\n]{0,70})')
+IDADE = re.compile(r'\b(\d{2}) anos\b')
+PERIODO = re.compile(r'\b(madrugada|manhã|tarde|noite)\s+(?:dest[ae]|da|do|de)?\s*(?:última\s+)?'
+                     r'(segunda|terça|quarta|quinta|sexta|sábado|domingo)(?:-feira)?', re.I)
+
+
+def detalhes(texto):
+    """Como foi a ação, onde estava o material, veículo, rota, crimes e encaminhamento."""
+    d = {}
+    t = texto or ''
+    como = [rotulo for rotulo, p in COMO if re.search(p, t, re.I)]
+    if como:
+        d['como'] = como[:3]
+    esc = [rotulo for rotulo, p in ESCONDERIJO if re.search(p, t, re.I)]
+    if esc:
+        d['esconderijo'] = esc[:2]
+    for nome, p in VEICULOS:
+        if re.search(p, t, re.I):
+            d['veiculo'] = nome
+            break
+    m = ORIGEM.search(t)
+    if m:
+        d['origem'] = m.group(1).strip()
+    m = DESTINO.search(t)
+    if m and (not d.get('origem') or m.group(1).strip() != d['origem']):
+        d['destino'] = m.group(1).strip()
+    crimes = [nome for nome, p in CRIMES if re.search(p, t, re.I)]
+    if crimes:
+        d['crimes'] = crimes[:4]
+    m = ENCAMINHAMENTO.search(t)
+    if m:
+        d['encaminhamento'] = re.sub(r'\s+', ' ', m.group(1)).strip(' -–')
+    idades = []
+    for m in IDADE.finditer(t[:3000]):
+        v = int(m.group(1))
+        if 12 <= v <= 90 and v not in idades:
+            idades.append(v)
+    if idades:
+        d['idades'] = idades[:4]
+    m = PERIODO.search(t[:1500])
+    if m:
+        dia = m.group(2).lower()
+        d['periodo'] = f'{m.group(1).lower()} de {dia}' + ('' if dia in ('sábado', 'domingo') else '-feira')
+    return d
 
 
 ARTIGO = {'Receita Federal': 'a', 'Ibama': 'o', 'Ministério Público': 'o', 'Exército': 'o', 'FICCO': 'a',
