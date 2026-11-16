@@ -67,9 +67,9 @@ jobs:
           fi
       - name: Coletar feeds dos veículos (link, foto e estado)
         run: python coletar_feeds_estaduais.py
-      - name: Buscador alternativo (Bing Notícias)
+      - name: Bing Notícias (notícias novas e link original das do Google)
         continue-on-error: true
-        run: python buscadores.py --limite-bing 60
+        run: python buscadores.py --limite-bing 60 --resolver 300
       - name: Recuperar links originais
         run: |
           python recuperar_links.py --limite 600 --trabalhadores 4 --diagnostico
@@ -92,4 +92,4 @@ jobs:
           python gerar_feed_site.py
           python compactar_acervo.py
       - name: Salvar (mescla se outra coleta gravou antes)
-        run: python acervo.py salvar 'Atualizar notícias, links e imagens' analise_nacional.json cobertura_historica.json buscadores_cursor.json
+        run: python acervo.py salvar 'Atualizar notícias, links e imagens' analise_nacional.json cobertura_historica.json buscadores_cursor.json feeds_saude.json
