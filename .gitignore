@@ -1,3 +1,12 @@
 __pycache__/
 *.pyc
 *.json.tmp
+
+# Acervo e dados gerados: ficam na release "dados" (acervo.py), não no Git.
+noticias.json
+feed.json
+feed_links.json
+det/
+dados/
+detalhes/
+textos/
