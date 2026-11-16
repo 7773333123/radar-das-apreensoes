@@ -51,6 +51,8 @@ jobs:
             python coletar_feeds_estaduais.py || echo 'Feeds com falha; seguindo.'
             # 15 sites por rodada: as 1.100+ fontes giram em ~1 dia.
             python coletor.py --limite-fontes 15 --limite-estados 4 || echo 'Busca com falha; seguindo.'
+            # Buscadores alternativos (Bing Notícias e GDELT): não depender só do Google.
+            python buscadores.py --limite-bing 15 --gdelt || echo 'Buscadores alternativos com falha; seguindo.'
             python recuperar_links.py --limite 200 --trabalhadores 4 || true
             # Notícias novas primeiro; o restante relê páginas antigas (trecho de abertura, fotos).
             python ler_materias.py --limite 300 --trabalhadores 10 || true
@@ -58,7 +60,7 @@ jobs:
             if [ "$(sha1sum noticias.json | cut -c1-40)" = "$antes" ]; then
               echo 'Nada novo nesta rodada.'
             elif python testes/test_duplicatas.py && python gerar_feed_site.py && python compactar_acervo.py; then
-              python acervo.py salvar "Coleta rápida (rodada $ciclo)" || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
+              python acervo.py salvar "Coleta rápida (rodada $ciclo)" buscadores_cursor.json || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
             else
               echo 'Falha ao gerar o site; nada foi gravado nesta rodada.'
             fi

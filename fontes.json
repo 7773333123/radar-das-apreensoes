@@ -5,6 +5,391 @@
  "observacao": "Domínios de veículos e órgãos que já publicaram notícias de apreensões (extraídos do próprio acervo). São consultados em rodízio no Google Notícias (site:) e têm o RSS procurado por descobrir_feeds.py. \"uf\" só é preenchida quando >= 80% das notícias do site são do mesmo estado.",
  "fontes": [
   {
+   "nome": "Polícia Militar (AC)",
+   "dominio": "pm.ac.gov.br",
+   "uf": "AC",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (AC)",
+   "dominio": "pc.ac.gov.br",
+   "uf": "AC",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Agência de notícias do governo (AC)",
+   "dominio": "agencia.ac.gov.br",
+   "uf": "AC",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Militar (AL)",
+   "dominio": "pm.al.gov.br",
+   "uf": "AL",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (AL)",
+   "dominio": "pc.al.gov.br",
+   "uf": "AL",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (AL)",
+   "dominio": "ssp.al.gov.br",
+   "uf": "AL",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Militar (AP)",
+   "dominio": "pm.ap.gov.br",
+   "uf": "AP",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (AP)",
+   "dominio": "policiacivil.ap.gov.br",
+   "uf": "AP",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (AP)",
+   "dominio": "sejusp.ap.gov.br",
+   "uf": "AP",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (AM)",
+   "dominio": "policiacivil.am.gov.br",
+   "uf": "AM",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (AM)",
+   "dominio": "ssp.am.gov.br",
+   "uf": "AM",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (BA)",
+   "dominio": "policiacivil.ba.gov.br",
+   "uf": "BA",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (BA)",
+   "dominio": "ssp.ba.gov.br",
+   "uf": "BA",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (CE)",
+   "dominio": "sspds.ce.gov.br",
+   "uf": "CE",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Militar (DF)",
+   "dominio": "pmdf.df.gov.br",
+   "uf": "DF",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (DF)",
+   "dominio": "ssp.df.gov.br",
+   "uf": "DF",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (ES)",
+   "dominio": "pc.es.gov.br",
+   "uf": "ES",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (ES)",
+   "dominio": "sesp.es.gov.br",
+   "uf": "ES",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Militar (GO)",
+   "dominio": "pm.go.gov.br",
+   "uf": "GO",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (GO)",
+   "dominio": "policiacivil.go.gov.br",
+   "uf": "GO",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (GO)",
+   "dominio": "seguranca.go.gov.br",
+   "uf": "GO",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Militar (MA)",
+   "dominio": "pm.ma.gov.br",
+   "uf": "MA",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Militar (MS)",
+   "dominio": "pm.ms.gov.br",
+   "uf": "MS",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (MG)",
+   "dominio": "policiacivil.mg.gov.br",
+   "uf": "MG",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (MG)",
+   "dominio": "seguranca.mg.gov.br",
+   "uf": "MG",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (PA)",
+   "dominio": "policiacivil.pa.gov.br",
+   "uf": "PA",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (PA)",
+   "dominio": "segup.pa.gov.br",
+   "uf": "PA",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Agência de notícias do governo (PA)",
+   "dominio": "agenciapara.com.br",
+   "uf": "PA",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Militar (PB)",
+   "dominio": "pm.pb.gov.br",
+   "uf": "PB",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (PB)",
+   "dominio": "policiacivil.pb.gov.br",
+   "uf": "PB",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Governo do estado (PB)",
+   "dominio": "paraiba.pb.gov.br",
+   "uf": "PB",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (PR)",
+   "dominio": "seguranca.pr.gov.br",
+   "uf": "PR",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Agência de notícias do governo (PR)",
+   "dominio": "aen.pr.gov.br",
+   "uf": "PR",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Militar (PE)",
+   "dominio": "pm.pe.gov.br",
+   "uf": "PE",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (PE)",
+   "dominio": "policiacivil.pe.gov.br",
+   "uf": "PE",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (PE)",
+   "dominio": "sds.pe.gov.br",
+   "uf": "PE",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (PI)",
+   "dominio": "pc.pi.gov.br",
+   "uf": "PI",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (PI)",
+   "dominio": "ssp.pi.gov.br",
+   "uf": "PI",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Militar (RJ)",
+   "dominio": "pmerj.rj.gov.br",
+   "uf": "RJ",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (RJ)",
+   "dominio": "policiacivil.rj.gov.br",
+   "uf": "RJ",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Militar (RN)",
+   "dominio": "pm.rn.gov.br",
+   "uf": "RN",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (RN)",
+   "dominio": "policiacivil.rn.gov.br",
+   "uf": "RN",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (RN)",
+   "dominio": "sesed.rn.gov.br",
+   "uf": "RN",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (RO)",
+   "dominio": "pc.ro.gov.br",
+   "uf": "RO",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (RO)",
+   "dominio": "sesdec.ro.gov.br",
+   "uf": "RO",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Governo do estado (RO)",
+   "dominio": "rondonia.ro.gov.br",
+   "uf": "RO",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Militar (RR)",
+   "dominio": "pm.rr.gov.br",
+   "uf": "RR",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (RR)",
+   "dominio": "pc.rr.gov.br",
+   "uf": "RR",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (RR)",
+   "dominio": "sesp.rr.gov.br",
+   "uf": "RR",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (SC)",
+   "dominio": "ssp.sc.gov.br",
+   "uf": "SC",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (SP)",
+   "dominio": "ssp.sp.gov.br",
+   "uf": "SP",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Civil (SE)",
+   "dominio": "pc.se.gov.br",
+   "uf": "SE",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Polícia Militar (TO)",
+   "dominio": "pm.to.gov.br",
+   "uf": "TO",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Secretaria de Segurança (TO)",
+   "dominio": "ssp.to.gov.br",
+   "uf": "TO",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
+   "nome": "Governo do estado (TO)",
+   "dominio": "to.gov.br",
+   "uf": "TO",
+   "noticias_no_acervo": 0,
+   "origem": "polícias e secretarias estaduais (nov/2026)"
+  },
+  {
    "nome": "Correio do Estado",
    "dominio": "correiodoestado.com.br",
    "uf": "MS",
@@ -7876,5 +8261,5 @@
    "status": "pendente de verificar domínio e feed"
   }
  ],
- "total": 1149
+ "total": 1204
 }

@@ -27,6 +27,13 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; RadarDasApreensoes/1.0; +http
            'Accept': 'text/html,application/xhtml+xml,application/rss+xml,application/xml;q=0.9,*/*;q=0.8'}
 CAMINHOS = ('/feed/', '/feed', '/rss', '/rss.xml', '/feed.xml', '/index.xml', '/rss/', '/feeds/posts/default',
             '/?feed=rss2', '/noticias/feed/', '/ultimas-noticias/feed/', '/RSS')
+# Feeds só da editoria de polícia/segurança: muito mais matérias de apreensão por
+# item do que o feed geral (que mistura esporte, política etc.).
+CAMINHOS_POLICIA = ('/policia/feed/', '/category/policia/feed/', '/categoria/policia/feed/', '/editoria/policia/feed/',
+                    '/policial/feed/', '/category/policial/feed/', '/seguranca/feed/', '/category/seguranca/feed/',
+                    '/noticias/policia/feed/', '/cidades/policia/feed/', '/rss/policia', '/policia/rss',
+                    '/category/seguranca-publica/feed/', '/seguranca-publica/feed/', '/category/noticias/policia/feed/')
+LINK_POLICIA = re.compile(r'href=["\']([^"\']*/(?:category/|categoria/|editoria/)?(?:policia|policial|seguranca|seguranca-publica)/?)["\']', re.I)
 LINK_RSS = re.compile(r'<link\b[^>]*type=["\']application/(?:rss|atom)\+xml["\'][^>]*>', re.I)
 
 
@@ -44,8 +51,9 @@ def itens_do_feed(conteudo):
 
 
 def procurar(fonte):
+    """Feed geral e, se houver, o da editoria de polícia (lista de 0 a 2 feeds)."""
     dominio = fonte['dominio']
-    candidatos = []
+    candidatos, policia = [], []
     for base in (f'https://{dominio}/', f'https://www.{dominio}/'):
         try:
             final, pagina = baixar(base, limite=600_000)
@@ -57,21 +65,31 @@ def procurar(fonte):
             if m and 'comments' not in m.group(1).lower():
                 candidatos.append(urljoin(final, html.unescape(m.group(1))))
         candidatos += [urljoin(final, c) for c in CAMINHOS]
+        for m in LINK_POLICIA.findall(texto)[:3]:
+            secao = urljoin(final, html.unescape(m)).rstrip('/')
+            if dominio in secao:
+                policia += [secao + '/feed/', secao + '/rss']
+        policia += [urljoin(final, c) for c in CAMINHOS_POLICIA]
         break
-    vistos = set()
-    for url in candidatos:
-        if url in vistos:
-            continue
-        vistos.add(url)
-        try:
-            final, conteudo = baixar(url)
-        except Exception:
-            continue
-        n = itens_do_feed(conteudo)
-        if n >= 5:
-            return {'nome': fonte.get('nome') or dominio, 'fonte': fonte.get('nome') or dominio,
-                    'uf': fonte.get('uf', ''), 'url': final, 'dominio': dominio, 'itens': n}
-    return None
+    achados = []
+    for lista, sufixo, minimo in ((candidatos, '', 5), (policia, ' (Polícia)', 3)):
+        vistos = set()
+        for url in lista:
+            if url in vistos:
+                continue
+            vistos.add(url)
+            try:
+                final, conteudo = baixar(url)
+            except Exception:
+                continue
+            n = itens_do_feed(conteudo)
+            if n >= minimo and not any(a['url'] == final for a in achados):
+                nome = (fonte.get('nome') or dominio) + sufixo
+                achados.append({'nome': nome, 'fonte': fonte.get('nome') or dominio,
+                                'uf': fonte.get('uf', ''), 'url': final, 'dominio': dominio, 'itens': n,
+                                'editoria': 'policia' if sufixo else 'geral'})
+                break
+    return achados
 
 
 def main():
@@ -87,16 +105,15 @@ def main():
     with ThreadPoolExecutor(max_workers=args.trabalhadores) as pool:
         for futuro in as_completed([pool.submit(procurar, f) for f in fontes]):
             try:
-                r = futuro.result()
+                achados += futuro.result() or []
             except Exception:
-                r = None
-            if r:
-                achados.append(r)
+                pass
     achados.sort(key=lambda f: f['dominio'])
     SAIDA.write_text(json.dumps({'atualizado_em': datetime.now(timezone.utc).isoformat(),
                                  'sites_verificados': len(fontes), 'feeds': achados},
                                 ensure_ascii=False, indent=1), encoding='utf-8')
-    print(f'Feeds encontrados: {len(achados)} de {len(fontes)} sites -> {SAIDA.name}')
+    print(f'Feeds encontrados: {len(achados)} de {len(fontes)} sites '
+          f'({sum(1 for a in achados if a.get("editoria") == "policia")} de editoria de polícia) -> {SAIDA.name}')
 
 
 if __name__ == '__main__':
