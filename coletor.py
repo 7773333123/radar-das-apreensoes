@@ -166,6 +166,19 @@ def preencher_ufs(itens, fontes):
     return alteradas
 
 
+def carregar_polos():
+    arquivo = Path(__file__).resolve().parent / 'polos_fronteira.json'
+    try:
+        return json.loads(arquivo.read_text(encoding='utf-8')).get('polos', [])
+    except (OSError, ValueError):
+        return []
+
+
+def termos_polo(polo):
+    """("Ponta Porã" OR "Pedro Juan Caballero" OR ...) para a busca do Google Notícias."""
+    return '(' + ' OR '.join(f'"{t}"' for t in polo.get('termos', [])[:9]) + ')'
+
+
 def selecionar_rodizio(itens, limite, cursor):
     """Percorre a lista continuamente, sem pular blocos entre execuções."""
     if not itens or limite <= 0:
@@ -402,6 +415,7 @@ def executar():
     parser.add_argument('--mes', type=int, choices=range(1, 13), metavar='1-12', help='Mês específico da busca histórica (opcional)')
     parser.add_argument('--limite-fontes', type=int, default=24, help='Fontes extras consultadas por execução (padrão: 24)')
     parser.add_argument('--limite-estados', type=int, default=9, help='Estados consultados por execução (padrão: 9)')
+    parser.add_argument('--limite-fronteira', type=int, default=5, help='Polos de fronteira consultados por execução (padrão: 5)')
     args = parser.parse_args()
     hoje = datetime.now(timezone.utc)
     ano_atual = hoje.year
@@ -417,6 +431,8 @@ def executar():
     existentes = ler_existentes()
     proximo_estado = estado_anterior.get('rodizio_estados_proximo', 0)
     proxima_fonte = estado_anterior.get('rodizio_fontes_proximo', 0)
+    proximo_polo = estado_anterior.get('rodizio_fronteira_proximo', 0)
+    polos = carregar_polos()
     registros, duplicadas_anteriores = deduplicar(existentes)
     extras = carregar_fontes_extras()
     print(f'Duplicatas já existentes descartadas: {duplicadas_anteriores}')
@@ -432,6 +448,13 @@ def executar():
                 consultas.append((f'{termos} after:{inicio} before:{seguinte}', categoria))
             for nome, dominio in FONTES.items():
                 consultas.append((f'{TERMOS_APREENSAO} site:{dominio} after:{inicio} before:{seguinte}', None))
+        # Polos de fronteira: por semestre (a busca devolve até ~100 resultados por consulta).
+        if not args.mes:
+            for inicio, fim in ((f'{args.ano}-01-01', f'{args.ano}-07-01'), (f'{args.ano}-07-01', f'{args.ano + 1}-01-01')):
+                if inicio > hoje.strftime('%Y-%m-%d'):
+                    continue
+                for polo in polos:
+                    consultas.append((f'{TERMOS_APREENSAO} {termos_polo(polo)} after:{inicio} before:{fim}', None))
     else:
         for categoria, termos in TEMAS.items():
             consultas.append((termos + ' Brasil when:7d', categoria))
@@ -442,6 +465,10 @@ def executar():
         estados_selecionados, proximo_estado = selecionar_rodizio(ESTADOS, args.limite_estados, proximo_estado)
         for uf in estados_selecionados:
             consultas.append((f'{TERMOS_APREENSAO} "{uf}" polícia when:7d', None))
+        # Fronteiras e corredores do tráfico: onde ocorre a maior parte das apreensões.
+        polos_selecionados, proximo_polo = selecionar_rodizio(polos, args.limite_fronteira, proximo_polo)
+        for polo in polos_selecionados:
+            consultas.append((f'{TERMOS_APREENSAO} {termos_polo(polo)} when:7d', None))
         fontes_selecionadas, proxima_fonte = selecionar_rodizio(extras, args.limite_fontes, proxima_fonte)
         for fonte in fontes_selecionadas:
             consultas.append((f'{TERMOS_APREENSAO} site:{fonte["dominio"]} when:7d', None))
@@ -476,6 +503,7 @@ def executar():
         'total': len(noticias), 'noticias': noticias,
         'rodizio_estados_proximo': proximo_estado,
         'rodizio_fontes_proximo': proxima_fonte,
+        'rodizio_fronteira_proximo': proximo_polo,
     }
     temporario = ARQUIVO.with_suffix('.json.tmp')
     temporario.write_text(json.dumps(resultado, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
