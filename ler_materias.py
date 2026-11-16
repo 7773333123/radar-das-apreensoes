@@ -456,7 +456,10 @@ def main():
         if url and int(n.get('tentativas_leitura') or 0) < args.max_tentativas:
             pendentes.append((n, url))
     # Mais recentes primeiro.
-    pendentes.sort(key=lambda p: p[0].get('data_iso') or '', reverse=True)
+    # Notas de órgãos oficiais primeiro (ganham o texto completo); depois as mais recentes.
+    def oficial(n, url):
+        return bool(OFICIAL.search(urlsplit(url).hostname or '') or OFICIAL.search(str(n.get('dominio_fonte') or '')))
+    pendentes.sort(key=lambda p: (oficial(*p), p[0].get('data_iso') or ''), reverse=True)
     lote = pendentes[:max(0, args.limite)]
     print(f'Notícias com link original ainda não lidas: {len(pendentes)}; lendo agora: {len(lote)}', flush=True)
     fotos = textos = resumos = falhas = galerias = datas = 0
