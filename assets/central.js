@@ -7,11 +7,13 @@ const DIA = 86400000;
 const st = { ctx: null, filtro: { q: '', uf: '', cat: '', ano: '' }, lista: [], limite: POR_PAGINA };
 
 // ---------- blocos de matéria ----------
+// Linha fina curta: só o começo do resumo do veículo, cortado no fim de uma palavra.
+const curto = (t, max = 180) => (t.length <= max ? t : t.slice(0, max).replace(/\s+\S*$/, '') + '…');
 const story = (n, { dek = false, img = true, cont = false } = {}) =>
   `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}">${img ? midia(n, { contador: cont }) : ''}` +
-  `${kickerHTML(n, st.ctx, st.filtro.cat || null)}<h3 class="headline">${esc(n.titulo)}</h3>${dek && n.resumo ? `<p class="dek">${esc(n.resumo)}</p>` : ''}${metaHTML(n)}</a>`;
+  `${kickerHTML(n, st.ctx, st.filtro.cat || null)}<h3 class="headline">${esc(n.titulo)}</h3>${dek && n.resumo ? `<p class="dek">${esc(curto(n.resumo))}</p>` : ''}${metaHTML(n)}</a>`;
 const linha = (n) => `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx, st.filtro.cat || null)}` +
-  `<h3 class="headline">${esc(n.titulo)}</h3>${n.resumo ? `<p class="dek">${esc(n.resumo)}</p>` : ''}${metaHTML(n)}</div>${midia(n)}</a></li>`;
+  `<h3 class="headline">${esc(n.titulo)}</h3>${n.resumo ? `<p class="dek">${esc(curto(n.resumo, 120))}</p>` : ''}${metaHTML(n)}</div>${midia(n)}</a></li>`;
 
 // ---------- filtros na URL (compatível com links antigos) ----------
 function lerHash() {
