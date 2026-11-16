@@ -1,5 +1,5 @@
 /* Central de notícias: manchete, destaques, Em alta, panorama, editorias e busca. */
-import { $, esc, num, fold, debounce, relativo, horaBR, qtd, ESTADOS, NOME_UF, CURTO, carregarFeed, iniciarCabecalho, midia, renderMapa, ranking } from './core.js';
+import { $, esc, num, fold, debounce, relativo, horaBR, qtd, ESTADOS, NOME_UF, CURTO, carregarFeed, iniciarCabecalho, midia, renderMapa, ranking, urlNoticia } from './core.js';
 import { iniciarLeitor, kickerHTML, metaHTML } from './leitor.js';
 
 const POR_PAGINA = 20;
@@ -8,14 +8,17 @@ const st = { ctx: null, filtro: { q: '', uf: '', cat: '', ano: '' }, lista: [], 
 
 // ---------- blocos de matéria ----------
 const story = (n, { dek = false, img = true, cont = false } = {}) =>
-  `<a class="story" href="#noticia-${n.i}" data-read="${n.i}">${img ? midia(n, { contador: cont }) : ''}` +
+  `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}">${img ? midia(n, { contador: cont }) : ''}` +
   `${kickerHTML(n, st.ctx, st.filtro.cat || null)}<h3 class="headline">${esc(n.titulo)}</h3>${dek && n.resumo ? `<p class="dek">${esc(n.resumo)}</p>` : ''}${metaHTML(n)}</a>`;
-const linha = (n) => `<li><a class="story" href="#noticia-${n.i}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx, st.filtro.cat || null)}` +
+const linha = (n) => `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx, st.filtro.cat || null)}` +
   `<h3 class="headline">${esc(n.titulo)}</h3>${n.resumo ? `<p class="dek">${esc(n.resumo)}</p>` : ''}${metaHTML(n)}</div>${midia(n)}</a></li>`;
 
 // ---------- filtros na URL (compatível com links antigos) ----------
 function lerHash() {
   const p = new URLSearchParams(location.hash.slice(1));
+  // Busca vinda das páginas próprias (/?q=...): passa para o formato da Central.
+  const busca = new URLSearchParams(location.search).get('q');
+  if (busca && !p.get('q')) p.set('q', busca);
   const legado = location.hash.match(/^#estado-(.+)$/);
   let uf = (p.get('uf') || '').toUpperCase();
   if (legado) { const v = decodeURIComponent(legado[1]); uf = NOME_UF[v.toUpperCase()] ? v.toUpperCase() : (ESTADOS.find(([, n]) => n === v) || [''])[0]; }
@@ -80,12 +83,12 @@ function renderInicio() {
   $('inicio').innerHTML =
     `<section class="lead" aria-label="Destaques">` +
       `<div class="lead-main">${story(manchete, { dek: true, cont: true }).replace('<h3 class="headline">', '<h2 class="headline">').replace('</h3>', '</h2>')}</div>` +
-      `<div class="lead-side">${lado.map((n) => `<a class="story" href="#noticia-${n.i}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx)}<h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a>`).join('')}</div>` +
+      `<div class="lead-side">${lado.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx)}<h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a>`).join('')}</div>` +
     `</section>` +
     `<div class="section-head"><h2>Em alta e em números</h2><a href="observatorio">Abrir o Observatório →</a></div>` +
     `<section class="band">` +
       `<div class="panel"><h3>Em alta</h3>${alta.length ? `<ol class="trend">${alta.map((n) =>
-        `<li><a class="story" href="#noticia-${n.i}" data-read="${n.i}"><h4 class="headline">${esc(n.titulo)}</h4><div class="meta"><span class="sources">${n.outras.length + 1} veículos</span> · ${esc(relativo(n.data))}</div></a></li>`).join('')}</ol>`
+        `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><h4 class="headline">${esc(n.titulo)}</h4><div class="meta"><span class="sources">${n.outras.length + 1} veículos</span> · ${esc(relativo(n.data))}</div></a></li>`).join('')}</ol>`
         : '<p class="note">Sem matérias repercutidas nas últimas 48 horas.</p>'}<p class="note">Matérias publicadas por mais veículos nas últimas 24 horas.</p></div>` +
       `<div class="panel"><h3>Últimos 30 dias</h3><dl class="kpis">` +
         `<div class="kpi"><dt>Notícias</dt><dd>${num(r30.length)}</dd></div>` +
@@ -103,8 +106,8 @@ function renderInicio() {
       const resto = livres.filter((n) => n !== primeira && !usados.has(n)).slice(0, 3);
       resto.forEach((n) => usados.add(n));
       return `<section class="editoria"><div class="section-head"><h2>${esc(st.ctx.categorias[c])}</h2><a href="#cat=${c}" data-cat="${c}">Ver tudo →</a></div>` +
-        `<div class="first"><a class="story" href="#noticia-${primeira.i}" data-read="${primeira.i}">${midia(primeira)}<div>${kickerHTML(primeira, st.ctx, c)}<h3 class="headline">${esc(primeira.titulo)}</h3>${metaHTML(primeira)}</div></a></div>` +
-        `<ul>${resto.map((n) => `<li><a class="story" href="#noticia-${n.i}" data-read="${n.i}"><h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</a></li>`).join('')}</ul></section>`;
+        `<div class="first"><a class="story" href="${urlNoticia(primeira)}" data-read="${primeira.i}">${midia(primeira)}<div>${kickerHTML(primeira, st.ctx, c)}<h3 class="headline">${esc(primeira.titulo)}</h3>${metaHTML(primeira)}</div></a></div>` +
+        `<ul>${resto.map((n) => `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</a></li>`).join('')}</ul></section>`;
     }).join('')}</div>`;
   renderMapa($('mapaInicio'), porUf, { rotulo: 'Notícias por estado nos últimos 30 dias', formato: (v) => `${num(v)} notícias`, aoClicar: (uf) => definir({ uf }) });
 }

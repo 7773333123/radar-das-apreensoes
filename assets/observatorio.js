@@ -1,5 +1,5 @@
 /* Observatório: KPIs, mapa, evolução, rankings e maiores apreensões, com filtros na URL. */
-import { $, esc, num, qtd, dataBR, ESTADOS, NOME_UF, carregarFeed, iniciarCabecalho, renderMapa, ranking, serie } from './core.js';
+import { $, esc, num, qtd, dataBR, ESTADOS, NOME_UF, carregarFeed, iniciarCabecalho, renderMapa, ranking, serie, urlNoticia } from './core.js';
 import { iniciarLeitor } from './leitor.js';
 
 const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
@@ -108,7 +108,7 @@ function render() {
     : [...sel].filter((n) => M.valor(n) > 0).sort((a, b) => M.valor(b) - M.valor(a)).slice(0, 10);
   $('oTopTitulo').textContent = f.m === 'n' ? 'Matérias mais repercutidas' : `Maiores apreensões de ${M.nome.toLowerCase()} noticiadas`;
   $('oTop').innerHTML = top.length ? top.map((n) =>
-    `<li><a href="./#noticia-${n.i}" data-read="${n.i}"><span class="q">${esc(f.m === 'n' ? `${n.outras.length + 1} veículos` : qtd(M.valor(n), M.un))}</span>` +
+    `<li><a href="${urlNoticia(n)}" data-read="${n.i}"><span class="q">${esc(f.m === 'n' ? `${n.outras.length + 1} veículos` : qtd(M.valor(n), M.un))}</span>` +
     `<span><span class="t">${esc(n.titulo)}</span><br><span class="m">${esc(dataBR(n.data))} · ${esc(n.uf ? NOME_UF[n.uf] : 'Estado não identificado')} · ${esc(n.fonte)}</span></span></a></li>`).join('')
     : '<li class="note">Sem registros para este recorte.</li>';
 }

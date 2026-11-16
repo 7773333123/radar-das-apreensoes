@@ -5,25 +5,99 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" }
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        }
       ]
     },
     {
       "source": "/(feed|feed_links)\\.json",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, s-maxage=300, must-revalidate" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=300, must-revalidate"
+        }
+      ]
     },
     {
       "source": "/assets/(.*)\\.(js|css|json)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     },
     {
       "source": "/(assets/fonts|img)/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "api/pagina.js": {
+      "includeFiles": "{feed.json,feed_links.json,det/**}",
+      "memory": 1024,
+      "maxDuration": 10
+    },
+    "api/sitemap.js": {
+      "includeFiles": "feed.json",
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/noticia/:caminho",
+      "destination": "/api/pagina?tipo=noticia&id=:caminho&caminho=:caminho"
+    },
+    {
+      "source": "/estado/:uf",
+      "destination": "/api/pagina?tipo=estado&id=:uf"
+    },
+    {
+      "source": "/categoria/:tipo",
+      "destination": "/api/pagina?tipo=categoria&id=:tipo"
+    },
+    {
+      "source": "/relatorios",
+      "destination": "/api/pagina?tipo=relatorios"
+    },
+    {
+      "source": "/relatorio/:mes",
+      "destination": "/api/pagina?tipo=relatorio&id=:mes"
+    },
+    {
+      "source": "/(sobre|termos|privacidade|remocao)",
+      "destination": "/api/pagina?tipo=institucional&id=$1"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
     }
   ]
 }
