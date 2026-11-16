@@ -30,7 +30,7 @@ import unicodedata
 from pathlib import Path
 
 from localizar_uf import inferir_uf
-from resumo_fatos import extrair
+from resumo_fatos import anonimizar, extrair, nomes_dos_presos
 from contexto import resumo_secoes
 from estatisticas import MATERIAIS, ORGAOS_NOMES, enriquecer, exportar, quantidades
 
@@ -193,6 +193,12 @@ def main():
         if len(fotos) > 1:
             item['g'] = len(fotos)
         resumo = str(n.get('descricao') or n.get('resumo') or '').strip()
+        # Imprensa: nome completo de preso vira iniciais no que o Radar exibe (resumo
+        # e trecho da fonte). Notas oficiais ficam como o órgão publicou.
+        oficial = n.get('licenca_texto') == 'oficial' or bool(re.search(r'\.(?:gov|jus|mp|leg|def)\.br$', str(n.get('dominio_fonte') or '')))
+        nomes_presos = [] if oficial else nomes_dos_presos(resumo + '. ' + str(n.get('trecho') or ''))
+        if nomes_presos:
+            resumo = anonimizar(resumo, nomes_presos)
         if resumo:
             item['r'] = resumo[:700]  # resumo inteiro publicado pela fonte
         uf = inferir_uf(n, fontes)
@@ -204,7 +210,7 @@ def main():
         detalhe = {}
         if paragrafos and n.get('licenca_texto'):
             item['x'] = 1
-            detalhe.update(p=paragrafos, l=str(n['licenca_texto']))
+            detalhe.update(p=[anonimizar(x, nomes_presos) for x in paragrafos] if nomes_presos else paragrafos, l=str(n['licenca_texto']))
         if len(fotos) > 1:
             detalhe['g'] = fotos
         # Resumo do Radar: fatos da página original (ler_materias.py) ou, na falta
@@ -222,6 +228,8 @@ def main():
         fatos = dict(n.get('fatos') or do_titulo or {})
         # Detalhes da ação (como, esconderijo, rota, crimes, encaminhamento...)
         # também a partir da abertura guardada, sem esperar a releitura da página.
+        if isinstance(fatos.get('mandados'), str):
+            fatos['mandados'] = re.sub(r'^1 mandados', '1 mandado', fatos['mandados'])
         trecho_salvo = str(n.get('trecho') or '')
         if trecho_salvo:
             for k, v in extrair(titulo, resumo, trecho_salvo).items():
@@ -240,6 +248,8 @@ def main():
             detalhe['f'] = fatos
         # O que diz a fonte: abertura da reportagem (citação com crédito e link).
         trecho = str(n.get('trecho') or '').strip()
+        if nomes_presos:
+            trecho = anonimizar(trecho, nomes_presos)
         if trecho and len(trecho) > len(resumo):
             detalhe['tr'] = trecho
             if n.get('tamanho_texto'):

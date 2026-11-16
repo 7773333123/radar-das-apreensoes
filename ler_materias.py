@@ -105,6 +105,30 @@ def corpo_da_materia(pagina):
     return melhor[:40] if sum(map(len, melhor)) > 400 else []
 
 
+def corpo_estruturado(pagina):
+    """Corpo da matéria preservando a edição do órgão: intertítulos ('## '), itens de lista ('• ')
+    e parágrafos, na ordem original. Usado só para texto oficial ou de licença aberta."""
+    regiao = regiao_da_materia(pagina)
+    if not regiao:
+        return []
+    saida = []
+    for m in re.finditer(r'<(p|h2|h3|h4|li|blockquote)\b[^>]*>(.*?)</\1>', regiao, re.S | re.I):
+        tag, texto = m.group(1).lower(), limpar(m.group(2))
+        if len(texto) < 2 or CONTATO.match(texto) or RUIDO.match(texto):
+            continue
+        if tag in ('h2', 'h3', 'h4'):
+            saida.append('## ' + texto)
+        elif tag == 'li':
+            saida.append('• ' + texto)
+        else:
+            saida.append(texto)
+    if sum(len(x) for x in saida if not x.startswith('## ')) < 200:
+        return []
+    while saida and saida[-1].startswith('## '):  # intertítulo solto no fim (ex.: "Leia também")
+        saida.pop()
+    return saida[:60]
+
+
 def corpo_limpo(paragrafos):
     """Parágrafos da reportagem, sem chamadas, assinaturas e manchetes de outras matérias."""
     saida = []
@@ -402,10 +426,12 @@ def ler(url, timeout):
             resultado['texto'] = texto
             resultado['licenca'] = limpar(licenca.group(0))
     elif OFICIAL.search(urlsplit(final).hostname or ''):
-        texto = corpo_limpo(corpo_da_materia(pagina))
+        # Nota oficial: reproduzida como o órgão editou (intertítulos, listas, parágrafos).
+        texto = corpo_estruturado(pagina) or corpo_limpo(corpo_da_materia(pagina))
         if texto:
             resultado['texto'] = texto
             resultado['licenca'] = 'oficial'
+            resultado['texto_v'] = 2
     return resultado
 
 
@@ -420,7 +446,11 @@ def main():
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
     pendentes = []
     for n in noticias:
-        if not isinstance(n, dict) or int(n.get('materia_lida_v') or 0) >= VERSAO:
+        if not isinstance(n, dict):
+            continue
+        # Notas oficiais lidas antes da versão estruturada são relidas (texto como o órgão editou).
+        oficial_antigo = n.get('licenca_texto') == 'oficial' and int(n.get('texto_v') or 0) < 2
+        if int(n.get('materia_lida_v') or 0) >= VERSAO and not oficial_antigo:
             continue
         url = n.get('url_original') if valida(n.get('url_original')) else (n.get('url') if valida(n.get('url')) else '')
         if url and int(n.get('tentativas_leitura') or 0) < args.max_tentativas:
@@ -476,6 +506,8 @@ def main():
             if r.get('texto'):
                 n['texto_integral'] = r['texto']
                 n['licenca_texto'] = r['licenca']
+                if r.get('texto_v'):
+                    n['texto_v'] = r['texto_v']
                 textos += 1
     if lote:
         tmp = ARQUIVO.with_suffix('.json.tmp')

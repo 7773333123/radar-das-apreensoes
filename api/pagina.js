@@ -99,6 +99,41 @@ ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(
 <body data-pagina="estatica">${cabecalho(atual)}<main id="conteudo" class="wrap" tabindex="-1">${corpo}</main>${RODAPE}</body></html>`;
 }
 
+// Texto completo (nota oficial ou licença aberta) como o órgão editou:
+// "## " = intertítulo, "• " = item de lista, o resto são parágrafos.
+function textoOriginalHTML(paragrafos) {
+  let html = '', lista = [];
+  const fechar = () => { if (lista.length) { html += `<ul class="tx-lista">${lista.join('')}</ul>`; lista = []; } };
+  for (const p of paragrafos) {
+    if (p.startsWith('• ')) { lista.push(`<li>${esc(p.slice(2))}</li>`); continue; }
+    fechar();
+    html += p.startsWith('## ') ? `<h3 class="tx-sub">${esc(p.slice(3))}</h3>` : `<p class="reader-text">${esc(p)}</p>`;
+  }
+  fechar();
+  return html;
+}
+
+// Resumo do Radar: "O que aconteceu" em destaque; ação, envolvidos e órgãos em
+// cartões; a lei recolhida; quem noticiou em etiquetas.
+const ICONE_SECAO = {
+  'Como foi a ação': '<path d="M3 12h4l3-7 4 14 3-7h4"/>',
+  'Envolvidos e próximos passos': '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+  'Quem atuou': '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',
+};
+function radarHTML(secoes, veiculos) {
+  if (!secoes.length) return '';
+  const icone = (t) => (ICONE_SECAO[t] ? `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONE_SECAO[t]}</svg>` : '');
+  const lead = secoes.find(([t]) => t === 'O que aconteceu' || !t);
+  const cartoes = secoes.filter(([t]) => ICONE_SECAO[t]);
+  const lei = secoes.find(([t]) => t === 'O que diz a lei');
+  return `<section class="bloco radar"><header class="bloco-cab"><h2>Resumo do Radar</h2><p>Redigido pelo Radar a partir dos fatos publicados</p></header>` +
+    (lead ? `<p class="rs-lead">${esc(lead[1])}</p>` : '') +
+    (cartoes.length ? `<div class="rs-cards">${cartoes.map(([t, x]) => `<section class="rs-card"><h3>${icone(t)}${esc(t)}</h3><p>${esc(x)}</p></section>`).join('')}</div>` : '') +
+    (lei ? `<details class="rs-lei"><summary><h3>O que diz a lei</h3><span>ver</span></summary><p>${esc(lei[1])}</p></details>` : '') +
+    (veiculos.length > 1 ? `<div class="rs-veiculos"><h3>Quem noticiou</h3><ul>${veiculos.map((v) => `<li>${esc(v)}</li>`).join('')}</ul></div>` : '') +
+    '</section>';
+}
+
 function kicker(n, cats) {
   const c = (n.c || [])[0];
   return `<div class="kicker">${c != null ? `<a href="/categoria/${SLUG_CAT[c]}">${esc(cats[c])}</a>` : 'Em classificação'}` +
@@ -142,7 +177,8 @@ function paginaNoticia(i) {
     ['Apreendido', (f.apreendido || []).join(', ')],
     ['Onde', [(f.cidades || []).join(', ') || ESTADOS[n.uf] || '', f.rodovia ? `rodovia ${f.rodovia}` : ''].filter(Boolean).join(' · ')],
     ['Quem atuou', (f.orgaos || []).join(', ')],
-    ['Presos', f.presos ? `${num(f.presos)} ${f.presos === 1 ? 'pessoa' : 'pessoas'}` : (f.presos_texto ? 'Sim, segundo a reportagem' : '')],
+    ['Presos', (f.presos_iniciais && f.presos_iniciais.length ? f.presos_iniciais.join(', ') + (f.presos > f.presos_iniciais.length ? ` (${num(f.presos)} no total)` : '')
+      : f.presos ? `${num(f.presos)} ${f.presos === 1 ? 'pessoa' : 'pessoas'}` : (f.presos_texto ? 'Sim, segundo a reportagem' : ''))],
     ['Como', (f.como || []).join(', ')],
     ['Onde estava', [(f.esconderijo || []).join(', '), f.veiculo || ''].filter(Boolean).join(' · ')],
     ['Rota', [f.origem ? `de ${f.origem}` : '', f.destino ? `para ${f.destino}` : ''].filter(Boolean).join(' ')],
@@ -151,15 +187,12 @@ function paginaNoticia(i) {
     ['Publicado em', fmtData(d, true)],
   ].filter(([, v]) => v);
   const secoes = Array.isArray(t.sx) && t.sx.length ? t.sx : (t.s ? String(t.s).split(/\n{2,}/).filter(Boolean).map((p) => ['', p]) : []);
-  const radar = secoes.length ? `<section class="bloco radar"><header class="bloco-cab"><h2>Resumo do Radar</h2><p>Redigido pelo Radar a partir dos fatos publicados</p></header>` +
-    `<div class="rs">${secoes.map(([tit, txt]) => (tit === 'O que diz a lei'
-        ? `<details class="rs-sec rs-lei"><summary><h3>${esc(tit)}</h3><span>ver</span></summary><p class="reader-text">${esc(txt)}</p></details>`
-        : `<section class="rs-sec">${tit ? `<h3>${esc(tit)}</h3>` : ''}<p class="reader-text">${esc(txt)}</p></section>`)).join('')}</div></section>` : '';
+  const radar = radarHTML(secoes, [n.f, ...(n.o || []).map((o) => o[0])].filter(Boolean));
   const botao = url ? `<a class="btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Ler a reportagem completa em ${esc(n.f)} ↗</a>` : '';
   const cab = (titulo) => `<header class="bloco-cab"><h2>${titulo}</h2><p><strong>${esc(n.f || '')}</strong> · ${esc(fmtData(d))}</p></header>`;
   let fonte = '';
   if (Array.isArray(t.p) && t.p.length) {
-    fonte = `<section class="bloco fonte-card">${cab('Texto completo')}<div class="fonte-texto">${t.p.map((p) => `<p class="reader-text">${esc(p)}</p>`).join('')}</div>` +
+    fonte = `<section class="bloco fonte-card">${cab('Texto completo')}<div class="fonte-texto">${textoOriginalHTML(t.p)}</div>` +
       `<footer class="fonte-pe"><span>${t.l === 'oficial' ? `Comunicado oficial de ${esc(n.f)}, reproduzido na íntegra com crédito.`
         : `Reproduzido de ${esc(n.f)} sob a licença ${esc(t.l)}, que permite a reprodução com crédito.`}</span>${botao}</footer></section>`;
   } else {
