@@ -23,7 +23,10 @@ Regras (qualquer uma basta)
   5. I com até 7 dias e mais uma evidência de texto: lugar/nome em comum ou
      a mesma quantidade;
   6. F com até 3 dias, mesmo estado e um lugar/nome em comum (não vale só
-     "quilos" ou "maconha").
+     "quilos" ou "maconha");
+  7. grande apreensão (>= 300 kg de droga, 20 armas, 5 fuzis, 1.000 munições)
+     do mesmo material com valores a até 20% (arredondamentos), até 4 dias,
+     mesmo estado ou um lugar/nome em comum.
 
 Vetos (prevalecem sobre tudo)
   - estados diferentes;
@@ -94,6 +97,9 @@ def numeros(texto):
             continue
         if t in ANOS:
             continue
+        mult = re.match(r'\s*(mil\b|milh[õo]es|milh[ãa]o|bilh[õo]es|bilh[ãa]o)', texto[m.end():m.end() + 12], re.I)
+        if mult:  # "2,6 mil" = 2.600
+            v *= 1e3 if mult.group(1).lower() == 'mil' else (1e6 if mult.group(1).lower().startswith('milh') else 1e9)
         saida.add(f'{v:g}')
     return saida
 
@@ -162,6 +168,20 @@ def _mesmas_quantidades(qa, qb):
         if abs(a - b) > 0.02 * max(a, b):
             return False
     return any(qa[m] >= 10 for m in comuns)
+
+
+# Grandes apreensões: muitos veículos noticiam, cada um arredonda ("4 toneladas",
+# "4,4 t", "mais de 100 armas" para 118). Mesmo material, valores a até 20% e
+# grande o bastante para ser raro no mesmo estado na mesma semana.
+GRANDE = {'coc': 300, 'mac': 300, 'skh': 300, 'cra': 100, 'dro': 300, 'arm': 20, 'fuz': 5, 'mun': 1000}
+
+
+def _mesma_grande(qa, qb, tolerancia=0.2, escala=1):
+    for m in set(qa) & set(qb):
+        a, b = qa[m], qb[m]
+        if max(a, b) >= GRANDE.get(m, 10 ** 9) * escala and abs(a - b) <= tolerancia * max(a, b):
+            return True
+    return False
 
 
 def _pontos(item):
@@ -237,6 +257,14 @@ def agrupar(itens, motivos=None):
                     candidatos.add((a, b) if a < b else (b, a))
 
     indexar(inf, 400)
+    for m, minimo in GRANDE.items():
+        grandes = sorted((k for k in range(n) if dia[k] is not None and qs[k].get(m, 0) >= minimo * 0.8), key=lambda k: dia[k])
+        for x in range(len(grandes)):
+            for y in range(x + 1, len(grandes)):
+                a, b = grandes[x], grandes[y]
+                if dia[b] - dia[a] > 4:
+                    break
+                candidatos.add((a, b) if a < b else (b, a))
     indexar(sh, 60)
     # Fotos: comparação por janela de datas (só itens com impressão digital).
     com_foto = sorted((k for k in range(n) if hs[k] is not None and dia[k] is not None), key=lambda k: dia[k])
@@ -309,6 +337,12 @@ def agrupar(itens, motivos=None):
             unir(a, b, 'foto')
         elif delta <= 3 and mesmo_uf and _mesmas_quantidades(qs[a], qs[b]) and proprias:
             unir(a, b, 'fatos')
+        elif delta <= 4 and _mesma_grande(qs[a], qs[b]) and (mesmo_uf or proprias):
+            unir(a, b, 'grande-apreensao')
+        elif delta <= 2 and not (ua and ub) and _mesma_grande(qs[a], qs[b], 0.05, 4):
+            # Estado não identificado em uma das versões: só valor quase igual,
+            # em até 2 dias, e muito grande (>= 4x o mínimo: 1,2 t, 80 armas...).
+            unir(a, b, 'grande-apreensao')
 
     grupos = {}
     for k in range(n):

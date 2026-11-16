@@ -32,7 +32,7 @@ from urllib.request import Request, urlopen
 RAIZ = Path(__file__).resolve().parent
 PONTEIRO = RAIZ / 'dados_versao.json'
 ACERVO = RAIZ / 'noticias.json'
-SITE = ['feed.json', 'feed_links.json', 'det', 'dados']
+SITE = ['feed.json', 'feed-recente.json', 'feed_links.json', 'det', 'dados']
 TAG = 'dados'
 REPO = os.environ.get('GITHUB_REPOSITORY', '7773333123/radar-das-apreensoes')
 TMP = Path(os.environ.get('RUNNER_TEMP', '/tmp'))

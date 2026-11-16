@@ -54,6 +54,9 @@ const urlOk = (v) => { try { const u = new URL(v); return /^https?:$/.test(u.pro
 const slug = (t) => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
   .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').split('-').slice(0, 12).join('-');
 const urlNoticia = (n) => `/noticia/${n.i}-${slug(n.t)}`;
+// Só vão para o índice do Google as notícias com conteúdo próprio relevante: o
+// Google penaliza sites com milhares de páginas parecidas e pouco valor próprio.
+const indexavel = (n) => Boolean(n.x || n.q || (n.o && n.o.length) || (n.r && n.r.length >= 200) || n.g);
 const data = (n) => (n.d ? new Date(n.d.length === 16 ? n.d + 'Z' : n.d) : null);
 const fmtData = (d, hora = false) => (d ? d.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: 'numeric', month: 'long', year: 'numeric',
   ...(hora ? { hour: '2-digit', minute: '2-digit' } : {}) }) : '');
@@ -118,8 +121,8 @@ function somar(itens) {
 function kpis(itens) {
   const s = somar(itens);
   const linhas = [['Notícias', num(itens.length)],
-    ['Cocaína', qtd(s.coc || 0, 'kg')], ['Maconha e skunk', qtd((s.mac || 0) + (s.skh || 0), 'kg')],
-    ['Armas de fogo', num(s.arm || 0)], ['Munições', num(s.mun || 0)],
+    ['Cocaína', '≈ ' + qtd(s.coc || 0, 'kg')], ['Maconha e skunk', '≈ ' + qtd((s.mac || 0) + (s.skh || 0), 'kg')],
+    ['Armas de fogo', '≈ ' + num(s.arm || 0)], ['Munições', '≈ ' + num(s.mun || 0)],
     ['Veículos de imprensa', num(new Set(itens.flatMap((n) => [n.f, ...(n.o || []).map((o) => o[0])]).filter(Boolean)).size)]];
   return `<dl class="kpis kpis-4">${linhas.map(([k, v]) => `<div class="kpi"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>`;
 }
@@ -149,7 +152,9 @@ function paginaNoticia(i) {
   ].filter(([, v]) => v);
   const secoes = Array.isArray(t.sx) && t.sx.length ? t.sx : (t.s ? String(t.s).split(/\n{2,}/).filter(Boolean).map((p) => ['', p]) : []);
   const radar = secoes.length ? `<section class="bloco radar"><header class="bloco-cab"><h2>Resumo do Radar</h2><p>Redigido pelo Radar a partir dos fatos publicados</p></header>` +
-    `<div class="rs">${secoes.map(([tit, txt]) => `<section class="rs-sec">${tit ? `<h3>${esc(tit)}</h3>` : ''}<p class="reader-text">${esc(txt)}</p></section>`).join('')}</div></section>` : '';
+    `<div class="rs">${secoes.map(([tit, txt]) => (tit === 'O que diz a lei'
+        ? `<details class="rs-sec rs-lei"><summary><h3>${esc(tit)}</h3><span>ver</span></summary><p class="reader-text">${esc(txt)}</p></details>`
+        : `<section class="rs-sec">${tit ? `<h3>${esc(tit)}</h3>` : ''}<p class="reader-text">${esc(txt)}</p></section>`)).join('')}</div></section>` : '';
   const botao = url ? `<a class="btn" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Ler a reportagem completa em ${esc(n.f)} ↗</a>` : '';
   const cab = (titulo) => `<header class="bloco-cab"><h2>${titulo}</h2><p><strong>${esc(n.f || '')}</strong> · ${esc(fmtData(d))}</p></header>`;
   let fonte = '';
@@ -187,7 +192,7 @@ ${relacionadas.length ? `<div class="section-head"><h2>Mais de ${esc(cats[(n.c |
     isBasedOn: url || undefined, author: { '@type': 'Organization', name: n.f || 'Radar das Apreensões' },
     publisher: { '@type': 'Organization', name: 'Radar das Apreensões', logo: { '@type': 'ImageObject', url: `${SITE}/img/og.png` } },
   };
-  return { html: pagina({ titulo: `${corta(n.t, 90)} | Radar das Apreensões`, descricao, canonico: urlNoticia(n), imagem: fotos[0], atual: 'Notícias', corpo, jsonld }), canonico: urlNoticia(n) };
+  return { html: pagina({ titulo: `${corta(n.t, 90)} | Radar das Apreensões`, descricao, canonico: urlNoticia(n), imagem: fotos[0], atual: 'Notícias', corpo, jsonld, indexar: indexavel(n) }), canonico: urlNoticia(n) };
 }
 
 function paginaLista({ titulo, h1, intro, itens, canonico, atual, rodape = '' }) {
@@ -198,7 +203,7 @@ function paginaLista({ titulo, h1, intro, itens, canonico, atual, rodape = '' })
   const recentes = [...itens].sort((a, b) => (b.d || '').localeCompare(a.d || '')).slice(0, 60);
   const corpo = `<header class="pg-head"><h1 class="art-titulo">${esc(h1)}</h1><p class="dek">${esc(intro)}</p></header>
 <div class="duas"><section class="panel"><h3>Últimos 30 dias</h3>${kpis(r30)}</section><section class="panel"><h3>Últimos 12 meses</h3>${kpis(r365)}</section></div>
-<p class="note">Quantidades citadas nas notícias, sem duplicatas. Não são estatísticas oficiais.</p>
+<p class="note">Estimativa: soma das quantidades citadas nas notícias, sem duplicatas. Só cerca de 1 em cada 7 notícias informa a quantidade, e a leitura automática pode errar; não são estatísticas oficiais.</p>
 <div class="section-head"><h2>Notícias mais recentes</h2><span class="count">${num(itens.length)} no acervo</span></div>${lista(recentes, feed.categorias)}${rodape}`;
   return pagina({ titulo: `${titulo} | Radar das Apreensões`, descricao: intro, canonico, atual, corpo });
 }
@@ -267,7 +272,7 @@ function paginaRelatorio(ym) {
     `<li><span class="rot">${rotulo(k)}</span><span class="bar"><i style="width:${Math.max(2, (v / max) * 100).toFixed(1)}%"></i></span><span class="val">${num(v)}</span></li>`).join('')}</ol>`;
   const corpo = `<header class="pg-head"><p class="kicker">Relatório mensal</p><h1 class="art-titulo">Apreensões noticiadas em ${esc(nomeMes(ym))}</h1>
 <p class="dek">${num(itens.length)} notícias de apreensões no Brasil, sem duplicatas${topUf[0] ? `; ${esc(ESTADOS[topUf[0][0]])} foi o estado com mais registros (${num(topUf[0][1])})` : ''}${topCat[0] ? ` e ${esc(cats[topCat[0][0]].toLowerCase())} o tipo mais frequente (${num(topCat[0][1])})` : ''}.</p></header>
-${kpis(itens)}<p class="note">Quantidades citadas nas notícias, sem duplicatas. Não são estatísticas oficiais.</p>
+${kpis(itens)}<p class="note">Estimativa: soma das quantidades citadas nas notícias, sem duplicatas. Só cerca de 1 em cada 7 notícias informa a quantidade, e a leitura automática pode errar; não são estatísticas oficiais.</p>
 <div class="duas"><section class="panel"><h3>Estados com mais notícias</h3>${barra(topUf, topUf[0] ? topUf[0][1] : 1, (uf) => `<a href="/estado/${uf}">${esc(ESTADOS[uf])}</a>`)}</section>
 <section class="panel"><h3>Tipos de apreensão</h3>${barra(topCat, topCat[0] ? topCat[0][1] : 1, (c) => `<a href="/categoria/${SLUG_CAT[c]}">${esc(cats[c])}</a>`)}</section></div>
 ${maiores.length ? `<div class="section-head"><h2>Maiores apreensões noticiadas</h2></div><div class="duas">${maiores.map(([nome, u, l]) =>
@@ -359,6 +364,7 @@ module.exports = (req, res) => {
 };
 module.exports.dados = dados;
 module.exports.urlNoticia = urlNoticia;
+module.exports.indexavel = indexavel;
 module.exports.meses = meses;
 module.exports.SLUG_CAT = SLUG_CAT;
 module.exports.ESTADOS = ESTADOS;

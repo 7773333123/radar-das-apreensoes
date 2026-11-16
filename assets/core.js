@@ -160,10 +160,12 @@ function deduplicar(lista) {
   return saida;
 }
 
-let feedPromise = null;
 /** Carrega e prepara o acervo (uma vez por página). */
-export function carregarFeed() {
-  feedPromise ??= fetch('feed.json').then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then((dados) => {
+const feeds = new Map();
+/** feed.json (completo) ou feed-recente.json (últimos 31 dias, para a página inicial abrir rápido). */
+export function carregarFeed(arquivo = 'feed.json') {
+  if (feeds.has(arquivo)) return feeds.get(arquivo);
+  const feedPromise = fetch(arquivo).then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then((dados) => {
     const ctx = {
       categorias: dados.categorias || [], orgaos: dados.orgaos || [], materiais: dados.materiais || {},
       atualizado: dados.atualizado_em ? new Date(dados.atualizado_em) : null,
@@ -171,8 +173,10 @@ export function carregarFeed() {
     ctx.noticias = deduplicar((dados.noticias || []).map((n) => preparar(n, ctx)))
       .sort((a, b) => (b.data?.getTime() || 0) - (a.data?.getTime() || 0));
     ctx.porIndice = new Map(ctx.noticias.map((n) => [n.i, n]));
+    ctx.parcial = Boolean(dados.parcial);
     return ctx;
   });
+  feeds.set(arquivo, feedPromise);
   return feedPromise;
 }
 

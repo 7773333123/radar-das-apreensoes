@@ -104,6 +104,10 @@ def _tipo(item):
     return (partes[-1] if len(partes) > 1 else sem_num)[:6]
 
 
+NAO_E_O_ITEM = re.compile(r'simulacros?|r[ée]plicas?|pe[çc]as (?:para|de)(?: (?:montagem|fabrica[çc][ãa]o) de)?|'
+                          r'kits? para|carregadores? (?:de|para|com)|capacidade (?:para|de)|airsoft|brinquedo|capas? de|coldres? (?:de|para)', re.I)
+
+
 def _itens(texto):
     itens, vistos = [], set()
     for m in ITEM_PESO.finditer(texto):
@@ -119,6 +123,10 @@ def _itens(texto):
         itens.append(f'{_fmt(q)} {unidade} de {mat}')
     for m in ITEM_CONTAVEL.finditer(texto):
         obj = m.group('obj').lower()
+        # Arma falsa, peças ou munição de festim não são a arma/munição apreendida.
+        if NAO_E_O_ITEM.search(texto[max(0, m.start() - 45):m.start()]) or \
+                re.match(r'\s*(?:de brinquedo|de airsoft|de paintball|falsos?|falsas?|de festim)', texto[m.end():m.end() + 25], re.I):
+            continue
         chave = (obj[:5], 'un')
         if chave in vistos:
             continue
@@ -167,6 +175,9 @@ def extrair(titulo, resumo='', texto=''):
                 itens.append(item)
     for parte in fontes[:2]:  # itens citados sem quantidade (título e resumo)
         for nome, padrao in SEM_QTD:
+            if nome in ('fuzil', 'armas de fogo', 'munições') and re.search(r'simulacro|r[ée]plica|airsoft|brinquedo', parte, re.I) \
+                    and not re.search(r'\barmas? de fogo\b(?! falsa)', re.sub(r'simulacros? de armas? de fogo', '', parte, flags=re.I), re.I):
+                continue
             if nome not in tipos and re.search(padrao, parte, re.I):
                 if nome == 'armas de fogo' and 'fuzil' in tipos and not re.search(r'\barmas?\b', parte, re.I):
                     continue

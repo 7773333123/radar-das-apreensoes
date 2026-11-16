@@ -212,6 +212,11 @@ def main():
         # Fatos do título e do resumo da fonte: os mais confiáveis para as
         # quantidades (o texto da página pode trazer números de outras matérias).
         do_titulo = extrair(titulo, resumo)
+        if not quantidades(do_titulo or {}) and n.get('trecho'):
+            # Sem número no título/resumo: a abertura da reportagem (o lide) costuma trazê-lo.
+            do_lide = extrair(titulo, resumo, str(n['trecho'])[:900])
+            if quantidades(do_lide):
+                do_titulo = do_lide
         if do_titulo:
             fatos_titulo[i] = do_titulo
         fatos = dict(n.get('fatos') or do_titulo or {})
@@ -261,6 +266,10 @@ def main():
         candidatos = [f for f in [fatos_por_i.get(k) for k in ids] if f]
         if com_numero or candidatos:
             base = dict(max(candidatos, key=lambda f: (len(f.get('apreendido', [])), len(f)))) if candidatos else {}
+            if not com_numero:
+                # Números lidos na página inteira não são confiáveis (outras matérias,
+                # anúncios): sem número no título, resumo ou abertura, não há quantidade.
+                base['apreendido'] = [a for a in base.get('apreendido', []) if not re.search(r'\d', a)]
             if com_numero:
                 base['apreendido'] = com_numero[0].get('apreendido', [])
                 if com_numero[0].get('valor'):
@@ -290,6 +299,22 @@ def main():
         'noticias': saida,
     }
     DESTINO.write_text(json.dumps(feed, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+    # Página inicial: só os últimos 31 dias (~1/4 do tamanho), para aparecer rápido;
+    # o feed completo carrega em seguida, para busca e filtros por ano.
+    ultima = max((x.get('d', '') for x in saida), default='')
+    if ultima:
+        from datetime import date, timedelta
+        corte = (date.fromisoformat(ultima[:10]) - timedelta(days=31)).isoformat()
+        def enxuto(x):  # a página inicial usa só o começo do resumo e o nome das outras fontes
+            y = dict(x)
+            if y.get('r'):
+                y['r'] = y['r'][:220]
+            if y.get('o'):
+                y['o'] = [[o[0], '', o[2]] for o in y['o']]
+            return y
+        recente = dict(feed, noticias=[enxuto(x) for x in saida if x.get('d', '') >= corte], parcial=True)
+        recente['total'] = len(recente['noticias'])
+        (PASTA / 'feed-recente.json').write_text(json.dumps(recente, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     LINKS.write_text(json.dumps(links, separators=(',', ':')), encoding='utf-8')
     # Texto integral (só de licença aberta) e galeria de fotos, em lotes por índice.
     for antiga in ('textos', 'detalhes'):  # formatos anteriores

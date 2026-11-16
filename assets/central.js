@@ -121,10 +121,10 @@ function renderInicio() {
         : '<p class="note">Sem matérias repercutidas nas últimas 48 horas.</p>'}<p class="note">Matérias publicadas por mais veículos nas últimas 24 horas.</p></div>` +
       `<div class="panel"><h3>Últimos 30 dias</h3><dl class="kpis">` +
         `<div class="kpi"><dt>Notícias</dt><dd>${num(r30.length)}</dd></div>` +
-        `<div class="kpi"><dt>Cocaína</dt><dd>${qtd(soma('coc'), 'kg')}</dd></div>` +
-        `<div class="kpi"><dt>Maconha e skunk</dt><dd>${qtd(soma('mac') + soma('skh'), 'kg')}</dd></div>` +
-        `<div class="kpi"><dt>Armas de fogo</dt><dd>${qtd(soma('arm'), 'un')}</dd></div>` +
-      `</dl><p class="note">Quantidades citadas nas notícias, sem duplicatas. Não são estatísticas oficiais.</p></div>` +
+        `<div class="kpi"><dt>Cocaína</dt><dd>≈ ${qtd(soma('coc'), 'kg')}</dd></div>` +
+        `<div class="kpi"><dt>Maconha e skunk</dt><dd>≈ ${qtd(soma('mac') + soma('skh'), 'kg')}</dd></div>` +
+        `<div class="kpi"><dt>Armas de fogo</dt><dd>≈ ${qtd(soma('arm'), 'un')}</dd></div>` +
+      `</dl><p class="note">Estimativa: soma das quantidades citadas nas notícias, sem duplicatas. Só cerca de 1 em cada 7 notícias informa a quantidade, e a leitura automática pode errar; não são estatísticas oficiais.</p></div>` +
       `<div class="panel"><h3>Notícias por estado · 30 dias</h3><div class="map" id="mapaInicio"></div></div>` +
     `</section>` +
     `<div class="editorias">${editorias.map(([c, itens]) => {
@@ -204,9 +204,17 @@ function montarControles() {
 }
 
 async function iniciar() {
+  // 1º os últimos 31 dias (abre rápido e já monta manchete, destaques e panorama);
+  // depois o acervo completo, para a lista com busca e filtros por ano.
+  const rapida = carregarFeed('feed-recente.json').catch(() => null);
   const promessa = carregarFeed();
   iniciarCabecalho(promessa);
   $('lista').innerHTML = '<li><div class="sk" style="height:120px;margin:18px 0"></div></li>'.repeat(4);
+  rapida.then((ctx) => {
+    if (!ctx || st.ctx) return;
+    const filtro = lerHash();
+    if (!filtro.q && !filtro.uf && !filtro.cat && !filtro.ano) { st.ctx = ctx; renderInicio(); st.ctx = null; }
+  });
   try {
     st.ctx = await promessa;
   } catch (err) {
