@@ -27,11 +27,11 @@ def valida(url):
         return p.scheme in ('http', 'https') and bool(h) and '.' in h and not (h == 'localhost' or h.endswith('.local')) and not any(h == d or h.endswith('.'+d) for d in BLOQUEADOS)
     except ValueError: return False
 
-def fetch(url, data=None, timeout=10):
+def fetch(url, data=None, timeout=10, limite=350000):
     headers = dict(HEADERS)
     if data is not None: headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
     with urlopen(Request(url, data=data, headers=headers), timeout=timeout) as r:
-        return r.geturl(), r.read(350000).decode('utf-8', 'replace')
+        return r.geturl(), r.read(limite).decode('utf-8', 'replace')
 
 def codigo_embutido(url):
     try:
@@ -56,23 +56,28 @@ def google_rpc(url):
     token = urlparse(url).path.rstrip('/').split('/')[-1]
     if not re.fullmatch(r'[A-Za-z0-9_-]{20,}', token): return '', 'codigo_invalido'
     try:
-        _, page = fetch('https://news.google.com/rss/articles/'+token+'?hl=pt-BR&gl=BR&ceid=BR:pt-419')
+        # Os atributos data-n-a-* ficam perto do fim da página (~590 KB); ler 350 KB os perdia.
+        _, page = fetch('https://news.google.com/rss/articles/'+token+'?hl=pt-BR&gl=BR&ceid=BR:pt-419', timeout=15, limite=3_000_000)
         # O Google alterna aspas, escapes e serialização de atributos.
         normalized = html.unescape(page).replace('\\"', '"')
         ident = re.search(r'data-n-a-id\s*=\s*["\']([^"\']+)', normalized)
         sign = re.search(r'data-n-a-sg\s*=\s*["\']([^"\']+)', normalized)
+        stamp = re.search(r'data-n-a-ts\s*=\s*["\']?(\d+)', normalized)
         if not ident or not sign:
             return '', 'assinatura_ausente'+('_id' if ident else '_sem_id')+('_sg' if sign else '_sem_sg')+('_html' if '<html' in page.lower() else '_outro')
-        # Estrutura garturlreq: id e assinatura pertencem ao mesmo vetor interno.
-        request = ['garturlreq', [['pt-BR','BR',['FINANCE_TOP_INDICES','WEB_TEST_1_0_0'],None,None,1,1,'BR:pt-419',None,180,None,None,None,None,None,0,None,None,[1608992183,723341000]], 'pt-BR','BR',1,[2,3,4,8],1,0,'655000234',0,0,None,0], ident.group(1), sign.group(1)]
+        # Formato atual do pedido: id do artigo, carimbo de tempo (data-n-a-ts) e assinatura.
+        request = ['garturlreq', [['X','X',['X','X'],None,None,1,1,'US:en',None,1,None,None,None,None,None,0,1],
+                   'X','X',1,[1,1,1],1,1,None,0,0,None,0], token, int(stamp.group(1)) if stamp else 0, sign.group(1)]
         body = json.dumps([[['Fbv4je', json.dumps(request, separators=(',',':')), None, 'generic']]], separators=(',',':'))
-        _, response = fetch('https://news.google.com/_/DotsSplashUi/data/batchexecute?rpcids=Fbv4je', urlencode({'f.req':body}).encode())
-        # A resposta é JSON aninhado. URLs externas só são aceitas se aparecem no resultado RPC.
+        _, response = fetch('https://news.google.com/_/DotsSplashUi/data/batchexecute', urlencode({'f.req':body}).encode(), timeout=15)
+        try:
+            candidate = json.loads(json.loads(response.split('\n\n', 1)[1])[0][2])[1]
+            if valida(candidate): return candidate, 'recuperada_rpc'
+        except (IndexError, TypeError, ValueError):
+            pass
+        # Formato alternativo: procurar a URL externa no texto da resposta.
         for candidate in re.findall(r'https?://[^\\"\s<>\[\]]+', response):
             candidate = html.unescape(candidate.rstrip('\\,;'))
-            if valida(candidate): return candidate, 'recuperada_rpc'
-        for candidate in re.findall(r'https?:\\/\\/[^"\s<>\[\]]+', response):
-            candidate = candidate.replace('\\/', '/')
             if valida(candidate): return candidate, 'recuperada_rpc'
         return '', 'rpc_sem_url'
     except Exception as exc:
@@ -171,16 +176,17 @@ def main():
         if valida(url):
             article['url_original']=url; article['url_original_status']='direta'; existing+=1
         elif isinstance(url,str) and (urlparse(url).hostname or '').lower() == 'news.google.com':
-            try: tentativas = int(article.get('tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original') or 0)
+            try: tentativas = int(article.get('tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original_v2') or 0)
             except (ValueError, TypeError): tentativas = 0
             if args.max_tentativas == 0 or tentativas < args.max_tentativas:
                 pending.append((article,url))
     # Distribui o trabalho: notícias nunca testadas primeiro; depois falhas antigas.
     # A ordem do JSON é mantida, e nenhuma notícia é descartada.
     def prioridade(pair):
-        try: n = int(pair[0].get('tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original') or 0)
+        try: n = int(pair[0].get('tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original_v2') or 0)
         except (TypeError, ValueError): n = 0
-        return (n, pair[0].get('url_original_status') not in ('aguardando_resolucao', None, ''))
+        # Menos tentativas primeiro; entre elas, as notícias mais recentes.
+        return (n, -int(re.sub(r'\D', '', str(pair[0].get('data_iso') or ''))[:12] or 0))
     pending.sort(key=prioridade)
     batch=pending[:max(0,args.limite)]
     print('RADAR_RECUPERADOR_V5: busca em indices independentes e acervo preservado', flush=True)
@@ -213,9 +219,9 @@ def main():
                         continue
                     status += '+' + alt_status
                 article['url_original_status']=status
-                try: anteriores = int(article.get('tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original') or 0)
+                try: anteriores = int(article.get('tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original_v2') or 0)
                 except (TypeError, ValueError): anteriores = 0
-                article['tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original']=anteriores+1
+                article['tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original_v2']=anteriores+1
                 errors[status]+=1
     if batch:
         temp=ARQUIVO.with_suffix('.json.tmp')
