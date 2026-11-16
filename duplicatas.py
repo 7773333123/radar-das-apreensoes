@@ -1,0 +1,337 @@
+#!/usr/bin/env python3
+"""Agrupa a mesma notícia publicada mais de uma vez (mesmo veículo ou vários).
+
+Métrica: cada par de notícias recebe evidências independentes, e é a mesma
+notícia quando uma regra forte é satisfeita sem nenhum veto.
+
+Evidências
+  T  título: palavras em comum (Jaccard) ou título contido no outro
+     (palavras informativas: lugares, objetos, nomes, números);
+  L  abertura/resumo da fonte: trechos de 5 palavras em comum (Jaccard);
+  F  fatos: mesmas quantidades apreendidas (830 kg de maconha) no mesmo estado;
+  I  imagem: impressão digital visual da foto (dHash, hash_imagens.py) a até
+     8 bits de distância, ignorando fotos genéricas (logotipos, arte padrão);
+  Δ  dias entre as publicações (até 7).
+
+Regras (qualquer uma basta)
+  1. título igual (mais de 25 letras), em qualquer data; ou o mesmo resumo da
+     fonte (140 primeiras letras) com até 3 dias;
+  2. T forte com até 1 dia de diferença (regra original);
+  3. T forte com até 7 dias e mais uma evidência: o mesmo número (>= 10 ou
+     com decimais) e um lugar/nome em comum, ou L >= 0,25, ou I;
+  4. L >= 0,45 com até 7 dias (o mesmo release republicado);
+  5. I com até 7 dias e mais uma evidência de texto: lugar/nome em comum ou
+     a mesma quantidade;
+  6. F com até 3 dias, mesmo estado e um lugar/nome em comum (não vale só
+     "quilos" ou "maconha").
+
+Vetos (prevalecem sobre tudo)
+  - estados diferentes;
+  - quantidades do título diferentes ("três presos" x "dois presos");
+  - o grupo resultante juntaria estados diferentes (evita correntes A~B~C).
+"""
+import re
+import unicodedata
+from datetime import date
+
+JANELA = 7
+PALAVRAS_VAZIAS = set('''para pela pelo pelos pelas com sem sobre apos após entre durante contra como mais menos
+    que uma umas uns dos das nos nas aos este esta esse essa isso isto pode podem diz afirma'''.split())
+# Palavras de quase toda notícia policial: não ajudam a dizer se é o mesmo fato.
+GENERICAS = set('''policia policias policial policiais militar militares civil federal rodoviaria
+    apreende apreendem apreendeu apreendido apreendida apreendidos apreendidas apreensao apreensoes
+    prende prendem prendeu preso presa presos presas prisao flagrante suspeito suspeitos suspeita
+    homem mulher jovem jovens adolescente pessoas dupla trio operacao acao durante cerca mais
+    droga drogas trafico traficante bairro cidade regiao estado'''.split())
+EXTENSO = {'um': '1', 'uma': '1', 'dois': '2', 'duas': '2', 'tres': '3', 'quatro': '4', 'cinco': '5', 'seis': '6',
+           'sete': '7', 'oito': '8', 'nove': '9', 'dez': '10', 'onze': '11', 'doze': '12', 'treze': '13',
+           'quatorze': '14', 'catorze': '14', 'quinze': '15', 'vinte': '20', 'trinta': '30', 'cem': '100'}
+ANOS = {str(a) for a in range(2000, 2031)}
+
+
+def normal(texto):
+    texto = unicodedata.normalize('NFKD', texto or '')
+    texto = ''.join(c for c in texto if not unicodedata.combining(c)).lower()
+    return re.sub(r'[^a-z0-9]+', ' ', texto).strip()
+
+
+def palavras(texto):
+    return {w for w in normal(texto).split() if len(w) > 3 and w not in PALAVRAS_VAZIAS}
+
+
+def informativas(texto):
+    saida = {n for n in numeros(texto) if len(n.replace('.', '')) >= 2}
+    for w in normal(texto).split():
+        if not w.isdigit() and len(w) > 3 and w not in PALAVRAS_VAZIAS and w not in GENERICAS:
+            saida.add(w)
+    return saida
+
+
+NUMERO = re.compile(r'\d+(?:[.,]\d+)*')
+# Unidades e materiais: comuns a muitas notícias diferentes; não identificam o fato.
+MATERIAIS = set('''quilos quilo kg toneladas tonelada gramas porcoes porcao tabletes tablete pinos pedras
+    maconha cocaina skunk crack haxixe pasta base armas arma fogo municoes municao fuzil fuzis pistola pistolas
+    revolver espingardas cigarros celulares veiculo veiculos carro caminhao carreta onibus moto motocicleta
+    mercadorias dinheiro reais valor avaliada avaliado avaliadas avaliados mil milhao milhoes'''.split())
+
+
+def numeros(texto):
+    """Números do título como valores: "1.500" -> 1500, "16,5" -> 16.5 (sem anos)."""
+    saida = set()
+    texto = texto or ''
+    for m in NUMERO.finditer(texto):
+        t = m.group(0)
+        antes, depois = texto[max(0, m.start() - 4):m.start()], texto[m.end():m.end() + 1]
+        # Rodovias (BR-277, MS-164) e ordinais (10º BPM) não são quantidades.
+        if re.search(r'(?:\b[A-Z]{2,3}-|\bBR\s)$', antes) or depois in ('º', 'ª', '°'):
+            continue
+        if re.fullmatch(r'\d{1,3}(?:\.\d{3})+', t):
+            t = t.replace('.', '')
+        t = t.replace('.', '').replace(',', '.') if ',' in t else t
+        try:
+            v = float(t)
+        except ValueError:
+            continue
+        if t in ANOS:
+            continue
+        saida.add(f'{v:g}')
+    return saida
+
+
+def quantidades_titulo(texto):
+    """Quantidades citadas no título (números e por extenso: "uma" -> 1)."""
+    saida = numeros(texto)
+    for w in normal(texto).split():
+        if w in EXTENSO:
+            saida.add(EXTENSO[w])
+    return saida
+
+
+def compativeis(qa, qb):
+    """Algum número de um título bate com o do outro (1,3 t ~ "uma tonelada"; 236 ~ "mais de 236")."""
+    for x in qa:
+        for y in qb:
+            fx, fy = float(x), float(y)
+            if int(fx) == int(fy) or abs(fx - fy) <= 0.1 * max(fx, fy):
+                return True
+    return False
+
+
+def numeros_fortes(texto):
+    """Números que identificam o fato: >= 10 ou com casas decimais (52 kg, 4,5 t)."""
+    return {n for n in numeros(texto) if float(n) >= 10 or '.' in n}
+
+
+def mesma_materia(pa, pb, ia, ib, qa=frozenset(), qb=frozenset(), mesmo_uf=False):
+    """Evidência T (forte) entre dois títulos. pa/pb: palavras; ia/ib: informativas; qa/qb: quantidades."""
+    if qa and qb and not compativeis(qa, qb):
+        return False
+    comum = len(pa & pb)
+    if comum >= 4 and comum / len(pa | pb) >= 0.65:
+        return True
+    inf = len(ia & ib)
+    numero_comum = (bool(qa and qb) and compativeis(qa, qb)) or any(w[0].isdigit() for w in ia & ib)
+    return (inf >= 3 and inf / max(1, min(len(ia), len(ib))) >= 0.75 and (mesmo_uf or numero_comum)
+            and (inf >= 4 or numero_comum))
+
+
+def trechos(texto, n=5):
+    """Trechos de 5 palavras seguidas (shingles) do começo do texto."""
+    ws = normal(texto).split()[:120]
+    return {' '.join(ws[k:k + n]) for k in range(max(0, len(ws) - n + 1))}
+
+
+def jaccard(a, b):
+    return len(a & b) / len(a | b) if a and b else 0.0
+
+
+def _dia(item):
+    try:
+        return date.fromisoformat(item.get('d', '')[:10]).toordinal()
+    except ValueError:
+        return None
+
+
+def _mesmas_quantidades(qa, qb):
+    """F: ao menos uma quantidade relevante (>= 10) igual, e nenhuma divergente no mesmo material."""
+    comuns = set(qa) & set(qb)
+    if not comuns:
+        return False
+    for m in comuns:
+        a, b = qa[m], qb[m]
+        if abs(a - b) > 0.02 * max(a, b):
+            return False
+    return any(qa[m] >= 10 for m in comuns)
+
+
+def _pontos(item):
+    """Qual versão mostrar: texto integral, fotos, link original, estado, resumo."""
+    return (item.get('x', 0) * 8 + min(item.get('g', 1 if item.get('img') else 0), 5) * 2 +
+            (3 if item.get('u') else 0) + (1 if item.get('uf') else 0) + (1 if item.get('r') else 0))
+
+
+def agrupar(itens, motivos=None):
+    """Retorna (itens sem duplicatas, ids removidos). Campos temporários lidos:
+    _h (dHash int), _lead (abertura/resumo), _q ({material: quantidade}).
+    motivos: lista opcional que recebe (regra, a, b) de cada união (diagnóstico)."""
+    n = len(itens)
+    pai = list(range(n))
+    ufs = [{it['uf']} if it.get('uf') else set() for it in itens]
+
+    def raiz(k):
+        while pai[k] != k:
+            pai[k] = pai[pai[k]]
+            k = pai[k]
+        return k
+
+    def unir(a, b, regra):
+        ra, rb = raiz(a), raiz(b)
+        if ra == rb:
+            return
+        if len(ufs[ra] | ufs[rb]) > 1:  # veto: o grupo juntaria estados diferentes
+            return
+        pai[rb] = ra
+        ufs[ra] |= ufs[rb]
+        if motivos is not None:
+            motivos.append((regra, a, b))
+
+    pal = [palavras(it['t']) for it in itens]
+    inf = [informativas(it['t']) for it in itens]
+    qt = [quantidades_titulo(it['t']) for it in itens]
+    nf = [numeros_fortes(it['t']) for it in itens]
+    nor = [normal(it['t']) for it in itens]
+    dia = [_dia(it) for it in itens]
+    sh = [trechos(it.get('_lead', '')) if len(it.get('_lead', '')) >= 150 else set() for it in itens]
+    hs = [it.get('_h') for it in itens]
+    qs = [it.get('_q') or {} for it in itens]
+
+    # Regra 1: título idêntico.
+    por_titulo = {}
+    for k, t in enumerate(nor):
+        if len(t) > 25:
+            if t in por_titulo:
+                unir(por_titulo[t], k, 'titulo-igual')
+            else:
+                por_titulo[t] = k
+
+    # Candidatos: pares a até 7 dias que dividem palavra informativa, trecho de
+    # abertura ou foto parecida (índices invertidos; evita comparar todos com todos).
+    candidatos = set()
+
+    def indexar(chaves_por_item, max_df):
+        indice = {}
+        for k, chaves in enumerate(chaves_por_item):
+            if dia[k] is None:
+                continue
+            for c in chaves:
+                indice.setdefault(c, []).append(k)
+        for lista in indice.values():
+            if len(lista) > max_df:
+                continue  # palavra comum demais: não discrimina
+            lista.sort(key=lambda k: dia[k])
+            for x in range(len(lista)):
+                for y in range(x + 1, len(lista)):
+                    a, b = lista[x], lista[y]
+                    if dia[b] - dia[a] > JANELA:
+                        break
+                    candidatos.add((a, b) if a < b else (b, a))
+
+    indexar(inf, 400)
+    indexar(sh, 60)
+    # Fotos: comparação por janela de datas (só itens com impressão digital).
+    com_foto = sorted((k for k in range(n) if hs[k] is not None and dia[k] is not None), key=lambda k: dia[k])
+    pares_foto, sem_relacao = {}, {}
+    for x in range(len(com_foto)):
+        a = com_foto[x]
+        for y in range(x + 1, len(com_foto)):
+            b = com_foto[y]
+            if dia[b] - dia[a] > JANELA:
+                break
+            d = (hs[a] ^ hs[b]).bit_count()
+            if d <= 8:
+                par = (a, b) if a < b else (b, a)
+                pares_foto[par] = d
+                if not (inf[a] & inf[b]):
+                    sem_relacao[a] = sem_relacao.get(a, 0) + 1
+                    sem_relacao[b] = sem_relacao.get(b, 0) + 1
+    # Foto genérica: a mesma imagem em 2+ notícias sem nenhuma palavra em comum
+    # (logotipo do veículo, arte padrão da polícia...). Não serve como evidência.
+    # Mesmo endereço de foto (sem parâmetros) conta como a mesma imagem.
+    por_url = {}
+    for k, it in enumerate(itens):
+        u = (it.get('img') or '').split('?')[0]
+        if u and 'logo' not in u.lower() and dia[k] is not None:
+            por_url.setdefault(u, []).append(k)
+    for lista in por_url.values():
+        for x in range(len(lista)):
+            for y in range(x + 1, len(lista)):
+                a, b = sorted((lista[x], lista[y]))
+                if abs(dia[a] - dia[b]) <= JANELA:
+                    pares_foto[(a, b)] = 0
+                    if not (inf[a] & inf[b]):
+                        sem_relacao[a] = sem_relacao.get(a, 0) + 1
+                        sem_relacao[b] = sem_relacao.get(b, 0) + 1
+    generica = {k for k, v in sem_relacao.items() if v >= 2}
+    candidatos.update(pares_foto)
+    # Mesmo resumo da fonte (primeiros 140 caracteres) com até 3 dias.
+    por_resumo = {}
+    for k, it in enumerate(itens):
+        r = normal(it.get('r', ''))[:140]
+        if len(r) >= 80 and dia[k] is not None:
+            for j in por_resumo.get(r, []):
+                if abs(dia[j] - dia[k]) <= 3:
+                    unir(j, k, 'resumo-igual')
+            por_resumo.setdefault(r, []).append(k)
+
+    for a, b in candidatos:
+        ua, ub = itens[a].get('uf'), itens[b].get('uf')
+        if ua and ub and ua != ub:
+            continue
+        if qt[a] and qt[b] and not compativeis(qt[a], qt[b]):
+            continue
+        if dia[a] is None or dia[b] is None:
+            continue
+        delta = abs(dia[a] - dia[b])
+        mesmo_uf = bool(ua and ua == ub)
+        foto = (a, b) in pares_foto and a not in generica and b not in generica
+        lead = jaccard(sh[a], sh[b])
+        # Palavras em comum que identificam o fato (lugar, nome, objeto específico).
+        proprias = {w for w in inf[a] & inf[b] if not w[0].isdigit() and w not in MATERIAIS}
+        numero_forte = bool(nf[a] and nf[b] and compativeis(nf[a], nf[b]))
+        titulo = len(pal[a]) >= 3 and mesma_materia(pal[a], pal[b], inf[a], inf[b], qt[a], qt[b], mesmo_uf)
+        if titulo and delta <= 1:
+            unir(a, b, 'titulo')
+        elif titulo and ((numero_forte and proprias) or foto or lead >= 0.3):
+            unir(a, b, 'titulo+evidencia')
+        elif lead >= 0.45:
+            unir(a, b, 'abertura')
+        elif foto and (proprias or _mesmas_quantidades(qs[a], qs[b])):
+            unir(a, b, 'foto')
+        elif delta <= 3 and mesmo_uf and _mesmas_quantidades(qs[a], qs[b]) and proprias:
+            unir(a, b, 'fatos')
+
+    grupos = {}
+    for k in range(n):
+        grupos.setdefault(raiz(k), []).append(k)
+    saida, removidas = [], set()
+    for membros in grupos.values():
+        membros.sort(key=lambda k: _pontos(itens[k]), reverse=True)
+        principal = itens[membros[0]]
+        outras, vistas = [], {principal.get('f', '')}
+        for k in sorted(membros[1:], key=lambda k: itens[k].get('d', '')):
+            outro = itens[k]
+            removidas.add(outro['i'])
+            for campo in ('uf', 'img', 'r'):
+                if outro.get(campo) and not principal.get(campo):
+                    principal[campo] = outro[campo]
+            # Mantém a ordem da versão exibida (a 1ª é o selo) e acrescenta as das outras.
+            principal['c'] = list(dict.fromkeys(principal.get('c', []) + outro.get('c', [])))
+            if not principal['c']:
+                del principal['c']
+            if outro.get('f', '') not in vistas:
+                vistas.add(outro.get('f', ''))
+                outras.append([outro.get('f', 'Outra fonte'), outro.get('u', ''), outro['i']])
+        if outras:
+            principal['o'] = outras[:8]
+        saida.append(principal)
+    return saida, removidas

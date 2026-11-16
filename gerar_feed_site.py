@@ -69,173 +69,12 @@ def categorias(n, titulo):
     return classificar_categorias(titulo, texto)
 
 
-PALAVRAS_VAZIAS = set('''para pela pelo pelos pelas com sem sobre apos após entre durante contra como mais menos
-    que uma umas uns dos das nos nas aos este esta esse essa isso isto pode podem diz afirma'''.split())
+# Duplicatas: regras e métrica em duplicatas.py (texto, abertura, fatos e imagem).
+from duplicatas import agrupar as _agrupar, mesma_materia, normal as _normal  # noqa: E402,F401
 
 
-def _normal(texto):
-    texto = unicodedata.normalize('NFKD', texto or '')
-    texto = ''.join(c for c in texto if not unicodedata.combining(c)).lower()
-    return re.sub(r'[^a-z0-9]+', ' ', texto).strip()
-
-
-# Palavras que aparecem em quase toda notícia policial: não ajudam a dizer se
-# dois títulos falam do mesmo fato.
-GENERICAS = set('''policia policias policial policiais militar militares civil federal rodoviaria
-    apreende apreendem apreendeu apreendido apreendida apreendidos apreendidas apreensao apreensoes
-    prende prendem prendeu preso presa presos presas prisao flagrante suspeito suspeitos suspeita
-    homem mulher jovem jovens adolescente pessoas dupla trio operacao acao durante cerca mais
-    droga drogas trafico traficante bairro cidade regiao estado'''.split())
-
-
-def _palavras(texto):
-    return {w for w in _normal(texto).split() if len(w) > 3 and w not in PALAVRAS_VAZIAS}
-
-
-def _informativas(texto):
-    """Palavras que identificam o fato: lugares, objetos, nomes e números (300, 1,3 t...)."""
-    palavras = set()
-    for w in _normal(texto).split():
-        if w.isdigit():
-            if len(w) >= 2 and w not in ('2024', '2025', '2026'):
-                palavras.add(w)
-        elif len(w) > 3 and w not in PALAVRAS_VAZIAS and w not in GENERICAS:
-            palavras.add(w)
-    return palavras
-
-
-EXTENSO = {'um': '1', 'uma': '1', 'dois': '2', 'duas': '2', 'tres': '3', 'quatro': '4', 'cinco': '5', 'seis': '6',
-           'sete': '7', 'oito': '8', 'nove': '9', 'dez': '10', 'onze': '11', 'doze': '12', 'treze': '13',
-           'quatorze': '14', 'catorze': '14', 'quinze': '15', 'vinte': '20', 'trinta': '30', 'cem': '100'}
-
-
-def _quantidades(texto):
-    """Quantidades citadas no título, com números por extenso convertidos (uma -> 1)."""
-    saida = set()
-    for w in _normal(texto).split():
-        if w.isdigit() and w not in ('2024', '2025', '2026'):
-            saida.add(w.lstrip('0') or '0')
-        elif w in EXTENSO:
-            saida.add(EXTENSO[w])
-    return saida
-
-
-def mesma_materia(pa, pb, ia, ib, qa=frozenset(), qb=frozenset(), mesmo_uf=False):
-    """pa/pb: palavras do título; ia/ib: palavras informativas; qa/qb: quantidades citadas."""
-    if qa and qb and not (qa & qb):
-        return False  # "três presos" e "dois presos" são fatos diferentes
-    comum = len(pa & pb)
-    if comum >= 4 and comum / len(pa | pb) >= 0.65:
-        return True
-    # Um título contido no outro: >= 75% das palavras informativas do mais curto
-    # aparecem no mais longo (ex.: "300 garrafas de vinho em Cruzeiro do Oeste").
-    # Só vale com o mesmo estado confirmado ou um número específico em comum
-    # (a PF faz operações iguais em vários estados no mesmo dia).
-    inf = len(ia & ib)
-    numero_comum = bool(qa & qb) or any(w.isdigit() for w in ia & ib)
-    return (inf >= 3 and inf / max(1, min(len(ia), len(ib))) >= 0.75 and (mesmo_uf or numero_comum)
-            and (inf >= 4 or numero_comum))
-
-
-def _pontos(item):
-    """Qual versão da matéria mostrar: texto integral, fotos, link original, estado."""
-    return (item.get('x', 0) * 8 + min(item.get('g', 1 if item.get('img') else 0), 5) * 2 +
-            (3 if item.get('u') else 0) + (1 if item.get('uf') else 0) + (1 if item.get('r') else 0))
-
-
-def _data(dia):
-    from datetime import date
-    return date.fromisoformat(dia)
-
-
-def agrupar_duplicatas(itens):
-    """Une a mesma matéria publicada mais de uma vez (mesma fonte ou veículos diferentes).
-
-    Duplicata = título igual, ou >= 65% das palavras em comum (mínimo 4), publicada
-    com até 1 dia de diferença e sem estados conflitantes. Mantém a versão mais
-    completa e guarda as demais em 'o' ("Também noticiado por").
-    """
-    pai = list(range(len(itens)))
-
-    def raiz(k):
-        while pai[k] != k:
-            pai[k] = pai[pai[k]]
-            k = pai[k]
-        return k
-
-    por_dia, palavras, normais, informativas, quantidades = {}, [], [], [], []
-    for k, item in enumerate(itens):
-        palavras.append(_palavras(item['t']))
-        informativas.append(_informativas(item['t']))
-        quantidades.append(_quantidades(item['t']))
-        normais.append(_normal(item['t']))
-        dia = item.get('d', '')[:10]
-        if dia:
-            por_dia.setdefault(dia, []).append(k)
-    por_titulo = {}
-    for k, t in enumerate(normais):  # título idêntico: mesma matéria, mesmo sem data
-        if len(t) > 25:
-            if t in por_titulo:
-                pai[raiz(k)] = raiz(por_titulo[t])
-            else:
-                por_titulo[t] = k
-    # Texto repetido: mesmo resumo (primeiros 140 caracteres) ou mesma foto,
-    # publicados com até 3 dias de diferença, são a mesma matéria republicada.
-    for campo, tamanho in (('r', 140), ('img', None)):
-        vistos = {}
-        for k, item in enumerate(itens):
-            valor = item.get(campo, '')
-            valor = _normal(valor)[:tamanho] if tamanho else valor.split('?')[0]
-            if (tamanho and len(valor) < 80) or not valor or 'logo' in valor.lower():
-                continue
-            dia = item.get('d', '')[:10]
-            anterior = vistos.get(valor)
-            if anterior is not None:
-                dia_ant = itens[anterior].get('d', '')[:10]
-                if dia and dia_ant and abs((_data(dia) - _data(dia_ant)).days) <= 3:
-                    pai[raiz(k)] = raiz(anterior)
-            vistos[valor] = k
-    dias = sorted(por_dia)
-    for posicao, dia in enumerate(dias):
-        atuais = por_dia[dia]
-        vizinhos = atuais + (por_dia[dias[posicao + 1]] if posicao + 1 < len(dias) else [])
-        for a_pos, a in enumerate(atuais):
-            pa, ia = palavras[a], informativas[a]
-            if len(pa) < 3:
-                continue
-            for b in vizinhos[a_pos + 1:]:
-                ua, ub = itens[a].get('uf'), itens[b].get('uf')
-                if ua and ub and ua != ub:
-                    continue
-                if not mesma_materia(pa, palavras[b], ia, informativas[b], quantidades[a], quantidades[b],
-                                     mesmo_uf=bool(ua and ua == ub)):
-                    continue
-                pai[raiz(b)] = raiz(a)
-    grupos = {}
-    for k in range(len(itens)):
-        grupos.setdefault(raiz(k), []).append(k)
-    saida, removidas = [], set()
-    for membros in grupos.values():
-        membros.sort(key=lambda k: _pontos(itens[k]), reverse=True)
-        principal = itens[membros[0]]
-        outras, vistas = [], {principal.get('f', '')}
-        for k in membros[1:]:
-            outro = itens[k]
-            removidas.add(outro['i'])
-            for campo in ('uf', 'img', 'r'):
-                if outro.get(campo) and not principal.get(campo):
-                    principal[campo] = outro[campo]
-            # Mantém a ordem da versão exibida (a 1ª é o selo) e acrescenta as das outras.
-            principal['c'] = list(dict.fromkeys(principal.get('c', []) + outro.get('c', [])))
-            if not principal['c']:
-                del principal['c']
-            if outro.get('f', '') not in vistas:
-                vistas.add(outro.get('f', ''))
-                outras.append([outro.get('f', 'Outra fonte'), outro.get('u', ''), outro['i']])
-        if outras:
-            principal['o'] = outras[:8]
-        saida.append(principal)
-    return saida, removidas
+def agrupar_duplicatas(itens, motivos=None):
+    return _agrupar(itens, motivos)
 
 
 def url_publica(valor):
@@ -336,6 +175,14 @@ def main():
         if do_titulo:
             fatos_titulo[i] = do_titulo
         fatos = n.get('fatos') or do_titulo
+        # Evidências para o agrupamento de duplicatas (removidas antes de gravar).
+        if n.get('img_dhash') and n.get('img_dhash_url') == n.get('imagem_url'):
+            item['_h'] = int(n['img_dhash'], 16)
+        item['_lead'] = str(n.get('trecho') or resumo)[:600]
+        if do_titulo:
+            q = {k: v for k, v in quantidades(do_titulo).items() if k != 'val'}
+            if q:
+                item['_q'] = q
         if fatos:
             fatos_por_i[i] = fatos
             detalhe['f'] = fatos
@@ -347,6 +194,9 @@ def main():
         saida.append(item)
     antes = len(saida)
     saida, removidas = agrupar_duplicatas(saida)
+    for item in saida:
+        for k in ('_h', '_lead', '_q'):
+            item.pop(k, None)
     for lote in list(detalhes):
         for chave in [c for c in detalhes[lote] if int(c) in removidas]:
             del detalhes[lote][chave]

@@ -33,7 +33,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Instalar decodificador
-        run: python -m pip install --quiet googlenewsdecoder
+        run: python -m pip install --quiet googlenewsdecoder pillow
       - name: Disparar coleta completa e histórica
         continue-on-error: true
         run: |
@@ -52,6 +52,7 @@ jobs:
             python recuperar_links.py --limite 200 --trabalhadores 4 || true
             # Notícias novas primeiro; o restante relê páginas antigas (trecho de abertura, fotos).
             python ler_materias.py --limite 300 --trabalhadores 10 || true
+            python hash_imagens.py --limite 600 --trabalhadores 16 || true  # fotos: duplicatas por imagem
             if git diff --quiet -- noticias.json; then
               echo 'Nada novo nesta rodada.'
             elif python testes/test_duplicatas.py && python gerar_feed_site.py && python compactar_acervo.py; then
