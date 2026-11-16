@@ -35,7 +35,7 @@ LICENCA = re.compile(
     r'Creative Commons Atribui[çc][ãa]o(?:-SemDeriva[çc][õo]es|-CompartilhaIgual)?\s*[\d.]*(?:\s*N[ãa]o Adaptada|\s*Internacional|\s*Brasil)?',
     re.I)
 NAO_COMERCIAL = re.compile(r'N[ãa]oComercial|licenses/by-nc', re.I)
-VERSAO = 2  # 2 = também coleta a galeria de fotos; notícias lidas na versão 1 são relidas
+VERSAO = 3  # 2 = galeria de fotos; 3 = fatos da página (resumo do Radar). Versões anteriores são relidas
 MAX_FOTOS = 12
 NAO_FOTO = re.compile(r'logo|icon|icone|avatar|sprite|banner|placeholder|blank|pixel|spacer|loading|selo|'
                       r'whatsapp-share|/ads?/|publicidade|video\.glbimg|/x240/|\.svg(?:$|\?)|\.gif(?:$|\?)', re.I)
@@ -195,6 +195,14 @@ def imagem_jsonld(pagina, base):
     return ''
 
 
+def titulo_pagina(metas, pagina):
+    t = metas.meta.get('og:title') or ''
+    if not t:
+        m = re.search(r'<title[^>]*>(.*?)</title>', pagina, re.S | re.I)
+        t = limpar(m.group(1)) if m else ''
+    return t
+
+
 def ler(url, timeout):
     with urlopen(Request(url, headers=HEADERS), timeout=timeout) as r:
         if 'html' not in (r.headers.get('Content-Type') or '').lower():
@@ -224,6 +232,12 @@ def ler(url, timeout):
                                        fotos_da_materia(pagina, base))
     if resultado['imagens'] and not resultado.get('imagem'):
         resultado['imagem'] = resultado['imagens'][0]
+    # Fatos objetivos do texto da página (só os dados; o texto não é guardado).
+    paragrafos = [limpar(p) for p in re.findall(r'<p\b[^>]*>(.*?)</p>', pagina, re.S | re.I)]
+    texto_pagina = ' '.join(p for p in paragrafos if len(p) > 40)[:8000]
+    if texto_pagina:
+        from resumo_fatos import extrair
+        resultado['fatos'] = extrair(titulo_pagina(metas, pagina), m.get('og:description') or '', texto_pagina)
     licenca = LICENCA.search(pagina)
     if licenca and not NAO_COMERCIAL.search(pagina[max(0, licenca.start() - 300):licenca.end() + 300]):
         texto = corpo_da_materia(pagina)
@@ -292,6 +306,8 @@ def main():
             if r.get('resumo') and not (n.get('descricao') or n.get('resumo')):
                 n['resumo'] = r['resumo']
                 resumos += 1
+            if r.get('fatos'):
+                n['fatos'] = r['fatos']
             if r.get('texto'):
                 n['texto_integral'] = r['texto']
                 n['licenca_texto'] = r['licenca']

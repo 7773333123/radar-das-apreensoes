@@ -347,15 +347,34 @@
   let linksPromise = null;
   const carregarLinks = () => (linksPromise ??= fetch('feed_links.json').then((r) => (r.ok ? r.json() : [])).catch(() => []));
 
+  function resumoRadarHTML(n, t) {
+    const f = (t && t.f) || {};
+    const linhas = [
+      ['Apreendido', (f.apreendido || []).join(', ')],
+      ['Onde', [(f.cidades || []).join(', ') || (n.uf ? NOME_UF[n.uf] : ''), f.rodovia ? `rodovia ${f.rodovia}` : ''].filter(Boolean).join(' · ')],
+      ['Quem atuou', (f.orgaos || []).join(', ')],
+      ['Presos', f.presos ? `${num(f.presos)} ${f.presos === 1 ? 'pessoa' : 'pessoas'}` : (f.presos_texto ? 'Sim, segundo a reportagem' : '')],
+      ['Mandados', f.mandados || ''],
+      ['Operação', f.operacao || ''],
+      ['Valores citados', f.valor || ''],
+      ['Publicado em', dataBR(n.data)],
+      ['Fonte', n.fonte + (n.outras.length ? ` (também em ${n.outras.map((o) => o[0]).join(', ')})` : '')],
+    ].filter(([, v]) => v);
+    const resumo = t && t.s ? `<section class="radar-sum"><h2>Resumo do Radar</h2><p class="reader-text">${esc(t.s)}</p></section>` : '';
+    const ficha = `<section class="facts"><h2>Principais informações</h2><dl>${linhas.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>`;
+    return resumo + ficha + '<p class="reader-note">Resumo e ficha elaborados automaticamente pelo Radar a partir dos fatos publicados; a reportagem completa está no link da fonte.</p>';
+  }
+
   function abrirLeitor(i, { atualizarUrl = true } = {}) {
     const n = state.porIndice.get(Number(i));
     if (!n) return;
     const dlg = $('leitor');
     const cats = n.cats.map((c) => state.categorias[c]).join(' · ') || 'Em classificação';
     const foto = '<div id="leitorFotos" class="reader-media"></div>';
-    const texto = n.texto ? '<div class="reader-full" id="leitorTexto"><p class="reader-text">Carregando o texto…</p></div>'
-      : n.resumo ? `<p class="reader-text">${esc(n.resumo)}</p><p class="reader-note">Resumo publicado pela fonte; a íntegra está no site de origem.</p>`
-        : '<p class="reader-text">O resumo desta notícia não está disponível. Leia a reportagem completa na fonte original.</p>';
+    // Ordem: resumo do Radar (frases próprias) -> ficha de fatos -> texto da fonte.
+    const daFonte = n.texto ? '<div class="reader-full" id="leitorTexto"><p class="reader-text">Carregando o texto…</p></div>'
+      : n.resumo ? `<section class="src-sum"><h2>O que diz a fonte</h2><p class="reader-text">${esc(n.resumo)}</p></section>` : '';
+    const texto = '<div id="leitorRadar"><p class="reader-text muted-load">Carregando o resumo…</p></div>' + daFonte;
     $('leitorConteudo').innerHTML =
       `${tagsHTML(n)}<h1 id="leitorTitulo">${esc(n.titulo)}</h1>${metaHTML(n)}${foto}${texto}<div id="leitorMiniaturas"></div>` +
       `<footer class="reader-foot"><span>Fonte: ${esc(n.fonte)}${n.uf ? ' · ' + esc(NOME_UF[n.uf]) : ''} · ${esc(cats)}</span>` +
@@ -366,10 +385,11 @@
       '</footer>';
     $('leitorConteudo').dataset.i = String(n.i);
     montarGaleria(n, n.img ? [n.img] : []);
-    if (n.texto || n.nFotos > 1) {
+    {
       carregarDetalhe(n.i).then((t) => {
         if ($('leitorConteudo').dataset.i !== String(n.i)) return;
         if (Array.isArray(t.g) && t.g.length > 1) montarGaleria(n, t.g.map(urlSegura).filter(Boolean));
+        $('leitorRadar').innerHTML = resumoRadarHTML(n, t);
         const alvo = $('leitorTexto');
         if (!alvo) return;
         alvo.innerHTML = t && Array.isArray(t.p)
