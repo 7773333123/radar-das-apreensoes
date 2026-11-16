@@ -80,6 +80,8 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
       if ($('galContador')) $('galContador').textContent = `${galeria.atual + 1} / ${fotos.length}`;
     }, 60));
   }
+  // Ficha "Em resumo", Resumo do Radar em seções e a fonte em cartão próprio.
+  // (A página própria da notícia, api/pagina.js, segue a mesma estrutura.)
   function fichaHTML(n, t) {
     const f = (t && t.f) || {};
     const linhas = [
@@ -87,13 +89,18 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
       ['Onde', [(f.cidades || []).join(', ') || (n.uf ? NOME_UF[n.uf] : ''), f.rodovia ? `rodovia ${f.rodovia}` : ''].filter(Boolean).join(' · ')],
       ['Quem atuou', (f.orgaos || []).join(', ')],
       ['Presos', f.presos ? `${num(f.presos)} ${f.presos === 1 ? 'pessoa' : 'pessoas'}` : (f.presos_texto ? 'Sim, segundo a reportagem' : '')],
+      ['Como', (f.como || []).join(', ')],
+      ['Onde estava', [(f.esconderijo || []).join(', '), f.veiculo || ''].filter(Boolean).join(' · ')],
+      ['Rota', [f.origem ? `de ${f.origem}` : '', f.destino ? `para ${f.destino}` : ''].filter(Boolean).join(' ')],
+      ['Crimes citados', (f.crimes || []).join(', ')],
       ['Mandados', f.mandados || ''], ['Operação', f.operacao || ''], ['Valores citados', f.valor || ''],
       ['Publicado em', dataBR(n.data)],
-      ['Fonte', n.fonte + (n.outras.length ? ` (também em ${n.outras.map((o) => o[0]).join(', ')})` : '')],
     ].filter(([, v]) => v);
-    return (t && t.s ? `<h2>Resumo do Radar</h2>${paragrafos(t.s)}` : '') +
-      `<section class="facts"><h2>Principais informações</h2><dl>${linhas.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` +
-      '<p class="reader-note">Resumo e ficha elaborados automaticamente pelo Radar a partir dos fatos publicados. A reportagem completa está no site de origem.</p>';
+    const secoes = Array.isArray(t?.sx) && t.sx.length ? t.sx
+      : (t?.s ? String(t.s).split(/\n{2,}/).filter(Boolean).map((p) => ['', p]) : []);
+    return `<section class="em-resumo" aria-label="Em resumo"><h2>Em resumo</h2><dl>${linhas.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` +
+      (secoes.length ? `<section class="bloco radar"><header class="bloco-cab"><h2>Resumo do Radar</h2><p>Redigido pelo Radar a partir dos fatos publicados</p></header>` +
+        `<div class="rs">${secoes.map(([tit, txt]) => `<section class="rs-sec">${tit ? `<h3>${esc(tit)}</h3>` : ''}<p class="reader-text">${esc(txt)}</p></section>`).join('')}</div></section>` : '');
   }
 
   function paragrafos(texto) {
@@ -101,17 +108,18 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
   }
 
   function fonteHTML(n, t) {
+    const link = `<a class="btn" href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer" data-ler-original>Ler a reportagem completa em ${esc(n.fonte)} ↗</a>`;
+    const cab = (titulo) => `<header class="bloco-cab"><h2>${titulo}</h2><p><strong>${esc(n.fonte)}</strong> · ${esc(dataBR(n.data))}</p></header>`;
     if (Array.isArray(t?.p)) {
-      return `<h2>Texto completo</h2>${t.p.map((p) => `<p class="reader-text">${esc(p)}</p>`).join('')}` +
-        `<p class="reader-note">${t.l === 'oficial' ? `Comunicado oficial publicado por ${esc(n.fonte)}, reproduzido na íntegra com crédito.`
-          : `Texto reproduzido integralmente de ${esc(n.fonte)}, sob a licença ${esc(t.l)}, que permite a reprodução com crédito.`} ` +
-        `<a href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer" data-ler-original>Ver no site original ↗</a></p>`;
+      return `<section class="bloco fonte-card">${cab('Texto completo')}<div class="fonte-texto">${t.p.map((p) => `<p class="reader-text">${esc(p)}</p>`).join('')}</div>` +
+        `<footer class="fonte-pe"><span>${t.l === 'oficial' ? `Comunicado oficial de ${esc(n.fonte)}, reproduzido na íntegra com crédito.`
+          : `Reproduzido de ${esc(n.fonte)} sob a licença ${esc(t.l)}, que permite a reprodução com crédito.`}</span>${link}</footer></section>`;
     }
     const trecho = t?.tr && t.tr.length > (n.resumo || '').length ? t.tr : n.resumo;
-    if (!trecho) return '';
-    return `<h2>O que diz a fonte</h2><blockquote class="reader-quote">${paragrafos(trecho)}</blockquote>` +
-      `<p class="reader-note">${t?.tr ? 'Abertura da reportagem publicada' : 'Resumo publicado'} por ${esc(n.fonte)}, reproduzido com crédito. ` +
-      `A reportagem continua no site de origem: <a href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer" data-ler-original>ler a íntegra ↗</a></p>`;
+    if (!trecho) return n.url ? `<section class="bloco fonte-card">${cab('O que diz a fonte')}<footer class="fonte-pe"><span>A reportagem está disponível no site de origem.</span>${link}</footer></section>` : '';
+    const pct = t?.tr && t?.tt ? Math.min(50, Math.max(1, Math.round((t.tr.length / t.tt) * 100))) : 0;
+    return `<section class="bloco fonte-card">${cab('O que diz a fonte')}<blockquote class="reader-quote">${paragrafos(trecho)}</blockquote>` +
+      `<footer class="fonte-pe"><span>${t?.tr ? `Abertura da reportagem${pct ? `, cerca de ${pct}% do texto original` : ''}, reproduzida com crédito.` : 'Resumo publicado pelo veículo, reproduzido com crédito.'}</span>${link}</footer></section>`;
   }
 
   function abrir(i, { atualizarUrl = true } = {}) {
