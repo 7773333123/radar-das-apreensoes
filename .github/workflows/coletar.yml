@@ -79,6 +79,7 @@ jobs:
         continue-on-error: true
         run: python hash_imagens.py --limite 3000 --trabalhadores 16
       - name: Gerar estatísticas (se disponível)
+        continue-on-error: true  # estatística antiga (analise_nacional.json): não pode derrubar a coleta
         run: |
           if [ -f analisar_noticias.py ]; then
             python analisar_noticias.py

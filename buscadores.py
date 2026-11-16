@@ -118,7 +118,7 @@ def buscar_bing(consulta, fontes):
 # ---------- GDELT ----------
 def buscar_gdelt(consulta, fontes, janela='1d'):
     url = ('https://api.gdeltproject.org/api/v2/doc/doc?' +
-           urllib.parse.urlencode({'query': f'{consulta} sourcecountry:brazil sourcelang:portuguese', 'mode': 'artlist',
+           urllib.parse.urlencode({'query': f'{consulta} sourcecountry:BR sourcelang:por', 'mode': 'artlist',
                                    'maxrecords': 250, 'format': 'json', 'timespan': janela, 'sort': 'datedesc'}))
     texto = baixar(url, timeout=40).decode('utf-8', 'replace')
     if not texto.strip().startswith('{'):
@@ -156,13 +156,16 @@ def main():
             resultados.append(({'nome': f'Bing: {consulta[:50]}'}, [], exc))
         time.sleep(1.5)
     if args.gdelt:
-        for consulta in ('(apreensão OR apreende OR apreendidos)', '(tráfico OR contrabando OR maconha OR cocaína)',
-                         '(fuzil OR armas OR munições) polícia'):
+        # O GDELT indexa sem acento e limita a ~1 consulta a cada 5 s por IP: uma consulta ampla.
+        consulta = '(apreende OR apreendeu OR apreendidos OR apreendida OR apreensao OR contrabando OR traficantes)'
+        for tentativa in range(2):
             try:
-                resultados.append(({'nome': f'GDELT: {consulta}'}, buscar_gdelt(consulta, fontes), None))
+                resultados.append(({'nome': 'GDELT'}, buscar_gdelt(consulta, fontes, '2d'), None))
+                break
             except Exception as exc:
-                resultados.append(({'nome': f'GDELT: {consulta}'}, [], exc))
-            time.sleep(6)  # o GDELT pede ao menos 5 s entre consultas
+                if tentativa:
+                    resultados.append(({'nome': 'GDELT'}, [], exc))
+                time.sleep(20)
     total = sum(len(i) for _, i, _ in resultados)
     falhas = sum(1 for _, _, e in resultados if e is not None)
     print(f'Buscadores: {len(resultados)} consultas, {falhas} falhas, {total} itens sobre apreensões', flush=True)
