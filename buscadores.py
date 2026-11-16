@@ -21,7 +21,7 @@ import time
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from classificar import relevante
@@ -115,6 +115,20 @@ def buscar_bing(consulta, fontes, filtrar=True):
     return saida
 
 
+def buscar_bing_web(consulta):
+    """Busca geral do Bing (RSS): indexa páginas antigas, que o Bing Notícias não cobre."""
+    url = 'https://www.bing.com/search?' + urllib.parse.urlencode({'q': consulta, 'format': 'rss', 'setlang': 'pt-br', 'cc': 'BR'})
+    raiz = ET.fromstring(baixar(url))
+    saida = []
+    for el in raiz.iter('item'):
+        filhos = {c.tag.rsplit('}', 1)[-1].lower(): (c.text or '') for c in el}
+        link = filhos.get('link', '').strip()
+        if link.startswith('http'):
+            saida.append({'titulo': texto_limpo(filhos.get('title', '')), 'url': link, 'dominio_fonte': dominio(link),
+                          'imagem_url': ''})
+    return saida
+
+
 # ---------- GDELT ----------
 def buscar_gdelt(consulta, fontes, janela='1d'):
     url = ('https://api.gdeltproject.org/api/v2/doc/doc?' +
@@ -150,7 +164,7 @@ def _sem_link(n):
     return 'news.google.com' in str(n.get('url') or '') and not (orig.startswith('http') and 'news.google.com' not in orig)
 
 
-def resolver_links(noticias, limite, fontes):
+def resolver_links(noticias, limite, fontes, antigas=False):
     """Busca no Bing o título de cada notícia do Google sem link original e grava o link direto.
 
     Aceita só resultado do MESMO veículo (domínio) e com título praticamente igual
@@ -159,7 +173,14 @@ def resolver_links(noticias, limite, fontes):
     """
     pendentes = [n for n in noticias if isinstance(n, dict) and _sem_link(n) and int(n.get('tentativas_bing') or 0) < 2
                  and n.get('titulo')]
-    pendentes.sort(key=lambda n: n.get('data_iso') or '', reverse=True)
+    if antigas:
+        # Execução própria para o acervo antigo: das mais antigas para as mais novas,
+        # deixando os últimos 30 dias para a coleta rápida.
+        corte = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
+        pendentes = [n for n in pendentes if (n.get('data_iso') or '') < corte]
+        pendentes.sort(key=lambda n: n.get('data_iso') or '')
+    else:
+        pendentes.sort(key=lambda n: n.get('data_iso') or '', reverse=True)
     achados = 0
     for n in pendentes[:max(0, limite)]:
         fonte = str(n.get('fonte') or '')
@@ -172,6 +193,14 @@ def resolver_links(noticias, limite, fontes):
             time.sleep(2)
             continue
         alvo = _palavras(titulo)
+        if dominio_alvo and not any(r['dominio_fonte'] == dominio_alvo or r['dominio_fonte'].endswith('.' + dominio_alvo)
+                                    for r in resultados):
+            # Bing Notícias não achou no veículo: busca geral, restrita ao site (pega as antigas).
+            try:
+                time.sleep(1.2)
+                resultados = buscar_bing_web(f'site:{dominio_alvo} "{titulo[:110]}"')
+            except Exception:
+                resultados = []
         for r in resultados:
             mesmo_site = dominio_alvo and (r['dominio_fonte'] == dominio_alvo or r['dominio_fonte'].endswith('.' + dominio_alvo))
             if mesmo_site and alvo and len(alvo & _palavras(r['titulo'])) >= 0.8 * len(alvo):
@@ -192,6 +221,7 @@ def main():
     ap.add_argument('--gdelt', action='store_true', help='também consulta o GDELT')
     ap.add_argument('--teste', action='store_true', help='só mostra o que encontraria, sem gravar')
     ap.add_argument('--resolver', type=int, default=0, help='notícias do Google sem link original a procurar no Bing')
+    ap.add_argument('--antigas', action='store_true', help='resolver só as de mais de 30 dias, das mais antigas para as novas')
     args = ap.parse_args()
     fontes = nomes_das_fontes()
     cursor = json.loads(ESTADO.read_text(encoding='utf-8')) if ESTADO.exists() else {}
@@ -233,7 +263,7 @@ def main():
     novas, completadas, _ = incorporar(noticias, resultados)
     resolvidas = 0
     if args.resolver:
-        resolvidas, tentadas, restantes = resolver_links(noticias, args.resolver, fontes)
+        resolvidas, tentadas, restantes = resolver_links(noticias, args.resolver, fontes, args.antigas)
         print(f'Links originais achados pelo Bing: {resolvidas} de {tentadas} tentadas ({restantes} sem link na fila)')
     if novas or completadas or args.resolver:
         if isinstance(dados, dict):

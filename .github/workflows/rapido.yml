@@ -39,6 +39,7 @@ jobs:
         run: |
           gh workflow run coletar.yml --ref main || true
           gh workflow run historico.yml --ref main || true
+          gh workflow run resolver_antigas.yml --ref main || true
       - name: Coletar a cada 20 minutos
         run: |
           set -uo pipefail

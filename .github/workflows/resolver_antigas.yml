@@ -1,0 +1,34 @@
+name: Link original das notícias antigas (Bing)
+# Procura no Bing (Notícias e busca geral, restrita ao site do veículo) o link
+# original das notícias do Google com mais de 30 dias, das mais antigas para as
+# mais novas. A coleta rápida cuida das recentes. Disparado pela coleta rápida a
+# cada ciclo; o cron é reserva.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 */4 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: resolver-antigas
+  cancel-in-progress: false
+jobs:
+  resolver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Baixar o acervo (release "dados")
+        run: python acervo.py baixar
+      - name: Procurar o link original de 800 notícias antigas
+        run: python buscadores.py --limite-bing 0 --resolver 800 --antigas
+      - name: Ler as matérias encontradas (foto, trecho, fatos)
+        continue-on-error: true
+        run: python ler_materias.py --limite 300 --trabalhadores 10
+      - name: Salvar (une com a versão atual e regenera o site)
+        run: python acervo.py salvar 'Link original de notícias antigas (Bing)'
