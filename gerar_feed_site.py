@@ -29,7 +29,7 @@ from pathlib import Path
 
 from localizar_uf import inferir_uf
 from resumo_fatos import extrair
-from contexto import Contexto, resumo_ampliado
+from contexto import resumo_ampliado
 from estatisticas import MATERIAIS, ORGAOS_NOMES, enriquecer, exportar
 
 PASTA = Path(__file__).resolve().parent
@@ -260,6 +260,27 @@ def url_publica(valor):
     return valor if re.match(r'https?://', valor) else ''
 
 
+def juntar_fatos(lista):
+    """Fatos da versão exibida, completados com os das outras versões da mesma notícia.
+
+    Só preenche o que falta (não mistura listas, para não trazer ruído de outras
+    páginas); os itens apreendidos de outra versão só entram se tiverem quantidade
+    e a versão exibida não tiver.
+    """
+    lista = [f for f in lista if f]
+    if not lista:
+        return None
+    junto = dict(lista[0])
+    for f in lista[1:]:
+        for k, v in f.items():
+            if v and not junto.get(k):
+                junto[k] = v
+        tem_num = lambda fs: any(re.search(r'\d', x) for x in fs.get('apreendido', []))
+        if tem_num(f) and not tem_num(junto):
+            junto['apreendido'] = f['apreendido']
+    return junto
+
+
 def main():
     dados = json.loads(ORIGEM.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
@@ -344,14 +365,10 @@ def main():
         candidatos = [f for f in candidatos if f]
         if candidatos:
             enriquecer(item, max(candidatos, key=lambda f: (len(f.get('apreendido', [])), len(f))))
-    # Resumo do Radar em parágrafos: fatos, quem atuou, contexto no acervo e cobertura.
-    contexto = Contexto(saida)
+    # Resumo do Radar em parágrafos: fatos, quem atuou, base legal e outros veículos.
     for item in saida:
-        fatos = fatos_por_i.get(item['i'])
-        if not fatos:
-            outros = [fatos_por_i.get(o[2]) for o in item.get('o', []) if fatos_por_i.get(o[2])]
-            fatos = max(outros, key=len) if outros else None
-        detalhes[item['i'] // LOTE][str(item['i'])]['s'] = resumo_ampliado(item, fatos, contexto, CATEGORIAS)
+        fatos = juntar_fatos([fatos_por_i.get(item['i'])] + [fatos_por_i.get(o[2]) for o in item.get('o', [])])
+        detalhes[item['i'] // LOTE][str(item['i'])]['s'] = resumo_ampliado(item, fatos)
     for lote in list(detalhes):
         for chave in [c for c, v in detalhes[lote].items() if not v]:
             del detalhes[lote][chave]

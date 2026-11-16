@@ -35,7 +35,7 @@ LICENCA = re.compile(
     r'Creative Commons Atribui[çc][ãa]o(?:-SemDeriva[çc][õo]es|-CompartilhaIgual)?\s*[\d.]*(?:\s*N[ãa]o Adaptada|\s*Internacional|\s*Brasil)?',
     re.I)
 NAO_COMERCIAL = re.compile(r'N[ãa]oComercial|licenses/by-nc', re.I)
-VERSAO = 5  # 2 = galeria; 3 = fatos da página; 4 = trecho de abertura; 5 = trecho sem chamadas de outras matérias. Versões anteriores são relidas
+VERSAO = 6  # 2 = galeria; 3 = fatos; 4-5 = trecho de abertura; 6 = íntegra das notas oficiais. Versões anteriores são relidas
 MAX_FOTOS = 12
 NAO_FOTO = re.compile(r'logo|icon|icone|avatar|sprite|banner|placeholder|blank|pixel|spacer|loading|selo|'
                       r'whatsapp-share|/ads?/|publicidade|video\.glbimg|/x240/|\.svg(?:$|\?)|\.gif(?:$|\?)', re.I)
@@ -44,6 +44,9 @@ RUIDO = re.compile(r'^(?:Leia (?:tamb[ée]m|mais)|Veja (?:tamb[ée]m|mais|o v[í
                    r'Participe|Compartilhe|Acesse|Baixe|Entre (?:no|em) nosso|Publicidade|Continua (?:depois|ap[óo]s)|'
                    r'Foto:|Imagem:|Cr[ée]dito|Reprodu[çc][ãa]o|Por\s+\w+\s*$|Atualizad[oa]|Publicad[oa] em)', re.I)
 TRECHO_MIN, TRECHO_MAX = 600, 1000
+# Sites de órgãos públicos (polícias, secretarias, gov.br, Justiça, MP): notas
+# oficiais feitas para divulgação, reproduzidas na íntegra com crédito.
+OFICIAL = re.compile(r'\.(?:gov|jus|mp|leg|def)\.br$', re.I)
 CONTATO = re.compile(r'^(?:Comunica[çc][ãa]o Social|Assessoria de|Ascom|Tel\.?:|E-?mail:|Fonte:|Fotos?:|@)', re.I)
 
 
@@ -98,6 +101,22 @@ def corpo_da_materia(pagina):
         if sum(map(len, paragrafos)) > sum(map(len, melhor)):
             melhor = paragrafos
     return melhor[:40] if sum(map(len, melhor)) > 400 else []
+
+
+def corpo_limpo(paragrafos):
+    """Parágrafos da reportagem, sem chamadas, assinaturas e manchetes de outras matérias."""
+    saida = []
+    for p in paragrafos:
+        p = p.strip()
+        if not p or RUIDO.match(p) or CONTATO.match(p) or p.count('|') > 1:
+            continue
+        if not re.search(r'[.!?…:;)"”»]$', p):
+            if len(saida) >= 2 and len(p) < 160:
+                break  # lista de outras notícias no fim da página
+            if len(p) < 160:
+                continue
+        saida.append(p)
+    return saida if sum(map(len, saida)) >= 200 else []
 
 
 def trecho_de_abertura(paragrafos):
@@ -285,10 +304,15 @@ def ler(url, timeout):
         resultado['trecho'] = trecho
     licenca = LICENCA.search(pagina)
     if licenca and not NAO_COMERCIAL.search(pagina[max(0, licenca.start() - 300):licenca.end() + 300]):
-        texto = corpo_da_materia(pagina)
+        texto = corpo_limpo(corpo_da_materia(pagina))
         if texto:
             resultado['texto'] = texto
             resultado['licenca'] = limpar(licenca.group(0))
+    elif OFICIAL.search(urlsplit(final).hostname or ''):
+        texto = corpo_limpo(corpo_da_materia(pagina))
+        if texto:
+            resultado['texto'] = texto
+            resultado['licenca'] = 'oficial'
     return resultado
 
 

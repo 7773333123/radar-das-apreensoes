@@ -103,7 +103,9 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
   function fonteHTML(n, t) {
     if (Array.isArray(t?.p)) {
       return `<h2>Texto completo</h2>${t.p.map((p) => `<p class="reader-text">${esc(p)}</p>`).join('')}` +
-        `<p class="reader-note">Texto reproduzido integralmente de ${esc(n.fonte)}, sob a licença ${esc(t.l)}, que permite a reprodução com crédito.</p>`;
+        `<p class="reader-note">${t.l === 'oficial' ? `Comunicado oficial publicado por ${esc(n.fonte)}, reproduzido na íntegra com crédito.`
+          : `Texto reproduzido integralmente de ${esc(n.fonte)}, sob a licença ${esc(t.l)}, que permite a reprodução com crédito.`} ` +
+        `<a href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer" data-ler-original>Ver no site original ↗</a></p>`;
     }
     const trecho = t?.tr && t.tr.length > (n.resumo || '').length ? t.tr : n.resumo;
     if (!trecho) return '';
