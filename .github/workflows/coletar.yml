@@ -12,7 +12,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: atualizar-noticias
+  group: coleta-completa
   cancel-in-progress: false
 jobs:
   coletar:
@@ -33,7 +33,7 @@ jobs:
         run: |
           test -f coletor.py
           test -f recuperar_links.py
-          python -m py_compile coletor.py recuperar_links.py localizar_uf.py coletar_feeds_estaduais.py gerar_feed_site.py ler_materias.py compactar_acervo.py
+          python -m py_compile coletor.py recuperar_links.py localizar_uf.py coletar_feeds_estaduais.py gerar_feed_site.py ler_materias.py compactar_acervo.py mesclar_acervo.py
           if [ -f coletar_fontes_diretas.py ]; then python -m py_compile coletar_fontes_diretas.py; fi
           if [ -f enriquecer_imagens.py ]; then python -m py_compile enriquecer_imagens.py; fi
       - name: Coletar notícias
@@ -79,30 +79,5 @@ jobs:
         run: |
           python gerar_feed_site.py
           python compactar_acervo.py
-      - name: Salvar alterações sem sobrescrever outras execuções
-        run: |
-          set -e
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          for tentativa in 1; do
-            git add noticias.json
-            for arquivo in analise_nacional.json cobertura_historica.json feed.json feed_links.json; do
-              if [ -e "$arquivo" ]; then git add "$arquivo"; fi
-            done
-            for pasta in detalhes textos; do git add -A -- "$pasta" 2>/dev/null || true; done
-            if git diff --cached --quiet; then
-              echo 'Nenhuma alteração a salvar.'
-              exit 0
-            fi
-            git commit -m 'Atualizar notícias, links e imagens'
-            if git push origin HEAD:main; then
-              echo 'Acervo atualizado.'
-              exit 0
-            fi
-            echo 'Conflito de atualização; recarregando dados remotos.'
-            git fetch origin main
-            echo "ERRO: atualização remota concorrente. Não descartaremos o acervo coletado." >&2
-            exit 1
-          done
-          echo 'Não foi possível salvar sem conflito.' >&2
-          exit 1
+      - name: Salvar (mescla se outra coleta gravou antes)
+        run: bash salvar_acervo.sh 'Atualizar notícias, links e imagens'

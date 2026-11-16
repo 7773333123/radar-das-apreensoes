@@ -1,0 +1,53 @@
+name: Coleta rápida (a cada 20 minutos)
+# Mantém o site atualizado ao longo do dia: lê os feeds das fontes e as buscas
+# recentes, completa link/foto/resumo só das notícias novas e grava apenas se
+# chegou notícia nova. A coleta completa (coletar.yml) continua 2x ao dia.
+# 20 minutos = até 72 publicações por dia na Vercel, abaixo do limite de 100
+# do plano gratuito, somando a coleta completa e a histórica.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,27,47 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: coleta-rapida
+  cancel-in-progress: false
+jobs:
+  rapido:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v5
+      - name: Preparar Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Instalar decodificador
+        run: python -m pip install --quiet googlenewsdecoder
+      - name: Contar acervo antes
+        id: antes
+        run: echo "total=$(python -c "import json;print(len(json.load(open('noticias.json'))['noticias']))")" >> "$GITHUB_OUTPUT"
+      - name: Feeds das fontes
+        run: python coletar_feeds_estaduais.py
+      - name: Buscas recentes (Google Notícias)
+        run: python coletor.py --limite-fontes 4 --limite-estados 4
+      - name: Completar só as notícias novas
+        run: |
+          python recuperar_links.py --limite 80 --trabalhadores 4
+          python ler_materias.py --limite 150 --trabalhadores 8
+      - name: Verificar se chegou notícia nova
+        id: novas
+        run: |
+          DEPOIS=$(python -c "import json;print(len(json.load(open('noticias.json'))['noticias']))")
+          echo "Antes: ${{ steps.antes.outputs.total }} | depois: $DEPOIS"
+          if [ "$DEPOIS" -gt "${{ steps.antes.outputs.total }}" ]; then echo "gravar=1" >> "$GITHUB_OUTPUT"; else echo 'Nenhuma notícia nova; nada a publicar.'; fi
+      - name: Gerar feed do site
+        if: steps.novas.outputs.gravar == '1'
+        run: |
+          python gerar_feed_site.py
+          python compactar_acervo.py
+      - name: Salvar (mescla se outra coleta gravou antes)
+        if: steps.novas.outputs.gravar == '1'
+        run: bash salvar_acervo.sh 'Notícias novas (coleta rápida)'

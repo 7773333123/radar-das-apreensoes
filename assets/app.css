@@ -181,8 +181,14 @@ h1 { margin: 0; font-size: clamp(30px, 4.6vw, 52px); line-height: 1.06; letter-s
 .reader-credit { color: var(--muted); font-size: 12px; }
 .reader-text { font-size: 17px; margin: 16px 0; }
 .reader-source { margin-top: 18px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; display: grid; gap: 12px; }
-.also { border-top: 1px solid var(--line); padding-top: 10px; }
-.also ul { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; }
+.reader-foot { margin-top: 26px; padding-top: 12px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4px 16px;
+  align-items: baseline; color: var(--muted); font-size: 12.5px; }
+.foot-links { display: inline-flex; gap: 14px; margin-left: auto; }
+.reader-foot .also { flex-basis: 100%; }
+.link-sm { background: none; border: 0; padding: 0; font: inherit; font-size: 12.5px; color: var(--muted); text-decoration: underline;
+  text-decoration-color: rgb(157 176 198 / .4); text-underline-offset: 2px; cursor: pointer; }
+.link-sm:hover { color: var(--accent); text-decoration-color: currentColor; }
+.link-sm[aria-disabled="true"] { opacity: .5; cursor: default; }
 .reader-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .reader-actions .btn { display: inline-flex; align-items: center; text-decoration: none; }
 

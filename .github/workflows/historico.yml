@@ -1,16 +1,15 @@
 name: Ampliar acervo histórico (20 anos)
-# Percorre um ano por execução, do mais recente para 2006, e recomeça ao chegar
+# Percorre um ano por execução (a cada 6 horas), do mais recente para 2006, e recomeça ao chegar
 # ao fim (assim pega notícias indexadas depois). O ano da vez fica em
-# historico_cursor.json. Usa o mesmo grupo de concorrência da coleta diária,
-# então as duas nunca gravam ao mesmo tempo.
+# historico_cursor.json. Se outra coleta gravar antes, salvar_acervo.sh mescla.
 on:
   workflow_dispatch:
   schedule:
-    - cron: '47 */3 * * *'
+    - cron: '37 */6 * * *'
 permissions:
   contents: write
 concurrency:
-  group: atualizar-noticias
+  group: coleta-historica
   cancel-in-progress: false
 jobs:
   historico:
@@ -55,14 +54,6 @@ jobs:
         run: |
           python gerar_feed_site.py
           python compactar_acervo.py
-      - name: Salvar
+      - name: Salvar (mescla se outra coleta gravou antes)
         run: |
-          set -e
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add noticias.json historico_cursor.json feed.json feed_links.json
-          for arquivo in cobertura_historica.json; do if [ -e "$arquivo" ]; then git add "$arquivo"; fi; done
-          for pasta in detalhes textos; do git add -A -- "$pasta" 2>/dev/null || true; done
-          if git diff --cached --quiet; then echo 'Nada novo.'; exit 0; fi
-          git commit -m "Acervo histórico: ano ${{ steps.ano.outputs.ano }}"
-          git push origin HEAD:main
+          bash salvar_acervo.sh "Acervo histórico - ano ${{ steps.ano.outputs.ano }}" historico_cursor.json
