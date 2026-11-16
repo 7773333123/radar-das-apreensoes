@@ -1,0 +1,17 @@
+name: Testar buscadores alternativos (manual)
+# Mostra o que o Bing Notícias e o GDELT encontrariam agora, sem gravar nada.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  testar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Consultar sem gravar
+        run: python buscadores.py --limite-bing 8 --gdelt --teste

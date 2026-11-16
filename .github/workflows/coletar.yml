@@ -37,7 +37,7 @@ jobs:
         run: |
           test -f coletor.py
           test -f recuperar_links.py
-          python -m py_compile coletor.py recuperar_links.py localizar_uf.py coletar_feeds_estaduais.py gerar_feed_site.py ler_materias.py compactar_acervo.py mesclar_acervo.py hash_imagens.py duplicatas.py acervo.py
+          python -m py_compile coletor.py recuperar_links.py localizar_uf.py coletar_feeds_estaduais.py gerar_feed_site.py ler_materias.py compactar_acervo.py mesclar_acervo.py hash_imagens.py duplicatas.py acervo.py buscadores.py
           if [ -f coletar_fontes_diretas.py ]; then python -m py_compile coletar_fontes_diretas.py; fi
           if [ -f enriquecer_imagens.py ]; then python -m py_compile enriquecer_imagens.py; fi
       - name: Coletar notícias
@@ -67,6 +67,9 @@ jobs:
           fi
       - name: Coletar feeds dos veículos (link, foto e estado)
         run: python coletar_feeds_estaduais.py
+      - name: Buscadores alternativos (Bing Notícias e GDELT)
+        continue-on-error: true
+        run: python buscadores.py --limite-bing 60 --gdelt
       - name: Recuperar links originais
         run: |
           python recuperar_links.py --limite 600 --trabalhadores 4 --diagnostico
@@ -88,4 +91,4 @@ jobs:
           python gerar_feed_site.py
           python compactar_acervo.py
       - name: Salvar (mescla se outra coleta gravou antes)
-        run: python acervo.py salvar 'Atualizar notícias, links e imagens' analise_nacional.json cobertura_historica.json
+        run: python acervo.py salvar 'Atualizar notícias, links e imagens' analise_nacional.json cobertura_historica.json buscadores_cursor.json

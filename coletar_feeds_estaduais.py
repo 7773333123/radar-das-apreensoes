@@ -132,23 +132,11 @@ def ler_feed(feed):
         }
 
 
-def main():
-    dados = json.loads(ARQUIVO.read_text(encoding='utf-8'))
-    noticias = dados['noticias'] if isinstance(dados, dict) else dados
-    feeds = json.loads(FEEDS.read_text(encoding='utf-8'))['feeds']
-    if DESCOBERTOS.exists():
-        conhecidos = {f['url'] for f in feeds}
-        feeds += [f for f in json.loads(DESCOBERTOS.read_text(encoding='utf-8')).get('feeds', []) if f['url'] not in conhecidos]
+def incorporar(noticias, resultados):
+    """Acrescenta ao acervo os itens novos de cada (fonte, itens, erro); completa os já existentes.
 
-    def tentar(feed):
-        try:
-            return feed, list(ler_feed(feed)), None
-        except Exception as exc:  # feed fora do ar não interrompe a coleta
-            return feed, [], exc
-
-    # Baixa todos os feeds em paralelo; o processamento abaixo segue a ordem da lista.
-    with ThreadPoolExecutor(max_workers=16) as pool:
-        resultados = list(pool.map(tentar, feeds))
+    Usado pelos feeds dos veículos e pelos buscadores (buscadores.py).
+    """
     por_url = {n.get('url_original') or n.get('url'): n for n in noticias if isinstance(n, dict)}
     por_titulo = {}
     for n in noticias:
@@ -185,6 +173,27 @@ def main():
             por_url[item['url']] = item
             por_titulo[normalizar_titulo(item['titulo'])] = item
             novas += 1
+    return novas, completadas, falhas
+
+
+def main():
+    dados = json.loads(ARQUIVO.read_text(encoding='utf-8'))
+    noticias = dados['noticias'] if isinstance(dados, dict) else dados
+    feeds = json.loads(FEEDS.read_text(encoding='utf-8'))['feeds']
+    if DESCOBERTOS.exists():
+        conhecidos = {f['url'] for f in feeds}
+        feeds += [f for f in json.loads(DESCOBERTOS.read_text(encoding='utf-8')).get('feeds', []) if f['url'] not in conhecidos]
+
+    def tentar(feed):
+        try:
+            return feed, list(ler_feed(feed)), None
+        except Exception as exc:  # feed fora do ar não interrompe a coleta
+            return feed, [], exc
+
+    # Baixa todos os feeds em paralelo; o processamento abaixo segue a ordem da lista.
+    with ThreadPoolExecutor(max_workers=16) as pool:
+        resultados = list(pool.map(tentar, feeds))
+    novas, completadas, falhas = incorporar(noticias, resultados)
     if novas or completadas:
         if isinstance(dados, dict):
             dados['noticias'] = noticias
