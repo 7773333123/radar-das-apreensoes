@@ -103,6 +103,11 @@ def _pontos(item):
             (3 if item.get('u') else 0) + (1 if item.get('uf') else 0) + (1 if item.get('r') else 0))
 
 
+def _data(dia):
+    from datetime import date
+    return date.fromisoformat(dia)
+
+
 def agrupar_duplicatas(itens):
     """Une a mesma matéria publicada mais de uma vez (mesma fonte ou veículos diferentes).
 
@@ -132,6 +137,22 @@ def agrupar_duplicatas(itens):
                 pai[raiz(k)] = raiz(por_titulo[t])
             else:
                 por_titulo[t] = k
+    # Texto repetido: mesmo resumo (primeiros 140 caracteres) ou mesma foto,
+    # publicados com até 3 dias de diferença, são a mesma matéria republicada.
+    for campo, tamanho in (('r', 140), ('img', None)):
+        vistos = {}
+        for k, item in enumerate(itens):
+            valor = item.get(campo, '')
+            valor = _normal(valor)[:tamanho] if tamanho else valor.split('?')[0]
+            if (tamanho and len(valor) < 80) or not valor or 'logo' in valor.lower():
+                continue
+            dia = item.get('d', '')[:10]
+            anterior = vistos.get(valor)
+            if anterior is not None:
+                dia_ant = itens[anterior].get('d', '')[:10]
+                if dia and dia_ant and abs((_data(dia) - _data(dia_ant)).days) <= 3:
+                    pai[raiz(k)] = raiz(anterior)
+            vistos[valor] = k
     dias = sorted(por_dia)
     for posicao, dia in enumerate(dias):
         atuais = por_dia[dia]

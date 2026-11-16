@@ -1,12 +1,14 @@
 # Publica só o site. Scripts de coleta e dados brutos ficam fora do deploy.
 *.py
-__pycache__/
+*.sh
 .github/
-noticias.json
+README.md
+__pycache__/
 analise_nacional.json
 cobertura_historica.json
-fontes.json
+feeds_descobertos.json
 feeds_estaduais.json
+fontes.json
+historico_cursor.json
 municipios.json
-README.md
-*.sh
+noticias.json

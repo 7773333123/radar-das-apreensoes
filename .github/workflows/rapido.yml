@@ -16,7 +16,7 @@ concurrency:
 jobs:
   rapido:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 18
     steps:
       - name: Baixar repositório
         uses: actions/checkout@v5
@@ -32,11 +32,11 @@ jobs:
       - name: Feeds das fontes
         run: python coletar_feeds_estaduais.py
       - name: Buscas recentes (Google Notícias)
-        run: python coletor.py --limite-fontes 4 --limite-estados 4
+        run: python coletor.py --limite-fontes 15 --limite-estados 4  # 15 sites por rodada: as 1.100+ fontes giram em ~1 dia
       - name: Completar só as notícias novas
         run: |
-          python recuperar_links.py --limite 80 --trabalhadores 4
-          python ler_materias.py --limite 150 --trabalhadores 8
+          python recuperar_links.py --limite 200 --trabalhadores 4
+          python ler_materias.py --limite 300 --trabalhadores 10
       - name: Verificar se chegou notícia nova
         id: novas
         run: |

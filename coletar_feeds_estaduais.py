@@ -20,12 +20,14 @@ import time
 import unicodedata
 import urllib.request
 import xml.etree.ElementTree as ET
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 
 PASTA = Path(__file__).resolve().parent
 ARQUIVO = PASTA / 'noticias.json'
 FEEDS = PASTA / 'feeds_estaduais.json'
+DESCOBERTOS = PASTA / 'feeds_descobertos.json'  # gerado por descobrir_feeds.py
 HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; RadarDasApreensoes/1.0; +https://radar-das-apreensoes.vercel.app)'}
 MEDIA = '{http://search.yahoo.com/mrss/}'
 ATOM = '{http://www.w3.org/2005/Atom}'
@@ -134,20 +136,32 @@ def main():
     dados = json.loads(ARQUIVO.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
     feeds = json.loads(FEEDS.read_text(encoding='utf-8'))['feeds']
+    if DESCOBERTOS.exists():
+        conhecidos = {f['url'] for f in feeds}
+        feeds += [f for f in json.loads(DESCOBERTOS.read_text(encoding='utf-8')).get('feeds', []) if f['url'] not in conhecidos]
+
+    def tentar(feed):
+        try:
+            return feed, list(ler_feed(feed)), None
+        except Exception as exc:  # feed fora do ar não interrompe a coleta
+            return feed, [], exc
+
+    # Baixa todos os feeds em paralelo; o processamento abaixo segue a ordem da lista.
+    with ThreadPoolExecutor(max_workers=16) as pool:
+        resultados = list(pool.map(tentar, feeds))
     por_url = {n.get('url_original') or n.get('url'): n for n in noticias if isinstance(n, dict)}
     por_titulo = {}
     for n in noticias:
         if isinstance(n, dict):
             por_titulo.setdefault(normalizar_titulo(n.get('titulo')), n)
     novas = completadas = falhas = 0
-    for feed in feeds:
-        try:
-            itens = list(ler_feed(feed))
-        except Exception as exc:
+    for feed, itens, erro in resultados:
+        if erro is not None:
             falhas += 1
-            print(f'Falha em {feed["nome"]}: {type(exc).__name__}: {str(exc)[:120]}', flush=True)
+            print(f'Falha em {feed["nome"]}: {type(erro).__name__}: {str(erro)[:120]}', flush=True)
             continue
-        print(f'{feed["nome"]}: {len(itens)} notícias sobre apreensões', flush=True)
+        if itens:
+            print(f'{feed["nome"]}: {len(itens)} notícias sobre apreensões', flush=True)
         for item in itens:
             if item['url'] in por_url:
                 continue
@@ -171,7 +185,6 @@ def main():
             por_url[item['url']] = item
             por_titulo[normalizar_titulo(item['titulo'])] = item
             novas += 1
-        time.sleep(0.3)
     if novas or completadas:
         if isinstance(dados, dict):
             dados['noticias'] = noticias
