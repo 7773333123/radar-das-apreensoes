@@ -20,9 +20,9 @@ jobs:
     timeout-minutes: 55
     steps:
       - name: Baixar repositório
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Preparar Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
       - name: Instalar decodificador e HTTP2
@@ -33,7 +33,7 @@ jobs:
         run: |
           test -f coletor.py
           test -f recuperar_links.py
-          python -m py_compile coletor.py recuperar_links.py
+          python -m py_compile coletor.py recuperar_links.py localizar_uf.py coletar_feeds_estaduais.py gerar_feed_site.py
           if [ -f coletar_fontes_diretas.py ]; then python -m py_compile coletar_fontes_diretas.py; fi
           if [ -f enriquecer_imagens.py ]; then python -m py_compile enriquecer_imagens.py; fi
       - name: Coletar notícias
@@ -62,6 +62,8 @@ jobs:
           else
             echo 'Coletor de fontes diretas não instalado; mantendo coleta RSS.'
           fi
+      - name: Coletar feeds dos veículos (link, foto e estado)
+        run: python coletar_feeds_estaduais.py
       - name: Recuperar links originais
         run: |
           python recuperar_links.py --limite 35 --trabalhadores 4 --busca-fonte --diagnostico

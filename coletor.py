@@ -104,7 +104,17 @@ NOMES_ESTADOS = {
 }
 
 
+from localizar_uf import inferir_uf as _inferir_uf_novo
+
+
 def inferir_uf(noticia, fontes=None):
+    # Substituída por localizar_uf.py: a versão antiga removia acentos e lia
+    # a preposição "para" como o estado do Pará.
+    atual = str(noticia.get('uf') or '').strip().upper()
+    return atual if atual in ESTADOS else _inferir_uf_novo(noticia, fontes)
+
+
+def _inferir_uf_antigo(noticia, fontes=None):
     """Identifica a UF somente quando há evidência geográfica inequívoca.
 
     Não usa a UF da consulta RSS: notícias nacionais podem surgir em buscas locais.
