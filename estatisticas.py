@@ -45,7 +45,7 @@ NAO_SOMAR = re.compile(r'\bbalan[çc]o\b|\btotal\b|acumulad|\bem (?:19|20)\d\d\b
                        r'procurad|\bBol[ií]via\b|\bParaguai\b|\bCol[ôo]mbia\b|\bPeru\b|\bEUA\b|\bEuropa\b|'
                        r'\bmundo\b|\bONU\b|\bInterpol\b|\bem \d+ (?:anos|meses)\b|\bsemestre\b|\bmês\b|\bsemana\b|'
                        r'^em (?:janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\b|'
-                       r'homenagead', re.I)
+                       r'homenagead|incinera|incinerad|incinera[çc][ãa]o|destrui[çc][ãa]o de drogas|destr[óo]i\b|queima de drogas', re.I)
 
 
 def _numero(texto):
