@@ -1,22 +1,30 @@
 name: Coleta rápida (a cada 20 minutos)
-# Mantém o site atualizado ao longo do dia: lê os feeds das fontes e as buscas
-# recentes, completa link/foto/resumo só das notícias novas e grava apenas se
-# chegou notícia nova. A coleta completa (coletar.yml) continua 2x ao dia.
-# 20 minutos = até 72 publicações por dia na Vercel, abaixo do limite de 100
-# do plano gratuito, somando a coleta completa e a histórica.
+# O agendamento do GitHub (cron) atrasa ou pula execuções em repositórios
+# pouco movimentados. Por isso esta coleta roda em ciclo contínuo: uma mesma
+# execução coleta a cada 20 minutos por cerca de 5 horas e meia e, ao terminar,
+# dispara a si mesma de novo (workflow_dispatch com o GITHUB_TOKEN). No início
+# de cada ciclo também dispara a coleta completa e a histórica, que assim rodam
+# a cada ~6 horas mesmo se o cron delas falhar. O cron abaixo fica como reserva:
+# se o ciclo parar, ele o reinicia (com concurrency, nunca roda em dobro).
+# 20 minutos = até 72 publicações por dia na Vercel, abaixo do limite de 100.
 on:
   workflow_dispatch:
   schedule:
-    - cron: '7,27,47 * * * *'
+    - cron: '7 */2 * * *'
 permissions:
   contents: write
+  actions: write
 concurrency:
   group: coleta-rapida
   cancel-in-progress: false
 jobs:
   rapido:
     runs-on: ubuntu-latest
-    timeout-minutes: 18
+    timeout-minutes: 350
+    env:
+      GH_TOKEN: ${{ github.token }}
+      CICLOS: 16          # 16 x 20 min = 5h20 de coleta por execução
+      INTERVALO: 1200     # segundos entre o início de cada rodada
     steps:
       - name: Baixar repositório
         uses: actions/checkout@v5
@@ -26,29 +34,36 @@ jobs:
           python-version: '3.12'
       - name: Instalar decodificador
         run: python -m pip install --quiet googlenewsdecoder
-      - name: Contar acervo antes
-        id: antes
-        run: echo "total=$(python -c "import json;print(len(json.load(open('noticias.json'))['noticias']))")" >> "$GITHUB_OUTPUT"
-      - name: Feeds das fontes
-        run: python coletar_feeds_estaduais.py
-      - name: Buscas recentes (Google Notícias)
-        run: python coletor.py --limite-fontes 15 --limite-estados 4  # 15 sites por rodada: as 1.100+ fontes giram em ~1 dia
-      - name: Completar só as notícias novas
+      - name: Disparar coleta completa e histórica
+        continue-on-error: true
         run: |
-          python recuperar_links.py --limite 200 --trabalhadores 4
-          python ler_materias.py --limite 300 --trabalhadores 10
-      - name: Verificar se chegou notícia nova
-        id: novas
+          gh workflow run coletar.yml --ref main || true
+          gh workflow run historico.yml --ref main || true
+      - name: Coletar a cada 20 minutos
         run: |
-          DEPOIS=$(python -c "import json;print(len(json.load(open('noticias.json'))['noticias']))")
-          echo "Antes: ${{ steps.antes.outputs.total }} | depois: $DEPOIS"
-          if [ "$DEPOIS" -gt "${{ steps.antes.outputs.total }}" ]; then echo "gravar=1" >> "$GITHUB_OUTPUT"; else echo 'Nenhuma notícia nova; nada a publicar.'; fi
-      - name: Gerar feed do site
-        if: steps.novas.outputs.gravar == '1'
-        run: |
-          python testes/test_duplicatas.py
-          python gerar_feed_site.py
-          python compactar_acervo.py
-      - name: Salvar (mescla se outra coleta gravou antes)
-        if: steps.novas.outputs.gravar == '1'
-        run: bash salvar_acervo.sh 'Notícias novas (coleta rápida)'
+          set -uo pipefail
+          for ciclo in $(seq 1 "$CICLOS"); do
+            inicio=$(date +%s)
+            echo "::group::Rodada $ciclo de $CICLOS ($(date -u +%H:%M) UTC)"
+            git fetch -q origin main && git reset -q --hard origin/main
+            python coletar_feeds_estaduais.py || echo 'Feeds com falha; seguindo.'
+            # 15 sites por rodada: as 1.100+ fontes giram em ~1 dia.
+            python coletor.py --limite-fontes 15 --limite-estados 4 || echo 'Busca com falha; seguindo.'
+            python recuperar_links.py --limite 200 --trabalhadores 4 || true
+            # Notícias novas primeiro; o restante relê páginas antigas (trecho de abertura, fotos).
+            python ler_materias.py --limite 300 --trabalhadores 10 || true
+            if git diff --quiet -- noticias.json; then
+              echo 'Nada novo nesta rodada.'
+            elif python testes/test_duplicatas.py && python gerar_feed_site.py && python compactar_acervo.py; then
+              bash salvar_acervo.sh "Coleta rápida (rodada $ciclo)" || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
+            else
+              echo 'Falha ao gerar o site; nada foi gravado nesta rodada.'
+            fi
+            echo '::endgroup::'
+            [ "$ciclo" -lt "$CICLOS" ] || break
+            espera=$(( INTERVALO - ($(date +%s) - inicio) ))
+            [ "$espera" -gt 0 ] && sleep "$espera"
+          done
+      - name: Continuar o ciclo
+        if: success() || failure()  # cancelado à mão = o ciclo para
+        run: gh workflow run rapido.yml --ref main

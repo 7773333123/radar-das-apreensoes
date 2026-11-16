@@ -19,7 +19,7 @@ Formato de cada notícia em feed.json (chaves curtas para reduzir o tamanho):
   x   1 quando há texto integral (licença aberta)    g   nº de fotos (quando > 1)
 No detalhe: s = resumo do Radar (frases próprias), f = ficha de fatos (resumo_fatos.py).
   o   outras fontes da mesma matéria: [[fonte, link, i], ...] (duplicatas agrupadas)
-Texto integral e galeria ficam em detalhes/<i // 1000>.json, baixados ao abrir a notícia.
+Resumo, trecho, texto integral e galeria ficam em det/<i // 100>.json, baixados ao abrir a notícia.
 """
 import json
 import re
@@ -28,7 +28,8 @@ import unicodedata
 from pathlib import Path
 
 from localizar_uf import inferir_uf
-from resumo_fatos import extrair, redigir
+from resumo_fatos import extrair
+from contexto import Contexto, resumo_ampliado
 from estatisticas import MATERIAIS, ORGAOS_NOMES, enriquecer, exportar
 
 PASTA = Path(__file__).resolve().parent
@@ -36,8 +37,8 @@ ORIGEM = PASTA / 'noticias.json'
 DESTINO = PASTA / 'feed.json'
 LINKS = PASTA / 'feed_links.json'
 FONTES_JSON = PASTA / 'fontes.json'
-DETALHES = PASTA / 'detalhes'
-LOTE = 1000
+DETALHES = PASTA / 'det'  # lotes de 100 notícias (antes: detalhes/, lotes de 1000)
+LOTE = 100
 
 CATEGORIAS = [
     'Drogas e entorpecentes', 'Armas e munições', 'Contrabando e descaminho', 'Veículos',
@@ -323,9 +324,11 @@ def main():
         if fatos:
             fatos_por_i[i] = fatos
             detalhe['f'] = fatos
-            detalhe['s'] = redigir(fatos, fonte, n.get('data_iso') or '', uf)
-        if detalhe:
-            detalhes.setdefault(i // LOTE, {})[str(i)] = detalhe
+        # O que diz a fonte: abertura da reportagem (citação com crédito e link).
+        trecho = str(n.get('trecho') or '').strip()
+        if trecho and len(trecho) > len(resumo):
+            detalhe['tr'] = trecho
+        detalhes.setdefault(i // LOTE, {})[str(i)] = detalhe
         saida.append(item)
     antes = len(saida)
     saida, removidas = agrupar_duplicatas(saida)
@@ -341,6 +344,19 @@ def main():
         candidatos = [f for f in candidatos if f]
         if candidatos:
             enriquecer(item, max(candidatos, key=lambda f: (len(f.get('apreendido', [])), len(f))))
+    # Resumo do Radar em parágrafos: fatos, quem atuou, contexto no acervo e cobertura.
+    contexto = Contexto(saida)
+    for item in saida:
+        fatos = fatos_por_i.get(item['i'])
+        if not fatos:
+            outros = [fatos_por_i.get(o[2]) for o in item.get('o', []) if fatos_por_i.get(o[2])]
+            fatos = max(outros, key=len) if outros else None
+        detalhes[item['i'] // LOTE][str(item['i'])]['s'] = resumo_ampliado(item, fatos, contexto, CATEGORIAS)
+    for lote in list(detalhes):
+        for chave in [c for c, v in detalhes[lote].items() if not v]:
+            del detalhes[lote][chave]
+        if not detalhes[lote]:
+            del detalhes[lote]
     saida.sort(key=lambda x: x.get('d', ''), reverse=True)
     feed = {
         'atualizado_em': dados.get('atualizado_em') if isinstance(dados, dict) else None,
@@ -353,7 +369,8 @@ def main():
     DESTINO.write_text(json.dumps(feed, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     LINKS.write_text(json.dumps(links, separators=(',', ':')), encoding='utf-8')
     # Texto integral (só de licença aberta) e galeria de fotos, em lotes por índice.
-    shutil.rmtree(PASTA / 'textos', ignore_errors=True)  # formato anterior
+    for antiga in ('textos', 'detalhes'):  # formatos anteriores
+        shutil.rmtree(PASTA / antiga, ignore_errors=True)
     DETALHES.mkdir(exist_ok=True)
     for antigo in DETALHES.glob('*.json'):
         if int(antigo.stem) not in detalhes:
@@ -367,7 +384,7 @@ def main():
     print(f'{DESTINO.name}: {len(saida)} notícias ({ocultas} sem relação com apreensões ocultadas), '
           f'{DESTINO.stat().st_size / 1e6:.1f} MB')
     print(f'{LINKS.name}: {LINKS.stat().st_size / 1e6:.1f} MB (carregado só ao abrir uma notícia)')
-    print(f'detalhes/: {sum(1 for v in detalhes.values() for d in v.values() if "p" in d)} textos integrais, '
+    print(f'det/: {sum(1 for v in detalhes.values() for d in v.values() if "p" in d)} textos integrais, '
           f'{sum(1 for v in detalhes.values() for d in v.values() if "g" in d)} galerias de fotos')
 
 

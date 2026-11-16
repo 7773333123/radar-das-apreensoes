@@ -21,8 +21,8 @@ const HTML = `
 
 const detalhesCache = new Map();
 const carregarDetalhe = (i) => {
-  const lote = Math.floor(i / 1000);
-  if (!detalhesCache.has(lote)) detalhesCache.set(lote, fetch(`detalhes/${lote}.json`).then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
+  const lote = Math.floor(i / 100);
+  if (!detalhesCache.has(lote)) detalhesCache.set(lote, fetch(`det/${lote}.json`).then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
   return detalhesCache.get(lote).then((d) => d[String(i)] || {});
 };
 let linksPromise = null;
@@ -91,17 +91,32 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
       ['Publicado em', dataBR(n.data)],
       ['Fonte', n.fonte + (n.outras.length ? ` (também em ${n.outras.map((o) => o[0]).join(', ')})` : '')],
     ].filter(([, v]) => v);
-    return (t && t.s ? `<h2>Resumo do Radar</h2><p class="reader-text">${esc(t.s)}</p>` : '') +
+    return (t && t.s ? `<h2>Resumo do Radar</h2>${paragrafos(t.s)}` : '') +
       `<section class="facts"><h2>Principais informações</h2><dl>${linhas.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` +
       '<p class="reader-note">Resumo e ficha elaborados automaticamente pelo Radar a partir dos fatos publicados. A reportagem completa está no site de origem.</p>';
+  }
+
+  function paragrafos(texto) {
+    return String(texto).split(/\n{2,}/).filter((p) => p.trim()).map((p) => `<p class="reader-text">${esc(p.trim())}</p>`).join('');
+  }
+
+  function fonteHTML(n, t) {
+    if (Array.isArray(t?.p)) {
+      return `<h2>Texto completo</h2>${t.p.map((p) => `<p class="reader-text">${esc(p)}</p>`).join('')}` +
+        `<p class="reader-note">Texto reproduzido integralmente de ${esc(n.fonte)}, sob a licença ${esc(t.l)}, que permite a reprodução com crédito.</p>`;
+    }
+    const trecho = t?.tr && t.tr.length > (n.resumo || '').length ? t.tr : n.resumo;
+    if (!trecho) return '';
+    return `<h2>O que diz a fonte</h2><blockquote class="reader-quote">${paragrafos(trecho)}</blockquote>` +
+      `<p class="reader-note">${t?.tr ? 'Abertura da reportagem publicada' : 'Resumo publicado'} por ${esc(n.fonte)}, reproduzido com crédito. ` +
+      `A reportagem continua no site de origem: <a href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer" data-ler-original>ler a íntegra ↗</a></p>`;
   }
 
   function abrir(i, { atualizarUrl = true } = {}) {
     const n = ctx.porIndice.get(Number(i));
     if (!n) return;
     const cats = n.cats.map((c) => ctx.categorias[c]).join(' · ') || 'Em classificação';
-    const fonte = n.texto ? '<div id="leitorTexto"><p class="reader-text">Carregando o texto…</p></div>'
-      : n.resumo ? `<h2>O que diz a fonte</h2><p class="reader-text">${esc(n.resumo)}</p>` : '';
+    const fonte = `<div id="leitorTexto">${n.texto ? '<p class="reader-note">Carregando o texto…</p>' : fonteHTML(n, null)}</div>`;
     const c = $('leitorConteudo');
     c.innerHTML = `${kickerHTML(n, ctx)}<h1 id="leitorTitulo">${esc(n.titulo)}</h1>${metaHTML(n)}` +
       `<div id="leitorFotos" class="reader-media"></div><div id="leitorRadar"><p class="reader-note">Carregando o resumo…</p></div>${fonte}<div id="leitorMiniaturas"></div>` +
@@ -116,11 +131,9 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
       if (c.dataset.i !== String(n.i)) return;
       if (Array.isArray(t.g) && t.g.length > 1) montarGaleria(n, t.g.map(urlSegura).filter(Boolean));
       $('leitorRadar').innerHTML = fichaHTML(n, t);
-      if ($('leitorTexto')) {
-        $('leitorTexto').innerHTML = Array.isArray(t.p)
-          ? `<h2>Texto completo</h2>${t.p.map((p) => `<p class="reader-text">${esc(p)}</p>`).join('')}<p class="reader-note">Texto reproduzido integralmente de ${esc(n.fonte)}, sob a licença ${esc(t.l)}, que permite a reprodução com crédito.</p>`
-          : (n.resumo ? `<h2>O que diz a fonte</h2><p class="reader-text">${esc(n.resumo)}</p>` : '');
-      }
+      $('leitorTexto').innerHTML = fonteHTML(n, t);
+      const ler = c.querySelector('[data-ler-original]');
+      if (ler && n.url) ler.href = n.url;
     });
     const semLink = [...c.querySelectorAll('[data-outra]')].filter((a) => a.getAttribute('href') === '#');
     if (semLink.length || !n.url) {
@@ -128,7 +141,10 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
         semLink.forEach((a) => { const u = urlSegura(links[a.dataset.outra] || ''); if (u) a.href = u; else a.replaceWith(a.textContent); });
         if (!n.url && c.dataset.i === String(n.i)) {
           const u = urlSegura(links[n.i] || '');
-          if (u) { n.url = u; $('leitorLink').href = u; $('leitorLink').removeAttribute('aria-disabled'); }
+          if (u) {
+            n.url = u; $('leitorLink').href = u; $('leitorLink').removeAttribute('aria-disabled');
+            c.querySelectorAll('[data-ler-original]').forEach((a) => { a.href = u; });
+          }
         }
       });
     }
