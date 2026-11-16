@@ -1,1009 +1,7767 @@
 {
-  "projeto": "Radar das Apreensões",
-  "objetivo_fontes": 10000,
-  "escopo": "Brasil",
-  "observacao": "Domínios cadastrados com páginas de notícias identificadas. Cadastro de domínio não garante RSS, cobertura integral ou atribuição geográfica de todas as matérias. Os órgãos em planejamento não são fontes ativas.",
-  "fontes": [
-    {
-      "nome": "Portais federais gov.br (PF, PRF, Receita Federal e Ibama)",
-      "dominio": "gov.br",
-      "uf": ""
-    },
-    {
-      "nome": "Polícia Civil do Paraná",
-      "dominio": "policiacivil.pr.gov.br",
-      "uf": "PR"
-    },
-    {
-      "nome": "Polícia Militar do Paraná",
-      "dominio": "pmpr.pr.gov.br",
-      "uf": "PR"
-    },
-    {
-      "nome": "Polícia Civil de Santa Catarina",
-      "dominio": "pc.sc.gov.br",
-      "uf": "SC"
-    },
-    {
-      "nome": "Polícia Militar de Santa Catarina",
-      "dominio": "pm.sc.gov.br",
-      "uf": "SC"
-    },
-    {
-      "nome": "Polícia Civil de São Paulo",
-      "dominio": "policiacivil.sp.gov.br",
-      "uf": "SP"
-    },
-    {
-      "nome": "Secretaria da Segurança Pública da Bahia",
-      "dominio": "ba.gov.br",
-      "uf": "BA"
-    },
-    {
-      "nome": "Ministério Público de Minas Gerais",
-      "dominio": "mpmg.mp.br",
-      "uf": "MG"
-    }
-  ],
-  "orgaos_federais_prioritarios": [
-    {
-      "nome": "Polícia Federal",
-      "portal": "https://www.gov.br/pf/pt-br/assuntos/noticias/"
-    },
-    {
-      "nome": "Polícia Rodoviária Federal",
-      "portal": "https://www.gov.br/prf/pt-br/noticias/"
-    },
-    {
-      "nome": "Receita Federal",
-      "portal": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias"
-    }
-  ],
-  "orgaos_estaduais_a_verificar": [
-    {
-      "uf": "AC",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AC",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AC",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AC",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AC",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AC",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AC",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AL",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AL",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AL",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AL",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AL",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AL",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AL",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AP",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AP",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AP",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AP",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AP",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AP",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AP",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AM",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AM",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AM",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AM",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AM",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AM",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "AM",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "BA",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "BA",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "BA",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "BA",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "BA",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "BA",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "BA",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "CE",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "CE",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "CE",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "CE",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "CE",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "CE",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "CE",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "DF",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "DF",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "DF",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "DF",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "DF",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "DF",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "DF",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "ES",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "ES",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "ES",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "ES",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "ES",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "ES",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "ES",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "GO",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "GO",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "GO",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "GO",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "GO",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "GO",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "GO",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MA",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MA",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MA",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MA",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MA",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MA",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MA",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MT",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MT",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MT",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MT",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MT",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MT",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MT",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MS",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MS",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MS",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MS",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MS",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MS",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MS",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MG",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MG",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MG",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MG",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MG",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MG",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "MG",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PA",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PA",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PA",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PA",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PA",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PA",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PA",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PB",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PB",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PB",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PB",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PB",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PB",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PB",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PR",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PR",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PR",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PR",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PR",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PR",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PR",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PE",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PE",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PE",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PE",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PE",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PE",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PE",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PI",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PI",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PI",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PI",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PI",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PI",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "PI",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RJ",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RJ",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RJ",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RJ",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RJ",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RJ",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RJ",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RN",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RN",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RN",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RN",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RN",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RN",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RN",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RS",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RS",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RS",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RS",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RS",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RS",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RS",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RO",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RO",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RO",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RO",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RO",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RO",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RO",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RR",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RR",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RR",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RR",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RR",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RR",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "RR",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SC",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SC",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SC",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SC",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SC",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SC",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SC",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SP",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SP",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SP",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SP",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SP",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SP",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SP",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SE",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SE",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SE",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SE",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SE",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SE",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "SE",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "TO",
-      "tipo": "Polícia Civil",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "TO",
-      "tipo": "Polícia Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "TO",
-      "tipo": "Polícia Penal",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "TO",
-      "tipo": "Polícia Científica / Perícia Oficial",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "TO",
-      "tipo": "Secretaria de Segurança Pública",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "TO",
-      "tipo": "Corpo de Bombeiros Militar",
-      "status": "pendente de verificar domínio e feed"
-    },
-    {
-      "uf": "TO",
-      "tipo": "Guardas Municipais",
-      "status": "pendente de verificar domínio e feed"
-    }
-  ]
+ "projeto": "Radar das Apreensões",
+ "objetivo_fontes": 10000,
+ "escopo": "Brasil",
+ "observacao": "Domínios de veículos e órgãos que já publicaram notícias de apreensões (extraídos do próprio acervo). São consultados em rodízio no Google Notícias (site:) e têm o RSS procurado por descobrir_feeds.py. \"uf\" só é preenchida quando >= 80% das notícias do site são do mesmo estado.",
+ "fontes": [
+  {
+   "nome": "G1",
+   "dominio": "g1.globo.com",
+   "uf": "",
+   "noticias_no_acervo": 2629
+  },
+  {
+   "nome": "www.gov.br",
+   "dominio": "gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2349
+  },
+  {
+   "nome": "CNN Brasil",
+   "dominio": "cnnbrasil.com.br",
+   "uf": "",
+   "noticias_no_acervo": 363
+  },
+  {
+   "nome": "Polícia Militar da Bahia - PMBA",
+   "dominio": "pm.ba.gov.br",
+   "uf": "BA",
+   "noticias_no_acervo": 298
+  },
+  {
+   "nome": "Polícia Civil do Paraná",
+   "dominio": "policiacivil.pr.gov.br",
+   "uf": "PR",
+   "noticias_no_acervo": 213
+  },
+  {
+   "nome": "ba.gov.br",
+   "dominio": "ba.gov.br",
+   "uf": "BA",
+   "noticias_no_acervo": 206
+  },
+  {
+   "nome": "Metrópoles",
+   "dominio": "metropoles.com",
+   "uf": "DF",
+   "noticias_no_acervo": 157
+  },
+  {
+   "nome": "Campo Grande News",
+   "dominio": "campograndenews.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 148
+  },
+  {
+   "nome": "Repórter PB",
+   "dominio": "reporterpb.com.br",
+   "uf": "PB",
+   "noticias_no_acervo": 140
+  },
+  {
+   "nome": "GZH",
+   "dominio": "gauchazh.clicrbs.com.br",
+   "uf": "RS",
+   "noticias_no_acervo": 139
+  },
+  {
+   "nome": "Portal da Polícia Militar de Santa Catarina",
+   "dominio": "pm.sc.gov.br",
+   "uf": "SC",
+   "noticias_no_acervo": 132
+  },
+  {
+   "nome": "O GLOBO",
+   "dominio": "oglobo.globo.com",
+   "uf": "",
+   "noticias_no_acervo": 129
+  },
+  {
+   "nome": "Polícia Militar do Ceará",
+   "dominio": "pm.ce.gov.br",
+   "uf": "CE",
+   "noticias_no_acervo": 128
+  },
+  {
+   "nome": "agenciasp.sp.gov.br",
+   "dominio": "agenciasp.sp.gov.br",
+   "uf": "SP",
+   "noticias_no_acervo": 99
+  },
+  {
+   "nome": "Prefeitura de Sorocaba",
+   "dominio": "noticias.sorocaba.sp.gov.br",
+   "uf": "SP",
+   "noticias_no_acervo": 91
+  },
+  {
+   "nome": "Correio Braziliense",
+   "dominio": "correiobraziliense.com.br",
+   "uf": "DF",
+   "noticias_no_acervo": 91
+  },
+  {
+   "nome": "Estadão",
+   "dominio": "estadao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 87
+  },
+  {
+   "nome": "TNH1",
+   "dominio": "tnh1.com.br",
+   "uf": "AL",
+   "noticias_no_acervo": 84
+  },
+  {
+   "nome": "Folha Vitória",
+   "dominio": "folhavitoria.com.br",
+   "uf": "ES",
+   "noticias_no_acervo": 76
+  },
+  {
+   "nome": "Polícia Civil de Mato Grosso do Sul",
+   "dominio": "pc.ms.gov.br",
+   "uf": "MS",
+   "noticias_no_acervo": 76
+  },
+  {
+   "nome": "Sindireceita",
+   "dominio": "sindireceita.org.br",
+   "uf": "",
+   "noticias_no_acervo": 73
+  },
+  {
+   "nome": "Polícia Militar do Estado de São Paulo",
+   "dominio": "portaldenoticias.policiamilitar.sp.gov.br",
+   "uf": "SP",
+   "noticias_no_acervo": 72
+  },
+  {
+   "nome": "ND Mais",
+   "dominio": "ndmais.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 68
+  },
+  {
+   "nome": "Folha do ES",
+   "dominio": "folhadoes.com",
+   "uf": "ES",
+   "noticias_no_acervo": 68
+  },
+  {
+   "nome": "Agência Brasil",
+   "dominio": "agenciabrasil.ebc.com.br",
+   "uf": "",
+   "noticias_no_acervo": 63
+  },
+  {
+   "nome": "O Dia",
+   "dominio": "odia.ig.com.br",
+   "uf": "RJ",
+   "noticias_no_acervo": 62
+  },
+  {
+   "nome": "Rádio Itatiaia",
+   "dominio": "itatiaia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 61
+  },
+  {
+   "nome": "Terra",
+   "dominio": "terra.com.br",
+   "uf": "",
+   "noticias_no_acervo": 60
+  },
+  {
+   "nome": "Polícia Civil de Santa Catarina (PCSC)",
+   "dominio": "pc.sc.gov.br",
+   "uf": "SC",
+   "noticias_no_acervo": 59
+  },
+  {
+   "nome": "Midiamax",
+   "dominio": "midiamax.com.br",
+   "uf": "",
+   "noticias_no_acervo": 56
+  },
+  {
+   "nome": "A Gazeta",
+   "dominio": "agazeta.com.br",
+   "uf": "ES",
+   "noticias_no_acervo": 55
+  },
+  {
+   "nome": "Consultor Jurídico",
+   "dominio": "conjur.com.br",
+   "uf": "",
+   "noticias_no_acervo": 55
+  },
+  {
+   "nome": "Portal SSP/SE",
+   "dominio": "ssp.se.gov.br",
+   "uf": "SE",
+   "noticias_no_acervo": 54
+  },
+  {
+   "nome": "Corpo de Bombeiros Militar do Maranhão",
+   "dominio": "policiacivil.ma.gov.br",
+   "uf": "MA",
+   "noticias_no_acervo": 52
+  },
+  {
+   "nome": "CidadeVerde.com",
+   "dominio": "cidadeverde.com",
+   "uf": "",
+   "noticias_no_acervo": 52
+  },
+  {
+   "nome": "Plox",
+   "dominio": "plox.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 51
+  },
+  {
+   "nome": "BNews RN",
+   "dominio": "bnewsrn.com.br",
+   "uf": "RN",
+   "noticias_no_acervo": 50
+  },
+  {
+   "nome": "UOL Notícias",
+   "dominio": "noticias.uol.com.br",
+   "uf": "",
+   "noticias_no_acervo": 50
+  },
+  {
+   "nome": "Agora RN",
+   "dominio": "agorarn.com.br",
+   "uf": "RN",
+   "noticias_no_acervo": 49
+  },
+  {
+   "nome": "GP1",
+   "dominio": "gp1.com.br",
+   "uf": "PI",
+   "noticias_no_acervo": 49
+  },
+  {
+   "nome": "Instagram",
+   "dominio": "instagram.com",
+   "uf": "",
+   "noticias_no_acervo": 48
+  },
+  {
+   "nome": "Leouve",
+   "dominio": "leouve.com.br",
+   "uf": "RS",
+   "noticias_no_acervo": 47
+  },
+  {
+   "nome": "Lê Notícias",
+   "dominio": "lenoticias.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 47
+  },
+  {
+   "nome": "Portal SGC",
+   "dominio": "sgc.com.br",
+   "uf": "",
+   "noticias_no_acervo": 47
+  },
+  {
+   "nome": "A Crítica",
+   "dominio": "acritica.com",
+   "uf": "AM",
+   "noticias_no_acervo": 46
+  },
+  {
+   "nome": "Dourados News",
+   "dominio": "douradosnews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 45
+  },
+  {
+   "nome": "Portal & TV Gurupi",
+   "dominio": "portalgurupi.com.br",
+   "uf": "",
+   "noticias_no_acervo": 44
+  },
+  {
+   "nome": "ClickPB",
+   "dominio": "clickpb.com.br",
+   "uf": "",
+   "noticias_no_acervo": 44
+  },
+  {
+   "nome": "SBT News",
+   "dominio": "sbtnews.sbt.com.br",
+   "uf": "",
+   "noticias_no_acervo": 44
+  },
+  {
+   "nome": "Band",
+   "dominio": "band.com.br",
+   "uf": "",
+   "noticias_no_acervo": 43
+  },
+  {
+   "nome": "ac24horas",
+   "dominio": "ac24horas.com",
+   "uf": "AC",
+   "noticias_no_acervo": 43
+  },
+  {
+   "nome": "Diário da Amazônia",
+   "dominio": "diariodaamazonia.com.br",
+   "uf": "RO",
+   "noticias_no_acervo": 42
+  },
+  {
+   "nome": "R7",
+   "dominio": "noticias.r7.com",
+   "uf": "",
+   "noticias_no_acervo": 42
+  },
+  {
+   "nome": "Agência Tocantins",
+   "dominio": "agenciatocantins.com.br",
+   "uf": "TO",
+   "noticias_no_acervo": 42
+  },
+  {
+   "nome": "CGN",
+   "dominio": "cgn.inf.br",
+   "uf": "",
+   "noticias_no_acervo": 41
+  },
+  {
+   "nome": "Agora Litoral",
+   "dominio": "agoralitoral.com.br",
+   "uf": "",
+   "noticias_no_acervo": 41
+  },
+  {
+   "nome": "TODODIA",
+   "dominio": "tododia.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 40
+  },
+  {
+   "nome": "PCDF",
+   "dominio": "pcdf.df.gov.br",
+   "uf": "DF",
+   "noticias_no_acervo": 40
+  },
+  {
+   "nome": "A Tribuna RJ",
+   "dominio": "atribunarj.com.br",
+   "uf": "RJ",
+   "noticias_no_acervo": 39
+  },
+  {
+   "nome": "OBemdito",
+   "dominio": "obemdito.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 38
+  },
+  {
+   "nome": "Governo do Estado do Ceará",
+   "dominio": "ce.gov.br",
+   "uf": "CE",
+   "noticias_no_acervo": 38
+  },
+  {
+   "nome": "AM POST",
+   "dominio": "ampost.com.br",
+   "uf": "AM",
+   "noticias_no_acervo": 38
+  },
+  {
+   "nome": "Diário do Estado",
+   "dominio": "diariodoestadogo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 38
+  },
+  {
+   "nome": "Polícia Civil do Estado de São Paulo",
+   "dominio": "policiacivil.sp.gov.br",
+   "uf": "SP",
+   "noticias_no_acervo": 38
+  },
+  {
+   "nome": "amazonas atual",
+   "dominio": "amazonasatual.com.br",
+   "uf": "",
+   "noticias_no_acervo": 38
+  },
+  {
+   "nome": "Zap Catalão",
+   "dominio": "zapcatalao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 37
+  },
+  {
+   "nome": "POLÍCIA MILITAR DO PARANÁ",
+   "dominio": "pmpr.pr.gov.br",
+   "uf": "PR",
+   "noticias_no_acervo": 36
+  },
+  {
+   "nome": "Bahia Notícias",
+   "dominio": "bahianoticias.com.br",
+   "uf": "BA",
+   "noticias_no_acervo": 35
+  },
+  {
+   "nome": "MPMG",
+   "dominio": "mpmg.mp.br",
+   "uf": "MG",
+   "noticias_no_acervo": 34
+  },
+  {
+   "nome": "Prefeitura de Volta Redonda",
+   "dominio": "voltaredonda.rj.gov.br",
+   "uf": "RJ",
+   "noticias_no_acervo": 33
+  },
+  {
+   "nome": "TC Online",
+   "dominio": "tconline.com.br",
+   "uf": "ES",
+   "noticias_no_acervo": 33
+  },
+  {
+   "nome": "O POVO",
+   "dominio": "opovo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 33
+  },
+  {
+   "nome": "Extra online",
+   "dominio": "extra.globo.com",
+   "uf": "",
+   "noticias_no_acervo": 33
+  },
+  {
+   "nome": "Ponta Negra News",
+   "dominio": "pontanegranews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 33
+  },
+  {
+   "nome": "Tribuna do Norte",
+   "dominio": "tribunadonorte.com.br",
+   "uf": "RN",
+   "noticias_no_acervo": 32
+  },
+  {
+   "nome": "O Protagonista FSA",
+   "dominio": "oprotagonistafsa.com.br",
+   "uf": "BA",
+   "noticias_no_acervo": 32
+  },
+  {
+   "nome": "MidiaNews",
+   "dominio": "midianews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 32
+  },
+  {
+   "nome": "A10+",
+   "dominio": "a10mais.com",
+   "uf": "",
+   "noticias_no_acervo": 32
+  },
+  {
+   "nome": "Alagoas 24 Horas",
+   "dominio": "alagoas24horas.com.br",
+   "uf": "AL",
+   "noticias_no_acervo": 32
+  },
+  {
+   "nome": "JB Litoral",
+   "dominio": "jblitoral.com.br",
+   "uf": "",
+   "noticias_no_acervo": 32
+  },
+  {
+   "nome": "Policial Padrão",
+   "dominio": "policialpadrao.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 31
+  },
+  {
+   "nome": "Folha PE",
+   "dominio": "folhape.com.br",
+   "uf": "PE",
+   "noticias_no_acervo": 31
+  },
+  {
+   "nome": "Idest",
+   "dominio": "idest.com.br",
+   "uf": "",
+   "noticias_no_acervo": 31
+  },
+  {
+   "nome": "Polícia Civil",
+   "dominio": "policiacivil.ce.gov.br",
+   "uf": "CE",
+   "noticias_no_acervo": 30
+  },
+  {
+   "nome": "Diario de Pernambuco",
+   "dominio": "diariodepernambuco.com.br",
+   "uf": "PE",
+   "noticias_no_acervo": 30
+  },
+  {
+   "nome": "Folha BV",
+   "dominio": "folhabv.com.br",
+   "uf": "RR",
+   "noticias_no_acervo": 29
+  },
+  {
+   "nome": "REDE BRASIL DE TELEVISÃO",
+   "dominio": "rbtv.com.br",
+   "uf": "",
+   "noticias_no_acervo": 29
+  },
+  {
+   "nome": "Folha de S.Paulo",
+   "dominio": "www1.folha.uol.com.br",
+   "uf": "",
+   "noticias_no_acervo": 29
+  },
+  {
+   "nome": "Correio do Povo",
+   "dominio": "correiodopovo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 29
+  },
+  {
+   "nome": "Diário do Nordeste",
+   "dominio": "diariodonordeste.verdesmares.com.br",
+   "uf": "CE",
+   "noticias_no_acervo": 29
+  },
+  {
+   "nome": "GAZ",
+   "dominio": "gaz.com.br",
+   "uf": "",
+   "noticias_no_acervo": 29
+  },
+  {
+   "nome": "Estado de Minas",
+   "dominio": "em.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 29
+  },
+  {
+   "nome": "Fala Piauí",
+   "dominio": "falapiaui.com",
+   "uf": "PI",
+   "noticias_no_acervo": 29
+  },
+  {
+   "nome": "Tribuna do Sertão",
+   "dominio": "tribunadosertao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 28
+  },
+  {
+   "nome": "Tudo Rondônia",
+   "dominio": "tudorondonia.com",
+   "uf": "RO",
+   "noticias_no_acervo": 27
+  },
+  {
+   "nome": "Portal CM7",
+   "dominio": "cm7brasil.com",
+   "uf": "",
+   "noticias_no_acervo": 27
+  },
+  {
+   "nome": "ClicRDC",
+   "dominio": "clicrdc.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 27
+  },
+  {
+   "nome": "Hojemais.com.br",
+   "dominio": "hojemais.com.br",
+   "uf": "",
+   "noticias_no_acervo": 27
+  },
+  {
+   "nome": "TNOnline",
+   "dominio": "tnonline.uol.com.br",
+   "uf": "",
+   "noticias_no_acervo": 27
+  },
+  {
+   "nome": "TV Nova Nordeste",
+   "dominio": "tvnova.tv.br",
+   "uf": "",
+   "noticias_no_acervo": 27
+  },
+  {
+   "nome": "Patos Hoje",
+   "dominio": "patoshoje.com.br",
+   "uf": "",
+   "noticias_no_acervo": 27
+  },
+  {
+   "nome": "Gazeta do Povo",
+   "dominio": "gazetadopovo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 26
+  },
+  {
+   "nome": "Portal R10",
+   "dominio": "portalr10.com",
+   "uf": "",
+   "noticias_no_acervo": 26
+  },
+  {
+   "nome": "Banda B",
+   "dominio": "bandab.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 26
+  },
+  {
+   "nome": "CartaCapital",
+   "dominio": "cartacapital.com.br",
+   "uf": "",
+   "noticias_no_acervo": 26
+  },
+  {
+   "nome": "Portal de Camaquã",
+   "dominio": "portaldecamaqua.com.br",
+   "uf": "RS",
+   "noticias_no_acervo": 25
+  },
+  {
+   "nome": "Acorda Cidade",
+   "dominio": "acordacidade.com.br",
+   "uf": "",
+   "noticias_no_acervo": 25
+  },
+  {
+   "nome": "SelesNafes.com",
+   "dominio": "selesnafes.com",
+   "uf": "AP",
+   "noticias_no_acervo": 24
+  },
+  {
+   "nome": "Portal Diário do Aço",
+   "dominio": "diariodoaco.com.br",
+   "uf": "",
+   "noticias_no_acervo": 24
+  },
+  {
+   "nome": "CenárioMT",
+   "dominio": "cenariomt.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 24
+  },
+  {
+   "nome": "Polícia Militar do Amazonas",
+   "dominio": "pm.am.gov.br",
+   "uf": "AM",
+   "noticias_no_acervo": 24
+  },
+  {
+   "nome": "DiviNews",
+   "dominio": "divinews.com",
+   "uf": "",
+   "noticias_no_acervo": 24
+  },
+  {
+   "nome": "Poder360",
+   "dominio": "poder360.com.br",
+   "uf": "",
+   "noticias_no_acervo": 24
+  },
+  {
+   "nome": "Tribuna Online",
+   "dominio": "tribunaonline.com.br",
+   "uf": "ES",
+   "noticias_no_acervo": 24
+  },
+  {
+   "nome": "Tribuna Hoje",
+   "dominio": "tribunahoje.com",
+   "uf": "AL",
+   "noticias_no_acervo": 24
+  },
+  {
+   "nome": "7Segundos",
+   "dominio": "7segundos.com.br",
+   "uf": "",
+   "noticias_no_acervo": 23
+  },
+  {
+   "nome": "Prefeitura de Curitiba",
+   "dominio": "curitiba.pr.gov.br",
+   "uf": "PR",
+   "noticias_no_acervo": 23
+  },
+  {
+   "nome": "Viagora",
+   "dominio": "viagora.com.br",
+   "uf": "PI",
+   "noticias_no_acervo": 23
+  },
+  {
+   "nome": "Capital do Pantanal",
+   "dominio": "capitaldopantanal.com.br",
+   "uf": "",
+   "noticias_no_acervo": 23
+  },
+  {
+   "nome": "Correio de Carajás",
+   "dominio": "correiodecarajas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 23
+  },
+  {
+   "nome": "Bnews",
+   "dominio": "bnews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 23
+  },
+  {
+   "nome": "Gazeta Digital",
+   "dominio": "gazetadigital.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 23
+  },
+  {
+   "nome": "Conecta Piauí",
+   "dominio": "conectapiaui.com.br",
+   "uf": "PI",
+   "noticias_no_acervo": 23
+  },
+  {
+   "nome": "Jornal Opção",
+   "dominio": "jornalopcao.com.br",
+   "uf": "GO",
+   "noticias_no_acervo": 23
+  },
+  {
+   "nome": "Polícia Militar do Estado de Rondônia",
+   "dominio": "pm.ro.gov.br",
+   "uf": "RO",
+   "noticias_no_acervo": 23
+  },
+  {
+   "nome": "Jornal Grande Bahia",
+   "dominio": "jornalgrandebahia.com.br",
+   "uf": "BA",
+   "noticias_no_acervo": 23
+  },
+  {
+   "nome": "Rondonoticias",
+   "dominio": "rondonoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 22
+  },
+  {
+   "nome": "Eu vi em Linhares",
+   "dominio": "euviemlinhares.net",
+   "uf": "ES",
+   "noticias_no_acervo": 22
+  },
+  {
+   "nome": "R7",
+   "dominio": "record.r7.com",
+   "uf": "",
+   "noticias_no_acervo": 22
+  },
+  {
+   "nome": "Edenevaldo Alves",
+   "dominio": "edenevaldoalves.com.br",
+   "uf": "",
+   "noticias_no_acervo": 22
+  },
+  {
+   "nome": "Portal do Holanda",
+   "dominio": "portaldoholanda.com.br",
+   "uf": "AM",
+   "noticias_no_acervo": 22
+  },
+  {
+   "nome": "O Alto Acre",
+   "dominio": "oaltoacre.com",
+   "uf": "AC",
+   "noticias_no_acervo": 22
+  },
+  {
+   "nome": "H2FOZ",
+   "dominio": "h2foz.com.br",
+   "uf": "",
+   "noticias_no_acervo": 22
+  },
+  {
+   "nome": "O TEMPO",
+   "dominio": "otempo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 21
+  },
+  {
+   "nome": "JD1 Notícias",
+   "dominio": "jd1noticias.com",
+   "uf": "MS",
+   "noticias_no_acervo": 21
+  },
+  {
+   "nome": "A Gazeta RM",
+   "dominio": "agazetarm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 21
+  },
+  {
+   "nome": "Polícia Civil RS",
+   "dominio": "pc.rs.gov.br",
+   "uf": "RS",
+   "noticias_no_acervo": 21
+  },
+  {
+   "nome": "RRMAIS",
+   "dominio": "rrmais.com.br",
+   "uf": "",
+   "noticias_no_acervo": 21
+  },
+  {
+   "nome": "O Jacaré",
+   "dominio": "ojacare.com.br",
+   "uf": "",
+   "noticias_no_acervo": 21
+  },
+  {
+   "nome": "P.M.S.E.",
+   "dominio": "pm.se.gov.br",
+   "uf": "SE",
+   "noticias_no_acervo": 20
+  },
+  {
+   "nome": "Olhar Direto",
+   "dominio": "olhardireto.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 20
+  },
+  {
+   "nome": "MOMENTO MT",
+   "dominio": "momentomt.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 20
+  },
+  {
+   "nome": "Galego Notícias",
+   "dominio": "galegonoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 20
+  },
+  {
+   "nome": "Notícias Tudo Aqui",
+   "dominio": "noticiastudoaqui.com",
+   "uf": "",
+   "noticias_no_acervo": 20
+  },
+  {
+   "nome": "Diário Corumbaense",
+   "dominio": "diarionline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 20
+  },
+  {
+   "nome": "Clube Notícias",
+   "dominio": "clubenoticias.com",
+   "uf": "",
+   "noticias_no_acervo": 20
+  },
+  {
+   "nome": "A Voz da Cidade",
+   "dominio": "avozdacidade.com",
+   "uf": "RJ",
+   "noticias_no_acervo": 20
+  },
+  {
+   "nome": "Secretaria de Segurança Pública do Maranhão (SSP-MA)",
+   "dominio": "ssp.ma.gov.br",
+   "uf": "MA",
+   "noticias_no_acervo": 20
+  },
+  {
+   "nome": "TopElegance",
+   "dominio": "topelegance.com.br",
+   "uf": "",
+   "noticias_no_acervo": 19
+  },
+  {
+   "nome": "Jornal de Brasília",
+   "dominio": "jornaldebrasilia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 19
+  },
+  {
+   "nome": "Últimas Notícias",
+   "dominio": "ultimasnoticias.inf.br",
+   "uf": "MG",
+   "noticias_no_acervo": 19
+  },
+  {
+   "nome": "PMDF",
+   "dominio": "portal.pm.df.gov.br",
+   "uf": "DF",
+   "noticias_no_acervo": 19
+  },
+  {
+   "nome": "pb agora",
+   "dominio": "pbagora.com.br",
+   "uf": "",
+   "noticias_no_acervo": 19
+  },
+  {
+   "nome": "O Diário de Teresópolis",
+   "dominio": "netdiario.com.br",
+   "uf": "",
+   "noticias_no_acervo": 19
+  },
+  {
+   "nome": "A Crítica de Campo Grande",
+   "dominio": "acritica.net",
+   "uf": "",
+   "noticias_no_acervo": 19
+  },
+  {
+   "nome": "BR104",
+   "dominio": "br104.com.br",
+   "uf": "",
+   "noticias_no_acervo": 19
+  },
+  {
+   "nome": "Carazinho News",
+   "dominio": "carazinhonews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 19
+  },
+  {
+   "nome": "Diário Sul Maranhense",
+   "dominio": "diariosulmaranhense.com.br",
+   "uf": "MA",
+   "noticias_no_acervo": 19
+  },
+  {
+   "nome": "Canal 38",
+   "dominio": "canal38.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 19
+  },
+  {
+   "nome": "NSC Total",
+   "dominio": "nsctotal.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 19
+  },
+  {
+   "nome": "Bem Paraná",
+   "dominio": "bemparana.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 19
+  },
+  {
+   "nome": "Impactto News",
+   "dominio": "portalimpactto.com.br",
+   "uf": "",
+   "noticias_no_acervo": 18
+  },
+  {
+   "nome": "Aqui Notícias",
+   "dominio": "aquinoticias.com",
+   "uf": "ES",
+   "noticias_no_acervo": 18
+  },
+  {
+   "nome": "Dourados Informa",
+   "dominio": "douradosinforma.com.br",
+   "uf": "",
+   "noticias_no_acervo": 18
+  },
+  {
+   "nome": "Jornal Cruzeiro do Sul",
+   "dominio": "jornalcruzeiro.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 18
+  },
+  {
+   "nome": "FOLHAMAX",
+   "dominio": "folhamax.com",
+   "uf": "",
+   "noticias_no_acervo": 18
+  },
+  {
+   "nome": "VEJA",
+   "dominio": "veja.abril.com.br",
+   "uf": "",
+   "noticias_no_acervo": 18
+  },
+  {
+   "nome": "Migalhas",
+   "dominio": "migalhas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 18
+  },
+  {
+   "nome": "Fato Paulista",
+   "dominio": "fatopaulista.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "180graus",
+   "dominio": "180graus.com",
+   "uf": "",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "Portal NN1",
+   "dominio": "nn1.com.br",
+   "uf": "",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "Power Mix",
+   "dominio": "powermix.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "pjc.mt.gov.br",
+   "dominio": "pjc.mt.gov.br",
+   "uf": "MT",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "força do vale",
+   "dominio": "jornalforcadovale.com.br",
+   "uf": "",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "bra1.com.br",
+   "dominio": "bra1.com.br",
+   "uf": "",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "RepórterMT",
+   "dominio": "reportermt.com",
+   "uf": "",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "ncnews.com.br",
+   "dominio": "ncnews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "JM Online",
+   "dominio": "jmonline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "Policia24h",
+   "dominio": "policia24h.com.br",
+   "uf": "AM",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "Jornal Correio",
+   "dominio": "correio24horas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "Portal da Cidade - Mariana / MG",
+   "dominio": "mariana.portaldacidade.com",
+   "uf": "MG",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "Radio Uirapuru",
+   "dominio": "rduirapuru.com.br",
+   "uf": "",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "Diário de Suzano",
+   "dominio": "diariodesuzano.com.br",
+   "uf": "",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "Polícia Militar do Estado de São Paulo",
+   "dominio": "policiamilitar.sp.gov.br",
+   "uf": "SP",
+   "noticias_no_acervo": 17
+  },
+  {
+   "nome": "Correio da Cidade",
+   "dominio": "jornalcorreiodacidade.com.br",
+   "uf": "",
+   "noticias_no_acervo": 16
+  },
+  {
+   "nome": "Fatos de Mato Grosso",
+   "dominio": "fatosdematogrosso.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 16
+  },
+  {
+   "nome": "Itamaraju Notícias",
+   "dominio": "itamarajunoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 16
+  },
+  {
+   "nome": "D24AM",
+   "dominio": "d24am.com",
+   "uf": "AM",
+   "noticias_no_acervo": 16
+  },
+  {
+   "nome": "Francês News",
+   "dominio": "francesnews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 16
+  },
+  {
+   "nome": "Portal Remador",
+   "dominio": "remador.com.br",
+   "uf": "",
+   "noticias_no_acervo": 16
+  },
+  {
+   "nome": "JBNEWS",
+   "dominio": "jbnews.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 16
+  },
+  {
+   "nome": "Mais Região",
+   "dominio": "maisregiao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 16
+  },
+  {
+   "nome": "DOL",
+   "dominio": "dol.com.br",
+   "uf": "",
+   "noticias_no_acervo": 16
+  },
+  {
+   "nome": "Repórter Beto Ribeiro",
+   "dominio": "reporterbetoribeiro.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 16
+  },
+  {
+   "nome": "BBC",
+   "dominio": "bbc.com",
+   "uf": "",
+   "noticias_no_acervo": 16
+  },
+  {
+   "nome": "AEROIN",
+   "dominio": "aeroin.net",
+   "uf": "",
+   "noticias_no_acervo": 16
+  },
+  {
+   "nome": "ZÉ DUDU",
+   "dominio": "zedudu.com.br",
+   "uf": "PA",
+   "noticias_no_acervo": 16
+  },
+  {
+   "nome": "PMES",
+   "dominio": "pm.es.gov.br",
+   "uf": "ES",
+   "noticias_no_acervo": 15
+  },
+  {
+   "nome": "Por Dentro de Tudo",
+   "dominio": "pordentrodetudo.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 15
+  },
+  {
+   "nome": "Pernambuco Notícias",
+   "dominio": "pernambuconoticias.com.br",
+   "uf": "PE",
+   "noticias_no_acervo": 15
+  },
+  {
+   "nome": "SCC10",
+   "dominio": "scc10.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 15
+  },
+  {
+   "nome": "Primeiro a Saber",
+   "dominio": "primeiroasaber.com.br",
+   "uf": "",
+   "noticias_no_acervo": 15
+  },
+  {
+   "nome": "InfoMoney",
+   "dominio": "infomoney.com.br",
+   "uf": "",
+   "noticias_no_acervo": 15
+  },
+  {
+   "nome": "Portal Mário Adolfo",
+   "dominio": "blogdomarioadolfo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 15
+  },
+  {
+   "nome": "J3News",
+   "dominio": "j3news.com",
+   "uf": "",
+   "noticias_no_acervo": 15
+  },
+  {
+   "nome": "Primeira Página",
+   "dominio": "primeirapagina.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 15
+  },
+  {
+   "nome": "Isso É Notícia",
+   "dominio": "issoenoticia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 14
+  },
+  {
+   "nome": "Portal Guajará",
+   "dominio": "portalguajara.com",
+   "uf": "",
+   "noticias_no_acervo": 14
+  },
+  {
+   "nome": "Portal Tri Notícias",
+   "dominio": "portaltri.com.br",
+   "uf": "",
+   "noticias_no_acervo": 14
+  },
+  {
+   "nome": "Sucesso FM",
+   "dominio": "sucessofm.com",
+   "uf": "",
+   "noticias_no_acervo": 14
+  },
+  {
+   "nome": "4oito",
+   "dominio": "4oito.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 14
+  },
+  {
+   "nome": "MT Agora",
+   "dominio": "mtagora.com.br",
+   "uf": "",
+   "noticias_no_acervo": 14
+  },
+  {
+   "nome": "Segundo a Segundo",
+   "dominio": "segundoasegundo.com.br",
+   "uf": "AM",
+   "noticias_no_acervo": 14
+  },
+  {
+   "nome": "blog do berimbau",
+   "dominio": "blogdoberimbau.com",
+   "uf": "",
+   "noticias_no_acervo": 14
+  },
+  {
+   "nome": "Campos 24Horas | Seu jornal na internet!",
+   "dominio": "campos24horas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 14
+  },
+  {
+   "nome": "Diario de Cuiabá",
+   "dominio": "diariodecuiaba.com.br",
+   "uf": "",
+   "noticias_no_acervo": 14
+  },
+  {
+   "nome": "RD Foco",
+   "dominio": "rdfoco.com.br",
+   "uf": "",
+   "noticias_no_acervo": 14
+  },
+  {
+   "nome": "rdmonline.com.br",
+   "dominio": "rdmonline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 14
+  },
+  {
+   "nome": "Portal da Cidade - Foz do Iguaçu / PR",
+   "dominio": "foz.portaldacidade.com",
+   "uf": "PR",
+   "noticias_no_acervo": 14
+  },
+  {
+   "nome": "Studio Notícias",
+   "dominio": "studio.tv.br",
+   "uf": "RS",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "News Rondônia",
+   "dominio": "newsrondonia.com.br",
+   "uf": "RO",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Visor Notícias",
+   "dominio": "visornoticias.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "AtualMT",
+   "dominio": "atualmt.com.br",
+   "uf": "",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Portal Ponto PB",
+   "dominio": "pontopb.com.br",
+   "uf": "PB",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Imirante.com",
+   "dominio": "imirante.com",
+   "uf": "",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "PORTAL MATO GROSSO",
+   "dominio": "portalmatogrosso.com.br",
+   "uf": "",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Prefeitura de Manaus",
+   "dominio": "manaus.am.gov.br",
+   "uf": "AM",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Diário de São Paulo",
+   "dominio": "spdiario.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Blog do Waldiney Passos",
+   "dominio": "waldineypassos.com.br",
+   "uf": "",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Meio News",
+   "dominio": "meionews.com",
+   "uf": "",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Jornal ES HOJE",
+   "dominio": "eshoje.com.br",
+   "uf": "ES",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Patos em Destaque",
+   "dominio": "patosemdestaque.com.br",
+   "uf": "",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "REDE JOTA FM",
+   "dominio": "radiojotafm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Cadaminuto",
+   "dominio": "cadaminuto.com.br",
+   "uf": "",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Blog do Carlos Britto",
+   "dominio": "carlosbritto.com",
+   "uf": "",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Oeste SC Notícias",
+   "dominio": "oestescnoticias.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Acessa.com",
+   "dominio": "acessa.com",
+   "uf": "",
+   "noticias_no_acervo": 13
+  },
+  {
+   "nome": "Ecos da Notícia",
+   "dominio": "ecosdanoticia.net",
+   "uf": "",
+   "noticias_no_acervo": 12
+  },
+  {
+   "nome": "Diário GM",
+   "dominio": "diariogm.com.br",
+   "uf": "PI",
+   "noticias_no_acervo": 12
+  },
+  {
+   "nome": "A Gazeta Web",
+   "dominio": "agazetaweb.com",
+   "uf": "",
+   "noticias_no_acervo": 12
+  },
+  {
+   "nome": "Blog do Juares",
+   "dominio": "blogdojuares.com.br",
+   "uf": "RS",
+   "noticias_no_acervo": 12
+  },
+  {
+   "nome": "RO Acontece",
+   "dominio": "roacontece.com.br",
+   "uf": "RO",
+   "noticias_no_acervo": 12
+  },
+  {
+   "nome": "Seu portal de notícias de Mato Grosso",
+   "dominio": "kb2noticias.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 12
+  },
+  {
+   "nome": "ContilNet",
+   "dominio": "contilnetnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 12
+  },
+  {
+   "nome": "A TARDE",
+   "dominio": "atarde.com.br",
+   "uf": "",
+   "noticias_no_acervo": 12
+  },
+  {
+   "nome": "Agora RS",
+   "dominio": "agorars.com",
+   "uf": "RS",
+   "noticias_no_acervo": 12
+  },
+  {
+   "nome": "Ministério Público do Estado da Bahia. |",
+   "dominio": "mpba.mp.br",
+   "uf": "BA",
+   "noticias_no_acervo": 12
+  },
+  {
+   "nome": "paranatinga news",
+   "dominio": "paranatinganews.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "G+ Notícias",
+   "dominio": "gmaisnoticias.com",
+   "uf": "PR",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Portal Caparaó",
+   "dominio": "portalcaparao.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "O Chefão da Notícia",
+   "dominio": "ochefaodanoticia.com.br",
+   "uf": "AM",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Jornal A Plateia",
+   "dominio": "aplateia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Marechal News",
+   "dominio": "marechalnews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Patos Online",
+   "dominio": "patosonline.com",
+   "uf": "",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "CBN",
+   "dominio": "cbn.globo.com",
+   "uf": "",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Portal Salvador FM",
+   "dominio": "portalsalvadorfm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Agora MT",
+   "dominio": "agoramt.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Jornal Espírito Santo Notícias",
+   "dominio": "espiritosantonoticias.com.br",
+   "uf": "ES",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Gazeta do Cerrado",
+   "dominio": "gazetadocerrado.com.br",
+   "uf": "TO",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Radar Amazônico",
+   "dominio": "radaramazonico.com.br",
+   "uf": "",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Folha do Estado da Bahia",
+   "dominio": "jornalfolhadoestado.com",
+   "uf": "BA",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Enfoque MS",
+   "dominio": "enfoquems.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Oeste Mais",
+   "dominio": "oestemais.com",
+   "uf": "",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "A Gazeta do Acre",
+   "dominio": "agazetadoacre.com",
+   "uf": "AC",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Giro Portal",
+   "dominio": "giroportal.com.br",
+   "uf": "",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "A Tribuna MT",
+   "dominio": "atribunamt.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "NOTÍCIA E FATOS",
+   "dominio": "noticiaefatos.com.br",
+   "uf": "",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "Spaço FM",
+   "dominio": "spacofm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 11
+  },
+  {
+   "nome": "GCMais",
+   "dominio": "gcmais.com.br",
+   "uf": "",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Pagina1mt",
+   "dominio": "pagina1.com.br",
+   "uf": "",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Portal O Dia",
+   "dominio": "portalodia.com",
+   "uf": "",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Folha MS",
+   "dominio": "folhams.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Jornal da Nova",
+   "dominio": "jornaldanova.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Click Xaxim",
+   "dominio": "clickxaxim.com.br",
+   "uf": "",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Patos TV",
+   "dominio": "patostv.com",
+   "uf": "",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "SEMANA 7",
+   "dominio": "semana7.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Catve",
+   "dominio": "catve.com",
+   "uf": "",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Portal 98 FM Natal",
+   "dominio": "98fmnatal.com.br",
+   "uf": "RN",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Diário dos Campos",
+   "dominio": "dcmais.com.br",
+   "uf": "",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Rdnews",
+   "dominio": "rdnews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Notisul",
+   "dominio": "notisul.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Região News",
+   "dominio": "regiaonews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Primeira Edição",
+   "dominio": "pejornal.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "O Imparcial",
+   "dominio": "oimparcial.com.br",
+   "uf": "MA",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "O Hoje",
+   "dominio": "ohoje.com",
+   "uf": "DF",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "PORTAL RIACHAONET",
+   "dominio": "riachaonet.com.br",
+   "uf": "PI",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Jornal Repercussão",
+   "dominio": "jornalrepercussao.com.br",
+   "uf": "RS",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Diário de Santa Maria",
+   "dominio": "diariosm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "REVISTA CENARIUM",
+   "dominio": "revistacenarium.com.br",
+   "uf": "",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Band News FM Curitiba",
+   "dominio": "bandnewsfmcuritiba.com",
+   "uf": "",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Rio das Ostras",
+   "dominio": "riodasostras.rj.gov.br",
+   "uf": "RJ",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "JC",
+   "dominio": "jc.ne10.uol.com.br",
+   "uf": "PE",
+   "noticias_no_acervo": 10
+  },
+  {
+   "nome": "Rondônia em pauta",
+   "dominio": "rondoniaempauta.com.br",
+   "uf": "RO",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "BNews SP",
+   "dominio": "bnewssaopaulo.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "LSM Notícias",
+   "dominio": "lsmnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "WH3",
+   "dominio": "wh3.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Rondônia Dinâmica",
+   "dominio": "rondoniadinamica.com",
+   "uf": "RO",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "NP Expresso",
+   "dominio": "npexpresso.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "diaadiaes.com.br",
+   "dominio": "diaadiaes.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Éder Luiz",
+   "dominio": "ederluiz.com.vc",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Rádio Alto Uruguai – 92.5 FM",
+   "dominio": "radioaltouruguai.com.br",
+   "uf": "RS",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Cidades na Net",
+   "dominio": "cidadesnanet.com",
+   "uf": "PI",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Portal Mário Adolfo",
+   "dominio": "marioadolfo.com",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "NOVO Notícias",
+   "dominio": "novonoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Portal Alegrete Tudo",
+   "dominio": "alegretetudo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Facebook",
+   "dominio": "facebook.com",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Clique Diário",
+   "dominio": "cliquediario.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Maracaju Speed",
+   "dominio": "maracajuspeed.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Jornal de Pomerode",
+   "dominio": "jornaldepomerode.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "SOT",
+   "dominio": "sot.inf.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "CBN Goiânia",
+   "dominio": "cbngoiania.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "A Voz do Xingu",
+   "dominio": "avozdoxingu.com.br",
+   "uf": "PA",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Brasil 247",
+   "dominio": "brasil247.com",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Portal Sertão da Paraíba",
+   "dominio": "sertaodaparaiba.com.br",
+   "uf": "PB",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "TV Sim Brasil",
+   "dominio": "tvsimbrasil.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "A Tribuna",
+   "dominio": "atribuna.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "O Liberal",
+   "dominio": "oliberal.com",
+   "uf": "PA",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Jornal Inforondonia",
+   "dominio": "jornalinforondonia.com",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "abc+",
+   "dominio": "abcmais.com",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Bastos Já",
+   "dominio": "bastosja.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "O Matogrossense",
+   "dominio": "omatogrossense.com",
+   "uf": "MT",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Rádio Cultura Foz",
+   "dominio": "radioculturafoz.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Portal Debate",
+   "dominio": "debatecarajas.com.br",
+   "uf": "PA",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "OitoMeia",
+   "dominio": "oitomeia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Rádio Najuá",
+   "dominio": "najua.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Jornal ESP",
+   "dominio": "jornalesp.com",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "Folha do Litoral News",
+   "dominio": "folhadolitoral.com.br",
+   "uf": "",
+   "noticias_no_acervo": 9
+  },
+  {
+   "nome": "As Notícias Online",
+   "dominio": "asnoticiasonline.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "BigPB",
+   "dominio": "bigpb.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "vox97.com.br",
+   "dominio": "vox97.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "patosja.com.br",
+   "dominio": "patosja.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Notícia Exata",
+   "dominio": "noticiaexata.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Portal da Tropical",
+   "dominio": "portaldatropical.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Governo do Estado do Rio de Janeiro",
+   "dominio": "rj.gov.br",
+   "uf": "RJ",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Mídia Bahia",
+   "dominio": "midiabahia.com.br",
+   "uf": "BA",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "O Livre",
+   "dominio": "olivre.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Blog do Márcio Rangel",
+   "dominio": "blogdomarciorangel.com.br",
+   "uf": "PB",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "O Bom da Notícia",
+   "dominio": "obomdanoticia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "rede noticia es",
+   "dominio": "redenoticia.es",
+   "uf": "ES",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "MS em Foco",
+   "dominio": "msemfoco.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Acorda DF",
+   "dominio": "acordadf.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Diário Gaúcho",
+   "dominio": "diariogaucho.clicrbs.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "RCWTV",
+   "dominio": "rcwtv.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "GazetaWeb",
+   "dominio": "gazetaweb.com",
+   "uf": "AL",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Jornal da Paraíba",
+   "dominio": "jornaldaparaiba.com.br",
+   "uf": "PB",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "THMais",
+   "dominio": "thmais.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "sampi.net.br",
+   "dominio": "sampi.net.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "diariodigital.com.br",
+   "dominio": "diariodigital.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Portal GCD",
+   "dominio": "gcd.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Se Liga Chapada",
+   "dominio": "seligachapada.com.br",
+   "uf": "BA",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Jornal Além Parahyba",
+   "dominio": "jornalalemparahyba.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "G5News",
+   "dominio": "g5news.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Portal AZ",
+   "dominio": "portalaz.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Portal Correio",
+   "dominio": "portalcorreio.com.br",
+   "uf": "PB",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Marília Notícia",
+   "dominio": "marilianoticia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "MZ Notícia",
+   "dominio": "mznoticia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Regional 24 Horas",
+   "dominio": "regional24horas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "HiperNotícias - Você bem informado",
+   "dominio": "hnt.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Portal - Rios de Notícias",
+   "dominio": "riosdenoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "ONDA SUL",
+   "dominio": "portalondasul.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Confirma Notícia",
+   "dominio": "confirmanoticia.com.br",
+   "uf": "PA",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "CN7",
+   "dominio": "cn7.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "ACidade ON",
+   "dominio": "acidadeon.com",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "O Estado CE",
+   "dominio": "oestadoce.com.br",
+   "uf": "CE",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "folhaestado.com.br",
+   "dominio": "folhaestado.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Diário do Vale",
+   "dominio": "diariodovale.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Jeso Carneiro",
+   "dominio": "jesocarneiro.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Portal Lupa1",
+   "dominio": "lupa1.com.br",
+   "uf": "PI",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Grupo RBJ de Comunicação",
+   "dominio": "rbj.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "SulBahiaNews",
+   "dominio": "sulbahianews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Hoje em Dia",
+   "dominio": "hojeemdia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "ItabiraNet",
+   "dominio": "itabiranet.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "Revista ADEGA ·",
+   "dominio": "revistaadega.uol.com.br",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "No Cariri Tem",
+   "dominio": "nocariritem.com.br",
+   "uf": "CE",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "CBN",
+   "dominio": "cbn.globoradio.globo.com",
+   "uf": "",
+   "noticias_no_acervo": 8
+  },
+  {
+   "nome": "40graus.com.br",
+   "dominio": "40graus.com.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Zero Hora Digital",
+   "dominio": "horasp.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Litoral na Rede",
+   "dominio": "litoralnarede.com.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Portal Engeplus",
+   "dominio": "engeplus.com.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "OCP News",
+   "dominio": "ocp.news",
+   "uf": "SC",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Jornal Razão",
+   "dominio": "jornalrazao.com",
+   "uf": "SC",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Região Noroeste",
+   "dominio": "regiaonoroeste.com",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Inteligência Brasil Imprensa",
+   "dominio": "ibi.ong.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "CN Policia",
+   "dominio": "cnpolicia.com",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "iG Último Segundo",
+   "dominio": "ultimosegundo.ig.com.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "A8SE",
+   "dominio": "a8se.com",
+   "uf": "SE",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Acontece no RS",
+   "dominio": "acontecenors.com.br",
+   "uf": "RS",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Surgiu",
+   "dominio": "surgiu.com.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "oobservador.com",
+   "dominio": "oobservador.com",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Portal do Estado do Rio Grande do Sul",
+   "dominio": "estado.rs.gov.br",
+   "uf": "RS",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Balai Cabo Verde",
+   "dominio": "balai.cv",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Portal Diário do RN",
+   "dominio": "diariodorn.com.br",
+   "uf": "RN",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Primeira Hora",
+   "dominio": "primeirahora.com.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Extraderondonia.com.br",
+   "dominio": "extraderondonia.com.br",
+   "uf": "RO",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Santa Portal",
+   "dominio": "santaportal.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Roraima 1",
+   "dominio": "roraima1.com.br",
+   "uf": "RR",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Portal Tucumã",
+   "dominio": "portaltucuma.com.br",
+   "uf": "AM",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "sesp.mt.gov.br",
+   "dominio": "sesp.mt.gov.br",
+   "uf": "MT",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Portal V1",
+   "dominio": "portalv1.com.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Midia Jur",
+   "dominio": "midiajur.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Top Mídia News",
+   "dominio": "topmidianews.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Guia Muriaé",
+   "dominio": "guiamuriae.com.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Portal VV8",
+   "dominio": "portalvv8.com.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Diário do Iguaçu",
+   "dominio": "diregional.com.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "TVBV ONLINE",
+   "dominio": "tvbv.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Goias.gov.br",
+   "dominio": "goias.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "PortalJNN",
+   "dominio": "portaljnn.com",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Infoverus",
+   "dominio": "infoverus.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Mais Goiás",
+   "dominio": "maisgoias.com.br",
+   "uf": "GO",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Revista Oeste",
+   "dominio": "revistaoeste.com",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Berlinda News",
+   "dominio": "berlinda.com.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Gazeta do Paraná",
+   "dominio": "gazetadoparana.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "agresteportal.com.br",
+   "dominio": "agresteportal.com.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Portal ABC do ABC",
+   "dominio": "abcdoabc.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Portalribeira",
+   "dominio": "portalribeira.com.br",
+   "uf": "",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "radiocidadesc.com.br",
+   "dominio": "radiocidadesc.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Diário Tribuna",
+   "dominio": "diariotribuna.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 7
+  },
+  {
+   "nome": "Portal Piauí Hoje",
+   "dominio": "piauihoje.com",
+   "uf": "PI",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Umuarama News",
+   "dominio": "portalumuaramanews.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Fan F1",
+   "dominio": "fanf1.com.br",
+   "uf": "SE",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Diário de Olímpia",
+   "dominio": "leonardoconcon.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "sctododia",
+   "dominio": "sctd.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Portal da Cidade - Cruzeiro do Oeste / PR",
+   "dominio": "cruzeirodooeste.portaldacidade.com",
+   "uf": "PR",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Aqui Agora",
+   "dominio": "aquiagora.net",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "vtvnews.com.br",
+   "dominio": "vtvnews.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Portal Tempo Novo",
+   "dominio": "portaltemponovo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Vale 24 Horas",
+   "dominio": "vale24horas.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Polícia Militar do Piauí",
+   "dominio": "pm.pi.gov.br",
+   "uf": "PI",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "www.imparcial.com.br",
+   "dominio": "imparcial.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Amazonas1",
+   "dominio": "amazonas1.com.br",
+   "uf": "AM",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "O Mato Grosso",
+   "dominio": "omatogrosso.com",
+   "uf": "MT",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "RevistaAZ",
+   "dominio": "revistaaz.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Diário da Manhã",
+   "dominio": "dm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "RP10",
+   "dominio": "rp10.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Hora do Povo",
+   "dominio": "horadopovo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Netinho News",
+   "dominio": "netinhonews.com.br",
+   "uf": "BA",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Clic Camaquã",
+   "dominio": "cliccamaqua.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Rádio Difusora Ouro Fino",
+   "dominio": "difusoraourofino.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Fatos de Nobres",
+   "dominio": "fatosdenobres.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Grupo A Hora",
+   "dominio": "grupoahora.net.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Mega Cidade",
+   "dominio": "megacidade.com",
+   "uf": "MG",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Cliquef5",
+   "dominio": "cliquef5.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Portal Gazeta RN",
+   "dominio": "portalgazetarn.com",
+   "uf": "RN",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "CBN Recife",
+   "dominio": "cbnrecife.com",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Acreaovivo.com",
+   "dominio": "acreaovivo.com",
+   "uf": "AC",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Rádio Rio Mar",
+   "dominio": "radioriomarfm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Testo Notícias",
+   "dominio": "testonoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Itapecuru Notícias",
+   "dominio": "itapecurunoticias.com",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Caco Da Rosa",
+   "dominio": "cacodarosa.com",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Jornal Ilustrado",
+   "dominio": "ilustrado.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "www.guiatemabelardoluz.com.br",
+   "dominio": "guiatemabelardoluz.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Portal Tailândia",
+   "dominio": "portaltailandia.com",
+   "uf": "PA",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "DW.com",
+   "dominio": "dw.com",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Portal Meganésia",
+   "dominio": "meganesia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Lagarto Como eu Vejo",
+   "dominio": "lagartocomoeuvejo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Rafael Nemitz",
+   "dominio": "rafaelnemitz.com",
+   "uf": "RS",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Diário do Rio Doce",
+   "dominio": "drd.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Expresso das Ilhas",
+   "dominio": "expressodasilhas.cv",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Ministério Público - RS",
+   "dominio": "mprs.mp.br",
+   "uf": "RS",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "oreporter.net",
+   "dominio": "oreporter.net",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "CBN São José dos Campos e Vale",
+   "dominio": "cbnvale.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "viuitauna",
+   "dominio": "viuitauna.com.br",
+   "uf": "",
+   "noticias_no_acervo": 6
+  },
+  {
+   "nome": "Portal da Cidade - Brusque / SC",
+   "dominio": "brusque.portaldacidade.com",
+   "uf": "SC",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "RC24H",
+   "dominio": "rc24h.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "soubrasilia.com",
+   "dominio": "soubrasilia.com",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Caçador Online",
+   "dominio": "cacador.net",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Patos Notícias",
+   "dominio": "patosnoticias.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "CBN Curitiba",
+   "dominio": "cbncuritiba.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Portal Rondon",
+   "dominio": "portalrondon.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Portal da Cidade - Umuarama / PR",
+   "dominio": "umuarama.portaldacidade.com",
+   "uf": "PR",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "No Ponto SC",
+   "dominio": "nopontosc.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Portal Hortolândia",
+   "dominio": "portalhortolandia.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Jornal Dia Dia",
+   "dominio": "jornaldiadia.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "O Impacto",
+   "dominio": "oimpacto.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "O Paraná",
+   "dominio": "oparana.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Já é Notícia",
+   "dominio": "jaenoticia.com.br",
+   "uf": "AL",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Blog do Nélio",
+   "dominio": "blogdonelio.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "T7news",
+   "dominio": "t7news.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Fátima News",
+   "dominio": "fatimanews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Bico 24 Horas",
+   "dominio": "bico24horas.com.br",
+   "uf": "TO",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Polícia Militar de Minas Gerais - PMMG",
+   "dominio": "policiamilitar.mg.gov.br",
+   "uf": "MG",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Ceará Agora",
+   "dominio": "cearaagora.com.br",
+   "uf": "CE",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Parlamento PB",
+   "dominio": "parlamentopb.com.br",
+   "uf": "PB",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Voz de Pernambuco",
+   "dominio": "vozdepernambuco.com",
+   "uf": "PE",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Tribuna do Agreste",
+   "dominio": "tribunadoagreste.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Hora Campinas",
+   "dominio": "horacampinas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Correio SC",
+   "dominio": "correiosc.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Blog do Valente",
+   "dominio": "blogdovalente.com.br",
+   "uf": "BA",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "ES 24 Horas",
+   "dominio": "es24horas.com.br",
+   "uf": "ES",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "nossagente.info",
+   "dominio": "nossagente.info",
+   "uf": "PR",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "EM TEMPO",
+   "dominio": "emtempo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "TáNaMídia Naviraí",
+   "dominio": "tanamidianavirai.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Canoinhas Online",
+   "dominio": "canoinhasonline.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Jornal da Orla",
+   "dominio": "jornaldaorla.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Povo na Rua",
+   "dominio": "povonarua.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Brigada Militar",
+   "dominio": "brigadamilitar.rs.gov.br",
+   "uf": "RS",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Fala Matão",
+   "dominio": "falamatao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Clube Notícia",
+   "dominio": "clubenoticia.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Mossoró Hoje",
+   "dominio": "mossorohoje.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Revista Sociedade Militar",
+   "dominio": "sociedademilitar.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "P.O Notícias",
+   "dominio": "ponoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Tá No Site",
+   "dominio": "portaltanosite.com",
+   "uf": "PR",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Portal Integração",
+   "dominio": "portalintegracao.com.br",
+   "uf": "PI",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Diário de Caratinga",
+   "dominio": "diariodecaratinga.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Única News",
+   "dominio": "unicanews.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Atitude Tocantins",
+   "dominio": "atitudeto.com.br",
+   "uf": "TO",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Blog do Chaguinhas",
+   "dominio": "blogdochaguinhas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "MS Todo dia",
+   "dominio": "mstododia.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Araguaína Notícias",
+   "dominio": "araguainanoticias.com.br",
+   "uf": "TO",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Diário do Estado de S. Paulo",
+   "dominio": "diarioesp.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Radar Sertanejo",
+   "dominio": "radarsertanejo.com",
+   "uf": "PB",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Costa Oeste News",
+   "dominio": "costaoestenews.com",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Vertentes das Gerais",
+   "dominio": "vertentesdasgerais.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Acre Agora",
+   "dominio": "acreagora.com",
+   "uf": "AC",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Super Rádio Tupi",
+   "dominio": "tupi.fm",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Blog Antônio Carlos",
+   "dominio": "blogantoniocarlos.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Diário do Sertão",
+   "dominio": "diariodosertao.com.br",
+   "uf": "PB",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Sudeste Agora",
+   "dominio": "sudesteagora.com.br",
+   "uf": "RJ",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Jornal do Tocantins",
+   "dominio": "jornaldotocantins.com.br",
+   "uf": "TO",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "AcreNews",
+   "dominio": "acrenews.com.br",
+   "uf": "AC",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Iviagora",
+   "dominio": "iviagora.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "LeiaJá",
+   "dominio": "leiaja.com",
+   "uf": "PE",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "BNews Alagoas",
+   "dominio": "bnewsalagoas.com.br",
+   "uf": "AL",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Floresta Notícias",
+   "dominio": "florestanoticias.com",
+   "uf": "RO",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "24 HORAS MT",
+   "dominio": "24horasmt.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Portal da Cidade - Porto Velho / RO",
+   "dominio": "portovelho.portaldacidade.com",
+   "uf": "RO",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "www.portalviu.com.br",
+   "dominio": "portalviu.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "tribuna top",
+   "dominio": "tribunatop.com",
+   "uf": "RO",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Dia a Dia Notícia",
+   "dominio": "diaadianoticia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Serra Noticiário",
+   "dominio": "serranoticiario.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Info Newss",
+   "dominio": "infonewss.com",
+   "uf": "PI",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Estradas",
+   "dominio": "estradas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "o vigilante online",
+   "dominio": "ovigilanteonline.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Guarulhos Hoje",
+   "dominio": "guarulhoshoje.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "TELETIME News",
+   "dominio": "teletime.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Costa Norte",
+   "dominio": "costanorte.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Portal do Bitcoin",
+   "dominio": "portaldobitcoin.uol.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Sou de Palmas",
+   "dominio": "soudepalmas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "O POVO",
+   "dominio": "mais.opovo.com.br",
+   "uf": "CE",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Instituto Sou da Paz",
+   "dominio": "soudapaz.org",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Jornal hora H",
+   "dominio": "jornalhorah.com.br",
+   "uf": "",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Folha de Londrina",
+   "dominio": "folhadelondrina.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Polí­cia Militar do Estado do Maranhão",
+   "dominio": "pm.ssp.ma.gov.br",
+   "uf": "MA",
+   "noticias_no_acervo": 5
+  },
+  {
+   "nome": "Diário Goianiense",
+   "dominio": "diariogoianiense.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Três Passos News",
+   "dominio": "trespassosnews.com.br",
+   "uf": "RS",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Rádio Missioneira",
+   "dominio": "radiomissioneira.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": ":: Bahia Jornal ::",
+   "dominio": "bahiajornal.com.br",
+   "uf": "BA",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Rio Verde News",
+   "dominio": "rioverdenews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Diário da Serra",
+   "dominio": "diariodaserra.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Portal da Cidade - Pouso Alegre / MG",
+   "dominio": "pousoalegre.portaldacidade.com",
+   "uf": "MG",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "TV KZ",
+   "dominio": "tvkz.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Governo do Paraná",
+   "dominio": "parana.pr.gov.br",
+   "uf": "PR",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "SC Hoje",
+   "dominio": "schoje.news",
+   "uf": "SC",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Blog do Ricardo Antunes",
+   "dominio": "ricardoantunes.net",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Gazeta Carajás",
+   "dominio": "gazetacarajas.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Paraíba Já",
+   "dominio": "paraibaja.com.br",
+   "uf": "PB",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Agua Boa News",
+   "dominio": "aguaboanews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Somos Notícia",
+   "dominio": "somosnoticia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Caldeirão Político",
+   "dominio": "caldeiraopolitico.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Jornal Imperatriz",
+   "dominio": "jornalimperatriz.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Caarapó News",
+   "dominio": "caaraponews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Jornal Digital da Região Oeste",
+   "dominio": "jornaldigitaldaregiaooeste.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "RCN 67",
+   "dominio": "rcn67.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Portal Agora Tocantins",
+   "dominio": "agora-to.com.br",
+   "uf": "TO",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Campo Maior em Foco",
+   "dominio": "campomaioremfoco.com.br",
+   "uf": "PI",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Jornal Araxá",
+   "dominio": "jornalaraxa.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "TudoCelular.com",
+   "dominio": "tudocelular.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "NB Notícias",
+   "dominio": "nbnoticias.com.br",
+   "uf": "RS",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "estadaoalagoas.com.br",
+   "dominio": "estadaoalagoas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "JC",
+   "dominio": "jc.uol.com.br",
+   "uf": "PE",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "GYN Noticias",
+   "dominio": "gynnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "RFI",
+   "dominio": "rfi.fr",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Patrocínio Online",
+   "dominio": "patrocinioonline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "ConectAmapa",
+   "dominio": "conectamapa.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Cleide Freires",
+   "dominio": "cleidefreires.com.br",
+   "uf": "AP",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "VG Notícias",
+   "dominio": "vgnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "TV Paraguaçu",
+   "dominio": "tvparaguacu.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Aquidauana Notícias",
+   "dominio": "aquidauananoticias.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "PAIPEE -",
+   "dominio": "br.paipee.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "O Alto Uruguai",
+   "dominio": "oaltouruguai.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "LEIAGORA",
+   "dominio": "leiagora.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "rádio sampaio",
+   "dominio": "radiosampaio.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Rádio Independente",
+   "dominio": "independente.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "ES Fala",
+   "dominio": "esfala.com.br",
+   "uf": "ES",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Jornal TopNews",
+   "dominio": "jornaltopnews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "PortalRBV",
+   "dominio": "portalrbv.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "ABCD Jornal",
+   "dominio": "abcdjornal.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Na Hora Online",
+   "dominio": "nahoraonline.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "V9 Vitoriosa",
+   "dominio": "v9vitoriosa.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Tribuna de Parnaíba",
+   "dominio": "tribunadeparnaiba.com",
+   "uf": "PI",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "PPNews",
+   "dominio": "ppnewsfb.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Estado do Pará Online",
+   "dominio": "estadodoparaonline.com",
+   "uf": "PA",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Ifronteira",
+   "dominio": "ifronteira.com",
+   "uf": "SP",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Todo Segundo",
+   "dominio": "todosegundo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "P1 News",
+   "dominio": "p1news.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Gerais News",
+   "dominio": "geraisnews.com.br",
+   "uf": "MG",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "18 Horas | Rádio Mix Manaus",
+   "dominio": "18horas.com.br",
+   "uf": "AM",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Imediato Online",
+   "dominio": "imediato.ncnews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "ALÔ UBERLÂNDIA",
+   "dominio": "alouberlandia.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "OExtra.net",
+   "dominio": "oextra.net",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Cambira Notícias",
+   "dominio": "cambiranoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Valor Econômico",
+   "dominio": "valor.globo.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Toda Hora",
+   "dominio": "todahora.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "O Presente",
+   "dominio": "opresente.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Rádio Solaris",
+   "dominio": "radiosolaris.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Jornal de Uberaba",
+   "dominio": "jornaldeuberaba.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Araguaia Notícia",
+   "dominio": "araguaianoticia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Notícias ao Minuto",
+   "dominio": "noticiasaominuto.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Portal do Litoral PB",
+   "dominio": "portaldolitoralpb.com.br",
+   "uf": "PB",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Vietnam.vn",
+   "dominio": "vietnam.vn",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "noticias.sc.gov.br",
+   "dominio": "noticias.sc.gov.br",
+   "uf": "SC",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "R7",
+   "dominio": "r7.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Portal ON",
+   "dominio": "portalon.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "tmc.com.br",
+   "dominio": "tmc.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "O São Gonçalo",
+   "dominio": "osaogoncalo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Canal Diário",
+   "dominio": "canaldiario.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "oacreagora.com",
+   "dominio": "oacreagora.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Grupo Jota Sidney",
+   "dominio": "irecelider.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Guia SMI",
+   "dominio": "guiasmi.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Portal do Zacarias",
+   "dominio": "portaldozacarias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Litoralmania",
+   "dominio": "litoralmania.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Tribuna do Vale",
+   "dominio": "tribunadovale.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Agência Goiás de Notícias",
+   "dominio": "agencia.go.gov.br",
+   "uf": "GO",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Portal Gurguéia",
+   "dominio": "portalgurgueia.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Capital News",
+   "dominio": "capitalnews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Rápido no Ar",
+   "dominio": "rapidonoar.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Rondoniagora.com",
+   "dominio": "rondoniagora.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Agência da Notícia",
+   "dominio": "agenciadanoticia.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Prefeitura de Campo Grande",
+   "dominio": "campogrande.ms.gov.br",
+   "uf": "MS",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "RBA TV",
+   "dominio": "rbatv.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Portal Massa",
+   "dominio": "jornalmassa.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Brasil de Fato",
+   "dominio": "brasildefato.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Canal 121",
+   "dominio": "canal121.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "agorapb.com.br",
+   "dominio": "agorapb.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Bahia Comenta",
+   "dominio": "bahiacomenta.com.br",
+   "uf": "BA",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Visão Oeste",
+   "dominio": "visaooeste.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Blog do Erbi",
+   "dominio": "blogdoerbi.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "É Notícias",
+   "dominio": "enoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Jornal Opção | Tocantins",
+   "dominio": "tocantins.jornalopcao.com.br",
+   "uf": "TO",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Preto no Branco | Com Sibelle Fonseca",
+   "dominio": "pretonobranco.org",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "AtaNews",
+   "dominio": "atanews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "O Republicano",
+   "dominio": "orepublicano.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Portal Miséria",
+   "dominio": "miseria.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Diário Campo Belo",
+   "dominio": "diariocampobelo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Diário do Rio",
+   "dominio": "diariodorio.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Cáceres Notícias",
+   "dominio": "caceresnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "GuarulhosWeb",
+   "dominio": "guarulhosweb.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Jornal do Dia",
+   "dominio": "jornaldodiase.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "O Liberal",
+   "dominio": "liberal.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "ICL Notícias",
+   "dominio": "iclnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Life Informa",
+   "dominio": "informa.life",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Plantão 190",
+   "dominio": "plantao190.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Jornal Metas",
+   "dominio": "jornalmetas.com.br",
+   "uf": "SC",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Natividade FM",
+   "dominio": "natividadefm.com.br",
+   "uf": "RJ",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Diário de Uberlândia",
+   "dominio": "diariodeuberlandia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Portal do Sudoeste Paulista",
+   "dominio": "sudoestepaulista.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Diário do Poder",
+   "dominio": "diariodopoder.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Jornal de Beltrão",
+   "dominio": "jornaldebeltrao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Xodó News",
+   "dominio": "xodonews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Bei Notícias",
+   "dominio": "bei.net.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Luiz Armando Costa",
+   "dominio": "luizarmandocosta.com.br",
+   "uf": "TO",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Eu, Rio!",
+   "dominio": "eurio.com.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Fonte Segura",
+   "dominio": "fontesegura.forumseguranca.org.br",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Correio",
+   "dominio": "correio.rac.com.br",
+   "uf": "BA",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "iBahia",
+   "dominio": "ibahia.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Visão Notícias",
+   "dominio": "visaonoticias.com",
+   "uf": "",
+   "noticias_no_acervo": 4
+  },
+  {
+   "nome": "Itabira Online",
+   "dominio": "itabiraonline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Estação Livre MT",
+   "dominio": "estacaolivremt.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "pm.mt.gov.br",
+   "dominio": "pm.mt.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Ubiratã Online Notícias",
+   "dominio": "ubirataonline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Folha do Sul",
+   "dominio": "folhadosulonline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal do Brejo",
+   "dominio": "portaldobrejo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Lapada Lapada",
+   "dominio": "lapadalapada.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Folha de Vilhena",
+   "dominio": "folhadevilhena.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Sete Lagoas .com.br",
+   "dominio": "setelagoas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Terra do Mandu",
+   "dominio": "terradomandu.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "União Metropolitana",
+   "dominio": "uniaometropolitana.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Rádio 93 FM",
+   "dominio": "radio93.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Radar News",
+   "dominio": "radar.news",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Jovem Pan",
+   "dominio": "jovempan.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal MPA",
+   "dominio": "sistemampa.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Rádio Capinzal",
+   "dominio": "capinzalfm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Tribuna do Paraná",
+   "dominio": "tribunapr.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Votunews",
+   "dominio": "votunews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "NF Notícias",
+   "dominio": "nfnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Nova Era News",
+   "dominio": "novaeranews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "O Taboanense",
+   "dominio": "otaboanense.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "MT de Fato",
+   "dominio": "mtdefato.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal Terra da Luz",
+   "dominio": "portalterradaluz.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Rádio Difusora do Paraná",
+   "dominio": "radiodifusora.net",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Diário do Amapá",
+   "dominio": "diariodoamapa.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Rádio Lagoa FM",
+   "dominio": "lagoafm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Agora No Vale",
+   "dominio": "agoranovale.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Blog do Levi Dantas",
+   "dominio": "blogdolevi.diariodosertao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "BNT - Boca no Trombone",
+   "dominio": "bntonline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal 96FM",
+   "dominio": "96fm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Rede Peperi",
+   "dominio": "peperi.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal Alto Piquiri",
+   "dominio": "portalaltopiquiri.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Diário da Guanabara",
+   "dominio": "dgrj.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Diário de Petrópolis",
+   "dominio": "diariodepetropolis.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Rádio Mundo Melhor 97,7FM e 93,5FM",
+   "dominio": "radiomundomelhor.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Tribuna do Planalto",
+   "dominio": "tribunadoplanalto.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Grupo Lomes de Comunicação",
+   "dominio": "glomes.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Araraquara Agora",
+   "dominio": "araraquaraagora.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Fatos 24h",
+   "dominio": "fatos24h.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Mato Grosso Mais",
+   "dominio": "matogrossomais.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "O Diário do Vale",
+   "dominio": "odiariodovale.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "BossaNews Brasil",
+   "dominio": "br.bossanews.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portalozk.com",
+   "dominio": "portalozk.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Imprensa 24h",
+   "dominio": "imprensa24h.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Amazônia Sem Fronteira",
+   "dominio": "amazoniasemfronteira.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Correio dos Municípios",
+   "dominio": "correiodosmunicipios-al.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Achei Sudoeste",
+   "dominio": "acheisudoeste.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Paulo Marques Notícias",
+   "dominio": "paulomarquesnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Folha Patoense",
+   "dominio": "folhapatoense.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Ururau Notícias",
+   "dominio": "ururau.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Radar BO",
+   "dominio": "radarbo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "paranahoje.com.br",
+   "dominio": "paranahoje.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "contacto.lu",
+   "dominio": "contacto.lu",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Diário do Município Anápolis",
+   "dominio": "dmanapolis.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Radio Caxias FM",
+   "dominio": "radiocaxias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Ver-o-Fato",
+   "dominio": "ver-o-fato.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Região em Destake",
+   "dominio": "regiaoemdestake.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Boca do Povo News",
+   "dominio": "bocadopovonews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Agência Gov",
+   "dominio": "agenciagov.ebc.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "BarbacenaMais",
+   "dominio": "barbacenamais.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Tudo Sobre Xanxerê",
+   "dominio": "tudosobrexanxere.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Jornal Opção",
+   "dominio": "entorno.jornalopcao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Prefeitura de Suzano",
+   "dominio": "suzano.sp.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Jornal SERRANOSSA",
+   "dominio": "serranossa.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Blog do Edvaldo Magalhães",
+   "dominio": "blogdoedvaldomagalhaes.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal 24 Horas",
+   "dominio": "portal24.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Nova Lima News",
+   "dominio": "novalima.news",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "garopaba.sc",
+   "dominio": "garopaba.sc",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "TV Bambuí",
+   "dominio": "tvbambui.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Folha 5",
+   "dominio": "folha5.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Hora Hiper",
+   "dominio": "horahiper.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Revista Fórum",
+   "dominio": "revistaforum.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Grande Ponto",
+   "dominio": "grandeponto.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Notícia no Ato",
+   "dominio": "noticianoato.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "BNC Amazonas",
+   "dominio": "bncamazonas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "agenciadenoticias.ms.gov.br",
+   "dominio": "agenciadenoticias.ms.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "TV Jaguari",
+   "dominio": "tvjaguari.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Notícia Paraíba",
+   "dominio": "noticiaparaiba.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal São Bento Notícias",
+   "dominio": "portalsaobentonoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "ABC Agora",
+   "dominio": "abcagora.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Maricá Info",
+   "dominio": "maricainfo.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Sambito News",
+   "dominio": "sambitonews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Siga Mais",
+   "dominio": "sigamais.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "gazeta hora1",
+   "dominio": "gazetahora1.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Infonet",
+   "dominio": "infonet.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Rádio Costa Sul FM",
+   "dominio": "costasulfm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Terra MT Digital",
+   "dominio": "terramtdigital.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "CircuitoMT",
+   "dominio": "circuitomt.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "www.correiodamanha.com.br",
+   "dominio": "correiodamanha.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal Cantagalo",
+   "dominio": "portalcantagalo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Folha Regional",
+   "dominio": "folharegionalwebtv.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "rastro101",
+   "dominio": "rastro101.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "SÃO FRANCISCO 24hs",
+   "dominio": "saofrancisco24hs.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Diário do Pará",
+   "dominio": "diariodopara.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal do RN",
+   "dominio": "portaldorn.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal 27",
+   "dominio": "portal27.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal Arcos",
+   "dominio": "portalarcos.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "AgoraVale",
+   "dominio": "agoravale.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal de Prefeitura",
+   "dominio": "portaldeprefeitura.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Hora Piaui",
+   "dominio": "horapiaui.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Teixeira em Foco",
+   "dominio": "teixeiraemfoco.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Repórter Naressi",
+   "dominio": "reporternaressi.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Nova Friburgo em Foco",
+   "dominio": "novafriburgoemfoco.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Pleno.News",
+   "dominio": "pleno.news",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "TV Guararapes",
+   "dominio": "tvguararapes.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Blog do Domingos Costa",
+   "dominio": "domingoscosta.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal Arauto",
+   "dominio": "portalarauto.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "D'Ponta News",
+   "dominio": "dpontanews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "F5 Online",
+   "dominio": "f5online.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "A Notícia do Ceará",
+   "dominio": "anoticiadoceara.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "PlanetaOsasco.com",
+   "dominio": "planetaosasco.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Jornal O Sul",
+   "dominio": "osul.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Cenário MS",
+   "dominio": "cenarioms.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "A Voz de Santa Quitéria",
+   "dominio": "avozdesantaquiteria.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Carmo Web TV",
+   "dominio": "carmowebtv.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Tribuna de Minas",
+   "dominio": "tribunademinas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "boca.com.br",
+   "dominio": "boca.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "GDia",
+   "dominio": "gdia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "diariorr.com.br",
+   "dominio": "diariorr.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal do Holanda",
+   "dominio": "novo2026.portaldoholanda.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Rádio Cabiuna FM",
+   "dominio": "radiocabiuna.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal Imbiara",
+   "dominio": "portalimbiara.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "O Estado Online",
+   "dominio": "oestadoonline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Grupo Rio Claro, São Paulo",
+   "dominio": "gruporioclarosp.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Prensa Mercosur",
+   "dominio": "prensamercosur.org",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Alerta Rolim",
+   "dominio": "alertarolim.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Rádio Muriaé",
+   "dominio": "radiomuriae.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "O POVO PB",
+   "dominio": "opovopb.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "sala de imprensa",
+   "dominio": "saladeimprensa.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal Gerais",
+   "dominio": "portalgerais.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal 93",
+   "dominio": "radio93fm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Jornal Somos",
+   "dominio": "jornalsomos.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Foco Regional",
+   "dominio": "focoregional.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Jornal Primeira Página",
+   "dominio": "jornalprimeirapaginato.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Jeremoabo.com",
+   "dominio": "jeremoabo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Agência Lupa",
+   "dominio": "agencialupa.org",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal de Beltrão",
+   "dominio": "portaldebeltrao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "MEON",
+   "dominio": "meon.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Polícia Militar do Pará",
+   "dominio": "pm.pa.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "CBN Total",
+   "dominio": "cbntotal.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "DeFato.com",
+   "dominio": "defato.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "O Fator",
+   "dominio": "ofator.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "BOL",
+   "dominio": "bol.uol.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Tanabi Noticias",
+   "dominio": "tanabinoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Folha do Mate",
+   "dominio": "folhadomate.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Jornal de Barretos",
+   "dominio": "jornaldebarretos.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Giro S/A",
+   "dominio": "girosa.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Blog do Elimar Cortes",
+   "dominio": "elimarcortes.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Jornal Atual",
+   "dominio": "jornalatual.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "NPDiário",
+   "dominio": "npdiario.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "ISTOÉ DINHEIRO",
+   "dominio": "istoedinheiro.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Rádio Araranguá FM 95.5",
+   "dominio": "radioararangua.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "A Nova Democracia",
+   "dominio": "anovademocracia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Por Dentro de Minas",
+   "dominio": "pordentrodeminas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Prefeitura Municipal de Itapevi",
+   "dominio": "noticias.itapevi.sp.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Canal Solar",
+   "dominio": "canalsolar.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Exame",
+   "dominio": "exame.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Jornal da Chapada",
+   "dominio": "jornaldachapada.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Repórter Brasil",
+   "dominio": "reporterbrasil.org.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Estratégia Carreiras Jurídicas",
+   "dominio": "cj.estrategia.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Livecoins",
+   "dominio": "livecoins.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Portal Corrente",
+   "dominio": "portalcorrente.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Revide",
+   "dominio": "revide.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Agência Sertão",
+   "dominio": "agenciasertao.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Mais FM Iguatu",
+   "dominio": "maisfm.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "O Antagonista",
+   "dominio": "oantagonista.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "radiosobradinho.com.br",
+   "dominio": "radiosobradinho.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "A Hora do Sul",
+   "dominio": "ahoradosul.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "stf noticias",
+   "dominio": "noticias.stf.jus.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "AGÊNCIA CENARIUM",
+   "dominio": "agenciacenarium.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Rádio Cidade Caratinga",
+   "dominio": "radiocidadecaratinga.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Farol da Bahia",
+   "dominio": "faroldabahia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Tribuna do Interior",
+   "dominio": "tribunadointerior.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "TV Cultura",
+   "dominio": "cultura.uol.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Jornal Bom Dia",
+   "dominio": "jornalbomdia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "SDB News",
+   "dominio": "sdbnews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Hugo Gloss",
+   "dominio": "hugogloss.uol.com.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Sejusp MS",
+   "dominio": "sejusp.ms.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "JOTA Jornalismo",
+   "dominio": "jota.info",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "El País Brasil",
+   "dominio": "brasil.elpais.com",
+   "uf": "",
+   "noticias_no_acervo": 3
+  },
+  {
+   "nome": "Prefeitura Municipal de Feira de Santana",
+   "dominio": "feiradesantana.ba.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Vvale",
+   "dominio": "vvale.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Porto Alegre 24 Horas",
+   "dominio": "poa24horas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Tucunaré",
+   "dominio": "radiotucunare.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "SB News",
+   "dominio": "sbnewsrs.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Sefaz BA",
+   "dominio": "sefaz.ba.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Conquista",
+   "dominio": "jornalconquista.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "TVCI",
+   "dominio": "tvci.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Sputnik Voz do Povo",
+   "dominio": "sputnikvozdopovo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Nativa News",
+   "dominio": "nativanews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "O Popular do Paraná",
+   "dominio": "opopularpr.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Misturebas News",
+   "dominio": "misturebas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Dhoje Interior",
+   "dominio": "jornaldhoje.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Diário da Região",
+   "dominio": "diariodaregiao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Minuano 104.9",
+   "dominio": "radiominuano.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Arena de Notícias",
+   "dominio": "arenadenoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Partido dos Trabalhadores",
+   "dominio": "pt.org.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Prefeitura de Campinas",
+   "dominio": "campinas.sp.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "BOM DIA SOROCABA",
+   "dominio": "bomdiasorocaba.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Noroeste",
+   "dominio": "jornalnoroeste.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Atitude",
+   "dominio": "jornalatitude.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "A Redação",
+   "dominio": "aredacao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Maristela",
+   "dominio": "radiomaristela.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Prefeitura de Atibaia",
+   "dominio": "atibaia.sp.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Riomafra Mix",
+   "dominio": "riomaframix.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "avozdocampo",
+   "dominio": "avozdocampo.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Salvador Notícia",
+   "dominio": "salvadornoticia.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Correio Centro Oeste Arcos",
+   "dominio": "jornalcco.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Juína News",
+   "dominio": "juinanews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "WSCOM",
+   "dominio": "wscom.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "VipSocial",
+   "dominio": "vipsocial.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Ministério Público Federal",
+   "dominio": "mpf.mp.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Cidade",
+   "dominio": "jornalcidade.net",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Metrópole",
+   "dominio": "metro1.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Notícias Interativa",
+   "dominio": "noticiasinterativa.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "OpiniãoCE",
+   "dominio": "opiniaoce.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Pirassununguense",
+   "dominio": "pirassununguense.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "correio do ar",
+   "dominio": "correiodoar.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Ministério Público de Santa Catarina",
+   "dominio": "mpsc.mp.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Costa Oeste",
+   "dominio": "portalcostaoeste.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Repórter Maceió",
+   "dominio": "reportermaceio.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Teófilo Otoni",
+   "dominio": "portalteofilootoni.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Galera Mix",
+   "dominio": "galeramix.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Repórter do Vale",
+   "dominio": "jornalreporterdovale.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "BOMBA BOMBA",
+   "dominio": "bombabomba.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "extra.sc",
+   "dominio": "extra.sc",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "A Notícia do Caparaó",
+   "dominio": "anoticiadocaparao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Guararema News",
+   "dominio": "guararemanews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Paraná Centro",
+   "dominio": "jornal.paranacentro.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Clube de Canoinhas",
+   "dominio": "radioclubedecanoinhas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Regional AM",
+   "dominio": "portalregionalam.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Tua Rádio",
+   "dominio": "tuaradio.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Alô Juca",
+   "dominio": "alojuca.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal RDN",
+   "dominio": "portalrdn.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Se Liga Alagoinhas",
+   "dominio": "seligaalagoinhas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Cerqueiras Online",
+   "dominio": "cerqueirasnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Pix News MS",
+   "dominio": "pixnewsms.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Área VIP",
+   "dominio": "areavip.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "juruá comunicação",
+   "dominio": "juruacomunicacao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "AconteceuMS",
+   "dominio": "aconteceums.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Canal Janela Aberta",
+   "dominio": "canaljanelaaberta.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Blog do Cauê Rodrigues",
+   "dominio": "blogdocauerodrigues.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "93 Notícias",
+   "dominio": "93noticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Liberdade",
+   "dominio": "liberdade.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "TV Brusque",
+   "dominio": "tvbrusque.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Blog de Assis",
+   "dominio": "blogdeassis.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "DF Soberano",
+   "dominio": "dfsoberano.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Prefeitura Municipal de Araçatuba",
+   "dominio": "aracatuba.sp.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rota 51",
+   "dominio": "rota51.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "HC Notícias",
+   "dominio": "hcnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Clube News",
+   "dominio": "portalclubenews.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "bahia.ba",
+   "dominio": "bahia.ba",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "estadomaior.com.br",
+   "dominio": "estadomaior.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Varela Net",
+   "dominio": "varelanet.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Minas Acontece",
+   "dominio": "minasacontece.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Na Hora da Notícia",
+   "dominio": "nahoradanoticia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Tribuna do Povo",
+   "dominio": "tribunadopovoto.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Pagina 12",
+   "dominio": "pagina12.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Antena 10 FM",
+   "dominio": "antena10fm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Imperatriz Online",
+   "dominio": "imperatriz.online",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Popular Online",
+   "dominio": "popularonline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "crn1.com.br",
+   "dominio": "crn1.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Palotina",
+   "dominio": "portalpalotina.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Diamante Online",
+   "dominio": "diamanteonline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "AJ Notícias",
+   "dominio": "ajnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Juína Mais",
+   "dominio": "juinamais.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Mirador",
+   "dominio": "radiomirador.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Progresso de Ijuí",
+   "dominio": "radioprogresso.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal49",
+   "dominio": "portal49.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "BPMoney",
+   "dominio": "bpmoney.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "csastudiowebradio.com.br",
+   "dominio": "csastudiowebradio.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "portalofato.com.br",
+   "dominio": "portalofato.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "radiofmmaranhaodosul.com.br",
+   "dominio": "radiofmmaranhaodosul.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Minutta",
+   "dominio": "minutta.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Revista Única",
+   "dominio": "lerunica.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rondoniaovivo.com",
+   "dominio": "rondoniaovivo.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Boa Vista",
+   "dominio": "jornalboavista.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "portaldenoticias.com.br",
+   "dominio": "portaldenoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Agência Minas",
+   "dominio": "agenciaminas.mg.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "aRede",
+   "dominio": "arede.info",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "AF Notícias",
+   "dominio": "afnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "CBN Maceió",
+   "dominio": "cbnmaceio.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Extra Alagoas",
+   "dominio": "ojornalextra.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "folhajornal.com.br",
+   "dominio": "folhajornal.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Veja Bem MT",
+   "dominio": "vejabemmt.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Estado Político",
+   "dominio": "estadopolitico.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Agazeta.net",
+   "dominio": "agazeta.net",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "YacoNews",
+   "dominio": "yaconews.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Tásabendo",
+   "dominio": "tasabendo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Diário do Noroeste",
+   "dominio": "diariodonoroeste.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "DuduNews",
+   "dominio": "dudunews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Douranews",
+   "dominio": "douranews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Muvuca Popular",
+   "dominio": "muvucapopular.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Prefeitura de Novo Hamburgo",
+   "dominio": "novohamburgo.rs.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal da Comarca",
+   "dominio": "jornaldacomarca.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Diário Reservense",
+   "dominio": "diarioreservense.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Blog do Pereira",
+   "dominio": "blogdopereira.net",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal da Abelhinha",
+   "dominio": "bznoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "iBand CE",
+   "dominio": "ibandce.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Cambé",
+   "dominio": "portalcambe.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "BOM DIA GUARULHOS",
+   "dominio": "bomdiaguarulhos.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Zatum",
+   "dominio": "zatum.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "- Portal OCorreio",
+   "dominio": "ocorreio.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Ponto da Notícia",
+   "dominio": "pontodanoticia.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Mais Maranhão",
+   "dominio": "maismaranhao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Democrático",
+   "dominio": "jornaldemocratico.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "RomaNews.com.br",
+   "dominio": "romanews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Fato Amazônico",
+   "dominio": "fatoamazonico.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Extra SC",
+   "dominio": "jornalextrasc.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Ariquemes 190",
+   "dominio": "ariquemes190.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Olhar Alerta",
+   "dominio": "olharalerta.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Guarulhos em Destaque",
+   "dominio": "guarulhosemdestaque.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Euronews.com",
+   "dominio": "pt.euronews.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Mais RO",
+   "dominio": "maisrondonia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "GPS Brasília",
+   "dominio": "gpsbrasilia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Liberdade FM - Água Boa",
+   "dominio": "liberdadeab.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "plantaonews.com.br",
+   "dominio": "plantaonews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Sul 21",
+   "dominio": "sul21.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Nacional dos Delegados",
+   "dominio": "delegados.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Notícias de São José do Rio Pardo",
+   "dominio": "portalriopardo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Resenha Politika",
+   "dominio": "resenhapolitika.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "novafm96.com.br",
+   "dominio": "novafm96.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Correio de Minas",
+   "dominio": "correiodeminas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "CPG Click Petróleo e Gás",
+   "dominio": "clickpetroleoegas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "BH 24 Horas",
+   "dominio": "bh24horas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "PE Notícias",
+   "dominio": "penoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Agreste Violento",
+   "dominio": "portalagresteviolento.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Imprensa News Sul",
+   "dominio": "imprensanewssul.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "BLOG DO MADEIRA",
+   "dominio": "blogdomadeira.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "97News",
+   "dominio": "97news.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "CONEXÃO MT",
+   "dominio": "conexaomt.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "A Gazeta News",
+   "dominio": "agazetanews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Alta Pressão Online",
+   "dominio": "apo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "IstoÉ",
+   "dominio": "istoe.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Diario de Aparecida",
+   "dominio": "diariodeaparecida.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "SSP/RS",
+   "dominio": "ssp.rs.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Água Clara MS",
+   "dominio": "aguaclarams.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Defesa em Foco",
+   "dominio": "defesaemfoco.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Folha Piauí",
+   "dominio": "folhapiaui.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Obidense",
+   "dominio": "obidense.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "IJUI NEWS",
+   "dominio": "ijuinews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "JL Notícias",
+   "dominio": "jlnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Voz Ativa",
+   "dominio": "jornalvozativa.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Mídia Sudoeste",
+   "dominio": "midiasudoeste.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "JORNAL O COLETIVO",
+   "dominio": "ocoletivo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Ache Concursos",
+   "dominio": "acheconcursos.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Repercussão Paranhana",
+   "dominio": "repercussaoparanhana.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "a folha torres",
+   "dominio": "afolhatorres.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Blog Gran Cursos Online",
+   "dominio": "blog.grancursosonline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Lagartense",
+   "dominio": "lagartense.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Santa Cruz FM",
+   "dominio": "radiosantacruzfmg.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Passando a Régua",
+   "dominio": "passandoaregua.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Manchete RJ",
+   "dominio": "mancheterj.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Diário de Prudente",
+   "dominio": "diariodeprudente.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "FA NOTÍCIAS",
+   "dominio": "fanoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "LOCAL MT",
+   "dominio": "localmt.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Diplomatique",
+   "dominio": "diplomatique.org.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rede Moinho 24",
+   "dominio": "redemoinho24.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal O Sepeense",
+   "dominio": "osepeense.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Prefeitura de Belo Horizonte",
+   "dominio": "prefeitura.pbh.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "PocosCom",
+   "dominio": "pocoscom.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Coluna do Meio",
+   "dominio": "colunadomeio.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Caçula",
+   "dominio": "radiocacula.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Impresso Brasil",
+   "dominio": "jornalimpressobrasil.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Folha JF",
+   "dominio": "folhajf.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "secom.mt.gov.br",
+   "dominio": "secom.mt.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Coluna Olavo Dutra",
+   "dominio": "portalolavodutra.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Clarim Araxá",
+   "dominio": "clarim.net.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Varginha Online",
+   "dominio": "varginhaonline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Araguaia",
+   "dominio": "araguaiabrusque.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Paranaíba Agora",
+   "dominio": "paranaibaagora.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Caririceara.com",
+   "dominio": "caririceara.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "ParaibaOnline",
+   "dominio": "paraibaonline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "eLimeira",
+   "dominio": "elimeira.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "A Onça",
+   "dominio": "aonca.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Panorama Minas",
+   "dominio": "jornalpanoramaminas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Marcelo Lopes |",
+   "dominio": "marcelolopes.jor.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Blog do BG",
+   "dominio": "blogdobg.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "TV Centro Oeste",
+   "dominio": "tvcentrooeste.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Linha Verdade",
+   "dominio": "linhaverdade.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Ministério Publico de Pernambuco",
+   "dominio": "portal.mppe.mp.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Euclides da Cunha",
+   "dominio": "euclidesdacunha.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Plantão Maringá",
+   "dominio": "plantaomaringa.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Momento",
+   "dominio": "portalmomento.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal UAI",
+   "dominio": "uai.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Gazeta News Guarulhos",
+   "dominio": "gazetanewsguarulhos.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Polícia Civil do Pará",
+   "dominio": "pc.pa.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "passandoalimpomt.com.br",
+   "dominio": "passandoalimpomt.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Gaúcha News",
+   "dominio": "gauchanews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Serra News",
+   "dominio": "serranewsrj.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Polêmica Paraíba",
+   "dominio": "polemicaparaiba.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Hora News",
+   "dominio": "horanews.net",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal da Câmara dos Deputados",
+   "dominio": "camara.leg.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "AutoPapo",
+   "dominio": "autopapo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "O TEMPO Betim",
+   "dominio": "otempobetim.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Gazeta SP",
+   "dominio": "gazetasp.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "United Nations Office on Drugs and Crime",
+   "dominio": "unodc.org",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "ConvergenciaDigital",
+   "dominio": "convergenciadigital.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Brasil Paralelo",
+   "dominio": "brasilparalelo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "ES1",
+   "dominio": "es1.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Assine Abril",
+   "dominio": "saude.abril.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Periscópio",
+   "dominio": "jornalperiscopio.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Giro Marília Notícias",
+   "dominio": "giromarilia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Abordagem Notícias",
+   "dominio": "abordagemnoticias.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Centro Oeste",
+   "dominio": "rco.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Multiplix",
+   "dominio": "portalmultiplix.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Prefeitura de Cotia",
+   "dominio": "cotia.sp.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Blog do Prisco",
+   "dominio": "blogdoprisco.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "bahia no ar",
+   "dominio": "bahianoar.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Agenda do Poder",
+   "dominio": "agendadopoder.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "GMC Online",
+   "dominio": "gmconline.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Gazeta de Vargem Grande",
+   "dominio": "gazetavg.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "JP Agora",
+   "dominio": "jpagora.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio Ilha do Mel FM",
+   "dominio": "ilhadomelfm.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Tradição Regional",
+   "dominio": "jornaltradicao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Patos 1",
+   "dominio": "patos1.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "PREFEITURA MUNICIPAL DE VIANA - ES",
+   "dominio": "viana.es.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "RCIA Araraquara",
+   "dominio": "rciararaquara.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "MPCE",
+   "dominio": "mpce.mp.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Folhaonline.es",
+   "dominio": "folhaonline.es",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Blog da Polo",
+   "dominio": "blogdapolo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "André Almenara",
+   "dominio": "andrealmenara.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal do Lobão",
+   "dominio": "portaldolobao.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Costa Oeste 93",
+   "dominio": "costaoeste93.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "O Nacional",
+   "dominio": "onacional.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "NOVO CANTU NOTÍCIAS",
+   "dominio": "novocantu.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Congresso em Foco",
+   "dominio": "congressoemfoco.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Rádio São Francisco 97.7 FM - Anápolis",
+   "dominio": "radiosaochico.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Tecnoblog",
+   "dominio": "tecnoblog.net",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "odairmatias.com.br",
+   "dominio": "odairmatias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "correiosantavitoria.com.br",
+   "dominio": "correiosantavitoria.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "UOL",
+   "dominio": "uol.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Bagé 24H",
+   "dominio": "bage24horas.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "www.portalporque.com.br",
+   "dominio": "portalporque.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Voz da Bahia",
+   "dominio": "vozdabahia.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Diário de Teófilo Otoni",
+   "dominio": "jornaldiarioteo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Adesso",
+   "dominio": "portaladesso.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Estadão MT",
+   "dominio": "estadaomatogrosso.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "folhadesabara.com.br",
+   "dominio": "folhadesabara.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "OFuxico",
+   "dominio": "ofuxico.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Não viu?",
+   "dominio": "naoviu.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Médio Tejo",
+   "dominio": "mediotejo.net",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "DEU NO MURAL",
+   "dominio": "deunomural.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Tribuna de Jundiaí",
+   "dominio": "tribunadejundiai.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Jornal Dois Irmãos",
+   "dominio": "jornaldoisirmaos.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "VEJA RIO",
+   "dominio": "vejario.abril.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Ponte Jornalismo",
+   "dominio": "ponte.org",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Extra Classe",
+   "dominio": "extraclasse.org.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal Gazeta",
+   "dominio": "gazeta670.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Nexo Jornal",
+   "dominio": "nexojornal.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Senado",
+   "dominio": "www12.senado.leg.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "onda poços",
+   "dominio": "ondapocos.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Nill Junior",
+   "dominio": "nilljunior.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "SINPOL-MS",
+   "dominio": "sinpolms.org.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Política Etc",
+   "dominio": "politicaetc.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "vermelho.org.br",
+   "dominio": "vermelho.org.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Portal do Município de Piracicaba",
+   "dominio": "piracicaba.sp.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "SBT",
+   "dominio": "tv.sbt.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Ministério Público do Amapá (MPAP)",
+   "dominio": "mpap.mp.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "A Nação",
+   "dominio": "anacao.cv",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Globo",
+   "dominio": "blogs.oglobo.globo.com",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Paracatu News",
+   "dominio": "paracatunews.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "Agora São Paulo",
+   "dominio": "agora.folha.uol.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "MS Notícias",
+   "dominio": "msnoticias.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "BHAZ",
+   "dominio": "bhaz.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "revista piauí",
+   "dominio": "piaui.uol.com.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  },
+  {
+   "nome": "DetranRS",
+   "dominio": "detran.rs.gov.br",
+   "uf": "",
+   "noticias_no_acervo": 2
+  }
+ ],
+ "orgaos_federais_prioritarios": [
+  {
+   "nome": "Polícia Federal",
+   "portal": "https://www.gov.br/pf/pt-br/assuntos/noticias/"
+  },
+  {
+   "nome": "Polícia Rodoviária Federal",
+   "portal": "https://www.gov.br/prf/pt-br/noticias/"
+  },
+  {
+   "nome": "Receita Federal",
+   "portal": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias"
+  }
+ ],
+ "orgaos_estaduais_a_verificar": [
+  {
+   "uf": "AC",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AC",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AC",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AC",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AC",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AC",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AC",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AL",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AL",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AL",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AL",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AL",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AL",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AL",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AP",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AP",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AP",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AP",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AP",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AP",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AP",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AM",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AM",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AM",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AM",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AM",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AM",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "AM",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "BA",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "BA",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "BA",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "BA",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "BA",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "BA",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "BA",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "CE",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "CE",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "CE",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "CE",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "CE",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "CE",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "CE",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "DF",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "DF",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "DF",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "DF",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "DF",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "DF",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "DF",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "ES",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "ES",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "ES",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "ES",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "ES",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "ES",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "ES",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "GO",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "GO",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "GO",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "GO",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "GO",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "GO",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "GO",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MA",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MA",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MA",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MA",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MA",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MA",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MA",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MT",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MT",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MT",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MT",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MT",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MT",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MT",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MS",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MS",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MS",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MS",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MS",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MS",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MS",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MG",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MG",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MG",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MG",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MG",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MG",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "MG",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PA",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PA",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PA",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PA",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PA",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PA",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PA",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PB",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PB",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PB",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PB",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PB",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PB",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PB",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PR",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PR",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PR",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PR",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PR",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PR",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PR",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PE",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PE",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PE",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PE",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PE",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PE",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PE",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PI",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PI",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PI",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PI",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PI",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PI",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "PI",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RJ",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RJ",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RJ",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RJ",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RJ",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RJ",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RJ",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RN",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RN",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RN",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RN",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RN",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RN",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RN",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RS",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RS",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RS",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RS",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RS",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RS",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RS",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RO",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RO",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RO",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RO",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RO",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RO",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RO",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RR",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RR",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RR",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RR",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RR",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RR",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "RR",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SC",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SC",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SC",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SC",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SC",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SC",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SC",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SP",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SP",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SP",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SP",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SP",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SP",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SP",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SE",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SE",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SE",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SE",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SE",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SE",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "SE",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "TO",
+   "tipo": "Polícia Civil",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "TO",
+   "tipo": "Polícia Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "TO",
+   "tipo": "Polícia Penal",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "TO",
+   "tipo": "Polícia Científica / Perícia Oficial",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "TO",
+   "tipo": "Secretaria de Segurança Pública",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "TO",
+   "tipo": "Corpo de Bombeiros Militar",
+   "status": "pendente de verificar domínio e feed"
+  },
+  {
+   "uf": "TO",
+   "tipo": "Guardas Municipais",
+   "status": "pendente de verificar domínio e feed"
+  }
+ ]
 }

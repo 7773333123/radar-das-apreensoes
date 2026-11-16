@@ -18,6 +18,7 @@ import json
 import re
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timedelta, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit
@@ -143,6 +144,34 @@ def sem_repetir(urls):
     return saida[:MAX_FOTOS]
 
 
+def _iso(valor):
+    try:
+        d = datetime.fromisoformat(str(valor).strip().replace('Z', '+00:00'))
+    except ValueError:
+        return None
+    if d.tzinfo is None:
+        d = d.replace(tzinfo=timezone(timedelta(hours=-3)))  # horário de Brasília
+    return d.astimezone(timezone.utc)
+
+
+def data_publicacao(pagina, url):
+    """Data em que a matéria foi publicada, segundo a própria página."""
+    for padrao in (r'"datePublished"\s*:\s*"([^"]+)"',
+                   r'<meta[^>]+(?:property|name|itemprop)=["\'](?:article:published_time|datePublished|publish-date|DC\.date\.issued)["\'][^>]+content=["\']([^"\']+)',
+                   r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+(?:property|name|itemprop)=["\'](?:article:published_time|datePublished)["\']'):
+        m = re.search(padrao, pagina, re.I)
+        if m and _iso(m.group(1)):
+            return _iso(m.group(1))
+    m = re.search(r'class="documentPublished".{0,400}?(\d{2})/(\d{2})/(\d{4})\s*(\d{2})h(\d{2})', pagina, re.S)  # gov.br
+    if m:
+        dia, mes, ano, h, mi = m.groups()
+        return _iso(f'{ano}-{mes}-{dia}T{h}:{mi}:00')
+    m = re.search(r'/(20\d{2})/(\d{2})/(\d{2})/', url)
+    if m:
+        return _iso(f'{m.group(1)}-{m.group(2)}-{m.group(3)}T12:00:00')
+    return None
+
+
 def imagem_jsonld(pagina, base):
     for bloco in re.findall(r'<script[^>]+application/ld\+json[^>]*>(.*?)</script>', pagina, re.S | re.I):
         try:
@@ -188,6 +217,9 @@ def ler(url, timeout):
     resumo = m.get('og:description') or m.get('description') or m.get('twitter:description') or ''
     if resumo:
         resultado['resumo'] = limpar(resumo)[:1000]
+    publicada = data_publicacao(pagina, final)
+    if publicada and publicada.year >= 2000 and publicada <= datetime.now(timezone.utc) + timedelta(days=1):
+        resultado['publicada'] = publicada.isoformat()
     resultado['imagens'] = sem_repetir(([resultado['imagem']] if resultado.get('imagem') else []) +
                                        fotos_da_materia(pagina, base))
     if resultado['imagens'] and not resultado.get('imagem'):
@@ -221,7 +253,7 @@ def main():
     pendentes.sort(key=lambda p: p[0].get('data_iso') or '', reverse=True)
     lote = pendentes[:max(0, args.limite)]
     print(f'Notícias com link original ainda não lidas: {len(pendentes)}; lendo agora: {len(lote)}', flush=True)
-    fotos = textos = resumos = falhas = galerias = 0
+    fotos = textos = resumos = falhas = galerias = datas = 0
     with ThreadPoolExecutor(max_workers=max(1, min(args.trabalhadores, 10))) as pool:
         tarefas = {pool.submit(ler, url, args.timeout): n for n, url in lote}
         for futuro in as_completed(tarefas):
@@ -237,6 +269,18 @@ def main():
                 continue
             n['materia_lida'] = time.strftime('%Y-%m-%d')
             n['materia_lida_v'] = VERSAO
+            if r.get('publicada'):
+                # A data da página prevalece sobre a da busca (o Google às vezes
+                # informa a data de atualização ou de indexação).
+                atual = _iso(n.get('data_iso') or '')
+                nova = _iso(r['publicada'])
+                if atual is None or abs((nova - atual).total_seconds()) > 36 * 3600:
+                    n.setdefault('data_iso_busca', n.get('data_iso') or '')
+                    n['data_iso'] = r['publicada']
+                    n['data_conferida'] = 'corrigida_pela_pagina'
+                    datas += 1
+                else:
+                    n['data_conferida'] = 'confirmada_pela_pagina'
             if r.get('imagens'):
                 n['imagens'] = r['imagens']
                 galerias += 1
@@ -257,7 +301,7 @@ def main():
         tmp.write_text(json.dumps(dados, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
         tmp.replace(ARQUIVO)
     print(f'Lidas: {len(lote) - falhas}/{len(lote)}; fotos novas: {fotos}; resumos novos: {resumos}; '
-          f'notícias com galeria: {galerias}; textos integrais (licença aberta): {textos}; falhas: {falhas}')
+          f'notícias com galeria: {galerias}; datas corrigidas pela página: {datas}; textos integrais (licença aberta): {textos}; falhas: {falhas}')
 
 
 if __name__ == '__main__':

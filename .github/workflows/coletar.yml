@@ -46,7 +46,7 @@ jobs:
             fi
             python coletor.py --historico --ano "$ANO_HISTORICO"
           else
-            python coletor.py
+            python coletor.py --limite-fontes 60
           fi
       - name: Coletar fontes diretas (se disponível)
         env:

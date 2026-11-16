@@ -1,0 +1,27 @@
+name: Descobrir feeds das fontes (semanal)
+# Procura o RSS de cada um dos 1.100+ sites de fontes.json e grava os que
+# funcionam em feeds_descobertos.json, lido pela coleta rápida e pela completa.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 5 * * 0'
+permissions:
+  contents: write
+concurrency:
+  group: descobrir-feeds
+  cancel-in-progress: false
+jobs:
+  descobrir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v5
+      - name: Preparar Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Procurar feeds
+        run: python descobrir_feeds.py --limite 1500 --trabalhadores 24
+      - name: Salvar
+        run: bash salvar_acervo.sh 'Atualizar feeds descobertos das fontes' feeds_descobertos.json
