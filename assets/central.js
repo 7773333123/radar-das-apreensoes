@@ -66,20 +66,31 @@ function renderInicio() {
     p += log(drogas) * 1.6;                       // 100 kg ≈ 3,2; 1 t ≈ 4,8
     p += log(q.arm) * 2 + log(q.fuz) * 2.5;       // armas e, sobretudo, fuzis
     p += log(q.mun) * 0.8;
-    p += Math.min(n.outras.length, 10) * 0.6;     // repercussão
+    p += Math.min(n.outras.length, 10) * 0.25;    // repercussão (desempata; a quantidade manda)
+    if (n.texto) p += 0.3;                        // nota oficial ou texto completo disponível
     if (/apreen|apreend|confisc/i.test(n.titulo)) p += 1;
     if (/\b(PF|PRF|Receita Federal|Pol[ií]cia Federal|FICCO|Gaeco)\b|opera[çc][ãa]o/i.test(n.titulo)) p += 0.5;
-    if (/\b(solta|soltura|liberad[oa]|absolvid|julgament|condenad|habeas|den[uú]ncia|audi[êe]ncia|foragid)/i.test(n.titulo)) p -= 2;
+    if (/\b(solta|soltura|liberad[oa]|absolvid|julgament|condenad|habeas|den[uú]ncia|audi[êe]ncia|foragid|incinera|destr[oó]i|queima)/i.test(n.titulo)) p -= 2;
     return Math.max(0.2, p);
   };
   const nota = (n) => importancia(n) * Math.pow(0.5, horas(n) / 12);
   const comFoto = ns.filter((n) => n.img && n.data && n.data.getTime() <= agora + 3600000);
-  const janela = (h) => comFoto.filter((n) => horas(n) <= h);
-  const pool = [24, 48].map(janela).find((l) => l.length >= 5) || comFoto.slice(0, 20);
-  const manchete = [...pool].sort((a, b) => nota(b) - nota(a) || b.data - a.data)[0] || ns[0];
+  // Destaques = notícias DO DIA (horário de Brasília), da mais relevante para a
+  // menos relevante: maior quantidade apreendida primeiro, depois repercussão.
+  // Só se o dia ainda tiver menos de 5 com foto (de madrugada), entra a véspera.
+  const diaBR = (d) => d.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
+  const hoje = diaBR(new Date(agora));
+  const ontem = diaBR(new Date(agora - DIA));
+  const doDia = comFoto.filter((n) => diaBR(n.data) === hoje);
+  const pool = doDia.length >= 5 ? doDia
+    : comFoto.filter((n) => [hoje, ontem].includes(diaBR(n.data))).length >= 5
+      ? comFoto.filter((n) => [hoje, ontem].includes(diaBR(n.data)))
+      : comFoto.slice(0, 20);
+  const ordem = (a, b) => importancia(b) - importancia(a) || b.data - a.data;
+  const destaques = [...pool].sort(ordem);
+  const manchete = destaques[0] || ns[0];
   const usados = new Set([manchete]);
-  // Ao lado da manchete: as mais recentes com foto, em ordem cronológica.
-  const lado = pool.filter((n) => !usados.has(n)).sort((a, b) => b.data - a.data).slice(0, 4);
+  const lado = destaques.slice(1, 5);
   lado.forEach((n) => usados.add(n));
 
   // Em alta: publicadas por mais veículos nas últimas 24 h (ou 48 h, se houver poucas).
