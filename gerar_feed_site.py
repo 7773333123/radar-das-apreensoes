@@ -50,6 +50,7 @@ def identificador(n):
 # Tipos e relevância: classificar.py (regras próprias; ignora a classificação do coletor antigo).
 from mesclar_acervo import chave as chave_acervo
 from ler_materias import foto_alheia
+from coletar_feeds_estaduais import agregador
 from classificar import CATEGORIAS, REGRAS, relevante, categorias as classificar_categorias
 
 
@@ -135,12 +136,49 @@ def ajustar_instagram(n):
     return (f'{conta} (Instagram)' if conta else 'Instagram'), n
 
 
+def relatorio_coleta(saida, origem_por_i, destino, dias=30):
+    """Quanto cada origem (Google, feeds, Bing...) e cada veículo de feed acrescenta de
+    notícias ÚNICAS (que nenhuma outra origem trouxe), depois de agrupar duplicatas."""
+    from datetime import date, timedelta
+    ultima = max((x.get('d', '') for x in saida), default='')
+    if not ultima:
+        return
+    corte = (date.fromisoformat(ultima[:10]) - timedelta(days=dias)).isoformat()
+    total, unicas, feeds_total, feeds_unicas = {}, {}, {}, {}
+    for item in saida:
+        if item.get('d', '') < corte:
+            continue
+        membros = [item['i']] + [o[2] for o in item.get('o', [])]
+        origens = [origem_por_i.get(k, ('outra', '')) for k in membros]
+        tipos = {o for o, _ in origens}
+        for o in tipos:
+            total[o] = total.get(o, 0) + 1
+        if len(tipos) == 1:
+            o = next(iter(tipos))
+            unicas[o] = unicas.get(o, 0) + 1
+        for o, fonte in origens:
+            if o == 'feed_rss_fonte':
+                feeds_total[fonte] = feeds_total.get(fonte, 0) + 1
+                if len(tipos) == 1:
+                    feeds_unicas[fonte] = feeds_unicas.get(fonte, 0) + 1
+    rel = {
+        'periodo': f'{corte} a {ultima[:10]}',
+        'por_origem': {o: {'noticias': total[o], 'unicas': unicas.get(o, 0)} for o in sorted(total, key=lambda k: -total[k])},
+        'feeds_que_mais_acrescentam': sorted(([f, feeds_unicas[f], feeds_total[f]] for f in feeds_unicas), key=lambda x: -x[1])[:40],
+        'feeds_sem_noticia_unica': sorted(f for f in feeds_total if not feeds_unicas.get(f)),
+    }
+    destino.write_text(json.dumps(rel, ensure_ascii=False, indent=1), encoding='utf-8')
+    print('Contribuição por origem (30 dias, notícias / únicas): ' +
+          '; '.join(f'{o} {v["noticias"]}/{v["unicas"]}' for o, v in rel['por_origem'].items()))
+
+
 def main():
     dados = json.loads(ORIGEM.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
     fontes = json.loads(FONTES_JSON.read_text(encoding='utf-8')).get('fontes', []) if FONTES_JSON.exists() else []
     saida, links, ocultas, portugal = [], {}, 0, 0
     usados = set()
+    origem_por_i = {}
     detalhes = {}
     fatos_por_i = {}
     fatos_titulo = {}
@@ -157,6 +195,12 @@ def main():
         fonte = str(n.get('fonte') or '').strip()
         if fonte == 'Instagram':
             fonte, n = ajustar_instagram(n)
+        # Agregadores (MSN, Dailymotion, Yahoo...) só republicam outros veículos.
+        if agregador(n.get('dominio_fonte') or n.get('url_original') or ''):
+            continue
+        # Origem da coleta, para o relatório de contribuição de cada fonte.
+        origem_por_i[i] = ('google' if 'news.google.com' in str(n.get('url') or '') else
+                           str(n.get('origem_coleta') or 'outra'), fonte)
         # Notícias de Portugal (o Google Notícias em português mistura os dois países).
         if str(n.get('dominio_fonte') or '').lower().endswith('.pt'):
             portugal += 1
@@ -336,6 +380,7 @@ def main():
     for lote, conteudo in detalhes.items():
         (DETALHES / f'{lote}.json').write_text(json.dumps(conteudo, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     abertos = exportar(saida, CATEGORIAS, links, PASTA / 'dados')
+    relatorio_coleta(saida, origem_por_i, PASTA / 'dados' / 'coleta_relatorio.json')
     print(f'dados/: {abertos} notícias em CSV (dados abertos); '
           f'{sum(1 for x in saida if x.get("q"))} com quantidades')
     print(f'Duplicatas agrupadas: {antes - len(saida)}; notícias de Portugal excluídas: {portugal}')

@@ -28,6 +28,9 @@ PASTA = Path(__file__).resolve().parent
 ARQUIVO = PASTA / 'noticias.json'
 FEEDS = PASTA / 'feeds_estaduais.json'
 DESCOBERTOS = PASTA / 'feeds_descobertos.json'  # gerado por descobrir_feeds.py
+SAUDE = PASTA / 'feeds_saude.json'  # falhas seguidas de cada feed (desliga os que morreram)
+FALHAS_PARA_DESLIGAR = 12           # ~4 h de falha seguida na coleta rápida
+NOVA_TENTATIVA_HORAS = 24           # feed desligado é testado de novo uma vez por dia
 HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; RadarDasApreensoes/1.0; +https://radar-das-apreensoes.vercel.app)'}
 MEDIA = '{http://search.yahoo.com/mrss/}'
 ATOM = '{http://www.w3.org/2005/Atom}'
@@ -132,6 +135,16 @@ def ler_feed(feed):
         }
 
 
+# Agregadores que só republicam matérias de outros veículos: fica a versão original.
+AGREGADORES = re.compile(r'(?:^|\.)(?:msn\.com|dailymotion\.com|yahoo\.com|flipboard\.com|newsbreak\.com|ground\.news|'
+                         r'squid\.app|newsnow\.co\.uk|inoreader\.com|feedly\.com)$', re.I)
+
+
+def agregador(url_ou_dominio):
+    dominio = re.sub(r'^https?://', '', str(url_ou_dominio or '')).split('/')[0].lower()
+    return bool(AGREGADORES.search(dominio))
+
+
 def incorporar(noticias, resultados):
     """Acrescenta ao acervo os itens novos de cada (fonte, itens, erro); completa os já existentes.
 
@@ -151,6 +164,8 @@ def incorporar(noticias, resultados):
         if itens:
             print(f'{feed["nome"]}: {len(itens)} notícias sobre apreensões', flush=True)
         for item in itens:
+            if agregador(item['url']):
+                continue
             if item['url'] in por_url:
                 continue
             existente = por_titulo.get(normalizar_titulo(item['titulo']))
@@ -184,6 +199,23 @@ def main():
         conhecidos = {f['url'] for f in feeds}
         feeds += [f for f in json.loads(DESCOBERTOS.read_text(encoding='utf-8')).get('feeds', []) if f['url'] not in conhecidos]
 
+    # Feeds que falham há muitas rodadas seguidas ficam de fora; uma vez por dia são testados de novo.
+    saude = json.loads(SAUDE.read_text(encoding='utf-8')) if SAUDE.exists() else {}
+    agora = datetime.now(timezone.utc)
+
+    def desligado(feed):
+        h = saude.get(feed['url']) or {}
+        if int(h.get('falhas_seguidas') or 0) < FALHAS_PARA_DESLIGAR:
+            return False
+        try:
+            ultima = datetime.fromisoformat(h.get('ultima_tentativa', ''))
+        except ValueError:
+            return False
+        return (agora - ultima).total_seconds() < NOVA_TENTATIVA_HORAS * 3600
+
+    pulados = [f for f in feeds if desligado(f)]
+    feeds = [f for f in feeds if not desligado(f)]
+
     def tentar(feed):
         try:
             return feed, list(ler_feed(feed)), None
@@ -194,6 +226,18 @@ def main():
     with ThreadPoolExecutor(max_workers=16) as pool:
         resultados = list(pool.map(tentar, feeds))
     novas, completadas, falhas = incorporar(noticias, resultados)
+    for feed, itens, erro in resultados:
+        h = saude.setdefault(feed['url'], {'nome': feed.get('nome', '')})
+        h['ultima_tentativa'] = agora.isoformat(timespec='seconds')
+        if erro is None:
+            h['falhas_seguidas'] = 0
+            h['ultimo_ok'] = h['ultima_tentativa']
+        else:
+            h['falhas_seguidas'] = int(h.get('falhas_seguidas') or 0) + 1
+            h['ultimo_erro'] = f'{type(erro).__name__}: {str(erro)[:80]}'
+    SAUDE.write_text(json.dumps(saude, ensure_ascii=False, indent=1, sort_keys=True), encoding='utf-8')
+    if pulados:
+        print(f'Feeds desligados por falha seguida (testados de novo a cada {NOVA_TENTATIVA_HORAS} h): {len(pulados)}')
     if novas or completadas:
         if isinstance(dados, dict):
             dados['noticias'] = noticias
@@ -204,7 +248,7 @@ def main():
         tmp.replace(ARQUIVO)
     print(f'Feeds: {len(feeds)} ({falhas} com falha); novas: {novas}; '
           f'notícias antigas completadas com link/foto/UF: {completadas}; acervo: {len(noticias)}')
-    if falhas == len(feeds):
+    if feeds and falhas == len(feeds):
         raise SystemExit('Nenhum feed respondeu.')
 
 

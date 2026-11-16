@@ -96,7 +96,7 @@ def link_direto_bing(link):
     return link
 
 
-def buscar_bing(consulta, fontes):
+def buscar_bing(consulta, fontes, filtrar=True):
     url = ('https://www.bing.com/news/search?' +
            urllib.parse.urlencode({'q': consulta, 'format': 'rss', 'setlang': 'pt-br', 'mkt': 'pt-BR', 'cc': 'BR',
                                    'qft': 'sortbydate="1"'}))
@@ -107,7 +107,7 @@ def buscar_bing(consulta, fontes):
         titulo = texto_limpo(filhos.get('title', ''))
         link = link_direto_bing(filhos.get('link', '').strip())
         descricao = texto_limpo(filhos.get('description', ''))
-        if not titulo or not link or 'news.google.com' in link or not assunto_ok(titulo, descricao):
+        if not titulo or not link or 'news.google.com' in link or (filtrar and not assunto_ok(titulo, descricao)):
             continue
         imagem = filhos.get('image', '')
         saida.append(item(titulo, link, texto_limpo(filhos.get('source', '')), data_iso(filhos.get('pubdate', '')),
@@ -137,11 +137,61 @@ def buscar_gdelt(consulta, fontes, janela='1d'):
     return saida
 
 
+# ---------- Link original das notícias do Google, achado pelo Bing ----------
+def _palavras(t):
+    import unicodedata
+    t = unicodedata.normalize('NFKD', t or '')
+    t = ''.join(c for c in t if not unicodedata.combining(c)).lower()
+    return {w for w in re.findall(r'[a-z0-9]{3,}', t)}
+
+
+def _sem_link(n):
+    orig = str(n.get('url_original') or '')
+    return 'news.google.com' in str(n.get('url') or '') and not (orig.startswith('http') and 'news.google.com' not in orig)
+
+
+def resolver_links(noticias, limite, fontes):
+    """Busca no Bing o título de cada notícia do Google sem link original e grava o link direto.
+
+    Aceita só resultado do MESMO veículo (domínio) e com título praticamente igual
+    (>= 80% das palavras do título original). Mais recentes primeiro; no máximo
+    2 tentativas por notícia.
+    """
+    pendentes = [n for n in noticias if isinstance(n, dict) and _sem_link(n) and int(n.get('tentativas_bing') or 0) < 2
+                 and n.get('titulo')]
+    pendentes.sort(key=lambda n: n.get('data_iso') or '', reverse=True)
+    achados = 0
+    for n in pendentes[:max(0, limite)]:
+        fonte = str(n.get('fonte') or '')
+        titulo = re.sub(r'\s+-\s+' + re.escape(fonte) + r'\s*$', '', str(n['titulo'])) if fonte else str(n['titulo'])
+        dominio_alvo = re.sub(r'^www\.', '', str(n.get('dominio_fonte') or '').lower())
+        n['tentativas_bing'] = int(n.get('tentativas_bing') or 0) + 1
+        try:
+            resultados = buscar_bing(f'"{titulo[:120]}"', fontes, filtrar=False)
+        except Exception:
+            time.sleep(2)
+            continue
+        alvo = _palavras(titulo)
+        for r in resultados:
+            mesmo_site = dominio_alvo and (r['dominio_fonte'] == dominio_alvo or r['dominio_fonte'].endswith('.' + dominio_alvo))
+            if mesmo_site and alvo and len(alvo & _palavras(r['titulo'])) >= 0.8 * len(alvo):
+                n.setdefault('url_google_noticias', n.get('url'))
+                n['url_original'] = r['url']
+                n['url_original_status'] = 'bing_titulo'
+                if r.get('imagem_url') and not n.get('imagem_url'):
+                    n['imagem_url'], n['imagem_status'] = r['imagem_url'], 'bing_noticias'
+                achados += 1
+                break
+        time.sleep(1.2)
+    return achados, min(len(pendentes), max(0, limite)), len(pendentes)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--limite-bing', type=int, default=15, help='consultas ao Bing por execução (rodízio)')
     ap.add_argument('--gdelt', action='store_true', help='também consulta o GDELT')
     ap.add_argument('--teste', action='store_true', help='só mostra o que encontraria, sem gravar')
+    ap.add_argument('--resolver', type=int, default=0, help='notícias do Google sem link original a procurar no Bing')
     args = ap.parse_args()
     fontes = nomes_das_fontes()
     cursor = json.loads(ESTADO.read_text(encoding='utf-8')) if ESTADO.exists() else {}
@@ -181,7 +231,11 @@ def main():
     dados = json.loads(ARQUIVO.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
     novas, completadas, _ = incorporar(noticias, resultados)
-    if novas or completadas:
+    resolvidas = 0
+    if args.resolver:
+        resolvidas, tentadas, restantes = resolver_links(noticias, args.resolver, fontes)
+        print(f'Links originais achados pelo Bing: {resolvidas} de {tentadas} tentadas ({restantes} sem link na fila)')
+    if novas or completadas or args.resolver:
         if isinstance(dados, dict):
             dados['total'] = len(noticias)
             dados['atualizado_em'] = datetime.now(timezone.utc).isoformat()
