@@ -186,7 +186,9 @@ def main():
         try: n = int(pair[0].get('tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original_v2') or 0)
         except (TypeError, ValueError): n = 0
         # Menos tentativas primeiro; entre elas, as notícias mais recentes.
-        return (n, -int(re.sub(r'\D', '', str(pair[0].get('data_iso') or ''))[:12] or 0))
+        # Órgãos oficiais (.gov.br etc.) antes: com o link original, ganham o texto completo.
+        oficial = 0 if re.search(r'\.(?:gov|jus|mp|leg|def)\.br$', str(pair[0].get('dominio_fonte') or '')) else 1
+        return (n, oficial, -int(re.sub(r'\D', '', str(pair[0].get('data_iso') or ''))[:12] or 0))
     pending.sort(key=prioridade)
     batch=pending[:max(0,args.limite)]
     print('RADAR_RECUPERADOR_V5: busca em indices independentes e acervo preservado', flush=True)
