@@ -75,7 +75,7 @@ function cabecalho(atual) {
     `<a href="/categoria/${SLUG_CAT[k]}">${esc(c)}</a>`).join('')}</nav></header>`;
 }
 const RODAPE = `<footer class="footer"><div class="wrap cols">
-<div><h4>Radar das Apreensões</h4><p>Central de notícias e observatório de dados sobre apreensões no Brasil, a partir de mais de mil veículos e órgãos públicos.</p><p>O conteúdo das reportagens pertence aos veículos de origem; cada notícia leva à fonte original.</p></div>
+<div><h4>Radar das Apreensões</h4><p>O conteúdo das reportagens pertence aos veículos de origem; cada notícia leva à fonte original.</p></div>
 <div><h4>Navegue</h4><p><a href="/observatorio">Observatório</a> · <a href="/relatorios">Relatórios mensais</a></p><p><a href="/dados">Dados abertos e metodologia</a></p><p><a href="/sobre">Sobre e expediente</a></p></div>
 <div><h4>Transparência</h4><p><a href="/termos">Termos de uso</a> · <a href="/privacidade">Privacidade</a></p><p><a href="/remocao">Correções e pedidos de remoção</a></p>
 <p><button type="button" class="theme-toggle" id="tema">Alternar tema claro/escuro</button></p></div>
