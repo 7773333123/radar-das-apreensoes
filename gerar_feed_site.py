@@ -9,22 +9,30 @@ a página ficar presa em "CARREGANDO NOTÍCIAS...".
 import json
 from pathlib import Path
 
+from localizar_uf import inferir_uf
+
 ORIGEM = Path('noticias.json')
 DESTINO = Path('feed.json')
 # Links do Google Notícias têm ~400 caracteres cada e só são necessários
 # quando o leitor abre uma notícia; ficam num arquivo à parte, carregado sob demanda.
 LINKS = Path('feed_links.json')
-CAMPOS = ('titulo', 'fonte', 'uf', 'descricao', 'resumo', 'imagem_url', 'status_revisao')
+CAMPOS = ('titulo', 'fonte', 'descricao', 'resumo', 'imagem_url', 'status_revisao')
+FONTES = json.loads(Path('fontes.json').read_text(encoding='utf-8')).get('fontes', []) if Path('fontes.json').exists() else []
 
 
 def enxugar(n):
     item = {k: n[k] for k in CAMPOS if n.get(k)}
+    # O campo 'uf' antigo de noticias.json tinha erros ("para" lido como Pará);
+    # a UF é recalculada aqui com evidência explícita (ver localizar_uf.py).
+    uf = inferir_uf(n, FONTES)
+    if uf:
+        item['uf'] = uf
     data = n.get('data_iso') or n.get('data_publicacao')
     if data:
         # O site só exibe a data (sem hora), mas mantém a hora para ordenar.
         item['data_iso'] = data
-    url = n.get('url_original') or n.get('url') or n.get('url_google_noticias') or ''
-    if url and 'news.google.com' not in url:
+    url = next((u for u in (n.get('url_original'), n.get('url')) if u and 'news.google.com' not in u), '')
+    if url:
         item['url'] = url
     cats = [c for c in (n.get('categorias_identificadas') or []) if c != 'Não classificada']
     if cats:
@@ -40,8 +48,8 @@ def main():
         'total': len(noticias),
         'noticias': [enxugar(n) for n in noticias],
     }
-    links = [n.get('url_original') or n.get('url') or n.get('url_google_noticias') or '' for n in noticias]
-    links = [u if 'news.google.com' in u else '' for u in links]
+    links = ['' if 'url' in item else (n.get('url_google_noticias') or n.get('url') or '')
+             for n, item in zip(noticias, saida['noticias'])]
     DESTINO.write_text(json.dumps(saida, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     LINKS.write_text(json.dumps(links, separators=(',', ':')), encoding='utf-8')
     print(f'{DESTINO}: {len(noticias)} notícias, {DESTINO.stat().st_size / 1e6:.1f} MB')
