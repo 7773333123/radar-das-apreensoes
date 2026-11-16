@@ -11,7 +11,7 @@ const story = (n, { dek = false, img = true, cont = false } = {}) =>
   `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}">${img ? midia(n, { contador: cont }) : ''}` +
   `${kickerHTML(n, st.ctx, st.filtro.cat || null)}<h3 class="headline">${esc(n.titulo)}</h3>${dek && n.resumo ? `<p class="dek">${esc(n.resumo)}</p>` : ''}${metaHTML(n)}</a>`;
 const linha = (n) => `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx, st.filtro.cat || null)}` +
-  `<h3 class="headline">${esc(n.titulo)}</h3>${n.resumo ? `<p class="dek">${esc(n.resumo)}</p>` : ''}${metaHTML(n)}</div>${midia(n)}</a></li>`;
+  `<h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a></li>`;
 
 // ---------- filtros na URL (compatível com links antigos) ----------
 function lerHash() {
@@ -128,7 +128,7 @@ function renderInicio() {
 
   $('inicio').innerHTML =
     `<section class="lead" aria-label="Destaques">` +
-      `<div class="lead-main">${story(manchete, { dek: true, cont: true }).replace('<h3 class="headline">', '<h2 class="headline">').replace('</h3>', '</h2>')}</div>` +
+      `<div class="lead-main">${story(manchete, { cont: true }).replace('<h3 class="headline">', '<h2 class="headline">').replace('</h3>', '</h2>')}</div>` +
       `<div class="lead-side">${lado.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx)}<h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a>`).join('')}</div>` +
     `</section>` +
     `<div class="section-head"><h2>Em alta e em números</h2><a href="observatorio">Abrir o Observatório →</a></div>` +
