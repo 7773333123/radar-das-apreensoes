@@ -29,6 +29,7 @@ from pathlib import Path
 
 from localizar_uf import inferir_uf
 from resumo_fatos import extrair, redigir
+from estatisticas import MATERIAIS, ORGAOS_NOMES, enriquecer, exportar
 
 PASTA = Path(__file__).resolve().parent
 ORIGEM = PASTA / 'noticias.json'
@@ -264,6 +265,7 @@ def main():
     fontes = json.loads(FONTES_JSON.read_text(encoding='utf-8')).get('fontes', []) if FONTES_JSON.exists() else []
     saida, links, ocultas, portugal = [], [''] * len(noticias), 0, 0
     detalhes = {}
+    fatos_por_i = {}
     for i, n in enumerate(noticias):
         if not isinstance(n, dict):
             continue
@@ -319,6 +321,7 @@ def main():
         # dela, do título e do resumo da fonte; redigido com frases próprias.
         fatos = n.get('fatos') or extrair(titulo, resumo)
         if fatos:
+            fatos_por_i[i] = fatos
             detalhe['f'] = fatos
             detalhe['s'] = redigir(fatos, fonte, n.get('data_iso') or '', uf)
         if detalhe:
@@ -331,10 +334,19 @@ def main():
             del detalhes[lote][chave]
         if not detalhes[lote]:
             del detalhes[lote]
+    # Quantidades, órgãos e rodovia só depois de agrupar as duplicatas: a versão
+    # exibida usa os próprios fatos ou, se não tiver, os da fonte mais completa.
+    for item in saida:
+        candidatos = [fatos_por_i.get(item['i'])] + [fatos_por_i.get(o[2]) for o in item.get('o', [])]
+        candidatos = [f for f in candidatos if f]
+        if candidatos:
+            enriquecer(item, max(candidatos, key=lambda f: (len(f.get('apreendido', [])), len(f))))
     saida.sort(key=lambda x: x.get('d', ''), reverse=True)
     feed = {
         'atualizado_em': dados.get('atualizado_em') if isinstance(dados, dict) else None,
         'categorias': CATEGORIAS,
+        'orgaos': ORGAOS_NOMES,
+        'materiais': {k: list(v) for k, v in MATERIAIS.items()},
         'total': len(saida),
         'noticias': saida,
     }
@@ -348,6 +360,9 @@ def main():
             antigo.unlink()
     for lote, conteudo in detalhes.items():
         (DETALHES / f'{lote}.json').write_text(json.dumps(conteudo, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+    abertos = exportar(saida, CATEGORIAS, links, PASTA / 'dados')
+    print(f'dados/: {abertos} notícias em CSV (dados abertos); '
+          f'{sum(1 for x in saida if x.get("q"))} com quantidades')
     print(f'Duplicatas agrupadas: {antes - len(saida)}; notícias de Portugal excluídas: {portugal}')
     print(f'{DESTINO.name}: {len(saida)} notícias ({ocultas} sem relação com apreensões ocultadas), '
           f'{DESTINO.stat().st_size / 1e6:.1f} MB')
