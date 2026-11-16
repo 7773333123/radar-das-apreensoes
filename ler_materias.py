@@ -35,7 +35,7 @@ LICENCA = re.compile(
     r'Creative Commons Atribui[çc][ãa]o(?:-SemDeriva[çc][õo]es|-CompartilhaIgual)?\s*[\d.]*(?:\s*N[ãa]o Adaptada|\s*Internacional|\s*Brasil)?',
     re.I)
 NAO_COMERCIAL = re.compile(r'N[ãa]oComercial|licenses/by-nc', re.I)
-VERSAO = 8  # 2 = galeria; 3 = fatos; 4-5 = trecho; 6 = íntegra oficial; 7 = fatos do corpo; 8 = trecho proporcional e detalhes da ação. Versões anteriores são relidas
+VERSAO = 9  # 9 = fotos só da matéria (sem anúncios e chamadas); 2 = galeria; 3 = fatos; 4-5 = trecho; 6 = íntegra oficial; 7 = fatos do corpo; 8 = trecho proporcional e detalhes da ação. Versões anteriores são relidas
 MAX_FOTOS = 12
 NAO_FOTO = re.compile(r'logo|icon|icone|avatar|sprite|banner|placeholder|blank|pixel|spacer|loading|selo|'
                       r'whatsapp-share|/ads?/|publicidade|video\.glbimg|/x240/|\.svg(?:$|\?)|\.gif(?:$|\?)', re.I)
@@ -176,27 +176,110 @@ def melhor_do_srcset(srcset):
     return max(ate or opcoes)[1]
 
 
-def fotos_da_materia(pagina, base):
-    """Fotos dentro de <figure> e do corpo do texto, na ordem em que aparecem."""
-    trechos = re.findall(r'<figure\b.*?</figure>', pagina, re.S | re.I)
-    for padrao in (r'property="rnews:articleBody"[^>]*>(.*?)</div>\s*</div>',
-                   r'itemprop="articleBody"[^>]*>(.*?)</(?:div|section)>'):
-        m = re.search(padrao, pagina, re.S | re.I)
+# ---------- seleção de fotos: só as da própria matéria ----------
+# Anúncios, cartões de "leia também", "mais lidas", vídeos recomendados e barras
+# laterais também usam <figure>/<img>. Camadas de exclusão:
+#  1. só a região da matéria (<article>/articleBody), cortada no primeiro bloco
+#     de chamadas para outras matérias;
+#  2. contêiner com classe/id de anúncio, recomendação ou barra lateral;
+#  3. imagem dentro de link para outra página (miniatura de outra notícia);
+#  4. domínio de publicidade/rastreamento, miniatura (150x150, thumb), ícone;
+#  5. legenda/alt sem nenhuma relação com a matéria (ex.: foto de jogador).
+CONTEINER_ALHEIO = re.compile(
+    r'\b(?:ads?|adv|advert\w*|anuncio\w*|publicidade|banner\w*|sponsor\w*|patrocin\w*|dfp|gpt|teads|taboola|outbrain|'
+    r'related\w*|relacionad\w*|recomend\w*|recommend\w*|mais-?lidas|most-?read|leia-?tamb\w*|veja-?tamb\w*|'
+    r'saiba-?mais|sidebar|aside|widget\w*|newsletter|promo\w*|carousel-?news|ultimas|latest|trending|shopping|'
+    r'video-?playlist|playlist|feed-?item|card-?news|outras-?noticias)\b', re.I)
+FIM_DA_MATERIA = re.compile(
+    r'<(?:div|section|aside|ul|h2|h3)\b[^>]*(?:class|id)="[^"]*(?:related|relacionad|recomend|recommend|mais-?lidas|'
+    r'most-?read|leia-?tamb|veja-?tamb|outras-?noticias|taboola|outbrain|comments?|comentarios)[^"]*"'
+    r'|>\s*(?:Leia (?:também|mais)|Veja também|Mais lidas|Notícias relacionadas|Últimas notícias|Você pode gostar)\s*<', re.I)
+DOMINIO_ANUNCIO = re.compile(r'doubleclick|googlesyndication|googleadservices|adservice|adsystem|taboola|outbrain|teads|'
+                             r'criteo|adnxs|rubiconproject|pubmatic|smartadserver|facebook\.com/tr|scorecardresearch|'
+                             r'/ads?/|/banners?/|/publicidade/|/anuncios?/|/patrocin', re.I)
+MINIATURA = re.compile(r'[-_](?:\d{2,3})x(?:\d{2,3})\.(?:jpe?g|png|webp)|/thumbs?/|[-_]thumb|/(?:50|75|100|120|150|160|180|200)x|'
+                       r'/fit-in/(?:\d{2,3})x|w=(?:\d{2,3})\b(?!\d)', re.I)
+ASSUNTO_ALHEIO = re.compile(r'futebol|jogador|campeonato|partida|gol\b|t[ée]cnico do|torcida|est[áa]dio|novela|cantor|'
+                            r'cantora|show\b|reality|bbb\b|receita de|hor[óo]scopo|loteria|mega-?sena|cupom|oferta|promo[çc][ãa]o',
+                            re.I)
+POLICIAL = re.compile(r'pol[íi]cia|apreen|droga|maconha|coca[íi]na|arma|muni[çc]|presos?|pris[ãa]o|opera[çc][ãa]o|'
+                      r've[íi]culo|carga|contrabando|PRF|PF|PM|PC|delegacia|fronteira|rodovia|BR-|viatura|suspeit', re.I)
+
+
+def regiao_da_materia(pagina):
+    """Trecho do HTML que contém a matéria, sem cabeçalho, barra lateral e chamadas finais."""
+    for padrao in (r'itemprop="articleBody"[^>]*>', r'property="rnews:articleBody"[^>]*>', r'<article\b[^>]*>',
+                   r'class="[^"]*(?:post-content|entry-content|materia-conteudo|content-text|article-body|news-body|texto)[^"]*"'):
+        m = re.search(padrao, pagina, re.I)
         if m:
-            trechos.append(m.group(1))
+            inicio = m.start()
+            fim = pagina.find('</article>', inicio)
+            trecho = pagina[inicio:fim if fim > 0 else inicio + 200_000]
+            corte = FIM_DA_MATERIA.search(trecho, 200)
+            return trecho[:corte.start()] if corte else trecho
+    return ''
+
+
+def _palavras(texto):
+    import unicodedata
+    t = unicodedata.normalize('NFKD', texto or '')
+    t = ''.join(c for c in t if not unicodedata.combining(c)).lower()
+    return {w for w in re.findall(r'[a-z0-9]{4,}', t)}
+
+
+def foto_alheia(url, contexto, legenda, titulo):
+    """True se a imagem não é da matéria (anúncio, miniatura de outra notícia, assunto diferente)."""
+    if not url or url.startswith('data:') or NAO_FOTO.search(url) or DOMINIO_ANUNCIO.search(url) or MINIATURA.search(url):
+        return True
+    if CONTEINER_ALHEIO.search(contexto):
+        return True
+    if legenda:
+        if ASSUNTO_ALHEIO.search(legenda) and not POLICIAL.search(legenda):
+            return True
+        if titulo and len(_palavras(legenda)) >= 4 and not (_palavras(legenda) & _palavras(titulo)) and not POLICIAL.search(legenda):
+            return True
+    return False
+
+
+def fotos_da_materia(pagina, base, titulo=''):
+    """Fotos da própria matéria, na ordem em que aparecem (sem anúncios e chamadas)."""
+    regiao = regiao_da_materia(pagina)
+    if not regiao:
+        return []  # sem a região da matéria identificada, fica só a foto principal (og:image)
     fotos = []
-    for trecho in trechos:
-        for tag in re.findall(r'<(?:amp-)?img\b[^>]*>', trecho, re.I):
-            atributos = dict((k.lower(), html.unescape(v)) for k, _, v in
-                             re.findall(r'([\w:-]+)\s*=\s*(["\'])(.*?)\2', tag, re.S))
-            url = (melhor_do_srcset(atributos.get('srcset') or atributos.get('data-srcset') or '')
-                   or atributos.get('data-src') or atributos.get('src') or '')
-            largura = atributos.get('width', '')
-            if not url or url.startswith('data:') or NAO_FOTO.search(url):
-                continue
-            if largura.isdigit() and int(largura) < 200:
-                continue
-            fotos.append(urljoin(base, url))
+    # Pilha dos contêineres abertos em cada ponto (para saber o que envolve a imagem).
+    pilha = []
+    for m in re.finditer(r'<(/?)(div|section|aside|figure|li|ul|a|span|p)\b[^>]*>|<(?:amp-)?img\b[^>]*>', regiao, re.I):
+        tag = m.group(0)
+        if m.group(2):
+            nome = m.group(2).lower()
+            if m.group(1):
+                for k in range(len(pilha) - 1, -1, -1):
+                    if pilha[k][0] == nome:
+                        del pilha[k:]
+                        break
+            elif not tag.endswith('/>'):
+                pilha.append((nome, tag))
+            continue
+        atributos = dict((k.lower(), html.unescape(v)) for k, _, v in
+                         re.findall(r'([\w:-]+)\s*=\s*(["\'])(.*?)\2', tag, re.S))
+        url = (melhor_do_srcset(atributos.get('srcset') or atributos.get('data-srcset') or '')
+               or atributos.get('data-src') or atributos.get('data-lazy-src') or atributos.get('src') or '')
+        largura, altura = atributos.get('width', ''), atributos.get('height', '')
+        if (largura.isdigit() and int(largura) < 300) or (altura.isdigit() and int(altura) < 200):
+            continue
+        contexto = ' '.join(t for _, t in pilha[-6:])
+        # Imagem dentro de link para outra página = miniatura de outra notícia.
+        link = next((t for n, t in reversed(pilha) if n == 'a'), '')
+        destino = re.search(r'href="([^"]+)"', link)
+        if destino and not re.search(r'\.(?:jpe?g|png|webp|gif)(?:\?|$)', destino.group(1), re.I):
+            continue
+        depois = regiao[m.end():m.end() + 800]
+        legenda = ' '.join(filter(None, [atributos.get('alt', ''), atributos.get('title', ''),
+                                         limpar((re.search(r'<figcaption\b[^>]*>(.*?)</figcaption>', depois, re.S | re.I) or [None, ''])[1])]))
+        if foto_alheia(url, contexto + ' ' + atributos.get('class', ''), legenda, titulo):
+            continue
+        fotos.append(urljoin(base, url))
     return fotos
 
 
@@ -295,7 +378,7 @@ def ler(url, timeout):
     if publicada and publicada.year >= 2000 and publicada <= datetime.now(timezone.utc) + timedelta(days=1):
         resultado['publicada'] = publicada.isoformat()
     resultado['imagens'] = sem_repetir(([resultado['imagem']] if resultado.get('imagem') else []) +
-                                       fotos_da_materia(pagina, base))
+                                       fotos_da_materia(pagina, base, titulo_pagina(metas, pagina)))
     if resultado['imagens'] and not resultado.get('imagem'):
         resultado['imagem'] = resultado['imagens'][0]
     # Fatos objetivos do texto da página (só os dados; o texto não é guardado).
