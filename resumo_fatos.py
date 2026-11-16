@@ -72,7 +72,8 @@ def _num(texto, mult=None):
 def _fmt(valor):
     if valor == int(valor):
         return f'{int(valor):,}'.replace(',', '.')
-    return f'{valor:,.1f}'.replace(',', 'X').replace('.', ',').replace('X', '.')
+    casas = 2 if abs(valor) < 100 and round(valor, 2) != round(valor, 1) else 1  # 1,25 t não vira 1,2 t
+    return f'{valor:,.{casas}f}'.replace(',', 'X').replace('.', ',').replace('X', '.')
 
 
 def _limpa_material(mat):

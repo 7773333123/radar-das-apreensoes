@@ -50,14 +50,32 @@ function renderInicio() {
     `<li><button type="button" data-read="${n.i}"><time>${esc(agora - (n.data?.getTime() || 0) < DIA ? horaBR(n.data) : relativo(n.data))}</time>${esc(n.titulo)}</button></li>`).join('');
   $('agoraFaixa').hidden = false;
 
-  // Relevância com prazo de validade: repercussão (mais veículos) e quantidade
-  // apreendida pesam, mas a nota cai pela metade a cada 6 horas. Assim a
-  // manchete é sempre do dia, e uma notícia de ontem não fica no topo.
+  // Importância da notícia (manchete e "Em alta"):
+  // - tamanho da apreensão (escala logarítmica: 1 t de droga pesa mais que 10 kg);
+  // - repercussão (quantos veículos publicaram);
+  // - apreensão concreta no título; notícias de soltura, julgamento ou
+  //   desdobramento judicial perdem peso;
+  // - prazo de validade: a nota cai pela metade a cada 12 horas, então a
+  //   manchete é sempre do dia, mas a mais importante do dia fica no topo.
   const horas = (n) => Math.max(0, (agora - (n.data?.getTime() || 0)) / 3600000);
-  const nota = (n) => (1 + Math.min(n.outras.length, 8) * 0.5 + (n.q ? 0.5 : 0)) / (1 + horas(n) / 6);
+  const log = (v) => Math.log10(1 + (v || 0));
+  const importancia = (n) => {
+    const q = n.q || {};
+    const drogas = (q.coc || 0) + (q.mac || 0) + (q.skh || 0) + (q.cra || 0) + (q.dro || 0);
+    let p = 1;
+    p += log(drogas) * 1.6;                       // 100 kg ≈ 3,2; 1 t ≈ 4,8
+    p += log(q.arm) * 2 + log(q.fuz) * 2.5;       // armas e, sobretudo, fuzis
+    p += log(q.mun) * 0.8;
+    p += Math.min(n.outras.length, 10) * 0.6;     // repercussão
+    if (/apreen|apreend|confisc/i.test(n.titulo)) p += 1;
+    if (/\b(PF|PRF|Receita Federal|Pol[ií]cia Federal|FICCO|Gaeco)\b|opera[çc][ãa]o/i.test(n.titulo)) p += 0.5;
+    if (/\b(solta|soltura|liberad[oa]|absolvid|julgament|condenad|habeas|den[uú]ncia|audi[êe]ncia|foragid)/i.test(n.titulo)) p -= 2;
+    return Math.max(0.2, p);
+  };
+  const nota = (n) => importancia(n) * Math.pow(0.5, horas(n) / 12);
   const comFoto = ns.filter((n) => n.img && n.data && n.data.getTime() <= agora + 3600000);
   const janela = (h) => comFoto.filter((n) => horas(n) <= h);
-  const pool = [12, 24, 48].map(janela).find((l) => l.length >= 5) || comFoto.slice(0, 20);
+  const pool = [24, 48].map(janela).find((l) => l.length >= 5) || comFoto.slice(0, 20);
   const manchete = [...pool].sort((a, b) => nota(b) - nota(a) || b.data - a.data)[0] || ns[0];
   const usados = new Set([manchete]);
   // Ao lado da manchete: as mais recentes com foto, em ordem cronológica.

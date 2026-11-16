@@ -35,7 +35,7 @@ LICENCA = re.compile(
     r'Creative Commons Atribui[çc][ãa]o(?:-SemDeriva[çc][õo]es|-CompartilhaIgual)?\s*[\d.]*(?:\s*N[ãa]o Adaptada|\s*Internacional|\s*Brasil)?',
     re.I)
 NAO_COMERCIAL = re.compile(r'N[ãa]oComercial|licenses/by-nc', re.I)
-VERSAO = 6  # 2 = galeria; 3 = fatos; 4-5 = trecho de abertura; 6 = íntegra das notas oficiais. Versões anteriores são relidas
+VERSAO = 7  # 2 = galeria; 3 = fatos; 4-5 = trecho; 6 = íntegra oficial; 7 = fatos só do corpo da matéria. Versões anteriores são relidas
 MAX_FOTOS = 12
 NAO_FOTO = re.compile(r'logo|icon|icone|avatar|sprite|banner|placeholder|blank|pixel|spacer|loading|selo|'
                       r'whatsapp-share|/ads?/|publicidade|video\.glbimg|/x240/|\.svg(?:$|\?)|\.gif(?:$|\?)', re.I)
@@ -294,8 +294,11 @@ def ler(url, timeout):
     if resultado['imagens'] and not resultado.get('imagem'):
         resultado['imagem'] = resultado['imagens'][0]
     # Fatos objetivos do texto da página (só os dados; o texto não é guardado).
+    # Só o corpo da matéria, e só o começo: a página inteira traz chamadas e
+    # resumos de outras notícias, cujos números contaminavam as quantidades.
     paragrafos = [limpar(p) for p in re.findall(r'<p\b[^>]*>(.*?)</p>', pagina, re.S | re.I)]
-    texto_pagina = ' '.join(p for p in paragrafos if len(p) > 40)[:8000]
+    corpo = corpo_limpo(corpo_da_materia(pagina))
+    texto_pagina = ' '.join(corpo)[:3000]
     if texto_pagina:
         from resumo_fatos import extrair
         resultado['fatos'] = extrair(titulo_pagina(metas, pagina), m.get('og:description') or '', texto_pagina)
