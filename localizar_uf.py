@@ -217,3 +217,35 @@ if __name__ == '__main__':
     import sys
     for linha in sys.argv[1:]:
         print(repr(linha), '->', inferir_uf({'titulo': linha}) or '?')
+
+
+def municipios_no_texto(texto):
+    """Municípios citados (nome oficial, UF), na ordem em que aparecem.
+
+    Só nomes sem homônimo em outro estado (ou capitais); homônimos ficam de fora.
+    """
+    if not texto:
+        return []
+    texto = OPERACAO.sub(' ', texto)
+    texto = re.sub(r"\b[Dd][’'´`]", "d'", texto)
+    entradas, blocos = _indice()
+    achados = []
+    for bloco in blocos:
+        for m in bloco.finditer(texto):
+            achados.append((m.start(), m.end(), m.group(1)))
+    ocupado = [False] * len(texto)
+    escolhidos = []
+    for ini, fim, nome in sorted(achados, key=lambda a: a[0] - a[1]):
+        if any(ocupado[ini:fim]):
+            continue
+        for k in range(ini, fim):
+            ocupado[k] = True
+        tipo, ufs = entradas[nome]
+        if tipo == 'municipio' and len(ufs) == 1:
+            escolhidos.append((ini, nome, next(iter(ufs))))
+    vistos, saida = set(), []
+    for _, nome, uf in sorted(escolhidos):
+        if nome not in vistos:
+            vistos.add(nome)
+            saida.append((nome, uf))
+    return saida

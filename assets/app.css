@@ -108,6 +108,15 @@ h1 { margin: 0; font-size: clamp(30px, 4.6vw, 52px); line-height: 1.06; letter-s
 .tag { font-size: 12px; font-weight: 700; color: var(--accent); background: rgb(56 189 248 / .1); border-radius: 999px; padding: 2px 9px; }
 .tag.uf { color: #c4b5fd; background: rgb(167 139 250 / .12); }
 .tag.full { color: #6ee7b7; background: rgb(52 211 153 / .12); }
+.radar-sum h2, .facts h2, .src-sum h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin: 22px 0 6px; }
+.radar-sum .reader-text { font-size: 18px; line-height: 1.65; margin: 0; }
+.facts dl { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1px; background: var(--line);
+  border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.facts dl div { background: var(--surface); padding: 10px 14px; }
+.facts dt { color: var(--muted); font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.facts dd { margin: 3px 0 0; font-size: 15px; line-height: 1.4; }
+.src-sum .reader-text { margin: 0; color: #cfd9e6; }
+.muted-load { color: var(--muted); }
 .reader-note { color: var(--muted); font-size: 13px; border-left: 3px solid var(--line); padding-left: 10px; }
 .reader-full .reader-text { margin: 0 0 14px; }
 .tag.muted { color: var(--muted); background: var(--surface-2); }

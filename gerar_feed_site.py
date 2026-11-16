@@ -17,6 +17,7 @@ Formato de cada notícia em feed.json (chaves curtas para reduzir o tamanho):
   u   link original     img foto da fonte    r   resumo
   uf  sigla do estado   c   índices em "categorias"
   x   1 quando há texto integral (licença aberta)    g   nº de fotos (quando > 1)
+No detalhe: s = resumo do Radar (frases próprias), f = ficha de fatos (resumo_fatos.py).
   o   outras fontes da mesma matéria: [[fonte, link, i], ...] (duplicatas agrupadas)
 Texto integral e galeria ficam em detalhes/<i // 1000>.json, baixados ao abrir a notícia.
 """
@@ -27,6 +28,7 @@ import unicodedata
 from pathlib import Path
 
 from localizar_uf import inferir_uf
+from resumo_fatos import extrair, redigir
 
 PASTA = Path(__file__).resolve().parent
 ORIGEM = PASTA / 'noticias.json'
@@ -313,6 +315,12 @@ def main():
             detalhe.update(p=paragrafos, l=str(n['licenca_texto']))
         if len(fotos) > 1:
             detalhe['g'] = fotos
+        # Resumo do Radar: fatos da página original (ler_materias.py) ou, na falta
+        # dela, do título e do resumo da fonte; redigido com frases próprias.
+        fatos = n.get('fatos') or extrair(titulo, resumo)
+        if fatos:
+            detalhe['f'] = fatos
+            detalhe['s'] = redigir(fatos, fonte, n.get('data_iso') or '', uf)
         if detalhe:
             detalhes.setdefault(i // LOTE, {})[str(i)] = detalhe
         saida.append(item)
