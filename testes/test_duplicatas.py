@@ -35,12 +35,60 @@ def agrupa(a, b, ua, ub):
     return len(saida) == 1
 
 
+# Casos com dias de diferença, abertura, fatos e foto: (item A, item B, deve agrupar?).
+H = 0x9F3C5A7E1B2D4C68  # impressão digital de uma foto
+LEAD = ('A Polícia Rodoviária Federal apreendeu na tarde desta quinta-feira mais de 60 quilos de skunk '
+        'escondidos no porta-malas de um carro de passeio durante fiscalização no km 10 da BR-364, em Vilhena. '
+        'O motorista, de 34 anos, foi preso em flagrante e encaminhado à Polícia Civil.')
+AVANCADOS = [
+    # Mesma foto (recomprimida: 3 bits de diferença), 4 dias depois, mesmo lugar.
+    ({'t': 'PM apreende 4,5 toneladas de maconha e fuzil em Ourinhos', 'd': '2026-11-09', 'uf': 'SP', '_h': H},
+     {'t': 'Carga com maconha e fuzil é apreendida em Ourinhos', 'd': '2026-11-13', 'uf': 'SP', '_h': H ^ 0b10101}, True),
+    # Mesmo release (abertura igual), títulos bem diferentes, 2 dias depois.
+    ({'t': 'PRF apreende mais de 60 kg de supermaconha em Vilhena', 'd': '2026-11-13', 'uf': 'RO', '_lead': LEAD},
+     {'t': 'Motorista é preso com droga escondida no porta-malas', 'd': '2026-11-15', 'uf': 'RO', '_lead': LEAD}, True),
+    # Mesmas quantidades e mesmo lugar, títulos diferentes.
+    ({'t': 'DOF apreende 1,9 tonelada de maconha em caminhonete furtada na MS-166', 'd': '2026-10-29', 'uf': 'MS',
+      '_q': {'mac': 1900.0}},
+     {'t': 'Camionete furtada levava 1,9 t de maconha; DOF prende motorista na MS-166', 'd': '2026-10-28', 'uf': 'MS',
+      '_q': {'mac': 1900.0}}, True),
+    # Mesmo título-padrão, cidades diferentes (não é a mesma).
+    ({'t': 'PCPR prende dois homens por tráfico de drogas durante operação em Jacarezinho', 'd': '2026-10-29', 'uf': 'PR'},
+     {'t': 'PCPR prende dois homens por tráfico de drogas em Santo Antônio do Sudoeste', 'd': '2026-10-22', 'uf': 'PR'}, False),
+    # Quantidades diferentes com decimais (16,5 x 36,5).
+    ({'t': 'Receita Federal retém 16,5 quilos de cocaína em Paranaguá', 'd': '2026-08-17', 'uf': 'PR'},
+     {'t': 'Receita Federal retém 36,5 quilos de cocaína em Paranaguá', 'd': '2026-08-12', 'uf': 'PR'}, False),
+    # Mesma quantidade, cidades diferentes: só "quilos" em comum não basta.
+    ({'t': 'Polícia Civil incinera 40 quilos de drogas em Barra do Choça', 'd': '2026-11-10', 'uf': 'BA', '_q': {'dro': 40.0}},
+     {'t': 'PM apreende mais de 40 quilos de drogas em Irecê', 'd': '2026-11-09', 'uf': 'BA', '_q': {'dro': 40.0}}, False),
+    # Mesmo número da rodovia não é quantidade em comum.
+    ({'t': 'PRF apreende mais de 45 quilos de drogas na BR-277, em Santa Terezinha de Itaipu', 'd': '2026-11-11', 'uf': 'PR'},
+     {'t': 'PRF apreende quase 105 quilos de pasta base na BR-277', 'd': '2026-11-09', 'uf': 'PR'}, False),
+    # Foto padrão do site em notícias sem relação (aparece em várias): não agrupa.
+    ({'t': 'Festa com drogas e homens armados é interrompida pela PM em Cariacica', 'd': '2026-11-15', 'uf': 'ES', '_h': H},
+     {'t': 'Empresário suspeito de esconder drogas em açougue é preso em Alegre', 'd': '2026-11-13', 'uf': 'ES', '_h': H}, False),
+    # Mesma foto em estados diferentes: veto.
+    ({'t': 'PF deflagra operação contra tráfico em Belém', 'd': '2026-11-10', 'uf': 'PA', '_h': H},
+     {'t': 'PF deflagra operação contra tráfico em Porto Alegre', 'd': '2026-11-10', 'uf': 'RS', '_h': H}, False),
+]
+
+
+def agrupa_itens(a, b):
+    itens = [dict(a, i=1, f='Fonte A'), dict(b, i=2, f='Fonte B')]
+    saida, _ = agrupar_duplicatas(itens)
+    return len(saida) == 1
+
+
 def main():
     erros = [f'deveria agrupar: {a!r} / {b!r}' for a, b, ua, ub in MESMA if not agrupa(a, b, ua, ub)]
+    for a, b, esperado in AVANCADOS:
+        if agrupa_itens(a, b) != esperado:
+            erros.append(f'{"deveria" if esperado else "não deveria"} agrupar: {a["t"]!r} / {b["t"]!r}')
     erros += [f'não deveria agrupar: {a!r} / {b!r}' for a, b, ua, ub in DIFERENTES if agrupa(a, b, ua, ub)]
     for e in erros:
         print('FALHOU:', e)
-    print(f'{len(MESMA) + len(DIFERENTES) - len(erros)}/{len(MESMA) + len(DIFERENTES)} casos corretos')
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS)
+    print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 
 
