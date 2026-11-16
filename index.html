@@ -3,149 +3,78 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Radar das Apreensões — notícias de apreensões no Brasil</title>
-<meta name="description" content="Agregador de notícias sobre apreensões de drogas, armas, contrabando e outros bens no Brasil, com filtro por estado, categoria e ano.">
-<meta name="theme-color" content="#06101d">
+<title>Radar das Apreensões — notícias e dados sobre apreensões no Brasil</title>
+<meta name="description" content="Central de notícias e observatório de dados sobre apreensões de drogas, armas, contrabando e outros bens no Brasil, com mais de mil fontes atualizadas o dia todo.">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://radardasapreensoes.com.br/">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Radar das Apreensões">
 <meta property="og:title" content="Radar das Apreensões">
-<meta property="og:description" content="Notícias de apreensões no Brasil, por estado, categoria e período.">
+<meta property="og:description" content="Notícias e dados sobre apreensões no Brasil, por estado, tipo e período.">
 <meta property="og:locale" content="pt_BR">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/source-serif-4.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="feed.json" as="fetch" type="application/json" crossorigin="anonymous">
-<link rel="stylesheet" href="assets/app.css">
-<script src="assets/app.js" defer></script>
+<link rel="stylesheet" href="assets/radar.css">
+<script type="module" src="assets/central.js"></script>
 </head>
-<body>
-<a class="skip" href="#noticias">Pular para as notícias</a>
-
-<header class="topbar">
-  <div class="wrap topbar-in">
-    <a class="brand" href="./" aria-label="Radar das Apreensões — início">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="16" cy="16" r="8" fill="none" stroke="currentColor" stroke-width="2.5" opacity=".7"/><circle cx="16" cy="16" r="3" fill="currentColor"/></svg>
-      <span>Radar <b>das Apreensões</b></span>
+<body data-pagina="central">
+<a class="skip" href="#conteudo">Pular para as notícias</a>
+<header class="masthead">
+  <div class="wrap topline"><span id="hoje"></span><span class="live" id="atualizado">Carregando acervo…</span></div>
+  <div class="wrap brandbar">
+    <a class="brand" href="./" aria-label="Radar das Apreensões — página inicial">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="16" cy="16" r="7" fill="none" stroke="currentColor" stroke-width="2.6" opacity=".55"/><circle cx="16" cy="16" r="2.6" fill="currentColor"/><path d="M16 16 L27 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+      <span class="brand-name">Radar das Apreensões<small>Notícias · Dados · Observatório</small></span>
     </a>
-    <nav class="topnav" aria-label="Seções">
-      <a href="#noticias">Notícias</a>
-      <a href="#estados">Estados</a>
-      <a href="#categorias">Categorias</a>
-      <a href="#sobre">Sobre</a>
+    <nav class="mainnav" aria-label="Seções do site">
+      <a href="./" aria-current="page">Notícias</a>
+      <a href="observatorio">Observatório</a>
+      <a href="dados">Dados abertos</a>
     </nav>
-  </div>
-</header>
-
-<main>
-  <section class="intro wrap" aria-labelledby="titulo">
-    <div>
-      <p class="eyebrow"><span class="dot" aria-hidden="true"></span> Atualização automática diária</p>
-      <h1 id="titulo">Apreensões no Brasil, notícia a notícia.</h1>
-      <p class="lead">Drogas, armas, contrabando e outros bens apreendidos, reunidos de veículos de imprensa e órgãos públicos. Filtre por estado, categoria e período e leia na fonte original.</p>
-      <p class="updated" id="atualizado" aria-live="polite">Carregando acervo…</p>
-    </div>
-    <dl class="kpis" aria-label="Números do acervo">
-      <div><dt>Notícias</dt><dd id="kTotal">—</dd></div>
-      <div><dt>Últimos 30 dias</dt><dd id="kRecentes">—</dd></div>
-      <div><dt>Estados</dt><dd id="kEstados">—</dd></div>
-      <div><dt>Fontes</dt><dd id="kFontes">—</dd></div>
-    </dl>
-  </section>
-
-  <section class="wrap" id="categorias" aria-labelledby="cat-titulo">
-    <h2 class="section-title" id="cat-titulo">Categorias</h2>
-    <div class="cats" id="cats">
-      <button type="button" class="cat" data-cat="0"><img src="img/categorias/drogas-e-entorpecentes.webp" alt="Drogas e entorpecentes" width="392" height="162"></button>
-      <button type="button" class="cat" data-cat="1"><img src="img/categorias/armas-e-municoes.webp" alt="Armas e munições" width="392" height="162"></button>
-      <button type="button" class="cat" data-cat="2"><img src="img/categorias/contrabando-e-descaminho.webp" alt="Contrabando e descaminho" width="392" height="162"></button>
-      <button type="button" class="cat" data-cat="3"><img src="img/categorias/veiculos.webp" alt="Veículos" width="392" height="162" loading="lazy"></button>
-      <button type="button" class="cat" data-cat="4"><img src="img/categorias/dinheiro-e-valores.webp" alt="Dinheiro e valores" width="392" height="162" loading="lazy"></button>
-      <button type="button" class="cat" data-cat="5"><img src="img/categorias/crimes-ambientais.webp" alt="Crimes ambientais" width="392" height="162" loading="lazy"></button>
-      <button type="button" class="cat" data-cat="6"><img src="img/categorias/medicamentos-e-produtos.webp" alt="Medicamentos e produtos" width="392" height="162" loading="lazy"></button>
-      <button type="button" class="cat" data-cat="7"><img src="img/categorias/operacoes-patrimoniais.webp" alt="Operações patrimoniais" width="392" height="162" loading="lazy"></button>
-      <button type="button" class="cat" data-cat="8"><img src="img/categorias/outras-apreensoes.webp" alt="Outras apreensões" width="392" height="162" loading="lazy"></button>
-    </div>
-  </section>
-
-  <div class="filters" id="filtros">
-    <form class="wrap filters-in" role="search" id="formFiltros">
-      <label class="f-search">
-        <span class="sr">Pesquisar</span>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <input type="search" id="busca" placeholder="Pesquisar: cocaína, fuzil, Manaus, PRF…" autocomplete="off" enterkeyhint="search">
-      </label>
-      <label><span class="sr">Estado</span><select id="fEstado"><option value="">Todos os estados</option></select></label>
-      <label><span class="sr">Categoria</span><select id="fCategoria"><option value="">Todas as categorias</option></select></label>
-      <label><span class="sr">Ano</span><select id="fAno"><option value="">Todos os anos</option></select></label>
-      <button type="reset" class="btn-ghost" id="limpar">Limpar</button>
+    <form class="searchbox" id="formBusca" role="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="sr" for="buscaTopo">Pesquisar notícias</label>
+      <input type="search" id="buscaTopo" placeholder="Buscar: fuzil, PRF, Manaus…" autocomplete="off" enterkeyhint="search">
     </form>
   </div>
+  <nav class="wrap sections" id="editorias" aria-label="Editorias"></nav>
+</header>
+<div class="agora" id="agoraFaixa" hidden><div class="wrap"><span class="agora-tag">AGORA</span><ol id="agora"></ol></div></div>
 
-  <div class="wrap layout">
-    <div class="col-main">
-      <section id="noticias" aria-labelledby="not-titulo" tabindex="-1">
-        <div class="list-head">
-          <h2 class="section-title" id="not-titulo">Últimas notícias</h2>
-          <p class="count" id="contagem" aria-live="polite"></p>
-        </div>
-        <div class="featured" id="destaques"></div>
-        <ol class="news" id="lista" aria-label="Lista de notícias"></ol>
-        <div class="more-row"><button type="button" class="btn" id="mais" hidden>Carregar mais notícias</button></div>
-        <div class="state-msg" id="mensagem" hidden></div>
-      </section>
-    </div>
-
-    <aside class="col-side" aria-label="Painel de dados">
-      <section class="panel" id="estados" aria-labelledby="est-titulo">
-        <h2 class="panel-title" id="est-titulo">Notícias por estado</h2>
-        <p class="panel-sub">Toque em um estado para filtrar.</p>
-        <div class="tilemap" id="mapa" role="group" aria-label="Estados do Brasil"></div>
-        <div class="legend" aria-hidden="true"><span>menos</span><i></i><span>mais</span></div>
-      </section>
-      <section class="panel" aria-labelledby="tipos-titulo">
-        <h2 class="panel-title" id="tipos-titulo">Tipos de apreensão</h2>
-        <div class="bars" id="barCategorias"></div>
-      </section>
-      <section class="panel" aria-labelledby="mes-titulo">
-        <h2 class="panel-title" id="mes-titulo">Últimos 12 meses</h2>
-        <div class="months" id="meses"></div>
-      </section>
-    </aside>
-  </div>
-
-  <section class="wrap about" id="sobre" aria-labelledby="sobre-titulo">
-    <h2 class="section-title" id="sobre-titulo">Sobre os dados</h2>
-    <div class="about-grid">
-      <p>O Radar reúne notícias publicadas por veículos de imprensa e órgãos públicos. Os números contam <strong>notícias</strong>, não operações policiais únicas: uma mesma apreensão pode aparecer em mais de um veículo.</p>
-      <p>Estado e categoria são identificados automaticamente por regras de texto: nome do estado, sigla, município citado ou origem da fonte. Quando não há evidência clara, a notícia aparece como "estado não identificado".</p>
-      <p>O conteúdo das reportagens pertence aos veículos de origem. Use o link de cada notícia para ler a matéria completa na fonte.</p>
+<main id="conteudo" class="wrap" tabindex="-1">
+  <div id="inicio"></div>
+  <section id="resultados" aria-labelledby="resTitulo">
+    <div class="section-head" id="resCabecalho"><h2 id="resTitulo">Últimas notícias</h2><span class="count" id="contagem" aria-live="polite"></span></div>
+    <div class="layout">
+      <div>
+        <form class="filters" id="filtros">
+          <label class="sr" for="fEstado">Estado</label><select id="fEstado"><option value="">Todos os estados</option></select>
+          <label class="sr" for="fCategoria">Tipo</label><select id="fCategoria"><option value="">Todos os tipos</option></select>
+          <label class="sr" for="fAno">Ano</label><select id="fAno"><option value="">Todos os anos</option></select>
+          <button type="button" class="btn ghost" id="limpar" hidden>Limpar filtros</button>
+        </form>
+        <ol class="news" id="lista"></ol>
+        <div class="more"><button type="button" class="btn ghost" id="mais" hidden>Carregar mais notícias</button></div>
+      </div>
+      <aside class="side" aria-label="Refinar resultados">
+        <div class="panel"><h3>Por estado</h3><div class="map" id="mapaLado"></div></div>
+        <div class="panel"><h3>Tipos de apreensão</h3><div class="rank" id="rankTipos"></div></div>
+      </aside>
     </div>
   </section>
 </main>
 
 <footer class="footer">
-  <div class="wrap">Radar das Apreensões · agregador de notícias · consulte sempre a fonte original</div>
+  <div class="wrap cols">
+    <div><h4>Radar das Apreensões</h4>
+      <p>Central de notícias e observatório de dados sobre apreensões no Brasil, a partir de mais de mil veículos e órgãos públicos.</p>
+      <p>O conteúdo das reportagens pertence aos veículos de origem; cada notícia leva à fonte original.</p></div>
+    <div><h4>Navegue</h4><p><a href="observatorio">Observatório</a></p><p><a href="dados">Dados abertos e metodologia</a></p></div>
+    <div><h4>Preferências</h4><p><button type="button" class="theme-toggle" id="tema">Alternar tema claro/escuro</button></p>
+      <p>Mapa: @svg-maps/brazil (CC BY 4.0). Fontes: Inter e Source Serif 4 (OFL).</p></div>
+  </div>
 </footer>
-
-<dialog class="reader" id="leitor" aria-labelledby="leitorTitulo">
-  <div class="reader-bar">
-    <span class="reader-brand">Radar das Apreensões</span>
-    <button type="button" class="btn-ghost" id="fecharLeitor" aria-label="Fechar notícia">✕ Fechar</button>
-  </div>
-  <article class="reader-body" id="leitorConteudo"></article>
-</dialog>
-
-<dialog class="viewer" id="visor" aria-label="Fotos da reportagem">
-  <div class="viewer-bar">
-    <span id="visorContador" class="viewer-count"></span>
-    <a id="visorOriginal" class="viewer-link" href="#" target="_blank" rel="noopener noreferrer">Abrir imagem ↗</a>
-    <button type="button" class="btn-ghost" id="fecharVisor" aria-label="Fechar fotos">✕</button>
-  </div>
-  <div class="viewer-stage">
-    <button type="button" class="gal-nav prev" data-visor="-1" aria-label="Foto anterior">‹</button>
-    <img id="visorImg" alt="" referrerpolicy="no-referrer">
-    <button type="button" class="gal-nav next" data-visor="1" aria-label="Próxima foto">›</button>
-  </div>
-  <p class="viewer-credit" id="visorCredito"></p>
-</dialog>
-
-<noscript><p class="wrap state-msg">Ative o JavaScript para ver as notícias.</p></noscript>
+<noscript><p class="wrap empty">Ative o JavaScript para ver as notícias.</p></noscript>
 </body>
 </html>

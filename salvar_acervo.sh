@@ -11,7 +11,7 @@ git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 preparar() {
   git add noticias.json feed.json feed_links.json
   for f in analise_nacional.json cobertura_historica.json "${EXTRAS[@]}"; do [ -e "$f" ] && git add "$f"; done
-  for pasta in detalhes textos; do git add -A -- "$pasta" 2>/dev/null || true; done
+  for pasta in detalhes textos dados; do git add -A -- "$pasta" 2>/dev/null || true; done
 }
 
 preparar

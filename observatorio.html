@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Observatório — Radar das Apreensões</title>
+<meta name="description" content="Painel de dados sobre apreensões noticiadas no Brasil: drogas, armas e munições por estado, período, tipo e órgão.">
+<meta name="theme-color" content="#ffffff">
+<link rel="canonical" href="https://radardasapreensoes.com.br/observatorio">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Radar das Apreensões">
+<meta property="og:title" content="Observatório — Radar das Apreensões">
+<meta property="og:description" content="Painel de dados sobre apreensões noticiadas no Brasil: drogas, armas e munições por estado, período, tipo e órgão.">
+<meta property="og:locale" content="pt_BR">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/source-serif-4.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/radar.css">
+<script type="module" src="assets/observatorio.js"></script>
+</head>
+<body data-pagina="observatorio">
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<header class="masthead">
+  <div class="wrap topline"><span id="hoje"></span><span class="live" id="atualizado">Carregando acervo…</span></div>
+  <div class="wrap brandbar">
+    <a class="brand" href="./" aria-label="Radar das Apreensões — página inicial">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="16" cy="16" r="7" fill="none" stroke="currentColor" stroke-width="2.6" opacity=".55"/><circle cx="16" cy="16" r="2.6" fill="currentColor"/><path d="M16 16 L27 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+      <span class="brand-name">Radar das Apreensões<small>Notícias · Dados · Observatório</small></span>
+    </a>
+    <nav class="mainnav" aria-label="Seções do site">
+      <a href="./">Notícias</a>
+      <a href="observatorio" aria-current="page">Observatório</a>
+      <a href="dados">Dados abertos</a>
+    </nav>
+    <form class="searchbox" id="formBusca" role="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="sr" for="buscaTopo">Pesquisar notícias</label>
+      <input type="search" id="buscaTopo" placeholder="Buscar: fuzil, PRF, Manaus…" autocomplete="off" enterkeyhint="search">
+    </form>
+  </div>
+</header>
+<main id="conteudo" class="wrap" tabindex="-1">
+<div class="page-head"><div class="kicker">Observatório</div>
+  <h1>Apreensões no Brasil em números</h1>
+  <p>Painel construído a partir das notícias do acervo, sem duplicatas. Escolha o período, o estado, o tipo e o órgão; clique no mapa ou nos rankings para filtrar.</p></div>
+<form class="obs-filters" id="obsFiltros" aria-label="Filtros do Observatório">
+  <label>Período <select id="oPeriodo"></select></label>
+  <label>Estado <select id="oEstado"><option value="">Brasil</option></select></label>
+  <label>Tipo <select id="oTipo"><option value="">Todos</option></select></label>
+  <label>Órgão <select id="oOrgao"><option value="">Todos</option></select></label>
+  <button type="button" class="btn ghost" id="oLimpar">Limpar</button>
+</form>
+<dl class="obs-kpis" id="oKpis" aria-live="polite"></dl>
+<div class="metric-tabs" id="oMetricas" role="group" aria-label="Indicador do mapa, da série e do ranking"></div>
+<div class="obs-grid">
+  <section class="panel"><h3 id="oMapaTitulo">Mapa</h3><div class="map" id="oMapa"></div></section>
+  <section class="panel"><h3 id="oRankUfTitulo">Estados</h3><div class="rank" id="oRankUf"></div></section>
+</div>
+<section class="panel" style="margin-top:20px"><h3 id="oSerieTitulo">Evolução mensal</h3><div class="chart" id="oSerie"></div>
+  <details class="tbl"><summary>Ver os valores em tabela</summary><div id="oSerieTabela"></div></details></section>
+<div class="obs-row">
+  <section class="panel"><h3>Órgãos que mais aparecem</h3><div class="rank" id="oRankOrgao"></div></section>
+  <section class="panel"><h3>Rodovias citadas</h3><div class="rank" id="oRankRod"></div></section>
+  <section class="panel"><h3>Tipos de apreensão</h3><div class="rank" id="oRankTipo"></div></section>
+</div>
+<section class="panel" style="margin-top:20px"><h3 id="oTopTitulo">Maiores apreensões noticiadas</h3><ol class="toplist" id="oTop"></ol></section>
+<p class="caveat"><strong>Como ler estes números.</strong> Contam notícias e quantidades citadas nelas, depois de agrupar a mesma matéria publicada por vários veículos. Só entram nas somas notícias de apreensões concretas (não balanços, estimativas ou fatos no exterior), com tetos por notícia para descartar erros de leitura. Não são estatísticas oficiais. <a href="dados#metodologia">Ver a metodologia completa</a>.</p>
+</main>
+
+<footer class="footer">
+  <div class="wrap cols">
+    <div><h4>Radar das Apreensões</h4>
+      <p>Central de notícias e observatório de dados sobre apreensões no Brasil, a partir de mais de mil veículos e órgãos públicos.</p>
+      <p>O conteúdo das reportagens pertence aos veículos de origem; cada notícia leva à fonte original.</p></div>
+    <div><h4>Navegue</h4><p><a href="observatorio">Observatório</a></p><p><a href="dados">Dados abertos e metodologia</a></p></div>
+    <div><h4>Preferências</h4><p><button type="button" class="theme-toggle" id="tema">Alternar tema claro/escuro</button></p>
+      <p>Mapa: @svg-maps/brazil (CC BY 4.0). Fontes: Inter e Source Serif 4 (OFL).</p></div>
+  </div>
+</footer>
+</body>
+</html>
