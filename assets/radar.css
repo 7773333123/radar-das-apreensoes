@@ -394,4 +394,30 @@ details.rs-sec { display: block; }
   .fonte-pe .btn { width: 100%; }
 }
 
+/* Texto completo como o órgão editou */
+.tx-sub { font: 700 19px/1.3 var(--serif); margin: 22px 0 10px; color: var(--ink); }
+.tx-lista { margin: 0 0 14px; padding-left: 22px; font: 400 18px/1.6 var(--serif); }
+.tx-lista li { margin-bottom: 4px; }
+/* ---------- Resumo do Radar: destaque, cartões, lei recolhida, veículos ---------- */
+.rs-lead { font: 400 21px/1.6 var(--serif); color: var(--ink); margin: 16px 0 18px; padding-left: 14px; border-left: 4px solid var(--accent); }
+.rs-cards { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 0 0 14px; }
+.rs-card { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 6px 20px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 18px; }
+.rs-card h3 { display: flex; align-items: center; gap: 8px; margin: 3px 0 0; font: 800 12px/1.3 var(--sans); letter-spacing: .07em; text-transform: uppercase; color: var(--ink-2); }
+.rs-card h3 svg { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.rs-card p { margin: 0; font: 400 16.5px/1.6 var(--serif); color: var(--ink); }
+details.rs-lei { border: 1px solid var(--line); border-radius: var(--r); padding: 10px 16px; margin: 0 0 14px; background: var(--surface); }
+details.rs-lei summary { display: flex; justify-content: space-between; align-items: center; cursor: pointer; list-style: none; }
+details.rs-lei summary::-webkit-details-marker { display: none; }
+details.rs-lei h3 { margin: 0; font: 800 12px/1.3 var(--sans); letter-spacing: .07em; text-transform: uppercase; color: var(--ink-2); }
+details.rs-lei summary span { font-size: 12.5px; font-weight: 600; color: var(--data-ink); }
+details.rs-lei[open] summary span { visibility: hidden; }
+details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
+.rs-veiculos h3 { margin: 6px 0 8px; font: 800 12px/1.3 var(--sans); letter-spacing: .07em; text-transform: uppercase; color: var(--ink-2); }
+.rs-veiculos ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.rs-veiculos li { font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); }
+@media (max-width: 760px) {
+  .rs-lead { font-size: 19px; }
+  .rs-card { grid-template-columns: 1fr; }
+}
+
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

@@ -58,6 +58,12 @@ RODOVIA = re.compile(r'\b(?P<r>(?:BR|[A-Z]{2})-\d{2,3})\b')
 GENERICO_MAT = re.compile(r'^(?:drogas?|entorpecentes?|material|produtos?|mercadorias?|itens|objetos?)$', re.I)
 
 
+def _mandados(texto):
+    """'1 mandados de prisão' -> 'Foi cumprido 1 mandado de prisão.'"""
+    texto = re.sub(r'^1 mandados', '1 mandado', texto)
+    return ('Foi cumprido ' if texto.startswith('1 mandado') else 'Foram cumpridos ') + texto + '.'
+
+
 def _num(texto, mult=None):
     t = texto.lower()
     if t in EXTENSO:
@@ -222,7 +228,9 @@ def extrair(titulo, resumo='', texto=''):
     m = MANDADOS.search(tudo)
     if m:
         try:
-            fatos['mandados'] = f'{_fmt(_num(m.group("q"), m.group("mult")))} mandados' + (f' de {m.group("tipo")}' if m.group('tipo') else '')
+            qtd_m = _num(m.group("q"), m.group("mult"))
+            fatos['mandados'] = (f'{_fmt(qtd_m)} {"mandado" if qtd_m == 1 else "mandados"}' +
+                                 (f' de {m.group("tipo")}' if m.group('tipo') else ''))
         except ValueError:
             pass
     m = OPERACAO.search(tudo)
@@ -297,6 +305,86 @@ PERIODO = re.compile(r'\b(madrugada|manhã|tarde|noite)\s+(?:dest[ae]|da|do|de)?
                      r'(segunda|terça|quarta|quinta|sexta|sábado|domingo)(?:-feira)?', re.I)
 
 
+# Presos: só iniciais e idade (o Radar não publica nomes completos de suspeitos).
+PARTICULAS = {'da', 'de', 'do', 'das', 'dos', 'e'}
+NOME = r"([A-ZÁÉÍÓÚÂÊÔÃÕ][a-záéíóúâêôãõçü']+(?:\s+(?:(?:d[aeo]s?|e)\s+)?[A-ZÁÉÍÓÚÂÊÔÃÕ][a-záéíóúâêôãõçü']+){1,5})"
+NOME_IDADE = re.compile(NOME + r",?\s+(?:de\s+|com\s+)?(\d{2})\s+anos")
+NOME_IDADE_PARENTESE = re.compile(NOME + r"\s*\((\d{2})(?:\s+anos)?\)")
+CONTEXTO_PRESO = re.compile(r'pres[oa]s?\b|pris[ãa]o|detid[oa]s?|captur|flagrante|suspeit|investigad|autuad|'
+                            r'conduzid|motorista|condutor|traficante|apreendid[oa] \(adolescente\)|indiciad', re.I)
+NAO_PESSOA = re.compile(r'Pol[íi]cia|Militar|Civil|Federal|Rodovi|Receita|Delegacia|Batalh|Opera[çc]|Justi[çc]a|'
+                        r'Minist[ée]rio|Governo|Secretaria|Prefeitura|Rua|Avenida|Rodovia|Bairro|Jardim|Vila|Parque|'
+                        r'Estado|Brasil|Hospital|Tribunal|Comando|Guarda|Ex[ée]rcito|Marinha|Corpo de Bombeiros|Gefron|Ibama', re.I)
+
+
+NAO_E_PRESO = re.compile(r'v[íi]tima|delegad[oa]|policia(?:l|is)|agente|sargento|cabo\b|soldado|tenente|capit[ãa]o|'
+                         r'major|coronel|comandante|promotor[a]?|juiz[a]?|advogad[oa]|testemunha|m[ãa]e|pai\b|'
+                         r'esposa|marido|vizinh[oa]|irm[ãa]o?|filh[oa]', re.I)
+
+
+def iniciais(nome):
+    return ' '.join(p[0].upper() + '.' for p in nome.split() if p.lower() not in PARTICULAS)
+
+
+PRESO_DEPOIS = re.compile(r'^[^.;]{0,90}?\b(?:foi pres[oa]|foram pres[oa]s|(?:é|está|ficou) pres[oa]|pres[oa] em flagrante|'
+                          r'foi detid[oa]|foi capturad[oa]|foi autuad[oa]|foi conduzid[oa]|recebeu voz de pris)', re.I)
+PRESO_ANTES = re.compile(r'(?:\bpres[oa]s?|\bdetid[oa]s?|\bcapturad[oa]s?|\bprendeu|\bprenderam|\bsuspeit[oa]s?|\binvestigad[oa]s?|'
+                         r'\btraficantes?|\bmotorista|\bcondutor|\bidentificad[oa]s? como)[^.;]{0,40}$', re.I)
+# Perto do nome: vítima, morte ou soltura = não é preso.
+NAO_PRESO_PERTO = re.compile(r'v[íi]tima|morte d|mort[oa]s?\b|morreu|morrem|assassin|execu[çc][ãa]o d|executad|homic[íi]dio d|'
+                             r'matar|mataram|socorrid|acidente|feriment|ferid[oa]|baleado|corpo d|velório|soltar|solt[oa]s?\b|'
+                             r'liberad|absolvid|desaparecid|sequestrad|denunciam|golpe|procurad', re.I)
+
+
+PRISAO = re.compile(r'\bpres[oa]s?\b|\bprend|\bdetid[oa]|\bcaptur|flagrante|\bautuad|voz de pris', re.I)
+
+
+def nomes_dos_presos(texto):
+    """[(nome completo, iniciais)] dos presos identificados (para trocar por iniciais)."""
+    return [(nome, iniciais(nome)) for nome in _presos(texto, so_nomes=True)]
+
+
+def anonimizar(texto, nomes):
+    """Troca o nome completo de cada preso pelas iniciais ("João C. da Silva" -> "J. C. S.")."""
+    for nome, ini in sorted(nomes, key=lambda x: -len(x[0])):
+        texto = re.sub(re.escape(nome), ini, texto)
+    return texto
+
+
+def presos_identificados(texto):
+    return _presos(texto)
+
+
+def _presos(texto, so_nomes=False):
+    """['J. S. (34 anos)', ...]: só quem o texto liga diretamente a uma prisão.
+
+    O nome entra quando vem logo depois de "suspeito/preso/identificado como" ou
+    logo antes de "foi preso/detido/capturado", e sai se houver menção a vítima,
+    morte, acidente ou soltura por perto. Na dúvida, fica de fora.
+    """
+    saida, vistos = [], set()
+    texto = texto or ''
+    for padrao in (NOME_IDADE, NOME_IDADE_PARENTESE):
+        for m in padrao.finditer(texto):
+            nome, idade = m.group(1), int(m.group(2))
+            if NAO_PESSOA.search(nome) or not 12 <= idade <= 95 or len(nome.split()) < 2:
+                continue
+            # Só a frase do nome: do último ponto antes dele ao próximo ponto depois.
+            ini = max(texto.rfind('. ', 0, m.start()), texto.rfind('\n', 0, m.start())) + 1
+            fim_p = [x for x in (texto.find('. ', m.end()), texto.find('\n', m.end())) if x >= 0]
+            fim = min(fim_p) if fim_p else len(texto)
+            frase, antes, depois = texto[ini:fim], texto[ini:m.start()], texto[m.end():fim]
+            if not PRISAO.search(frase) or NAO_PRESO_PERTO.search(frase) or NAO_E_PRESO.search(antes[-35:]):
+                continue
+            if not (PRESO_ANTES.search(antes) or PRESO_DEPOIS.search(depois)):
+                continue
+            rotulo = nome if so_nomes else f'{iniciais(nome)} ({idade} anos)'
+            if rotulo not in vistos:
+                vistos.add(rotulo)
+                saida.append(rotulo)
+    return saida[:8]
+
+
 def detalhes(texto):
     """Como foi a ação, onde estava o material, veículo, rota, crimes e encaminhamento."""
     d = {}
@@ -322,7 +410,10 @@ def detalhes(texto):
         d['crimes'] = crimes[:4]
     m = ENCAMINHAMENTO.search(t)
     if m:
-        d['encaminhamento'] = re.sub(r'\s+', ' ', m.group(1)).strip(' -–')
+        destino = re.sub(r'\s+', ' ', m.group(1))
+        # Só o nome do lugar: corta em "para os procedimentos", "onde", ", e ficará"...
+        destino = re.split(r'\s+(?:para|onde|e|que|a fim|com|junto)\s|,|;|\(', destino)[0]
+        d['encaminhamento'] = destino.strip(' -–')
     idades = []
     for m in IDADE.finditer(t[:3000]):
         v = int(m.group(1))
@@ -330,6 +421,9 @@ def detalhes(texto):
             idades.append(v)
     if idades:
         d['idades'] = idades[:4]
+    presos = presos_identificados(t[:4000])
+    if presos:
+        d['presos_iniciais'] = presos
     m = PERIODO.search(t[:1500])
     if m:
         dia = m.group(2).lower()
@@ -391,7 +485,7 @@ def redigir(fatos, fonte='', data_iso='', uf=''):
     if fatos.get('operacao'):
         frases.append(f'A ação fez parte da {fatos["operacao"]}.')
     if fatos.get('mandados'):
-        frases.append(f'Foram cumpridos {fatos["mandados"]}.')
+        frases.append(_mandados(fatos["mandados"]))
     if fatos.get('presos'):
         n = fatos['presos']
         frases.append('Uma pessoa foi presa.' if n == 1 else f'{_fmt(n)} pessoas foram presas.')

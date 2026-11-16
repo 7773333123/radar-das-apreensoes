@@ -39,6 +39,12 @@ CATEGORIA_NOTA = [
 ]
 CAT_NOME = ['drogas', 'armas e munições', 'contrabando e descaminho', 'veículos', 'dinheiro e valores',
             'crimes ambientais', 'medicamentos e produtos irregulares', 'bloqueio de bens', 'outras apreensões']
+def _mandados(texto):
+    """'1 mandados de prisão' -> 'Foi cumprido 1 mandado de prisão.'"""
+    texto = re.sub(r'^1 mandados', '1 mandado', texto)
+    return ('Foi cumprido ' if texto.startswith('1 mandado') else 'Foram cumpridos ') + texto + '.'
+
+
 def _onde(uf):
     return f'{PREP_UF[uf]} {NOMES_ESTADOS[uf]}' if uf in NOMES_ESTADOS else 'no Brasil'
 
@@ -145,7 +151,15 @@ def resumo_secoes(item, fatos):
 
     # 3. Envolvidos
     frases = []
-    if fatos.get('presos'):
+    identificados = fatos.get('presos_iniciais') or []
+    if identificados:
+        # Só iniciais e idade: "J. C. S., de 34 anos".
+        lista = [re.sub(r' \((\d+) anos\)$', r', de \1 anos', p) for p in identificados]
+        n = max(len(lista), fatos.get('presos') or 0)
+        verbo = 'Foi preso' if n == 1 else 'Foram presos'
+        juntos = lista[0] if len(lista) == 1 else ', '.join(lista[:-1]) + ', e ' + lista[-1]
+        frases.append(f'{verbo} {juntos}.' + (f' Ao todo, {_fmt(n)} pessoas foram presas.' if n > len(lista) else ''))
+    elif fatos.get('presos'):
         frases.append(f'{_pessoas(fatos["presos"]).capitalize()} {"foi presa" if fatos["presos"] == 1 else "foram presas"}'
                       f'{_idades(fatos.get("idades"))}.')
     elif fatos.get('presos_texto'):
@@ -158,7 +172,7 @@ def resumo_secoes(item, fatos):
         else:
             frases.append(f'Segundo a reportagem, {fatos["presos_texto"]}.')
     if fatos.get('mandados'):
-        frases.append(f'Foram cumpridos {fatos["mandados"]}.')
+        frases.append(_mandados(fatos["mandados"]))
     if fatos.get('crimes'):
         frases.append('Os envolvidos podem responder por ' + _juntar(fatos['crimes']) + '.')
     if fatos.get('encaminhamento'):
