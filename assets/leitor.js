@@ -1,5 +1,5 @@
 /* Leitor de notícias (janela), galeria de fotos e visualizador em tela cheia. */
-import { $, esc, num, dataBR, urlSegura, debounce, imgTag, placeholder, NOME_UF } from './core.js';
+import { $, esc, num, dataBR, urlSegura, debounce, imgTag, placeholder, NOME_UF, urlNoticia } from './core.js';
 
 const HTML = `
 <dialog class="reader" id="leitor" aria-labelledby="leitorTitulo">
@@ -152,7 +152,7 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
     }
     $('leitorLink').addEventListener('click', (e) => { if (e.currentTarget.getAttribute('aria-disabled') === 'true') e.preventDefault(); });
     $('compartilhar').addEventListener('click', async () => {
-      const link = `${location.origin}/#noticia-${n.i}`;
+      const link = `${location.origin}${urlNoticia(n)}`;
       try {
         if (navigator.share) await navigator.share({ title: n.titulo, url: link });
         else { await navigator.clipboard.writeText(link); $('compartilhar').textContent = 'link copiado ✓'; }

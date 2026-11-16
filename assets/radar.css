@@ -63,7 +63,7 @@ button, input, select { font: inherit; color: inherit; }
 .brand-name { font: 700 26px/1 var(--serif); letter-spacing: -.01em; }
 .brand-name small { display: block; font: 600 10.5px/1.4 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
 .mainnav { display: flex; gap: 4px; margin-left: auto; }
-.mainnav a { padding: 8px 12px; border-radius: var(--r); font-weight: 600; font-size: 14.5px; color: var(--ink-2); }
+.mainnav a { padding: 8px 12px; border-radius: var(--r); font-weight: 600; font-size: 14.5px; color: var(--ink-2); white-space: nowrap; flex: none; }
 .mainnav a:hover { background: var(--surface-2); text-decoration: none; }
 .mainnav a[aria-current="page"] { color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent); border-radius: 0; }
 .searchbox { position: relative; width: 260px; }
@@ -308,7 +308,8 @@ details.tbl th, details.tbl td { text-align: left; padding: 5px 6px; border-bott
   .topline span:last-child { display: none; }
   .brandbar { flex-wrap: wrap; gap: 10px; }
   .brand-name { font-size: 22px; }
-  .mainnav { margin-left: 0; order: 3; width: 100%; overflow-x: auto; }
+  .mainnav { margin-left: 0; order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .mainnav a { padding: 8px 10px; font-size: 14px; }
   .searchbox { order: 2; width: auto; flex: 1; min-width: 140px; }
   .lead-side, .trio, .editorias { grid-template-columns: 1fr; }
   .editoria .first .story { grid-template-columns: 1fr; }
@@ -326,4 +327,37 @@ details.tbl th, details.tbl td { text-align: left; padding: 5px 6px; border-bott
   .reader-text { font-size: 18px; }
   .viewer-stage { padding: 0 8px; }
 }
+/* ---------- páginas próprias (notícia, estado, tipo, relatório, institucionais) ---------- */
+.artigo { max-width: 760px; margin: 28px auto 0; }
+.artigo h2 { font: 800 12.5px/1.2 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin: 30px 0 10px; }
+.artigo .kicker a { color: inherit; }
+.art-titulo { font: 700 clamp(28px, 4.2vw, 44px)/1.12 var(--serif); letter-spacing: -.015em; margin: 8px 0 10px; overflow-wrap: anywhere; }
+.art-fotos { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 18px 0 6px; border-radius: var(--r); }
+.art-fotos img { flex: 0 0 100%; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; scroll-snap-align: start; border-radius: var(--r); background: var(--surface-2); }
+.pg-head { max-width: 860px; padding-top: 28px; }
+.pg-head .dek { font-size: 18px; }
+.duas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 20px; }
+.kpis-4 { grid-template-columns: repeat(2, 1fr); }
+.note { font-size: 12.5px; color: var(--muted); }
+.barras { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.barras li { display: grid; grid-template-columns: 150px minmax(0, 1fr) 56px; gap: 10px; align-items: center; font-size: 14px; }
+.barras .bar { height: 10px; background: var(--zero); border-radius: 999px; overflow: hidden; }
+.barras .bar i { display: block; height: 100%; background: var(--data); }
+.barras .val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+.top { margin: 0; padding-left: 20px; display: grid; gap: 10px; font-size: 14.5px; }
+.top strong { font-variant-numeric: tabular-nums; }
+.top .meta { display: block; margin-top: 2px; }
+.meses { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.meses a { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); text-decoration: none; }
+.meses a:hover { border-color: var(--data); }
+.meses strong { text-transform: capitalize; }
+.meses span { font-size: 12.5px; color: var(--muted); }
+.lista-texto { font: 400 18px/1.6 var(--serif); padding-left: 22px; }
+.lista-texto li { margin-bottom: 8px; }
+.more .btn + .btn { margin-left: 8px; }
+@media (max-width: 760px) {
+  .duas { grid-template-columns: 1fr; }
+  .barras li { grid-template-columns: 110px minmax(0, 1fr) 48px; }
+}
+
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

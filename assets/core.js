@@ -34,6 +34,11 @@ export function qtd(valor, unidade) {
   return num(valor);
 }
 
+/** Endereço da página própria da notícia (o mesmo slug de api/pagina.js). */
+export const slug = (t) => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').split('-').slice(0, 12).join('-');
+export const urlNoticia = (n) => `/noticia/${n.i}-${slug(n.titulo ?? n.t)}`;
+
 // ---------- ícones das editorias (traço simples, sem texto embutido) ----------
 const I = (d) => `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
 export const ICONES = [
