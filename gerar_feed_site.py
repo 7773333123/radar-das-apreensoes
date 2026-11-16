@@ -49,6 +49,7 @@ def identificador(n):
 
 # Tipos e relevância: classificar.py (regras próprias; ignora a classificação do coletor antigo).
 from mesclar_acervo import chave as chave_acervo
+from ler_materias import foto_alheia
 from classificar import CATEGORIAS, REGRAS, relevante, categorias as classificar_categorias
 
 
@@ -103,6 +104,37 @@ def juntar_fatos(lista):
     return junto
 
 
+def _chave_foto(url):
+    return re.sub(r'[?#].*$', '', url or '').lower()
+
+
+def contar_fotos_repetidas(noticias, limite=3):
+    contagem = {}
+    for n in noticias:
+        if isinstance(n, dict):
+            for foto in set(_chave_foto(f) for f in (n.get('imagens') or [])[1:]):
+                contagem[foto] = contagem.get(foto, 0) + 1
+    return {f for f, c in contagem.items() if c >= limite}
+
+
+def ajustar_instagram(n):
+    """Post do Instagram: veículo = conta que publicou; título = 1ª frase; resumo sem curtidas."""
+    n = dict(n)
+    resumo = str(n.get('descricao') or n.get('resumo') or '')
+    m = re.match(r'^(?:[\d.,]+ likes?, [\d.,]+ comments? - )?([\w.]+) (?:no|on) [^:]{3,40}: ?["“]?(.*?)["”]?\.?$', resumo, re.S)
+    conta = m.group(1) if m else ''
+    if m:
+        n['descricao'] = m.group(2).strip()
+        n['resumo'] = ''
+    titulo = re.sub(r'\s*[-|]\s*Instagram\s*$', '', str(n.get('titulo') or ''))
+    frase = re.split(r'(?<=[.!?])\s+|\s+[|•]\s+|[\u2063\u200b\n]', titulo.strip())[0]
+    frase = re.sub(r'\s+', ' ', frase).strip(' :-')
+    if len(frase) > 120:
+        frase = frase[:120].rsplit(' ', 1)[0] + '…'
+    n['titulo'] = frase
+    return (f'{conta} (Instagram)' if conta else 'Instagram'), n
+
+
 def main():
     dados = json.loads(ORIGEM.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
@@ -112,6 +144,9 @@ def main():
     detalhes = {}
     fatos_por_i = {}
     fatos_titulo = {}
+    # Anti-imagem: foto que aparece na galeria de 3+ notícias diferentes é de
+    # anúncio, barra lateral ou chamada de outra matéria, não do fato.
+    repetidas = contar_fotos_repetidas(noticias)
     for n in noticias:
         if not isinstance(n, dict):
             continue
@@ -120,6 +155,8 @@ def main():
             continue
         usados.add(i)
         fonte = str(n.get('fonte') or '').strip()
+        if fonte == 'Instagram':
+            fonte, n = ajustar_instagram(n)
         # Notícias de Portugal (o Google Notícias em português mistura os dois países).
         if str(n.get('dominio_fonte') or '').lower().endswith('.pt'):
             portugal += 1
@@ -144,10 +181,13 @@ def main():
         else:
             links[i] = url_publica(n.get('url_google_noticias') or n.get('url'))
         fotos = []
-        for foto in [n.get('imagem_url')] + list(n.get('imagens') or []):
+        for k, foto in enumerate([n.get('imagem_url')] + list(n.get('imagens') or [])):
             foto = url_publica(foto)
-            if foto and foto not in fotos:
-                fotos.append(foto)
+            if not foto or foto in fotos:
+                continue
+            if k > 0 and (foto_alheia(foto, '', '', '') or _chave_foto(foto) in repetidas):
+                continue  # galeria: só fotos da própria matéria
+            fotos.append(foto)
         if fotos:
             item['img'] = fotos[0]
         if len(fotos) > 1:
