@@ -32,7 +32,7 @@ from pathlib import Path
 from localizar_uf import inferir_uf
 from resumo_fatos import extrair
 from contexto import resumo_ampliado
-from estatisticas import MATERIAIS, ORGAOS_NOMES, enriquecer, exportar
+from estatisticas import MATERIAIS, ORGAOS_NOMES, enriquecer, exportar, quantidades
 
 PASTA = Path(__file__).resolve().parent
 ORIGEM = PASTA / 'noticias.json'
@@ -272,6 +272,7 @@ def main():
     usados = set()
     detalhes = {}
     fatos_por_i = {}
+    fatos_titulo = {}
     for n in noticias:
         if not isinstance(n, dict):
             continue
@@ -329,7 +330,12 @@ def main():
             detalhe['g'] = fotos
         # Resumo do Radar: fatos da página original (ler_materias.py) ou, na falta
         # dela, do título e do resumo da fonte; redigido com frases próprias.
-        fatos = n.get('fatos') or extrair(titulo, resumo)
+        # Fatos do título e do resumo da fonte: os mais confiáveis para as
+        # quantidades (o texto da página pode trazer números de outras matérias).
+        do_titulo = extrair(titulo, resumo)
+        if do_titulo:
+            fatos_titulo[i] = do_titulo
+        fatos = n.get('fatos') or do_titulo
         if fatos:
             fatos_por_i[i] = fatos
             detalhe['f'] = fatos
@@ -349,10 +355,20 @@ def main():
     # Quantidades, órgãos e rodovia só depois de agrupar as duplicatas: a versão
     # exibida usa os próprios fatos ou, se não tiver, os da fonte mais completa.
     for item in saida:
-        candidatos = [fatos_por_i.get(item['i'])] + [fatos_por_i.get(o[2]) for o in item.get('o', [])]
-        candidatos = [f for f in candidatos if f]
-        if candidatos:
-            enriquecer(item, max(candidatos, key=lambda f: (len(f.get('apreendido', [])), len(f))))
+        ids = [item['i']] + [o[2] for o in item.get('o', [])]
+        # Quantidades: primeiro as do título/resumo (desta versão ou das outras);
+        # só sem nenhuma, as lidas na página. Órgãos e rodovia vêm da mais completa.
+        com_numero = [fatos_titulo[k] for k in ids if k in fatos_titulo and quantidades(fatos_titulo[k])]
+        candidatos = [f for f in [fatos_por_i.get(k) for k in ids] if f]
+        if com_numero or candidatos:
+            base = dict(max(candidatos, key=lambda f: (len(f.get('apreendido', [])), len(f)))) if candidatos else {}
+            if com_numero:
+                base['apreendido'] = com_numero[0].get('apreendido', [])
+                if com_numero[0].get('valor'):
+                    base['valor'] = com_numero[0]['valor']
+                elif 'valor' in base:
+                    del base['valor']
+            enriquecer(item, base)
     # Resumo do Radar em parágrafos: fatos, quem atuou, base legal e outros veículos.
     for item in saida:
         fatos = juntar_fatos([fatos_por_i.get(item['i'])] + [fatos_por_i.get(o[2]) for o in item.get('o', [])])
