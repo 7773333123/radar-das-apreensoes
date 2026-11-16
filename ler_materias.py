@@ -35,7 +35,7 @@ LICENCA = re.compile(
     r'Creative Commons Atribui[çc][ãa]o(?:-SemDeriva[çc][õo]es|-CompartilhaIgual)?\s*[\d.]*(?:\s*N[ãa]o Adaptada|\s*Internacional|\s*Brasil)?',
     re.I)
 NAO_COMERCIAL = re.compile(r'N[ãa]oComercial|licenses/by-nc', re.I)
-VERSAO = 9  # 9 = fotos só da matéria (sem anúncios e chamadas); 2 = galeria; 3 = fatos; 4-5 = trecho; 6 = íntegra oficial; 7 = fatos do corpo; 8 = trecho proporcional e detalhes da ação. Versões anteriores são relidas
+VERSAO = 10  # 10 = trecho de 70% da reportagem (atravessa intertítulos); 9 = fotos só da matéria (sem anúncios e chamadas); 2 = galeria; 3 = fatos; 4-5 = trecho; 6 = íntegra oficial; 7 = fatos do corpo; 8 = trecho proporcional e detalhes da ação. Versões anteriores são relidas
 MAX_FOTOS = 12
 NAO_FOTO = re.compile(r'logo|icon|icone|avatar|sprite|banner|placeholder|blank|pixel|spacer|loading|selo|'
                       r'whatsapp-share|/ads?/|publicidade|video\.glbimg|/x240/|\.svg(?:$|\?)|\.gif(?:$|\?)', re.I)
@@ -43,9 +43,9 @@ NAO_FOTO = re.compile(r'logo|icon|icone|avatar|sprite|banner|placeholder|blank|p
 RUIDO = re.compile(r'^(?:Leia (?:tamb[ée]m|mais)|Veja (?:tamb[ée]m|mais|o v[íi]deo)|Siga|Assine|Clique|Receba|Inscreva|'
                    r'Participe|Compartilhe|Acesse|Baixe|Entre (?:no|em) nosso|Publicidade|Continua (?:depois|ap[óo]s)|'
                    r'Foto:|Imagem:|Cr[ée]dito|Reprodu[çc][ãa]o|Por\s+\w+\s*$|Atualizad[oa]|Publicad[oa] em)', re.I)
-# Citação proporcional (Lei 9.610/98, art. 46, III): a abertura da reportagem,
-# até 1.500 caracteres e nunca mais que metade do texto original.
-TRECHO_MIN, TRECHO_MAX, TRECHO_FRACAO = 600, 1500, 0.5
+# Trecho da reportagem com crédito e link (decisão do responsável pelo site):
+# 70% do texto original, sempre terminando numa frase; o restante fica só no site de origem.
+TRECHO_MIN, TRECHO_MAX, TRECHO_FRACAO = 600, 15000, 0.7
 # Sites de órgãos públicos (polícias, secretarias, gov.br, Justiça, MP): notas
 # oficiais feitas para divulgação, reproduzidas na íntegra com crédito.
 OFICIAL = re.compile(r'\.(?:gov|jus|mp|leg|def)\.br$', re.I)
@@ -102,7 +102,7 @@ def corpo_da_materia(pagina):
         paragrafos = [p for p in paragrafos if len(p) > 40 and not CONTATO.match(p)]
         if sum(map(len, paragrafos)) > sum(map(len, melhor)):
             melhor = paragrafos
-    return melhor[:40] if sum(map(len, melhor)) > 400 else []
+    return melhor[:80] if sum(map(len, melhor)) > 400 else []
 
 
 def corpo_estruturado(pagina):
@@ -130,44 +130,44 @@ def corpo_estruturado(pagina):
 
 
 def corpo_limpo(paragrafos):
-    """Parágrafos da reportagem, sem chamadas, assinaturas e manchetes de outras matérias."""
-    saida = []
+    """Parágrafos da reportagem, sem chamadas, assinaturas e manchetes de outras matérias.
+
+    Linha curta sem pontuação no meio do texto é intertítulo: é pulada e a
+    leitura continua. Duas seguidas (ou no fim) = lista de outras notícias: para.
+    """
+    saida, sem_ponto = [], 0
     for p in paragrafos:
         p = p.strip()
         if not p or RUIDO.match(p) or CONTATO.match(p) or p.count('|') > 1:
             continue
         if not re.search(r'[.!?…:;)"”»]$', p):
-            if len(saida) >= 2 and len(p) < 160:
-                break  # lista de outras notícias no fim da página
             if len(p) < 160:
+                sem_ponto += 1
+                if len(saida) >= 2 and sem_ponto >= 2:
+                    break  # lista de outras notícias no fim da página
                 continue
+        sem_ponto = 0
         saida.append(p)
     return saida if sum(map(len, saida)) >= 200 else []
 
 
 def trecho_de_abertura(paragrafos):
-    """Primeiros parágrafos da reportagem (o lide), para citação com crédito e link.
+    """Trecho da reportagem, do início, para exibir com crédito e link.
 
-    Até TRECHO_MAX caracteres e no máximo TRECHO_FRACAO do texto da reportagem,
-    sempre no fim de uma frase; o restante fica só no site de origem.
+    TRECHO_FRACAO (70%) do texto da reportagem, sempre no fim de uma frase;
+    o restante fica só no site de origem.
     """
-    corpo = sum(len(p) for p in corpo_limpo(paragrafos)) or sum(len(p) for p in paragrafos)
+    limpos = corpo_limpo(paragrafos) or [p.strip() for p in paragrafos]
+    corpo = sum(len(p) for p in limpos)
     TRECHO_MAX = min(globals()['TRECHO_MAX'], int(corpo * TRECHO_FRACAO))
     TRECHO_MIN = min(globals()['TRECHO_MIN'], TRECHO_MAX)
     partes, total = [], 0
-    for p in paragrafos[:15]:
-        p = p.strip()
+    for p in limpos[:80]:
         if len(p) < 40 or RUIDO.match(p) or CONTATO.match(p) or p.count('|') > 1:
             continue
-        # Parágrafo de reportagem termina em pontuação; sem ela é chamada para
-        # outra matéria ("Internacional vence Flamengo..."): a reportagem acabou.
         if not re.search(r'[.!?…:;)"”»]$', p):
-            if partes:
-                break
-            continue
+            continue  # intertítulo
         if total + len(p) > TRECHO_MAX:
-            if total >= TRECHO_MIN:
-                break
             frases = re.split(r'(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÇ“"])', p)
             corte = ''
             for f in frases:
@@ -418,7 +418,7 @@ def ler(url, timeout):
     trecho = trecho_de_abertura(base_trecho)
     if trecho:
         resultado['trecho'] = trecho
-        resultado['tamanho_texto'] = sum(len(p) for p in corpo_limpo(base_trecho)) or sum(map(len, base_trecho))
+        resultado['tamanho_texto'] = sum(len(p) for p in corpo_limpo(base_trecho)) or sum(len(p.strip()) for p in base_trecho)
     licenca = LICENCA.search(pagina)
     if licenca and not NAO_COMERCIAL.search(pagina[max(0, licenca.start() - 300):licenca.end() + 300]):
         texto = corpo_limpo(corpo_da_materia(pagina))
