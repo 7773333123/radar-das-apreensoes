@@ -74,6 +74,19 @@ function renderInicio() {
     return Math.max(0.2, p);
   };
   const nota = (n) => importancia(n) * Math.pow(0.5, horas(n) / 12);
+  const tipo = (n) => n.cats[0] ?? 8;
+  const tamanho = (n) => {
+    const q = n.q || {};
+    switch (tipo(n)) {
+      case 0: return (q.coc || 0) + (q.mac || 0) + (q.skh || 0) + (q.cra || 0) + (q.dro || 0);   // kg de droga
+      case 1: return (q.fuz || 0) * 10 + (q.arm || 0) + (q.mun || 0) / 100;                       // fuzis pesam mais
+      default: return n.vq || 0;                                                                   // valor em R$
+    }
+  };
+  const tamanhoNo = (n, c) => tamanho({ ...n, cats: [c] });
+  const desdobramento = (n) => /\b(solta|soltura|liberad[oa]|absolvid|julgament|condenad|habeas|den[uú]ncia|audi[êe]ncia|foragid|incinera|destr[oó]i|queima)/i.test(n.titulo);
+  const ordemPorTipo = (a, b) => (desdobramento(a) - desdobramento(b)) || (tipo(a) - tipo(b)) ||
+    (tamanho(b) - tamanho(a)) || (importancia(b) - importancia(a)) || (b.data - a.data);
   const comFoto = ns.filter((n) => n.img && n.data && n.data.getTime() <= agora + 3600000);
   // Destaques = notícias DO DIA (horário de Brasília), da mais relevante para a
   // menos relevante: maior quantidade apreendida primeiro, depois repercussão.
@@ -86,8 +99,11 @@ function renderInicio() {
     : comFoto.filter((n) => [hoje, ontem].includes(diaBR(n.data))).length >= 5
       ? comFoto.filter((n) => [hoje, ontem].includes(diaBR(n.data)))
       : comFoto.slice(0, 20);
-  const ordem = (a, b) => importancia(b) - importancia(a) || b.data - a.data;
-  const destaques = [...pool].sort(ordem);
+  // Ordem dos destaques: por TIPO (drogas, armas, contrabando, veículos,
+  // dinheiro, ambientais, medicamentos, patrimoniais, outras) e, dentro de cada
+  // tipo, da maior apreensão para a menor. Desdobramentos (soltura, condenação,
+  // incineração) vão para o fim.
+  const destaques = [...pool].sort(ordemPorTipo);
   const manchete = destaques[0] || ns[0];
   const usados = new Set([manchete]);
   const lado = destaques.slice(1, 5);
@@ -107,7 +123,8 @@ function renderInicio() {
   // Editorias: os tipos mais noticiados em 30 dias.
   const porCat = new Map();
   r30.forEach((n) => n.cats.forEach((c) => { if (c !== 8) porCat.set(c, (porCat.get(c) || []).concat(n)); }));
-  const editorias = [...porCat].sort((a, b) => b[1].length - a[1].length).slice(0, 4);
+  // Editorias na mesma ordem dos tipos (drogas primeiro), as 4 primeiras com notícias.
+  const editorias = [...porCat].sort((a, b) => a[0] - b[0]).slice(0, 4);
 
   $('inicio').innerHTML =
     `<section class="lead" aria-label="Destaques">` +
@@ -129,7 +146,10 @@ function renderInicio() {
     `</section>` +
     `<div class="editorias">${editorias.map(([c, itens]) => {
       // Cada matéria aparece em uma só editoria da página inicial.
-      const livres = itens.filter((n) => !usados.has(n));
+      // Na editoria: as maiores apreensões dos últimos 7 dias primeiro (daquele tipo).
+      const porTamanho = (a, b) => (desdobramento(a) - desdobramento(b)) || (tamanhoNo(b, c) - tamanhoNo(a, c)) || (b.data - a.data);
+      const semana = itens.filter((n) => !usados.has(n) && horas(n) <= 7 * 24).sort(porTamanho);
+      const livres = semana.length >= 4 ? semana : itens.filter((n) => !usados.has(n));
       const primeira = livres.find((n) => n.img) || livres[0] || itens[0];
       usados.add(primeira);
       const resto = livres.filter((n) => n !== primeira && !usados.has(n)).slice(0, 3);
