@@ -35,10 +35,15 @@ LICENCA = re.compile(
     r'Creative Commons Atribui[çc][ãa]o(?:-SemDeriva[çc][õo]es|-CompartilhaIgual)?\s*[\d.]*(?:\s*N[ãa]o Adaptada|\s*Internacional|\s*Brasil)?',
     re.I)
 NAO_COMERCIAL = re.compile(r'N[ãa]oComercial|licenses/by-nc', re.I)
-VERSAO = 3  # 2 = galeria de fotos; 3 = fatos da página (resumo do Radar). Versões anteriores são relidas
+VERSAO = 4  # 2 = galeria; 3 = fatos da página; 4 = trecho de abertura citado. Versões anteriores são relidas
 MAX_FOTOS = 12
 NAO_FOTO = re.compile(r'logo|icon|icone|avatar|sprite|banner|placeholder|blank|pixel|spacer|loading|selo|'
                       r'whatsapp-share|/ads?/|publicidade|video\.glbimg|/x240/|\.svg(?:$|\?)|\.gif(?:$|\?)', re.I)
+# Parágrafos que não fazem parte da reportagem (chamadas, assinatura, redes sociais).
+RUIDO = re.compile(r'^(?:Leia (?:tamb[ée]m|mais)|Veja (?:tamb[ée]m|mais|o v[íi]deo)|Siga|Assine|Clique|Receba|Inscreva|'
+                   r'Participe|Compartilhe|Acesse|Baixe|Entre (?:no|em) nosso|Publicidade|Continua (?:depois|ap[óo]s)|'
+                   r'Foto:|Imagem:|Cr[ée]dito|Reprodu[çc][ãa]o|Por\s+\w+\s*$|Atualizad[oa]|Publicad[oa] em)', re.I)
+TRECHO_MIN, TRECHO_MAX = 600, 1000
 CONTATO = re.compile(r'^(?:Comunica[çc][ãa]o Social|Assessoria de|Ascom|Tel\.?:|E-?mail:|Fonte:|Fotos?:|@)', re.I)
 
 
@@ -93,6 +98,37 @@ def corpo_da_materia(pagina):
         if sum(map(len, paragrafos)) > sum(map(len, melhor)):
             melhor = paragrafos
     return melhor[:40] if sum(map(len, melhor)) > 400 else []
+
+
+def trecho_de_abertura(paragrafos):
+    """Primeiros parágrafos da reportagem (o lide), para citação com crédito e link.
+
+    Para entre TRECHO_MIN e TRECHO_MAX caracteres, sempre no fim de uma frase; o
+    restante da reportagem fica só no site de origem.
+    """
+    partes, total = [], 0
+    for p in paragrafos[:15]:
+        p = p.strip()
+        if len(p) < 40 or RUIDO.match(p) or CONTATO.match(p) or p.count('|') > 1:
+            continue
+        if total + len(p) > TRECHO_MAX:
+            if total >= TRECHO_MIN:
+                break
+            frases = re.split(r'(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÇ“"])', p)
+            corte = ''
+            for f in frases:
+                if total + len(corte) + len(f) + 1 > TRECHO_MAX:
+                    break
+                corte = (corte + ' ' + f).strip()
+            if corte:
+                partes.append(corte)
+            break
+        partes.append(p)
+        total += len(p) + 2
+        if total >= TRECHO_MAX:
+            break
+    texto = '\n\n'.join(partes)
+    return texto if len(texto) >= 200 else ''
 
 
 def melhor_do_srcset(srcset):
@@ -238,6 +274,9 @@ def ler(url, timeout):
     if texto_pagina:
         from resumo_fatos import extrair
         resultado['fatos'] = extrair(titulo_pagina(metas, pagina), m.get('og:description') or '', texto_pagina)
+    trecho = trecho_de_abertura(corpo_da_materia(pagina) or [p for p in paragrafos if len(p) > 40])
+    if trecho:
+        resultado['trecho'] = trecho
     licenca = LICENCA.search(pagina)
     if licenca and not NAO_COMERCIAL.search(pagina[max(0, licenca.start() - 300):licenca.end() + 300]):
         texto = corpo_da_materia(pagina)
@@ -308,6 +347,8 @@ def main():
                 resumos += 1
             if r.get('fatos'):
                 n['fatos'] = r['fatos']
+            if r.get('trecho'):
+                n['trecho'] = r['trecho']
             if r.get('texto'):
                 n['texto_integral'] = r['texto']
                 n['licenca_texto'] = r['licenca']
