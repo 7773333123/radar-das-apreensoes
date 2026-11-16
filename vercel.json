@@ -125,5 +125,6 @@
       "permanent": true
     }
   ],
-  "buildCommand": "node scripts/baixar-dados.js"
+  "buildCommand": "node scripts/baixar-dados.js",
+  "outputDirectory": "public"
 }
