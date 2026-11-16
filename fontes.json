@@ -5,6 +5,118 @@
  "observacao": "Domínios de veículos e órgãos que já publicaram notícias de apreensões (extraídos do próprio acervo). São consultados em rodízio no Google Notícias (site:) e têm o RSS procurado por descobrir_feeds.py. \"uf\" só é preenchida quando >= 80% das notícias do site são do mesmo estado.",
  "fontes": [
   {
+   "nome": "Correio do Estado",
+   "dominio": "correiodoestado.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "Dourados Agora",
+   "dominio": "douradosagora.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "O Progresso",
+   "dominio": "progresso.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "Ponta Porã Informa",
+   "dominio": "pontaporainforma.com.br",
+   "uf": "MS",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "Guaíra Notícias",
+   "dominio": "guairanoticias.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "Portal Costa Oeste",
+   "dominio": "costaoeste.com.br",
+   "uf": "PR",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "J1 Diário",
+   "dominio": "j1diario.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "Portal Prudentino",
+   "dominio": "portalprudentino.com.br",
+   "uf": "SP",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "Rondônia no Ar",
+   "dominio": "rondonianoar.com.br",
+   "uf": "RO",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "Juruá Online",
+   "dominio": "juruaonline.com.br",
+   "uf": "AC",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "Rede Onda Digital",
+   "dominio": "redeondadigital.com.br",
+   "uf": "AM",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "Roraima em Tempo",
+   "dominio": "roraimaemtempo.com.br",
+   "uf": "RR",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "Expresso MT (Cáceres)",
+   "dominio": "expressomt.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "Jornal Oeste (Cáceres)",
+   "dominio": "jornaloeste.com.br",
+   "uf": "MT",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "Notícia Marajó (releases da PF)",
+   "dominio": "noticiamarajo.com.br",
+   "uf": "",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
+   "nome": "Canal Rural",
+   "dominio": "canalrural.com.br",
+   "uf": "",
+   "noticias_no_acervo": 0,
+   "origem": "pesquisa de fronteira (nov/2026)"
+  },
+  {
    "nome": "G1",
    "dominio": "g1.globo.com",
    "uf": "",
@@ -7763,5 +7875,6 @@
    "tipo": "Guardas Municipais",
    "status": "pendente de verificar domínio e feed"
   }
- ]
+ ],
+ "total": 1149
 }

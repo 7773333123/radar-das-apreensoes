@@ -138,10 +138,29 @@ def configurar_git():
     sh('git', 'config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com')
 
 
+def unir_com_release():
+    """Une o acervo desta execução à versão atual da release (nunca perde notícias).
+
+    Protege contra execuções que coletaram a partir de um acervo antigo ou
+    incompleto: o resultado é sempre a união das duas versões.
+    """
+    if not ponteiro().get('acervo'):
+        return
+    nossa = TMP / 'noticias_coletadas.json'
+    if ACERVO.exists():
+        shutil.copy2(ACERVO, nossa)
+    baixar()
+    if nossa.exists():
+        sh(sys.executable, 'mesclar_acervo.py', str(nossa))
+    sh(sys.executable, 'gerar_feed_site.py')
+    sh(sys.executable, 'compactar_acervo.py')
+
+
 def salvar(msg, extras, sem_dados=False):
     configurar_git()
     if not sem_dados:
         garantir_release()
+        unir_com_release()
     for tentativa in range(1, 7):
         subidos = []
         if not sem_dados:
