@@ -8,7 +8,7 @@ duplicatas). Nenhuma frase da reportagem é copiada.
 import re
 
 from localizar_uf import NOMES_ESTADOS
-from resumo_fatos import PENAS, PREP_UF, _data_extenso, _fmt, _juntar, redigir
+from resumo_fatos import PREP_UF, _data_extenso, _fmt, _juntar, redigir
 
 ORGAO_PAPEL = {
     'Polícia Federal': 'que investiga crimes federais, como o tráfico internacional de drogas e de armas, o contrabando e os crimes em áreas de fronteira',
@@ -189,29 +189,6 @@ def resumo_secoes(item, fatos):
     agentes = _agentes({k: v for k, v in fatos.items() if k != 'rodovia'}, uf)
     if agentes:
         secoes.append(('Quem atuou', agentes))
-
-    # 5. O que diz a lei
-    leis = []
-    crimes = list(fatos.get('crimes') or [])
-    titulo = item.get('t', '')
-    if not crimes:
-        if re.search(r'tr[áa]fic', titulo, re.I) and re.search(r'drog|entorpec|coca|maconha|crack|skunk', titulo + ' ' + ' '.join(fatos.get('apreendido', [])), re.I):
-            crimes.append('tráfico de drogas')
-        if re.search(r'contrabando', titulo, re.I):
-            crimes.append('contrabando')
-        if re.search(r'descaminho', titulo, re.I):
-            crimes.append('descaminho')
-        if re.search(r'lavagem', titulo, re.I):
-            crimes.append('lavagem de dinheiro')
-        if re.search(r'recepta', titulo, re.I):
-            crimes.append('receptação')
-    for crime in crimes[:2]:
-        if crime in PENAS:
-            leis.append(PENAS[crime])
-    if not leis and cats and CATEGORIA_NOTA[cats[0]]:
-        leis.append(CATEGORIA_NOTA[cats[0]])
-    if leis:
-        secoes.append(('O que diz a lei', ' '.join(leis)))
 
     # 6. Repercussão
     outras = [o[0] for o in item.get('o', []) if o and o[0]]

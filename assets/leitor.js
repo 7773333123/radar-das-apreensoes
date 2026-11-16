@@ -43,7 +43,7 @@ function textoOriginalHTML(paragrafos) {
 }
 
 // Resumo do Radar: "O que aconteceu" em destaque; ação, envolvidos e órgãos em
-// cartões; a lei recolhida; quem noticiou em etiquetas.
+// cartões; quem noticiou em etiquetas.
 const ICONE_SECAO = {
   'Como foi a ação': '<path d="M3 12h4l3-7 4 14 3-7h4"/>',
   'Envolvidos e próximos passos': '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
@@ -54,11 +54,9 @@ function radarHTML(secoes, veiculos) {
   const icone = (t) => (ICONE_SECAO[t] ? `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONE_SECAO[t]}</svg>` : '');
   const lead = secoes.find(([t]) => t === 'O que aconteceu' || !t);
   const cartoes = secoes.filter(([t]) => ICONE_SECAO[t]);
-  const lei = secoes.find(([t]) => t === 'O que diz a lei');
   return `<section class="bloco radar"><header class="bloco-cab"><h2>Resumo do Radar</h2><p>Redigido pelo Radar a partir dos fatos publicados</p></header>` +
     (lead ? `<p class="rs-lead">${esc(lead[1])}</p>` : '') +
     (cartoes.length ? `<div class="rs-cards">${cartoes.map(([t, x]) => `<section class="rs-card"><h3>${icone(t)}${esc(t)}</h3><p>${esc(x)}</p></section>`).join('')}</div>` : '') +
-    (lei ? `<details class="rs-lei"><summary><h3>O que diz a lei</h3><span>ver</span></summary><p>${esc(lei[1])}</p></details>` : '') +
     (veiculos.length > 1 ? `<div class="rs-veiculos"><h3>Quem noticiou</h3><ul>${veiculos.map((v) => `<li>${esc(v)}</li>`).join('')}</ul></div>` : '') +
     '</section>';
 }
