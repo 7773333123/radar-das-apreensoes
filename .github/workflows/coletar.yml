@@ -67,9 +67,9 @@ jobs:
           fi
       - name: Coletar feeds dos veículos (link, foto e estado)
         run: python coletar_feeds_estaduais.py
-      - name: Buscadores alternativos (Bing Notícias e GDELT)
+      - name: Buscador alternativo (Bing Notícias)
         continue-on-error: true
-        run: python buscadores.py --limite-bing 60 --gdelt
+        run: python buscadores.py --limite-bing 60
       - name: Recuperar links originais
         run: |
           python recuperar_links.py --limite 600 --trabalhadores 4 --diagnostico

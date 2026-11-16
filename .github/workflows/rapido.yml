@@ -51,8 +51,8 @@ jobs:
             python coletar_feeds_estaduais.py || echo 'Feeds com falha; seguindo.'
             # 15 sites por rodada: as 1.100+ fontes giram em ~1 dia.
             python coletor.py --limite-fontes 15 --limite-estados 4 || echo 'Busca com falha; seguindo.'
-            # Buscadores alternativos (Bing Notícias e GDELT): não depender só do Google.
-            python buscadores.py --limite-bing 15 --gdelt || echo 'Buscadores alternativos com falha; seguindo.'
+            # Buscador alternativo (Bing Notícias): não depender só do Google. (GDELT recusa os servidores do GitHub: erro 429.)
+            python buscadores.py --limite-bing 15 || echo 'Buscadores alternativos com falha; seguindo.'
             python recuperar_links.py --limite 200 --trabalhadores 4 || true
             # Notícias novas primeiro; o restante relê páginas antigas (trecho de abertura, fotos).
             python ler_materias.py --limite 300 --trabalhadores 10 || true
