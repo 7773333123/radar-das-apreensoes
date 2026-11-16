@@ -278,6 +278,10 @@ def quantificar(texto):
  for m in PAT_QUANT.finditer(normalized):
   val=number_value(m.group(1));un=(m.group(2) or '').strip();item=m.group(3)
   if val is None or val<=0:continue
+  if item not in MATERIAIS:
+   # Plural/variação capturada pela expressão sem entrada na tabela (ex.: "medicamento").
+   item=next((k for k in MATERIAIS if k.rstrip('s')==item.rstrip('s')),None)
+   if item is None:continue
   categoria,nome,tipo=MATERIAIS[item]
   if un in ('mil','milhao','milhoes','bilhao','bilhoes'):
    val*= {'mil':1000,'milhao':1e6,'milhoes':1e6,'bilhao':1e9,'bilhoes':1e9}[un];un=''
