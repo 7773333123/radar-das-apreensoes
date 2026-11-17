@@ -83,7 +83,7 @@ function cabecalho(atual) {
 <span class="brand-name"><b>RADAR</b><span>das Apreensões</span></span></a>
 <nav class="mainnav" aria-label="Seções do site">${nav.map(([h, t]) => `<a href="${h}"${t === atual ? ' aria-current="page"' : ''}>${t}</a>`).join('')}</nav>
 <form class="searchbox" action="/" method="get" role="search" id="formBuscaPagina"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-<label class="sr" for="buscaTopo">Pesquisar notícias</label><input type="search" id="buscaTopo" name="q" placeholder="Buscar: fuzil, PRF, Manaus…" autocomplete="off" enterkeyhint="search"></form>
+<label class="sr" for="buscaTopo">Pesquisar notícias</label><input type="search" id="buscaTopo" name="q" placeholder="Buscar" autocomplete="off" enterkeyhint="search"></form>
 </div><nav class="wrap sections" aria-label="Tipos de apreensão">${dados().feed.categorias.slice(0, 8).map((c, k) =>
     `<a href="/categoria/${SLUG_CAT[k]}">${esc(c)}</a>`).join('')}</nav></header>`;
 }
