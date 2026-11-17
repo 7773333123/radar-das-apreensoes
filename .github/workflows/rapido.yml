@@ -56,7 +56,7 @@ jobs:
             python buscadores.py --limite-bing 15 --resolver 60 || echo 'Buscadores alternativos com falha; seguindo.'
             python recuperar_links.py --limite 600 --trabalhadores 4 || true
             # Notícias novas primeiro; o restante relê páginas antigas (trecho de abertura, fotos).
-            python ler_materias.py --limite 500 --trabalhadores 10 || true
+            python ler_materias.py --limite 800 --trabalhadores 10 || true
             python hash_imagens.py --limite 600 --trabalhadores 16 || true  # fotos: duplicatas por imagem
             if [ "$(sha1sum noticias.json | cut -c1-40)" = "$antes" ]; then
               echo 'Nada novo nesta rodada.'
