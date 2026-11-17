@@ -24,7 +24,10 @@ ACERVO = RAIZ / 'noticias.json'
 CURSOR = RAIZ / 'agencia_cursor.json'
 BASE = 'https://agenciabrasil.ebc.com.br'
 ASSUNTOS = ['apreensao', 'trafico-de-drogas', 'contrabando', 'drogas', 'cocaina', 'maconha', 'armas', 'policia-federal',
-            'policia-rodoviaria-federal', 'receita-federal']
+            'policia-rodoviaria-federal', 'receita-federal', 'trafico', 'narcotrafico', 'crack', 'crime-organizado',
+            'fronteira', 'policia-civil', 'policia-militar', 'operacao-policial', 'armas-de-fogo', 'fuzis', 'municao',
+            'cigarros', 'descaminho', 'lavagem-de-dinheiro', 'pcc', 'comando-vermelho', 'milicia', 'garimpo-ilegal',
+            'trafico-de-animais', 'desmatamento', 'ibama', 'seguranca-publica', 'violencia', 'pf', 'prf']
 NOTICIA = re.compile(r'^/[a-z-]+/noticia/(\d{4})-(\d{2})/[a-z0-9-]+$')
 UA = {'User-Agent': 'Mozilla/5.0 (compatible; RadarApreensoes/1.0; pesquisa publica)'}
 
