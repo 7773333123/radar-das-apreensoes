@@ -1,0 +1,16 @@
+name: Testar leitura na hora (manual)
+on: workflow_dispatch
+jobs:
+  testar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python acervo.py baixar --site
+      - run: node scripts/testar_extrair.js 20

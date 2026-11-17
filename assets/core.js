@@ -59,7 +59,8 @@ export function placeholder(n) {
 export const imgTag = (src, alt = '', extra = '') =>
   `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" ${extra}>`;
 export function midia(n, { contador = false } = {}) {
-  const foto = n.img ? imgTag(n.img, '', 'data-ph') : placeholder(n);
+  // Sem foto ainda: o servidor busca a foto da matéria original (cache de 7 dias); se não houver, vira o marcador.
+  const foto = n.img ? imgTag(n.img, '', 'data-ph') : imgTag(`/api/foto?i=${n.i}`, '', 'data-ph');
   const extra = contador && n.nFotos > 1 ? `<span class="count">${n.nFotos} fotos</span>` : '';
   return `<div class="media" data-cat="${n.cats[0] ?? 8}">${foto}${extra}</div>`;
 }

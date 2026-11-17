@@ -10,3 +10,8 @@ document.getElementById('tema')?.addEventListener('click', () => {
 document.addEventListener('error', (e) => {
   if (e.target instanceof HTMLImageElement) (e.target.closest('.media') || e.target).remove();
 }, true);
+// Miniatura buscada na hora (/api/foto) que não existe: some, sem deixar caixa vazia.
+document.addEventListener('error', (e) => {
+  const img = e.target;
+  if (img instanceof HTMLImageElement && img.hasAttribute('data-ph')) img.closest('.media')?.remove();
+}, true);
