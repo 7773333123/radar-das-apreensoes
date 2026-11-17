@@ -123,9 +123,11 @@ function renderInicio() {
   // Foz e do Lago de Itaipu entra sempre que tiver notícia nas últimas 48 h.
   const janelaFr = [24, 48, 7 * 24].map(daFronteira).find((l) => l.length >= 4) || daFronteira(7 * 24);
   const itaipu48 = daFronteira(48).filter((n) => n.prioridadeFr <= 8 && !janelaFr.includes(n));
-  const ordemFr = [...janelaFr, ...itaipu48].sort((a, b) => (soPessoa(a) - soPessoa(b)) || a.prioridadeFr - b.prioridadeFr || nota(b) - nota(a) || b.data - a.data);
+  // Primeiro o dia (hoje antes de ontem); dentro do dia, a ordem regional (Foz primeiro) e a relevância.
+  const ordemFr = [...janelaFr, ...itaipu48].sort((a, b) => diaBR(b.data).localeCompare(diaBR(a.data)) ||
+    (soPessoa(a) - soPessoa(b)) || a.prioridadeFr - b.prioridadeFr || nota(b) - nota(a) || b.data - a.data);
   const frPrincipais = ordemFr.slice(0, 2);  // a ordem regional manda (a foto vem do servidor quando falta)
-  const frMenores = ordemFr.filter((n) => !frPrincipais.includes(n)).slice(0, 6);
+  const frMenores = ordemFr.filter((n) => !frPrincipais.includes(n)).slice(0, 6).sort((a, b) => b.data - a.data);
   [...frPrincipais, ...frMenores].forEach((n) => usados.add(n));
   const lugarFr = (n) => `${n.cidade ? `${n.cidade} (${n.uf})` : (NOME_UF[n.uf] || '')}`;
   const blocoFronteira = frPrincipais.length ? `<section class="fronteira" aria-label="Fronteira">` +
