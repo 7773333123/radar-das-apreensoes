@@ -86,8 +86,10 @@ function preparar(raw, ctx) {
     q: raw.q || null, ag: raw.ag || [], rd: raw.rd || '', vq: raw.vq || 0,
     ano: data ? data.getUTCFullYear() : null,
   };
-  n.busca = fold([n.titulo, n.resumo, n.fonte, uf, NOME_UF[uf], cats.map((c) => ctx.categorias[c]).join(' '),
-    n.ag.map((a) => ctx.orgaos[a]).join(' '), n.rd].join(' '));
+  // Texto de busca em palavras separadas por espaço (" foz do iguacu "): a busca casa
+  // pelo começo da palavra, nunca no meio ("#fozdoiguacu" não vale como "iguacu").
+  n.busca = ' ' + fold([n.titulo, n.resumo, n.fonte, uf, NOME_UF[uf], cats.map((c) => ctx.categorias[c]).join(' '),
+    n.ag.map((a) => ctx.orgaos[a]).join(' '), n.rd].join(' ')).replace(/[^a-z0-9]+/g, ' ') + ' ';
   return n;
 }
 
