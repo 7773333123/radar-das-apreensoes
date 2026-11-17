@@ -54,7 +54,14 @@ jobs:
             python coletor.py --limite-fontes 15 --limite-estados 4 || echo 'Busca com falha; seguindo.'
             # Buscador alternativo (Bing Notícias): não depender só do Google. (GDELT recusa os servidores do GitHub: erro 429.)
             python buscadores.py --limite-bing 15 --resolver 60 || echo 'Buscadores alternativos com falha; seguindo.'
-            python recuperar_links.py --limite 600 --trabalhadores 4 || true
+            # Google bloqueia o endereço deste servidor após algumas horas: depois de uma rodada
+            # sem nenhum link recuperado, pausa 3 rodadas (a busca das antigas roda em outros servidores).
+            if [ "${PAUSA_LINKS:-0}" -gt 0 ]; then
+              PAUSA_LINKS=$((PAUSA_LINKS - 1)); echo "Links do Google em pausa (bloqueio); faltam $PAUSA_LINKS rodadas."
+            else
+              python recuperar_links.py --limite 600 --trabalhadores 4 | tee /tmp/links.log || true
+              grep -q '^Recuperados: 0/' /tmp/links.log && PAUSA_LINKS=3
+            fi
             # Notícias novas primeiro; o restante relê páginas antigas (trecho de abertura, fotos).
             python ler_materias.py --limite 800 --trabalhadores 10 || true
             python hash_imagens.py --limite 600 --trabalhadores 16 || true  # fotos: duplicatas por imagem

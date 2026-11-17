@@ -36,6 +36,7 @@ SITE = ['feed.json', 'feed-recente.json', 'feed_links.json', 'det', 'dados']
 TAG = 'dados'
 REPO = os.environ.get('GITHUB_REPOSITORY', '7773333123/radar-das-apreensoes')
 TMP = Path(os.environ.get('RUNNER_TEMP', '/tmp'))
+BAIXADO = TMP / 'acervo_versao_baixada.txt'
 
 
 def sh(*cmd, check=True, captura=False):
@@ -74,6 +75,7 @@ def baixar(site=False):
     baixar_arquivo(p['acervo'], gz)
     with gzip.open(gz, 'rb') as f, open(ACERVO, 'wb') as out:
         shutil.copyfileobj(f, out)
+    BAIXADO.write_text(p['acervo'], encoding='utf-8')  # versão de partida desta execução
     print(f'Acervo baixado: {p["acervo"]} ({ACERVO.stat().st_size / 1e6:.1f} MB)')
     if site and p.get('site'):
         tgz = TMP / p['site']
@@ -145,6 +147,21 @@ def unir_com_release():
     incompleto: o resultado é sempre a união das duas versões.
     """
     if not ponteiro().get('acervo'):
+        return
+    # Ninguém gravou desde que esta execução baixou o acervo: não há o que unir
+    # (evita baixar, mesclar e gerar o site de novo a cada rodada: ~2,5 min).
+    sh('git', 'fetch', '-q', 'origin', 'main', check=False)
+    r = sh('git', 'show', 'origin/main:dados_versao.json', check=False, captura=True)
+    try:
+        atual = json.loads(r.stdout).get('acervo') if r.returncode == 0 else None
+    except ValueError:
+        atual = None
+    if atual and BAIXADO.exists() and BAIXADO.read_text(encoding='utf-8').strip() == atual:
+        print('Acervo da release igual ao baixado nesta execução: sem nova mesclagem.')
+        feed = RAIZ / 'feed.json'
+        if not feed.exists() or feed.stat().st_mtime < ACERVO.stat().st_mtime:  # site desatualizado
+            sh(sys.executable, 'gerar_feed_site.py')
+            sh(sys.executable, 'compactar_acervo.py')
         return
     nossa = TMP / 'noticias_coletadas.json'
     if ACERVO.exists():
