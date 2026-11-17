@@ -272,6 +272,158 @@ def radical(w):
     return w
 
 
+# ---------------------------------------------------------------------------
+# Auditor de duplicatas: as regras acima exigem uma evidência forte; o auditor soma
+# evidências fracas e independentes de cada par recente (título pelo radical, abertura
+# da reportagem, foto, cidade do fato, órgão, quantidades, operação, horário) e junta
+# quando a nota passa de JUNTAR. Pares entre DUVIDA e JUNTAR vão para SUSPEITAS
+# (relatório para revisão), sem juntar.
+JUNTAR = 5.5
+DUVIDA = 4.0
+SUSPEITAS = []
+JUNTADAS = []  # diagnóstico: pares juntados pelo auditor e os motivos
+VAZIAS_AUDITOR = PALAVRAS_VAZIAS | set('''policia policias policial policiais militar militares civil federal
+    apreende apreendem apreendeu apreendido apreendida apreendidos apreendidas apreensao apreensoes
+    prende prendem prendeu preso presa presos presas prisao suspeito suspeitos suspeita durante
+    acao operacao cerca mais apos seguida estado cidade regiao bairro homem mulher jovem jovens dupla trio
+    casal adolescente adolescentes menor menores pessoas individuo trafico drogas droga entorpecentes porte
+    ilegal flagrante posse arma armas fogo municoes municao detido detida detidos conduzido abordagem
+    ocorrencia denuncia anonima suspeita investigado investigada dois duas tres quatro cinco grande quantidade
+    durante contra pela pelo para após tem sao foi foram'''.split())
+
+
+def radicais_titulo(texto):
+    texto = re.sub(r'pol[ií]cia rodovi[aá]ria(?: federal| estadual)?', ' ', texto or '', flags=re.I)
+    return {radical(w) for w in normal(texto).split() if len(w) > 2 and w not in VAZIAS_AUDITOR}
+
+
+def nomes_proprios(titulo):
+    """Palavras com inicial maiúscula fora do começo do título (lugares, nomes), pelo radical.
+    Siglas (PM, PRF) e órgãos ficam de fora; título todo em maiúsculas não conta."""
+    palavras_t = re.findall(r"[A-Za-zÀ-ÿ][\wÀ-ÿ'’-]*", titulo or '')
+    if not palavras_t or sum(w.isupper() for w in palavras_t) > len(palavras_t) / 2:
+        return set()
+    saida = set()
+    for w in palavras_t[1:]:
+        if w[0].isupper() and not w.isupper():
+            nw = normal(w)
+            if len(nw) > 2 and nw not in VAZIAS_AUDITOR and nw not in ('rodoviaria', 'receita', 'guarda', 'municipal', 'gaeco', 'ficco'):
+                saida.add(radical(nw))
+    return saida
+
+
+def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b):
+    # qa/qb: quantidades do título (conjuntos); as do item (_q, dicionário) vêm de a/b.
+    """Nota de 'mesma notícia' e os motivos. None = veto (fatos incompatíveis)."""
+    if qa and qb and not compativeis(qa, qb):
+        return None, [], 0
+    ca, cb = a.get('_cid'), b.get('_cid')
+    if ca and cb and ca != cb:
+        return None, [], 0  # cidades do fato diferentes: fatos diferentes
+    na_, nb_ = nomes_proprios(a['t']), nomes_proprios(b['t'])
+    if na_ and nb_ and not (na_ & nb_):
+        return None, [], 0  # lugares/nomes diferentes nos títulos (Barra do Choça x Irecê)
+    nota, motivos = 0.0, []
+    ra = {w for w in ra if w not in MATERIAIS}
+    rb = {w for w in rb if w not in MATERIAIS}
+    comuns = ra & rb
+    jac = len(comuns) / max(1, len(ra | rb))
+    fortes = 0  # evidências independentes e fortes; para juntar, ao menos duas
+    if jac:
+        nota += 5 * jac
+        motivos.append(f'título {jac:.2f}')
+        fortes += jac >= 0.35
+    proprias = {w for w in comuns if not w.isdigit()}
+    if proprias:
+        nota += 0.6 * min(len(proprias), 3)
+    if ca and ca == cb:
+        nota += 1.5
+        motivos.append('mesma cidade')
+    aga, agb = set(a.get('_ag') or ()), set(b.get('_ag') or ())
+    if aga and agb:
+        nota += 0.7 if aga & agb else -0.7
+    if a.get('_q') and b.get('_q') and _mesmas_quantidades(a['_q'], b['_q']):
+        nota += 2.5
+        motivos.append('mesmas quantidades')
+        fortes += 1
+    lead = jaccard(sha, shb)
+    if lead >= 0.08:
+        nota += min(3.0, 10 * lead)
+        motivos.append(f'abertura {lead:.2f}')
+        fortes += lead >= 0.12
+    if ha is not None and hb is not None and not (gen_a or gen_b) and (ha ^ hb).bit_count() <= 10:
+        nota += 3
+        motivos.append('mesma foto')
+        fortes += 1
+    if b.get('img') and b['img'] in (a.get('_iguais') or ()) or a.get('img') and a['img'] in (b.get('_iguais') or ()):
+        nota += 3
+        motivos.append('mesma foto recortada')
+        fortes += 1
+    opa = {x for x, _ in operacoes(a['t'] + ' . ' + a.get('_lead', ''))}
+    opb = {x for x, _ in operacoes(b['t'] + ' . ' + b.get('_lead', ''))}
+    if opa & opb:
+        nota += 2
+        motivos.append('mesma operação')
+        fortes += 1
+    elif opa and opb:
+        nota -= 2  # operações com nomes diferentes
+    motivos.append(f'{fortes} fortes')
+    return nota, motivos, fortes
+
+
+def auditar(itens, dia, inf, qt, sh, hs, unir, raiz, dias=4):
+    SUSPEITAS.clear()
+    JUNTADAS.clear()
+    validos = [d for d in dia if d is not None]
+    if not validos:
+        return
+    limite = max(validos) - dias
+    recentes = [k for k in range(len(itens)) if dia[k] is not None and dia[k] >= limite]
+    rad = {k: radicais_titulo(itens[k]['t']) for k in recentes}
+    # Pares candidatos: mesmo dia (ou vizinho) e ao menos um radical próprio em comum.
+    indice = {}
+    for k in recentes:
+        for r in rad[k]:
+            if r not in MATERIAIS:
+                indice.setdefault(r, []).append(k)
+    pares = set()
+    for r, lista in indice.items():
+        if len(lista) > 150:
+            continue
+        lista.sort(key=lambda k: dia[k])
+        for x in range(len(lista)):
+            for y in range(x + 1, len(lista)):
+                a, b = lista[x], lista[y]
+                if dia[b] - dia[a] > 1:
+                    break
+                pares.add((min(a, b), max(a, b)))
+    # Foto genérica (logotipo): a mesma impressão em muitas notícias.
+    contagem = {}
+    for k in recentes:
+        if hs[k] is not None:
+            contagem[hs[k]] = contagem.get(hs[k], 0) + 1
+    for a, b in pares:
+        if raiz(a) == raiz(b):
+            continue
+        ua, ub = itens[a].get('uf'), itens[b].get('uf')
+        if ua and ub and ua != ub and itens[a].get('_ufx', True) and itens[b].get('_ufx', True):
+            continue
+        nota, motivos, fortes = nota_par(itens[a], itens[b], rad[a], rad[b], inf[a], inf[b], qt[a] or None, qt[b] or None,
+                                 sh[a], sh[b], hs[a], hs[b], contagem.get(hs[a], 0) > 3, contagem.get(hs[b], 0) > 3)
+        if nota is None:
+            continue
+        if dia[a] == dia[b]:
+            nota += 0.3
+        if nota >= JUNTAR and fortes >= 2:  # duas evidências fortes e independentes, no mínimo
+            unir(a, b, 'auditor')
+            JUNTADAS.append((round(nota, 2), motivos, itens[a].get('f', ''), itens[a]['t'], itens[b].get('f', ''), itens[b]['t']))
+        elif nota >= DUVIDA:
+            SUSPEITAS.append({'nota': round(nota, 2), 'motivos': motivos,
+                              'a': [itens[a]['i'], itens[a].get('f', ''), itens[a]['t']],
+                              'b': [itens[b]['i'], itens[b].get('f', ''), itens[b]['t']]})
+    SUSPEITAS.sort(key=lambda x: -x['nota'])
+
+
 def trechos(texto, n=5):
     """Trechos de 5 palavras seguidas (shingles) do começo do texto."""
     ws = normal(texto).split()[:120]
@@ -561,6 +713,9 @@ def agrupar(itens, motivos=None):
                 if bool(JUDICIAL.search(itens[a]['t'])) != bool(JUDICIAL.search(itens[b]['t'])):
                     continue
                 unir(a, b, 'operacao')
+
+    # Auditor (notícias dos últimos dias): nota somando todas as evidências do par.
+    auditar(itens, dia, inf, qt, sh, hs, unir, raiz)
 
     grupos = {}
     for k in range(n):

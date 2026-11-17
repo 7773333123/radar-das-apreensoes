@@ -273,6 +273,8 @@ def limitar_trecho(trecho, n):
 from duplicatas import agrupar as _agrupar, mesma_materia, normal as _normal  # noqa: E402,F401
 
 
+from datetime import datetime as _dt, timedelta as _td, timezone as _tz  # noqa: E402
+RECENTE_AUDITORIA = (_dt.now(_tz.utc) - _td(days=5)).isoformat()[:10]
 BLOQUEIO_LEITURA = re.compile(r'^(?:erro_HTTPError|http_4\d\d|texto_insuficiente|nao_html|erro_nao_html|.*robots.*|.*bloque.*|.*paywall.*)$')
 
 
@@ -561,6 +563,14 @@ def main():
         if fatos:
             fatos_por_i[i] = fatos
             detalhe['f'] = fatos
+        # Evidências do auditor de duplicatas (só notícias recentes): cidade do fato e órgãos.
+        if data and data[:10] >= RECENTE_AUDITORIA:
+            rota_aud = cidades_de_trajeto(titulo, resumo) + [x for x in ((fatos or {}).get('origem'), (fatos or {}).get('destino')) if x]
+            cid_aud = cidade_do_fato(uf or '', titulo, resumo, (fatos or {}).get('cidades', ()), rota_aud)
+            if cid_aud:
+                item['_cid'] = cid_aud
+            if (fatos or {}).get('orgaos'):
+                item['_ag'] = list(fatos['orgaos'])
         # O que diz a fonte: 70% da reportagem (com crédito e link), ou o limite
         # do veículo em trecho_por_veiculo.json, se ele tiver pedido.
         trecho = limitar_trecho(limpar_rede_social(str(n.get('trecho') or '').strip()), n)
@@ -585,13 +595,19 @@ def main():
         saida.append(item)
     antes = len(saida)
     saida, removidas = agrupar_duplicatas(saida)
+    # Relatório do auditor: pares em dúvida (não juntados), para revisão periódica.
+    from duplicatas import SUSPEITAS, JUNTADAS
+    (PASTA / 'duplicatas_suspeitas.json').write_text(json.dumps({
+        'gerado_em': _dt.now(_tz.utc).isoformat(timespec='seconds'),
+        'juntadas_pelo_auditor': len(JUNTADAS), 'suspeitas': SUSPEITAS[:200]}, ensure_ascii=False, indent=1), encoding='utf-8')
+    print(f'Auditor de duplicatas: {len(JUNTADAS)} pares juntados; {len(SUSPEITAS)} em dúvida (duplicatas_suspeitas.json)')
     bloqueadas = [it for it in saida if it.get('_bloq')]
     saida = [it for it in saida if not it.get('_bloq')]
     removidas |= {it['i'] for it in bloqueadas}
     antes -= len(bloqueadas)
     print(f'Sem conteúdo publicável (veículo bloqueia a leitura ou link não encontrado): {len(bloqueadas)} fora do site')
     for item in saida:
-        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq'):
+        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag'):
             item.pop(k, None)
     for lote in list(detalhes):
         for chave in [c for c in detalhes[lote] if int(c) in removidas]:
