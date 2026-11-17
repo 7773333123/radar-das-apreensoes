@@ -21,7 +21,7 @@ jobs:
           HOSTS: ${{ inputs.hosts }}
         run: |
           for host in ${HOSTS:-radardasapreensoes.com.br www.radardasapreensoes.com.br radar-das-apreensoes.vercel.app}; do
-            for caminho in / /google07199f6dab12c6a3.html /sitemap.xml /observatorio /noticia/79 /estado/MT /relatorios /sobre /feed.json /det/7.json /dados/noticias.csv /assets/central.js; do
+            for caminho in / /google07199f6dab12c6a3.html /sitemap.xml /observatorio /noticia/79 /estado/MT /relatorios /sobre /feed.json /det/7.json /assets/central.js; do
               echo "=== https://$host$caminho"
               curl -sS -o /tmp/corpo -D - -A 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' "https://$host$caminho" | grep -iE '^(HTTP|location|content-type|x-vercel-cache)' || true
               head -c 160 /tmp/corpo | tr '\n' ' '; echo

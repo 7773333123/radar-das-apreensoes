@@ -109,6 +109,34 @@ def cidades_de_trajeto(*textos):
     return vistos
 
 
+CORTE_FONTE = re.compile(r'\s*(?:\[\s*(?:…|\.\.\.)\s*\]|\(\s*(?:…|\.\.\.)\s*\)|…|\.{3,}|(?:Leia|Saiba|Veja) mais\W*|Continue lendo\W*|Ler mais\W*)\s*$', re.I)
+FIM_FRASE = re.compile(r'[.!?](?:["”»’)\]]*)(?=\s|$)')
+PALAVRA_SOLTA = re.compile(r'\b(?:a|o|as|os|e|de|da|do|das|dos|em|no|na|nos|nas|com|para|por|pelo|pela|que|um|uma|ao|à|aos|às|se|sua|seu|mais|entre|sobre|após|até)$', re.I)
+
+
+def fechar_frase(texto):
+    """Nunca termina no meio: corta na última frase completa ("... com […]" -> frase anterior).
+
+    Sem nenhuma frase completa, devolve o texto só se ele já for uma frase inteira
+    (termina sem reticências e sem palavra solta); senão, ''.
+    """
+    t = re.sub(r'<[^>]+>', ' ', texto or '')
+    t = re.sub(r'(?:The post|O post)\s.*?(?:first appeared on|apareceu primeiro em)\s+[^.]*\.?', ' ', t, flags=re.I | re.S)
+    t = re.sub(r'\s+', ' ', t).strip()
+    if not t:
+        return ''
+    cortado = bool(CORTE_FONTE.search(t))
+    t = CORTE_FONTE.sub('', t).strip()
+    if re.search(r'[.!?]["”»’)\]]*$', t) and not cortado:
+        return t
+    fins = list(FIM_FRASE.finditer(t))
+    if fins and fins[-1].end() >= 20:
+        return t[:fins[-1].end()].strip()
+    if not cortado and len(t) >= 60 and not PALAVRA_SOLTA.search(t):
+        return t + '.'
+    return ''
+
+
 def limpar_rede_social(texto):
     """Tira hashtags, emojis e chamadas de post ("Clique no link da bio", "De #cidade para o mundo")."""
     if not texto or ('#' not in texto and 'link da bio' not in texto.lower()):
@@ -325,7 +353,9 @@ def main():
             resumo = anonimizar(resumo, nomes_presos)
         resumo = limpar_rede_social(resumo)
         if resumo:
-            item['r'] = resumo[:700]  # resumo inteiro publicado pela fonte
+            item['r'] = fechar_frase(resumo[:700] + ('…' if len(resumo) > 700 else ''))  # sem frase cortada
+            if not item['r']:
+                del item['r']
         uf = inferir_uf(n, fontes)
         if uf:
             item['uf'] = uf
@@ -385,9 +415,11 @@ def main():
         if nomes_presos:
             trecho = anonimizar(trecho, nomes_presos)
         if trecho and len(trecho) > len(resumo):
-            detalhe['tr'] = trecho
-            if n.get('tamanho_texto'):
-                detalhe['tt'] = int(n['tamanho_texto'])
+            trecho = fechar_frase(trecho)
+            if trecho:
+                detalhe['tr'] = trecho
+                if n.get('tamanho_texto'):
+                    detalhe['tt'] = int(n['tamanho_texto'])
         detalhes.setdefault(i % LOTES, {})[str(i)] = detalhe
         saida.append(item)
     antes = len(saida)
