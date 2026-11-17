@@ -1,12 +1,14 @@
-name: Link original das notícias antigas (Bing)
-# Procura no Bing (Notícias e busca geral, restrita ao site do veículo) o link
-# original das notícias do Google com mais de 30 dias, das mais antigas para as
-# mais novas. A coleta rápida cuida das recentes. Disparado pela coleta rápida a
+name: Link original das notícias antigas
+# Decodifica o link do Google Notícias (o mesmo método da coleta rápida, que
+# recupera ~75% dos links) das notícias mais antigas para as mais novas; a
+# coleta rápida cuida das recentes. Depois lê as matérias encontradas (foto,
+# trecho, fatos: tipo, produto, quantidade, cidade). O Bing achava só 1 link em
+# 800 nas antigas e ficou só para as recentes. Disparado pela coleta rápida a
 # cada ciclo; o cron é reserva.
 on:
   workflow_dispatch:
   schedule:
-    - cron: '41 */4 * * *'
+    - cron: '41 */3 * * *'
 permissions:
   contents: write
 concurrency:
@@ -15,7 +17,7 @@ concurrency:
 jobs:
   resolver:
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 120
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -23,12 +25,15 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
+      - name: Instalar decodificador
+        run: python -m pip install --quiet googlenewsdecoder pillow
       - name: Baixar o acervo (release "dados")
         run: python acervo.py baixar
-      - name: Procurar o link original de 800 notícias antigas
-        run: python buscadores.py --limite-bing 0 --resolver 800 --antigas
+      - name: Link original de 3.000 notícias antigas (Google Notícias)
+        continue-on-error: true
+        run: python recuperar_links.py --limite 3000 --trabalhadores 4 --antigas
       - name: Ler as matérias encontradas (foto, trecho, fatos)
         continue-on-error: true
-        run: python ler_materias.py --limite 300 --trabalhadores 10
+        run: python ler_materias.py --limite 2000 --trabalhadores 10
       - name: Salvar (une com a versão atual e regenera o site)
-        run: python acervo.py salvar 'Link original de notícias antigas (Bing)'
+        run: python acervo.py salvar 'Link original de notícias antigas'

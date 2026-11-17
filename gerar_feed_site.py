@@ -91,6 +91,8 @@ TRAJETO = re.compile(r'(?:com destino (?:a|ao|à|para)|destinad[oa]s? (?:a|ao|à
                      r'\s+(?:o |a |os |as )?' + LUGAR)
 SEM_TRAJETO = re.compile(r'\s+(?:que\s+)?(?:seguiria|seguia|iria|com destino|destinad|vind[oa]s?|vinha|sa[íi]d[oa]s? d|levad[oa]s? para|'
                          r'seria(?:m)? levad|rumo a|procedente|oriund)', re.I)
+# Leitura antiga que pegou conectivo no lugar do material: '74 tabletes de e foi'.
+MATERIAL_QUEBRADO = re.compile(r'^[\d.,]+\s+\S+\s+de\s+(?:e|ou|foi|foram|que|em|no|na|com|para|por|a|o|os|as)\b', re.I)
 DEPOIS_PARA = re.compile(r'\s+(?:para|até|com destino a)\s+(?:o |a |os |as )?' + LUGAR)
 
 
@@ -320,6 +322,10 @@ def main():
             ocultas += 1
             continue
         cats = categorias(n, titulo)
+        # Veículo quase sempre é o transporte do que foi apreendido ("maconha em carro"):
+        # só é o tipo principal quando não há outro tipo.
+        if cats and cats[0] == 3 and any(c not in (3, 8) for c in cats):
+            cats = [c for c in cats if c != 3] + [3]
         item = {'i': i, 't': titulo}
         if fonte:
             item['f'] = fonte
@@ -386,7 +392,8 @@ def main():
             fatos_titulo[i] = do_titulo
         fatos = dict(n.get('fatos') or do_titulo or {})
         if fatos.get('apreendido'):  # fichas antigas: trajeto colado no material
-            fatos['apreendido'] = list(dict.fromkeys(SEM_TRAJETO.split(str(a))[0].strip(' ,;') for a in fatos['apreendido']))
+            fatos['apreendido'] = list(dict.fromkeys(SEM_TRAJETO.split(str(a))[0].strip(' ,;') for a in fatos['apreendido']
+                                                     if not MATERIAL_QUEBRADO.search(str(a))))
         # Detalhes da ação (como, esconderijo, rota, crimes, encaminhamento...)
         # também a partir da abertura guardada, sem esperar a releitura da página.
         if isinstance(fatos.get('mandados'), str):
