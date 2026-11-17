@@ -1,0 +1,19 @@
+name: Diagnóstico do trecho da fonte (manual)
+on:
+  workflow_dispatch:
+    inputs:
+      n:
+        description: 'Quantas matérias'
+        default: '30'
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet pillow
+      - run: python acervo.py baixar
+      - run: python scripts/diagnostico_trecho.py "${{ inputs.n }}"
