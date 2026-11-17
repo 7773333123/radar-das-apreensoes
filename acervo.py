@@ -178,15 +178,18 @@ def salvar(msg, extras, sem_dados=False):
     if not sem_dados:
         garantir_release()
         unir_com_release()
-    for tentativa in range(1, 7):
+    so_acervo = False  # depois de um conflito: grava só o acervo mesclado (o site da outra coleta fica)
+    for tentativa in range(1, 9):
         subidos = []
         if not sem_dados:
             gz, tgz = empacotar()
-            for arq in (gz, tgz):
+            for arq in ((gz,) if so_acervo else (gz, tgz)):
                 sh('gh', 'release', 'upload', TAG, str(arq), '--repo', REPO)
                 subidos.append(arq.name)
             p = ponteiro()
-            p.update(acervo=gz.name, site=tgz.name, atualizado_em=datetime.now(timezone.utc).isoformat(timespec='seconds'))
+            p.update(acervo=gz.name, atualizado_em=datetime.now(timezone.utc).isoformat(timespec='seconds'))
+            if not so_acervo:
+                p['site'] = tgz.name
             PONTEIRO.write_text(json.dumps(p, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
             sh('git', 'add', PONTEIRO.name)
         for e in extras:
@@ -224,10 +227,13 @@ def salvar(msg, extras, sem_dados=False):
             if ponteiro().get('acervo'):
                 baixar()  # senão (migração), vale o noticias.json que ainda está no Git
             sh(sys.executable, 'mesclar_acervo.py', str(nossa))
-            sh(sys.executable, 'gerar_feed_site.py')
+            # Regenerar o site leva minutos e, nesse tempo, outra coleta grava de novo (corrida
+            # sem fim). Grava só o acervo mesclado; a próxima rodada da coleta rápida regenera
+            # o site já com estas notícias.
             sh(sys.executable, 'compactar_acervo.py')
+            so_acervo = True
         time.sleep(3 * tentativa)
-    raise SystemExit('Não foi possível salvar após 6 tentativas.')
+    raise SystemExit('Não foi possível salvar após 8 tentativas.')
 
 
 def main():
