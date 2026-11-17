@@ -24,9 +24,15 @@ def main():
         if isinstance(dados, dict):
             dados['total'] = len(noticias)
         print(f'Notícias de veículos pagos removidas do acervo: {len(pagas)}')
+    # Miniaturas de comparação de fotos (hash_imagens.py) só valem para notícias recentes.
+    from datetime import datetime, timedelta, timezone
+    corte = (datetime.now(timezone.utc) - timedelta(days=60)).isoformat()[:10]
     for n in noticias:
         if isinstance(n, dict) and n.get('url_google_noticias') and n.get('url_google_noticias') == n.get('url'):
             del n['url_google_noticias']
+        if isinstance(n, dict) and n.get('img_mini') and str(n.get('data_iso') or '') < corte:
+            n.pop('img_mini', None)
+            n.pop('img_minih', None)
     tmp = ARQUIVO.with_suffix('.json.tmp')
     tmp.write_text(json.dumps(dados, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     tmp.replace(ARQUIVO)

@@ -34,7 +34,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Instalar decodificador
-        run: python -m pip install --quiet googlenewsdecoder pillow
+        run: python -m pip install --quiet googlenewsdecoder pillow numpy
       - name: Disparar coleta completa e histórica
         continue-on-error: true
         run: |
