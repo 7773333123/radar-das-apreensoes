@@ -324,6 +324,23 @@ def _chave_foto(url):
     return re.sub(r'[?#].*$', '', url or '').lower()
 
 
+# Imagem que não é foto do fato: logotipo do órgão (gov.br/pf/logo.png), arte padrão do
+# veículo para compartilhamento, avatar. Não vai como foto; outra versão da notícia ou a
+# foto buscada na matéria entra no lugar.
+CAPA_GENERICA = re.compile(r'(?:^|[/_-])(?:logo|logotipo|brasao|default|og-?image|share|avatar|placeholder|'
+                           r'thumb_\d+x\d+_agbrasil|default-meta-image|sem-?imagem|no-?image)[\w.-]*(?:\.(?:png|jpe?g|webp|svg)|$)|'
+                           r'/api/og-image|/thumb\.php$|/img$', re.I)
+
+
+def contar_capas_genericas(noticias, limite=6):
+    """Capa (imagem principal) repetida em 6+ notícias de 3+ dias: arte padrão, não foto do fato."""
+    vistas = {}
+    for n in noticias:
+        if isinstance(n, dict) and n.get('imagem_url'):
+            vistas.setdefault(_chave_foto(str(n['imagem_url'])), []).append(str(n.get('data_iso') or '')[:10])
+    return {f for f, dias in vistas.items() if len(dias) >= limite and len(set(dias)) >= 3}
+
+
 def contar_fotos_repetidas(noticias, limite=3):
     contagem = {}
     for n in noticias:
@@ -400,6 +417,7 @@ def main():
     # Anti-imagem: foto que aparece na galeria de 3+ notícias diferentes é de
     # anúncio, barra lateral ou chamada de outra matéria, não do fato.
     repetidas = contar_fotos_repetidas(noticias)
+    capas_genericas = contar_capas_genericas(noticias)
     # Mesmo "trecho" em matérias de títulos diferentes = a leitura pegou um bloco fixo do site.
     por_trecho = {}
     for n in noticias:
@@ -465,6 +483,9 @@ def main():
             foto = url_publica(foto)
             if not foto or foto in fotos:
                 continue
+            sem_param = foto.split('?')[0]
+            if (CAPA_GENERICA.search(sem_param) and not re.search(r'-c-default\.', sem_param)) or _chave_foto(foto) in capas_genericas:
+                continue  # logotipo/arte padrão: não é foto do fato
             if k > 0 and (foto_alheia(foto, '', '', '') or _chave_foto(foto) in repetidas):
                 continue  # galeria: só fotos da própria matéria
             fotos.append(foto)

@@ -52,9 +52,16 @@ export const ICONES = [
   I('<path d="M8 40h32M10 36h28M12 20h24v16H12zM8 20l16-12 16 12"/><path d="M18 24v8M24 24v8M30 24v8"/>'),
   I('<circle cx="20" cy="20" r="11"/><path d="M28 28l12 12"/>'),
 ];
+// Sem foto: o nome da instituição que fez a ação (texto do Radar, não o brasão oficial);
+// sem órgão identificado, a editoria.
+const ESCUDO = I('<path d="M24 5l15 5v11c0 10-6.5 17.5-15 22-8.5-4.5-15-12-15-22V10z"/><path d="M17 24l5 5 9-10"/>');
+function marcador(c, orgao) {
+  return orgao
+    ? `<div class="ph ph-org" role="img" aria-label="Sem foto: ${esc(orgao)}">${ESCUDO}<span>${esc(orgao)}</span></div>`
+    : `<div class="ph" role="img" aria-label="Sem foto: ${esc(CURTO[c])}">${ICONES[c]}<span>${esc(CURTO[c])}</span></div>`;
+}
 export function placeholder(n) {
-  const c = n.cats[0] ?? 8;
-  return `<div class="ph" role="img" aria-label="Sem foto: ${esc(CURTO[c])}">${ICONES[c]}<span>${esc(CURTO[c])}</span></div>`;
+  return marcador(n.cats[0] ?? 8, n.orgao);
 }
 export const imgTag = (src, alt = '', extra = '') =>
   `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" ${extra}>`;
@@ -62,7 +69,7 @@ export function midia(n, { contador = false } = {}) {
   // Sem foto ainda: o servidor busca a foto da matéria original (cache de 7 dias); se não houver, vira o marcador.
   const foto = n.img ? imgTag(n.img, '', 'data-ph') : imgTag(`/api/foto?i=${n.i}`, '', 'data-ph');
   const extra = contador && n.nFotos > 1 ? `<span class="count">${n.nFotos} fotos</span>` : '';
-  return `<div class="media" data-cat="${n.cats[0] ?? 8}">${foto}${extra}</div>`;
+  return `<div class="media" data-cat="${n.cats[0] ?? 8}"${n.orgao ? ` data-org="${esc(n.orgao)}"` : ''}>${foto}${extra}</div>`;
 }
 // Foto externa que falha vira o marcador da editoria.
 document.addEventListener('error', (e) => {
@@ -70,7 +77,7 @@ document.addEventListener('error', (e) => {
   if (!(img instanceof HTMLImageElement) || !img.hasAttribute('data-ph')) return;
   const box = img.closest('.media');
   const c = Number(box?.dataset.cat ?? 8);
-  img.outerHTML = `<div class="ph">${ICONES[c]}<span>${esc(CURTO[c])}</span></div>`;
+  img.outerHTML = marcador(c, box?.dataset.org || '');
 }, true);
 
 // ---------- dados ----------
@@ -84,7 +91,7 @@ function preparar(raw, ctx) {
     url: urlSegura(raw.u || ''), img: urlSegura(raw.img || ''), uf, cats, data,
     texto: raw.x === 1, nFotos: raw.g || (raw.img ? 1 : 0),
     outras: Array.isArray(raw.o) ? raw.o.filter((o) => Array.isArray(o) && o[0]) : [],
-    q: raw.q || null, ag: raw.ag || [], rd: raw.rd || '', vq: raw.vq || 0, cidade: uf ? raw.cid || '' : '', polo: raw.fr || '', prioridadeFr: raw.frp || 9,
+    q: raw.q || null, ag: raw.ag || [], orgao: (raw.ag || []).map((a) => ctx.orgaos?.[a]).find(Boolean) || '', rd: raw.rd || '', vq: raw.vq || 0, cidade: uf ? raw.cid || '' : '', polo: raw.fr || '', prioridadeFr: raw.frp || 9,
     ano: data ? data.getUTCFullYear() : null,
   };
   // Texto de busca em palavras separadas por espaço (" foz do iguacu "): a busca casa
