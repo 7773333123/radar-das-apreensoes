@@ -79,8 +79,8 @@ function cabecalho(atual) {
   const nav = [['/', 'Notícias'], ['/observatorio', 'Observatório'], ['/relatorios', 'Relatórios'], ['/dados', 'Dados abertos']];
   return `<a class="skip" href="#conteudo">Pular para o conteúdo</a>
 <header class="masthead"><div class="wrap brandbar">
-<a class="brand" href="/" aria-label="Radar das Apreensões — página inicial"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="16" cy="16" r="7" fill="none" stroke="currentColor" stroke-width="2.6" opacity=".55"/><circle cx="16" cy="16" r="2.6" fill="currentColor"/><path d="M16 16 L27 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
-<span class="brand-name">Radar das Apreensões<small>Notícias · Dados · Observatório</small></span></a>
+<a class="brand" href="/" aria-label="Radar das Apreensões — página inicial"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 3C19 3 9 13 9 26c0 17 23 35.5 23 35.5S55 43 55 26C55 13 45 3 32 3z" fill="#b3261e"/><path d="M24.5 40V14.5h9a8 8 0 0 1 0 16h-9" fill="none" stroke="#fff" stroke-width="5.4" stroke-linejoin="round"/><path d="M31.5 30.5l9.5 9.5" stroke="#fff" stroke-width="5.4" stroke-linecap="round"/><path d="M40.5 9.6a11 11 0 0 1 7.9 7.9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".55"/><path d="M40.6 13.8a6.6 6.6 0 0 1 3.6 3.6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".9"/></svg>
+<span class="brand-name"><b>RADAR</b><span>das Apreensões</span></span></a>
 <nav class="mainnav" aria-label="Seções do site">${nav.map(([h, t]) => `<a href="${h}"${t === atual ? ' aria-current="page"' : ''}>${t}</a>`).join('')}</nav>
 <form class="searchbox" action="/" method="get" role="search" id="formBuscaPagina"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
 <label class="sr" for="buscaTopo">Pesquisar notícias</label><input type="search" id="buscaTopo" name="q" placeholder="Buscar: fuzil, PRF, Manaus…" autocomplete="off" enterkeyhint="search"></form>
@@ -102,7 +102,7 @@ ${indexar ? '' : '<meta name="robots" content="noindex">'}
 <meta property="og:type" content="${jsonld && jsonld['@type'] === 'NewsArticle' ? 'article' : 'website'}"><meta property="og:site_name" content="Radar das Apreensões">
 <meta property="og:title" content="${esc(titulo)}"><meta property="og:description" content="${esc(descricao)}"><meta property="og:url" content="${SITE}${canonico}">
 <meta property="og:image" content="${esc(og)}"><meta property="og:locale" content="pt_BR"><meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#ffffff"><link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#ffffff"><link rel="icon" href="/img/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/source-serif-4.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/assets/radar.css">
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, '\\u003c')}</script>` : ''}
 <script type="module" src="/assets/pagina.js"></script><script defer src="/_vercel/insights/script.js"></script></head>
@@ -232,7 +232,7 @@ ${relacionadas.length ? `<div class="section-head"><h2>Mais de ${esc(cats[(n.c |
     '@context': 'https://schema.org', '@type': 'NewsArticle', headline: corta(n.t, 110), datePublished: d ? d.toISOString() : undefined,
     image: fotos.slice(0, 3), description: descricao, mainEntityOfPage: `${SITE}${urlNoticia(n)}`,
     isBasedOn: url || undefined, author: { '@type': 'Organization', name: n.f || 'Radar das Apreensões' },
-    publisher: { '@type': 'Organization', name: 'Radar das Apreensões', logo: { '@type': 'ImageObject', url: `${SITE}/img/og.png` } },
+    publisher: { '@type': 'Organization', name: 'Radar das Apreensões', logo: { '@type': 'ImageObject', url: `${SITE}/img/icone-512.png` } },
   };
   return { html: pagina({ titulo: `${corta(n.t, 90)} | Radar das Apreensões`, descricao, canonico: urlNoticia(n), imagem: fotos[0], atual: 'Notícias', corpo, jsonld, indexar: indexavel(n) }), canonico: urlNoticia(n) };
 }

@@ -59,9 +59,10 @@ button, input, select { font: inherit; color: inherit; }
 .brandbar { display: flex; align-items: center; gap: 20px; padding: 12px 0; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 .brand:hover { text-decoration: none; }
-.brand svg { width: 34px; height: 34px; color: var(--accent); flex: none; }
-.brand-name { font: 700 26px/1 var(--serif); letter-spacing: -.01em; }
-.brand-name small { display: block; font: 600 10.5px/1.4 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+.brand svg, .brand .brand-mark { width: 36px; height: 36px; flex: none; }
+.brand-name { font-family: var(--sans); line-height: 1; color: var(--ink); }
+.brand-name b { display: block; font-weight: 900; font-size: 23px; letter-spacing: .06em; }
+.brand-name > span { display: block; font-weight: 500; font-size: 12px; letter-spacing: .02em; color: var(--muted); margin-top: 3px; }
 .mainnav { display: flex; gap: 4px; margin-left: auto; }
 .mainnav a { padding: 8px 12px; border-radius: var(--r); font-weight: 600; font-size: 14.5px; color: var(--ink-2); white-space: nowrap; flex: none; }
 .mainnav a:hover { background: var(--surface-2); text-decoration: none; }
@@ -244,7 +245,7 @@ details.tbl th, details.tbl td { text-align: left; padding: 5px 6px; border-bott
 .reader { width: min(820px, 100%); max-height: min(94vh, 100%); padding: 0; border: 0; border-radius: 10px; background: var(--surface); color: var(--ink); box-shadow: 0 30px 80px rgb(0 0 0 / .35); }
 .reader::backdrop { background: rgb(15 16 18 / .62); }
 .reader-bar { position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; padding: 10px 14px 10px 24px; background: var(--surface); border-bottom: 1px solid var(--line); }
-.reader-bar .brand-name { font-size: 17px; }
+.reader-bar .brand { gap: 8px; } .reader-bar .brand svg { width: 26px; height: 26px; } .reader-bar .brand-name b { font-size: 16px; } .reader-bar .brand-name > span { font-size: 9.5px; margin-top: 2px; }
 .reader-close { background: none; border: 1px solid var(--line-strong); border-radius: 999px; height: 34px; padding: 0 14px; cursor: pointer; font-weight: 600; font-size: 13.5px; }
 .reader-body { padding: 24px 32px 32px; }
 .reader-body h1 { font: 700 clamp(26px, 3.6vw, 36px)/1.15 var(--serif); margin: 8px 0 6px; letter-spacing: -.012em; }
@@ -307,7 +308,7 @@ details.tbl th, details.tbl td { text-align: left; padding: 5px 6px; border-bott
   .masthead { position: static; }
   .topline span:last-child { display: none; }
   .brandbar { flex-wrap: wrap; gap: 10px; }
-  .brand-name { font-size: 22px; }
+  .brand-name b { font-size: 20px; } .brand svg, .brand .brand-mark { width: 32px; height: 32px; }
   .mainnav { margin-left: 0; order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; }
   .mainnav a { padding: 8px 10px; font-size: 14px; }
   .searchbox { order: 2; width: auto; flex: 1; min-width: 140px; }

@@ -3,7 +3,7 @@ import { $, esc, num, dataBR, urlSegura, debounce, imgTag, placeholder, NOME_UF,
 
 const HTML = `
 <dialog class="reader" id="leitor" aria-labelledby="leitorTitulo">
-  <div class="reader-bar"><span class="brand-name">Radar das Apreensões</span>
+  <div class="reader-bar"><span class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 3C19 3 9 13 9 26c0 17 23 35.5 23 35.5S55 43 55 26C55 13 45 3 32 3z" fill="#b3261e"/><path d="M24.5 40V14.5h9a8 8 0 0 1 0 16h-9" fill="none" stroke="#fff" stroke-width="5.4" stroke-linejoin="round"/><path d="M31.5 30.5l9.5 9.5" stroke="#fff" stroke-width="5.4" stroke-linecap="round"/><path d="M40.5 9.6a11 11 0 0 1 7.9 7.9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".55"/><path d="M40.6 13.8a6.6 6.6 0 0 1 3.6 3.6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".9"/></svg><span class="brand-name"><b>RADAR</b><span>das Apreensões</span></span></span>
     <button type="button" class="reader-close" id="fecharLeitor">Fechar ✕</button></div>
   <article class="reader-body" id="leitorConteudo"></article>
 </dialog>
