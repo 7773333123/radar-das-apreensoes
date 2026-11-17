@@ -59,7 +59,7 @@ jobs:
             if [ "${PAUSA_LINKS:-0}" -gt 0 ]; then
               PAUSA_LINKS=$((PAUSA_LINKS - 1)); echo "Links do Google em pausa (bloqueio); faltam $PAUSA_LINKS rodadas."
             else
-              python recuperar_links.py --limite 600 --trabalhadores 4 | tee /tmp/links.log || true
+              python recuperar_links.py --limite 600 --trabalhadores 4 --tempo-max 240 | tee /tmp/links.log || true
               grep -q '^Recuperados: 0/' /tmp/links.log && PAUSA_LINKS=3
             fi
             # Notícias novas primeiro; o restante relê páginas antigas (trecho de abertura, fotos).
