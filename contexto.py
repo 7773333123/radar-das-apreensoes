@@ -130,12 +130,7 @@ def resumo_secoes(item, fatos):
             frases.append(f'O material estava escondido {_juntar(no_veiculo)} do veículo.')
         if outros:
             frases.append(f'Parte do material estava {_juntar(outros)}.' if no_veiculo else f'O material foi encontrado {_juntar(outros)}.')
-    if fatos.get('origem') and fatos.get('destino'):
-        frases.append(f'De acordo com a reportagem, a carga saiu de {fatos["origem"]} e seguiria para {fatos["destino"]}.')
-    elif fatos.get('destino'):
-        frases.append(f'De acordo com a reportagem, o destino seria {fatos["destino"]}.')
-    elif fatos.get('origem'):
-        frases.append(f'De acordo com a reportagem, a carga vinha de {fatos["origem"]}.')
+    # Trajeto (de onde veio, para onde ia) não entra no resumo: só o local da apreensão.
     if fatos.get('rodovia'):
         rod = fatos['rodovia']
         if rod.startswith('BR-'):

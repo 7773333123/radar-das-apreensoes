@@ -30,6 +30,7 @@ import unicodedata
 from pathlib import Path
 
 from localizar_uf import _ufs_no_texto, cidade_do_fato, inferir_uf
+from resumo_fatos import LUGAR
 from resumo_fatos import anonimizar, extrair, nomes_dos_presos
 from contexto import resumo_secoes
 from estatisticas import MATERIAIS, ORGAOS_NOMES, enriquecer, exportar, quantidades
@@ -78,6 +79,34 @@ try:
         (Path(__file__).resolve().parent / 'trecho_por_veiculo.json').read_text(encoding='utf-8')).get('veiculos', {}).items()}
 except (OSError, ValueError):
     pass
+
+
+# Trajeto da carga ou do preso: "seguia para Curitiba", "vinda de Ponta Porã", "com destino a São Paulo".
+# Essas cidades não são o local da apreensão: ficam fora da cidade da notícia, do resumo e da busca.
+TRAJETO = re.compile(r'(?:com destino (?:a|ao|à|para)|destinad[oa]s? (?:a|ao|à|para)|que seguia(?:m)? (?:para|de)|seguia(?:m)? (?:para|de)|'
+                     r'seguiria(?:m)? para|seria(?:m)? levad[oa]s? (?:para|a|ao|à)|levaria(?:m)? [^.;]{0,25}?para|iria(?:m)? para|rumo a|'
+                     r'a caminho de|em dire[çc][ãa]o a|vind[oa]s? d[eoa]s?|vinha(?:m)? d[eoa]s?|sa[íi]d[oa]s? d[eoa]s?|que sa[íi]u d[eoa]s?|'
+                     r'partiu d[eoa]s?|procedente d[eoa]s?|oriund[oa]s? d[eoa]s?|saindo d[eoa]s?|trazid[oa]s? d[eoa]s?|'
+                     r'transportad[oa]s? d[eoa]s?|levad[oa]s? d[eoa]s?|transportad[oa]s? (?:para|até))'
+                     r'\s+(?:o |a |os |as )?' + LUGAR)
+SEM_TRAJETO = re.compile(r'\s+(?:que\s+)?(?:seguiria|seguia|iria|com destino|destinad|vind[oa]s?|vinha|sa[íi]d[oa]s? d|levad[oa]s? para|'
+                         r'seria(?:m)? levad|rumo a|procedente|oriund)', re.I)
+DEPOIS_PARA = re.compile(r'\s+(?:para|até|com destino a)\s+(?:o |a |os |as )?' + LUGAR)
+
+
+def cidades_de_trajeto(*textos):
+    vistos = []
+    for t in textos:
+        for m in TRAJETO.finditer(t or ''):
+            lugares = [m.group(1)]
+            seguinte = DEPOIS_PARA.match(t, m.end())  # "de São Paulo para Alagoas"
+            if seguinte:
+                lugares.append(seguinte.group(1))
+            for lugar in lugares:
+                lugar = re.sub(r'\s*(?:\([A-Z]{2}\)|/[A-Z]{2})$', '', lugar).strip()
+                if lugar and lugar not in vistos:
+                    vistos.append(lugar)
+    return vistos
 
 
 def limpar_rede_social(texto):
@@ -326,6 +355,8 @@ def main():
         if do_titulo:
             fatos_titulo[i] = do_titulo
         fatos = dict(n.get('fatos') or do_titulo or {})
+        if fatos.get('apreendido'):  # fichas antigas: trajeto colado no material
+            fatos['apreendido'] = list(dict.fromkeys(SEM_TRAJETO.split(str(a))[0].strip(' ,;') for a in fatos['apreendido']))
         # Detalhes da ação (como, esconderijo, rota, crimes, encaminhamento...)
         # também a partir da abertura guardada, sem esperar a releitura da página.
         if isinstance(fatos.get('mandados'), str):
@@ -394,8 +425,12 @@ def main():
     for item in saida:
         fatos = juntar_fatos([fatos_por_i.get(item['i'])] + [fatos_por_i.get(o[2]) for o in item.get('o', [])])
         # Município do fato (filtro e páginas por cidade).
-        cid = cidade_do_fato(item.get('uf', ''), item.get('t', ''), item.get('r', ''), (fatos or {}).get('cidades', ()),
-                             [x for x in ((fatos or {}).get('origem'), (fatos or {}).get('destino')) if x])
+        trajeto = cidades_de_trajeto(item.get('t', ''), item.get('r', ''))
+        rota = trajeto + [x for x in ((fatos or {}).get('origem'), (fatos or {}).get('destino')) if x]
+        cid = cidade_do_fato(item.get('uf', ''), item.get('t', ''), item.get('r', ''), (fatos or {}).get('cidades', ()), rota)
+        trajeto = [x for x in trajeto if x != cid]
+        if trajeto:
+            item['rt'] = trajeto[:4]  # a busca do site ignora essas cidades
         if cid:
             item['cid'] = cid
         # Resumo e ficha ("Onde") citam só o local da apreensão, nunca a cidade da

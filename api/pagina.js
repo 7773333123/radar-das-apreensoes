@@ -190,7 +190,6 @@ function paginaNoticia(i) {
       : f.presos ? `${num(f.presos)} ${f.presos === 1 ? 'pessoa' : 'pessoas'}` : (f.presos_texto ? 'Sim, segundo a reportagem' : ''))],
     ['Como', (f.como || []).join(', ')],
     ['Onde estava', [(f.esconderijo || []).join(', '), f.veiculo || ''].filter(Boolean).join(' · ')],
-    ['Rota', [f.origem ? `de ${f.origem}` : '', f.destino ? `para ${f.destino}` : ''].filter(Boolean).join(' ')],
     ['Crimes citados', (f.crimes || []).join(', ')],
     ['Mandados', f.mandados || ''], ['Operação', f.operacao || ''], ['Valores citados', f.valor || ''],
     ['Publicado em', fmtData(d, true)],
