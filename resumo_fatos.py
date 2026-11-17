@@ -86,6 +86,9 @@ def _fmt(valor):
 
 def _limpa_material(mat):
     mat = re.sub(r'\s+', ' ', mat).strip(' -').lower()
+    # Trajeto não faz parte do material ("entorpecente seguiria para a Alemanha").
+    mat = re.split(r'\s+(?:que\s+)?(?:seguiria|seguia|iria|com destino|destinad|vind[oa]s?|vinha|sa[íi]d[oa]s? d|levad[oa]s? para|'
+                   r'seria(?:m)? levad|rumo a|procedente|oriund)', mat)[0]
     mat = re.sub(r'^(?:de|da|do)\s+', '', mat)
     return mat
 
