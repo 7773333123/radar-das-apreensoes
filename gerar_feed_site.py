@@ -215,6 +215,16 @@ def main():
     # Anti-imagem: foto que aparece na galeria de 3+ notícias diferentes é de
     # anúncio, barra lateral ou chamada de outra matéria, não do fato.
     repetidas = contar_fotos_repetidas(noticias)
+    # Mesmo "trecho" em matérias de títulos diferentes = a leitura pegou um bloco fixo do site.
+    por_trecho = {}
+    for n in noticias:
+        if isinstance(n, dict) and n.get('trecho'):
+            por_trecho.setdefault(_normal(str(n['trecho'])[:300]), set()).add(_normal(str(n.get('titulo') or ''))[:60])
+    # Só é bloco fixo se, além de repetido, não tiver relação com os títulos (um comunicado
+    # republicado por vários veículos repete o texto, mas fala do mesmo fato do título).
+    from duplicatas import informativas
+    trechos_repetidos = {t for t, titulos in por_trecho.items() if len(titulos) >= 2 and
+                         sum(len(informativas(x) & informativas(t)) < 2 for x in titulos) > len(titulos) / 2}
     for n in noticias:
         if not isinstance(n, dict):
             continue
@@ -327,6 +337,8 @@ def main():
         # O que diz a fonte: 70% da reportagem (com crédito e link), ou o limite
         # do veículo em trecho_por_veiculo.json, se ele tiver pedido.
         trecho = limitar_trecho(str(n.get('trecho') or '').strip(), n)
+        if trecho and _normal(trecho[:300]) in trechos_repetidos:
+            trecho = ''  # bloco fixo do site (rodapé, "quem somos"), não a reportagem
         if nomes_presos:
             trecho = anonimizar(trecho, nomes_presos)
         if trecho and len(trecho) > len(resumo):
