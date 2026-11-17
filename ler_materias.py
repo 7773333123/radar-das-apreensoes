@@ -451,6 +451,7 @@ def main():
     ap.add_argument('--timeout', type=int, default=12)
     ap.add_argument('--trabalhadores', type=int, default=8)
     ap.add_argument('--max-tentativas', type=int, default=3)
+    ap.add_argument('--periodo', default='', help='Só notícias deste período (AAAA ou AAAA-MM): coleta retroativa')
     args = ap.parse_args()
     dados = json.loads(ARQUIVO.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
@@ -464,6 +465,8 @@ def main():
         curto = (n.get('trecho') and n.get('tamanho_texto') and int(n.get('trecho_v') or 0) < 2
                  and len(str(n['trecho'])) < 0.5 * float(n['tamanho_texto']))
         if int(n.get('materia_lida_v') or 0) >= VERSAO and not oficial_antigo and not curto:
+            continue
+        if args.periodo and not str(n.get('data_iso') or '').startswith(args.periodo):
             continue
         url = n.get('url_original') if valida(n.get('url_original')) else (n.get('url') if valida(n.get('url')) else '')
         if url and int(n.get('tentativas_leitura') or 0) < args.max_tentativas:

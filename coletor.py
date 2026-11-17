@@ -413,6 +413,9 @@ def executar():
     parser.add_argument('--historico', action='store_true', help='Busca mês a mês em um ano específico')
     parser.add_argument('--ano', type=int, help='Ano histórico de 2006 até o atual')
     parser.add_argument('--mes', type=int, choices=range(1, 13), metavar='1-12', help='Mês específico da busca histórica (opcional)')
+    parser.add_argument('--retroativo', metavar='AAAA-MM',
+                        help='Busca retroativa ampla de um mês: semana a semana, por tema, estado e polo de fronteira')
+    parser.add_argument('--pular', type=int, default=0, help='Retroativo: consultas já feitas em execução anterior')
     parser.add_argument('--limite-fontes', type=int, default=24, help='Fontes extras consultadas por execução (padrão: 24)')
     parser.add_argument('--limite-estados', type=int, default=9, help='Estados consultados por execução (padrão: 9)')
     parser.add_argument('--limite-fronteira', type=int, default=5, help='Polos de fronteira consultados por execução (padrão: 5)')
@@ -440,7 +443,31 @@ def executar():
     extras = carregar_fontes_extras()
     print(f'Duplicatas já existentes descartadas: {duplicadas_anteriores}')
     consultas = []
-    if args.historico:
+    if args.retroativo:
+        # Semana a semana (o Google devolve até ~100 por consulta): temas nacionais, cada
+        # estado e cada polo de fronteira. Para quando o Google bloquear (ver abaixo).
+        from datetime import date, timedelta
+        a, m = map(int, args.retroativo.split('-'))
+        dia = date(a, m, 1)
+        fim_mes = date(a + (m == 12), 1 if m == 12 else m + 1, 1)
+        janelas = []
+        while dia < fim_mes:
+            prox = min(dia + timedelta(days=7), fim_mes)
+            janelas.append((dia.isoformat(), prox.isoformat()))
+            dia = prox
+        for inicio, seguinte in janelas:
+            for polo in polos:  # fronteira primeiro
+                consultas.append((f'{TERMOS_APREENSAO} {termos_polo(polo)} after:{inicio} before:{seguinte}', None))
+            for categoria, termos in TEMAS_HISTORICOS.items():
+                consultas.append((f'{termos} after:{inicio} before:{seguinte}', categoria))
+            for nome, dominio in FONTES.items():
+                consultas.append((f'{TERMOS_APREENSAO} site:{dominio} after:{inicio} before:{seguinte}', None))
+            for uf in ESTADOS:
+                consultas.append((f'{TERMOS_APREENSAO} polícia "{NOMES_ESTADOS.get(uf, uf)}" after:{inicio} before:{seguinte}', None))
+        pulo = max(0, min(args.pular, len(consultas)))
+        consultas = consultas[pulo:]
+        args.historico = True  # mesmo filtro de data e pausa da busca histórica
+    elif args.historico:
         # Uma execução por ano, para não sobrecarregar a fonte.
         for mes in ([args.mes] if args.mes else range(1, 13)):
             if args.ano == ano_atual and mes > datetime.now(timezone.utc).month:
@@ -487,6 +514,8 @@ def executar():
     novos = 0
     erros = 0
     recebidas = []
+    seguidas = 0
+    completo = True
     for i, (consulta, categoria) in enumerate(consultas, 1):
         try:
             itens = coletar(consulta, categoria)
@@ -499,9 +528,24 @@ def executar():
             print(f'Consulta {i}/{len(consultas)}: {len(itens)} resultados, {novos} novos acumulados')
         except (OSError, ET.ParseError, ValueError) as exc:
             erros += 1
+            seguidas += 1
             print(f'AVISO: consulta {i} falhou: {exc}')
+            if args.retroativo and seguidas >= 5:
+                # Google bloqueou este servidor: grava o que veio; o resto fica para a próxima.
+                print(f'Google bloqueou após {i} consultas; {len(consultas) - i} ficam para a próxima execução.')
+                consultas = consultas[:i]
+                completo = False
+                break
+            time.sleep(4)
+            continue
+        seguidas = 0
         time.sleep(1.5 if args.historico else 0.5)
-    if erros == len(consultas):
+    if args.retroativo:
+        # O workflow retroativo só passa ao mês anterior quando a busca do mês terminou.
+        Path('retroativo_google.json').write_text(json.dumps({'mes': args.retroativo, 'completo': completo,
+                                                               'feitas': pulo + len(consultas) - (0 if completo else 5),
+                                                               'falhas': erros}), encoding='utf-8')
+    if erros == len(consultas) and not args.retroativo:
         raise RuntimeError('Todas as consultas falharam; arquivo preservado')
     noticias, descartadas = deduplicar(registros + recebidas)
     novos = len(noticias) - len(registros)

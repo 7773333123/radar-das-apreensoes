@@ -606,6 +606,18 @@ def main():
     removidas |= {it['i'] for it in bloqueadas}
     antes -= len(bloqueadas)
     print(f'Sem conteúdo publicável (veículo bloqueia a leitura ou link não encontrado): {len(bloqueadas)} fora do site')
+    # Padrão do site: nenhuma notícia sem foto E sem conteúdo (trecho da reportagem ou texto
+    # integral). Fica no acervo e entra no site assim que a leitura trouxer foto ou trecho
+    # (de qualquer versão da mesma notícia: o agrupamento já copiou a foto de outra fonte).
+    def tem_conteudo(it):
+        d = detalhes.get(it['i'] % LOTES, {}).get(str(it['i']), {})
+        return bool(it.get('img') or it.get('x') or d.get('tr'))
+    vazias = [it for it in saida if not tem_conteudo(it)]
+    if vazias:
+        saida = [it for it in saida if tem_conteudo(it)]
+        removidas |= {it['i'] for it in vazias}
+        antes -= len(vazias)
+    print(f'Sem foto e sem conteúdo (aguardando leitura): {len(vazias)} fora do site')
     for item in saida:
         for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag'):
             item.pop(k, None)

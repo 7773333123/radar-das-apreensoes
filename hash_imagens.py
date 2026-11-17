@@ -134,13 +134,19 @@ def main():
     ap.add_argument('--limite', type=int, default=500)
     ap.add_argument('--timeout', type=int, default=10)
     ap.add_argument('--trabalhadores', type=int, default=12)
+    ap.add_argument('--periodo', default='', help='Só notícias deste período (AAAA ou AAAA-MM): coleta retroativa')
     args = ap.parse_args()
     dados = json.loads(ARQUIVO.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
     # Sem impressão digital, ou recente (45 dias) sem as miniaturas de recorte.
     from datetime import datetime, timedelta, timezone
     corte = (datetime.now(timezone.utc) - timedelta(days=45)).isoformat()[:10]
-    pendentes = [n for n in noticias if isinstance(n, dict) and str(n.get('imagem_url') or '').startswith('http')
+    if args.periodo:  # retroativo: miniaturas e comparação dentro do período
+        corte = args.periodo[:7] + ('-01' if len(args.periodo) >= 7 else '-01-01')
+        noticias_periodo = [n for n in noticias if isinstance(n, dict) and str(n.get('data_iso') or '').startswith(args.periodo)]
+    else:
+        noticias_periodo = noticias
+    pendentes = [n for n in noticias_periodo if isinstance(n, dict) and str(n.get('imagem_url') or '').startswith('http')
                  and int(n.get('img_dhash_tentativas') or 0) < 2
                  and (not n.get('img_dhash') or (not n.get('img_mini') and str(n.get('data_iso') or '') >= corte))]
     pendentes.sort(key=lambda n: n.get('data_iso') or '', reverse=True)
@@ -159,7 +165,7 @@ def main():
             except Exception:  # rede, HTTP, formato não suportado
                 n['img_dhash_tentativas'] = int(n.get('img_dhash_tentativas') or 0) + 1
                 falhas += 1
-    iguais = comparar_recortes([n for n in lote if n.get('img_mini')], noticias, corte)
+    iguais = comparar_recortes([n for n in lote if n.get('img_mini')], noticias_periodo, corte)
     if lote:
         tmp = ARQUIVO.with_suffix('.json.tmp')
         tmp.write_text(json.dumps(dados, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')

@@ -260,6 +260,7 @@ def main():
     ap.add_argument('--diagnostico', action='store_true', help='Exibe amostra de erros sem revelar dados privados')
     ap.add_argument('--antigas', action='store_true', help='Mais antigas primeiro (a coleta rápida cuida das recentes)')
     ap.add_argument('--tempo-max', type=int, default=0, help='Segundos no máximo (0 = sem limite); o que faltar fica para a próxima')
+    ap.add_argument('--periodo', default='', help='Só notícias deste período (AAAA ou AAAA-MM): coleta retroativa')
     args = ap.parse_args()
     if not ARQUIVO.exists(): raise SystemExit('noticias.json ausente; nada alterado')
     data = json.loads(ARQUIVO.read_text(encoding='utf-8'))
@@ -269,6 +270,7 @@ def main():
     for article in news:
         if not isinstance(article,dict): continue
         if valida(article.get('url_original')): existing+=1; continue
+        if args.periodo and not str(article.get('data_iso') or '').startswith(args.periodo): continue
         url = article.get('url_google_noticias') or article.get('url') or ''
         if valida(url):
             article['url_original']=url; article['url_original_status']='direta'; existing+=1
