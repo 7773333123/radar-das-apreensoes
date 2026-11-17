@@ -189,7 +189,7 @@ function render() {
   $('mais').hidden = st.limite >= st.lista.length;
   $('limpar').hidden = !filtrado;
   $('fEstado').value = f.uf; $('fCategoria').value = f.cat; $('fAno').value = f.ano;
-  if ($('buscaTopo').value !== f.q) $('buscaTopo').value = f.q;
+  if ($('buscaTopo').value.trim() !== f.q) $('buscaTopo').value = f.q;  // não apaga o espaço que a pessoa acabou de digitar
   document.querySelectorAll('#editorias a').forEach((a) => a.setAttribute('aria-current', String((a.dataset.cat ?? '') === f.cat && !f.q)));
   const sel = $('selEstado'); if (sel) sel.value = f.uf;
   // Painel lateral: refinar dentro do resultado atual.
