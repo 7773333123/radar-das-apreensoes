@@ -168,9 +168,10 @@ function deduplicar(lista) {
 /** Carrega e prepara o acervo (uma vez por página). */
 const feeds = new Map();
 /** feed.json (completo) ou feed-recente.json (últimos 31 dias, para a página inicial abrir rápido). */
-export function carregarFeed(arquivo = 'feed.json') {
-  if (feeds.has(arquivo)) return feeds.get(arquivo);
-  const feedPromise = fetch(arquivo).then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then((dados) => {
+export function carregarFeed(arquivo = 'feed.json', { novo = false } = {}) {
+  if (!novo && feeds.has(arquivo)) return feeds.get(arquivo);
+  // novo: busca de novo no servidor (atualização da página aberta), sem o cache do navegador.
+  const feedPromise = fetch(novo ? `${arquivo}?t=${Date.now()}` : arquivo, novo ? { cache: 'no-store' } : {}).then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then((dados) => {
     const ctx = {
       categorias: dados.categorias || [], orgaos: dados.orgaos || [], materiais: dados.materiais || {},
       atualizado: dados.atualizado_em ? new Date(dados.atualizado_em) : null,
@@ -181,7 +182,7 @@ export function carregarFeed(arquivo = 'feed.json') {
     ctx.parcial = Boolean(dados.parcial);
     return ctx;
   });
-  feeds.set(arquivo, feedPromise);
+  if (!novo) feeds.set(arquivo, feedPromise);
   return feedPromise;
 }
 

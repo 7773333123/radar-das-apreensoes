@@ -1,12 +1,12 @@
-name: Coleta rápida (a cada 20 minutos)
+name: Coleta rápida (a cada 10 minutos)
 # O agendamento do GitHub (cron) atrasa ou pula execuções em repositórios
 # pouco movimentados. Por isso esta coleta roda em ciclo contínuo: uma mesma
-# execução coleta a cada 20 minutos por cerca de 5 horas e meia e, ao terminar,
+# execução coleta a cada 10 minutos por cerca de 5 horas e meia e, ao terminar,
 # dispara a si mesma de novo (workflow_dispatch com o GITHUB_TOKEN). No início
 # de cada ciclo também dispara a coleta completa e a histórica, que assim rodam
 # a cada ~6 horas mesmo se o cron delas falhar. O cron abaixo fica como reserva:
 # se o ciclo parar, ele o reinicia (com concurrency, nunca roda em dobro).
-# 20 minutos = até 72 publicações por dia na Vercel, abaixo do limite de 100.
+# 10 minutos = até 144 publicações por dia na Vercel (plano Pro: limite de 6.000).
 on:
   workflow_dispatch:
   schedule:
@@ -23,8 +23,9 @@ jobs:
     timeout-minutes: 350
     env:
       GH_TOKEN: ${{ github.token }}
-      CICLOS: 16          # 16 x 20 min = 5h20 de coleta por execução
-      INTERVALO: 1200     # segundos entre o início de cada rodada
+      CICLOS: 40          # até 40 rodadas; o limite real é o tempo (5h20 por execução)
+      INTERVALO: 600      # segundos entre o início de cada rodada (rodada mais longa: a próxima começa logo)
+      DURACAO: 19200      # 5h20: depois disso não começa rodada nova e a execução dispara a seguinte
     steps:
       - name: Baixar repositório
         uses: actions/checkout@v5
@@ -40,11 +41,13 @@ jobs:
           gh workflow run coletar.yml --ref main || true
           gh workflow run historico.yml --ref main || true
           gh workflow run resolver_antigas.yml --ref main || true
-      - name: Coletar a cada 20 minutos
+      - name: Coletar a cada 10 minutos
         run: |
           set -uo pipefail
+          comeco=$(date +%s)
           for ciclo in $(seq 1 "$CICLOS"); do
             inicio=$(date +%s)
+            if [ $(( inicio - comeco )) -ge "$DURACAO" ]; then echo 'Tempo da execução esgotado; a próxima continua.'; break; fi
             echo "::group::Rodada $ciclo de $CICLOS ($(date -u +%H:%M) UTC)"
             git fetch -q origin main && git reset -q --hard origin/main
             if ! python acervo.py baixar; then echo 'Acervo indisponível; rodada pulada.'; echo '::endgroup::'; sleep 60; continue; fi
