@@ -320,7 +320,8 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
     ca, cb = a.get('_cid'), b.get('_cid')
     if ca and cb and ca != cb:
         return None, [], 0  # cidades do fato diferentes: fatos diferentes
-    na_, nb_ = nomes_proprios(a['t']), nomes_proprios(b['t'])
+    na_ = a['_np'] if '_np' in a else nomes_proprios(a['t'])
+    nb_ = b['_np'] if '_np' in b else nomes_proprios(b['t'])
     if na_ and nb_ and not (na_ & nb_):
         return None, [], 0  # lugares/nomes diferentes nos títulos (Barra do Choça x Irecê)
     nota, motivos = 0.0, []
@@ -359,8 +360,8 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
         nota += 3
         motivos.append('mesma foto recortada')
         fortes += 1
-    opa = {x for x, _ in operacoes(a['t'] + ' . ' + a.get('_lead', ''))}
-    opb = {x for x, _ in operacoes(b['t'] + ' . ' + b.get('_lead', ''))}
+    opa = a['_ops'] if '_ops' in a else {x for x, _ in operacoes(a['t'] + ' . ' + a.get('_lead', ''))}
+    opb = b['_ops'] if '_ops' in b else {x for x, _ in operacoes(b['t'] + ' . ' + b.get('_lead', ''))}
     if opa & opb:
         nota += 2
         motivos.append('mesma operação')
@@ -371,15 +372,19 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
     return nota, motivos, fortes
 
 
-def auditar(itens, dia, inf, qt, sh, hs, unir, raiz, dias=4):
+def auditar(itens, dia, inf, qt, sh, hs, unir, raiz, dias=None):
+    """dias=None: o acervo inteiro (a coleta retroativa também passa pelo auditor)."""
     SUSPEITAS.clear()
     JUNTADAS.clear()
     validos = [d for d in dia if d is not None]
     if not validos:
         return
-    limite = max(validos) - dias
+    limite = (max(validos) - dias) if dias else min(validos)
     recentes = [k for k in range(len(itens)) if dia[k] is not None and dia[k] >= limite]
     rad = {k: radicais_titulo(itens[k]['t']) for k in recentes}
+    for k in recentes:  # características calculadas uma vez por notícia
+        itens[k]['_ops'] = {x for x, _ in operacoes(itens[k]['t'] + ' . ' + itens[k].get('_lead', ''))}
+        itens[k]['_np'] = nomes_proprios(itens[k]['t'])
     # Pares candidatos: mesmo dia (ou vizinho) e ao menos um radical próprio em comum.
     indice = {}
     for k in recentes:
@@ -422,6 +427,9 @@ def auditar(itens, dia, inf, qt, sh, hs, unir, raiz, dias=4):
                               'a': [itens[a]['i'], itens[a].get('f', ''), itens[a]['t']],
                               'b': [itens[b]['i'], itens[b].get('f', ''), itens[b]['t']]})
     SUSPEITAS.sort(key=lambda x: -x['nota'])
+    for k in recentes:
+        itens[k].pop('_ops', None)
+        itens[k].pop('_np', None)
 
 
 def trechos(texto, n=5):

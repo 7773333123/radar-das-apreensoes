@@ -1,0 +1,85 @@
+name: Coleta retroativa (mês a mês até 2006)
+# Enche os meses anteriores ao início da coleta diária (out/2026), do mais recente para 2006:
+# arquivo dos próprios veículos (WordPress, link direto e foto), Google Notícias semana a semana
+# (estados, temas, polos de fronteira), links, leitura das matérias, fotos e duplicatas.
+# Os mesmos padrões das outras coletas: robots.txt, veículos pagos fora, duplicatas (texto,
+# operação, foto inteira ou recortada, auditor), nada sem foto e sem conteúdo no site.
+# Um mês por vez; o cursor (retroativo_cursor.json) só passa ao mês anterior quando o mês terminou.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */2 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: coleta-retroativa
+  cancel-in-progress: false
+jobs:
+  retroativo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 170
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet googlenewsdecoder pillow numpy
+      - name: Baixar o acervo (release "dados")
+        run: python acervo.py baixar
+      - name: Mês da vez
+        id: c
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          c = json.load(open('retroativo_cursor.json'))
+          print(f"mes={c['mes']}")
+          print(f"ano={c['mes'][:4]}")
+          print(f"wp={'sim' if c.get('arquivo_sites_feito') else 'nao'}")
+          print(f"pular={c.get('google_feitas', 0)}")
+          print(f"fim={'sim' if c['mes'] < c['ate'] else 'nao'}")
+          PY
+      - name: Arquivo dos sites dos veículos (WordPress)
+        if: steps.c.outputs.fim == 'nao' && steps.c.outputs.wp == 'nao'
+        continue-on-error: true
+        run: python arquivo_sites.py --mes ${{ steps.c.outputs.mes }} --tempo-max 2700
+      - name: Google Notícias semana a semana
+        if: steps.c.outputs.fim == 'nao'
+        continue-on-error: true
+        run: python coletor.py --retroativo ${{ steps.c.outputs.mes }} --pular ${{ steps.c.outputs.pular }}
+      - name: Link original (notícias do ano)
+        continue-on-error: true
+        run: python recuperar_links.py --periodo ${{ steps.c.outputs.ano }} --antigas --limite 2000 --trabalhadores 4 --tempo-max 1500
+      - name: Ler as matérias do ano (foto, trecho, fatos)
+        continue-on-error: true
+        run: python ler_materias.py --periodo ${{ steps.c.outputs.ano }} --limite 3000 --trabalhadores 10
+      - name: Fotos (impressão digital, recortes)
+        continue-on-error: true
+        run: python hash_imagens.py --periodo ${{ steps.c.outputs.ano }} --limite 4000 --trabalhadores 16
+      - name: Avançar o cursor
+        if: steps.c.outputs.fim == 'nao'
+        run: |
+          python - <<'PY'
+          import json, os
+          c = json.load(open('retroativo_cursor.json'))
+          c['arquivo_sites_feito'] = True
+          g = json.load(open('retroativo_google.json')) if os.path.exists('retroativo_google.json') else {}
+          c['google_tentativas'] = c.get('google_tentativas', 0) + 1
+          if g.get('mes') == c['mes']:
+              c['google_feitas'] = g.get('feitas', c.get('google_feitas', 0))
+          # Mês concluído: Google terminou (ou 4 tentativas com bloqueio) e arquivo dos sites feito.
+          if g.get('completo') or c['google_tentativas'] >= 4:
+              c.setdefault('meses_concluidos', []).append(c['mes'])
+              a, m = map(int, c['mes'].split('-'))
+              a, m = (a - 1, 12) if m == 1 else (a, m - 1)
+              c.update(mes=f'{a}-{m:02d}', arquivo_sites_feito=False, google_feitas=0, google_tentativas=0)
+          json.dump(c, open('retroativo_cursor.json', 'w'), ensure_ascii=False, indent=1)
+          print('Cursor:', c['mes'], '| concluídos:', len(c['meses_concluidos']))
+          PY
+      - name: Gerar o site e salvar (mescla se outra coleta gravou antes)
+        run: |
+          python testes/test_duplicatas.py
+          python gerar_feed_site.py
+          python compactar_acervo.py
+          python acervo.py salvar "Coleta retroativa - ${{ steps.c.outputs.mes }}" retroativo_cursor.json arquivo_sites_estado.json
