@@ -42,3 +42,34 @@ def de_fronteira(n):
     if str(n.get('fonte') or '').strip().lower() in nomes:
         return True
     return bool(lugares and lugares.search(str(n.get('titulo') or '')))
+
+
+# Polos de fronteira de verdade (sem os corredores do interior e os portos), para o bloco
+# "Fronteira" da página inicial.
+CORREDORES = {'Leste de MS (divisa com SP)', 'Rotas fluviais e portos do Pará', 'Oeste paulista (corredor do PR e de MS)',
+              'Corredor do Triângulo Mineiro e de Goiás', 'Portos de exportação'}
+
+
+@lru_cache(maxsize=1)
+def _polos_estritos():
+    try:
+        polos = json.loads((PASTA / 'polos_fronteira.json').read_text(encoding='utf-8'))['polos']
+    except (OSError, ValueError, KeyError):
+        return []
+    saida = []
+    for p in polos:
+        if p['nome'] in CORREDORES:
+            continue
+        termos = sorted({t for t in p['termos'] if len(t) > 3 and not re.match(r'^[A-Z]{2,}-?\d*$', t)}, key=len, reverse=True)
+        if termos:
+            saida.append((p['nome'], p.get('uf', ''), re.compile(r'(?<![\wÀ-ÿ])(?:' + '|'.join(re.escape(t) for t in termos) + r')(?![\wÀ-ÿ])')))
+    return saida
+
+
+def polo_do_item(item):
+    """Polo de fronteira de uma notícia do site (feed): pela cidade do fato ou pelo lugar no título, no mesmo estado."""
+    texto = f"{item.get('cid', '')} {item.get('t', '')}"
+    for nome, uf, regex in _polos_estritos():
+        if (not uf or not item.get('uf') or item.get('uf') == uf) and regex.search(texto):
+            return nome
+    return ''

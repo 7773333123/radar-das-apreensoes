@@ -111,6 +111,24 @@ function renderInicio() {
   const lado = destaques.slice(1, 5);
   lado.forEach((n) => usados.add(n));
 
+  // Fronteira: 2 principais (com foto) e até 6 menores, das últimas 24 h (amplia para 48 h e 7 dias
+  // se houver poucas), sem repetir a manchete e os destaques. Ordem: importância com prazo de validade.
+  const daFronteira = (h) => ns.filter((n) => n.polo && !usados.has(n) && n.data && horas(n) <= h && n.data.getTime() <= agora + 3600000);
+  const janelaFr = [24, 48, 7 * 24].map(daFronteira).find((l) => l.length >= 4) || daFronteira(7 * 24);
+  const ordemFr = [...janelaFr].sort((a, b) => nota(b) - nota(a) || b.data - a.data);
+  const frPrincipais = [...ordemFr.filter((n) => n.img), ...ordemFr.filter((n) => !n.img)].slice(0, 2);
+  const frMenores = ordemFr.filter((n) => !frPrincipais.includes(n)).slice(0, 6);
+  [...frPrincipais, ...frMenores].forEach((n) => usados.add(n));
+  const lugarFr = (n) => `${n.cidade ? `${n.cidade} (${n.uf})` : (NOME_UF[n.uf] || '')}`;
+  const blocoFronteira = frPrincipais.length ? `<section class="fronteira" aria-label="Fronteira">` +
+    `<div class="section-head"><h2>Fronteira</h2><span class="count">Apreensões nas regiões de fronteira</span></div>` +
+    `<div class="fr-principais">${frPrincipais.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}">${midia(n)}` +
+      `<div><div class="kicker">${esc(n.polo)}</div><h3 class="headline">${esc(n.titulo)}</h3>` +
+      `${n.resumo ? `<p class="dek">${esc(curto(n.resumo, 160))}</p>` : ''}${metaHTML(n)}</div></a>`).join('')}</div>` +
+    (frMenores.length ? `<ul class="fr-menores">${frMenores.map((n) => `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}">` +
+      `<span class="fr-lugar">${esc(lugarFr(n))}</span><h4 class="headline">${esc(n.titulo)}</h4>${metaHTML(n)}</a></li>`).join('')}</ul>` : '') +
+    `</section>` : '';
+
   // Em alta: publicadas por mais veículos nas últimas 24 h (ou 48 h, se houver poucas).
   const repercutidas = (h) => recentes(h / 24).filter((n) => n.outras.length && !usados.has(n));
   const alta = (repercutidas(24).length >= 3 ? repercutidas(24) : repercutidas(48))
@@ -133,6 +151,7 @@ function renderInicio() {
       `<div class="lead-main">${story(manchete, { dek: true, cont: true }).replace('<h3 class="headline">', '<h2 class="headline">').replace('</h3>', '</h2>')}</div>` +
       `<div class="lead-side">${lado.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx)}<h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a>`).join('')}</div>` +
     `</section>` +
+    blocoFronteira +
     `<div class="section-head"><h2>Em alta e em números</h2><a href="observatorio">Abrir o Observatório →</a></div>` +
     `<section class="band">` +
       `<div class="panel"><h3>Em alta</h3>${alta.length ? `<ol class="trend">${alta.map((n) =>
