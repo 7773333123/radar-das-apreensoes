@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Coleta incremental de publicações oficiais (2020+), sem excluir notícias antigas.
+"""Coleta incremental de publicações oficiais (PF desde ~2015, Receita desde 2020), sem excluir notícias antigas.
 Usa apenas biblioteca padrão; coleta páginas diretamente, não Google News.
 """
 import argparse
@@ -155,6 +155,6 @@ if __name__=='__main__':
     ap.add_argument('--ano',type=int)
     ap.add_argument('--paginas',type=int,default=2,help='Páginas por mês e fonte')
     args=ap.parse_args()
-    if args.ano and not 2020<=args.ano<=NOW.year:ap.error('Ano fora de 2020 até o ano atual')
+    if args.ano and not 2015<=args.ano<=NOW.year:ap.error('Ano fora de 2015 até o ano atual')  # arquivo da PF no gov.br guarda anos anteriores a 2020
     years=[args.ano] if args.ano else (list(range(2020,NOW.year+1)) if args.todos_anos else [NOW.year])
     collect(years,max(1,min(args.paginas,8)))

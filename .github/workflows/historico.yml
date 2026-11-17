@@ -14,7 +14,7 @@ concurrency:
 jobs:
   historico:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 90
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -34,13 +34,17 @@ jobs:
           echo "Ano desta execução: $ANO"
       - name: Buscar notícias do ano (Google Notícias, mês a mês)
         run: python coletor.py --historico --ano ${{ steps.ano.outputs.ano }}
-      - name: Buscar arquivos oficiais do ano (gov.br, a partir de 2020)
+      - name: Buscar arquivos oficiais do ano (gov.br; PF desde ~2015)
+        continue-on-error: true
         run: |
-          if [ ${{ steps.ano.outputs.ano }} -ge 2020 ]; then
-            python coletar_fontes_diretas.py --ano ${{ steps.ano.outputs.ano }} --paginas 3
+          if [ ${{ steps.ano.outputs.ano }} -ge 2015 ]; then
+            python coletar_fontes_diretas.py --ano ${{ steps.ano.outputs.ano }} --paginas 6
           else
-            echo 'Arquivos oficiais do gov.br começam em 2020; etapa ignorada.'
+            echo 'Arquivos oficiais do gov.br começam por volta de 2015; etapa ignorada.'
           fi
+      - name: Agência Brasil (licença aberta, notícias desde os anos 2000)
+        continue-on-error: true
+        run: python coletar_agencia_brasil.py --paginas 25
       - name: Avançar o cursor
         run: |
           python - <<'PY'
@@ -61,4 +65,4 @@ jobs:
           python compactar_acervo.py
       - name: Salvar (mescla se outra coleta gravou antes)
         run: |
-          python acervo.py salvar "Acervo histórico - ano ${{ steps.ano.outputs.ano }}" historico_cursor.json
+          python acervo.py salvar "Acervo histórico - ano ${{ steps.ano.outputs.ano }}" historico_cursor.json agencia_cursor.json
