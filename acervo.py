@@ -200,6 +200,8 @@ def salvar(msg, extras, sem_dados=False):
             print(f'Salvo (tentativa {tentativa}): {", ".join(subidos) or "só arquivos do Git"}')
             if not sem_dados:
                 limpar_antigos({ponteiro()['acervo'], ponteiro()['site']})
+                # A release agora é a nossa: o próximo salvar desta execução não precisa mesclar.
+                BAIXADO.write_text(ponteiro()['acervo'], encoding='utf-8')
             return
         print(f'Outra coleta gravou antes; mesclando (tentativa {tentativa})...', flush=True)
         for nome in subidos:  # o que subimos não vai ser usado

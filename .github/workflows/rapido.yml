@@ -53,6 +53,13 @@ jobs:
             if ! python acervo.py baixar; then echo 'Acervo indisponível; rodada pulada.'; echo '::endgroup::'; sleep 60; continue; fi
             antes=$(sha1sum noticias.json | cut -c1-40)
             python coletar_feeds_estaduais.py || echo 'Feeds com falha; seguindo.'
+            # Notícias novas dos feeds vão ao ar já (em poucos minutos), sem esperar as etapas
+            # lentas (busca no Google, links, leitura das matérias), que salvam de novo no fim.
+            if [ "$(sha1sum noticias.json | cut -c1-40)" != "$antes" ] && python testes/test_duplicatas.py >/dev/null \
+               && python gerar_feed_site.py >/dev/null && python compactar_acervo.py >/dev/null; then
+              python acervo.py salvar "Coleta rápida (rodada $ciclo, notícias novas)" feeds_saude.json \
+                && antes=$(sha1sum noticias.json | cut -c1-40) || echo 'Falha ao salvar as novas; o fim da rodada tenta de novo.'
+            fi
             # 15 sites por rodada: as 1.100+ fontes giram em ~1 dia.
             python coletor.py --limite-fontes 15 --limite-estados 4 --limite-fronteira 10 --limite-sites-fronteira 10 || echo 'Busca com falha; seguindo.'
             # Buscador alternativo (Bing Notícias): não depender só do Google. (GDELT recusa os servidores do GitHub: erro 429.)
