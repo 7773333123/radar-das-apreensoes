@@ -155,7 +155,7 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
           : `Reproduzido de ${esc(n.fonte)} sob a licença ${esc(t.l)}, que permite a reprodução com crédito.`}</span>${link}</footer></section>`;
     }
     const trecho = t?.tr && t.tr.length > (n.resumo || '').length ? t.tr : n.resumo;
-    if (!trecho) return n.url ? `<section class="bloco fonte-card">${cab('O que diz a fonte')}<footer class="fonte-pe"><span>A reportagem está disponível no site de origem.</span>${link}</footer></section>` : '';
+    if (!trecho) return n.url ? `<section class="bloco fonte-card">${cab('O que diz a fonte')}<footer class="fonte-pe"><span>Este veículo não libera a leitura automática da reportagem. O texto completo e as fotos estão no site de origem.</span>${link}</footer></section>` : '';
     const pct = t?.tr && t?.tt ? Math.min(100, Math.max(1, Math.round((t.tr.length / t.tt) * 100))) : 0;
     return `<section class="bloco fonte-card">${cab('O que diz a fonte')}<blockquote class="reader-quote">${paragrafos(trecho)}</blockquote>` +
       `<footer class="fonte-pe"><span>${t?.tr ? `Trecho da reportagem${pct ? `, cerca de ${pct}% do texto original` : ''}, reproduzido com crédito.` : 'Resumo publicado pelo veículo, reproduzido com crédito.'}</span>${link}</footer></section>`;
