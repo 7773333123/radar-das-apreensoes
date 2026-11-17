@@ -29,7 +29,7 @@ import shutil
 import unicodedata
 from pathlib import Path
 
-from localizar_uf import inferir_uf
+from localizar_uf import _ufs_no_texto, inferir_uf
 from resumo_fatos import anonimizar, extrair, nomes_dos_presos
 from contexto import resumo_secoes
 from estatisticas import MATERIAIS, ORGAOS_NOMES, enriquecer, exportar, quantidades
@@ -278,6 +278,10 @@ def main():
         uf = inferir_uf(n, fontes)
         if uf:
             item['uf'] = uf
+            # Estado escrito no título (forte) ou só o estado do veículo/resumo (fraco):
+            # notícia nacional publicada por jornais de estados diferentes ainda pode ser duplicata.
+            e, c, l = _ufs_no_texto(str(n.get('titulo') or ''), detalhado=True)
+            item['_ufx'] = uf in (e | c | l)
         if cats:
             item['c'] = cats
         paragrafos = [str(p) for p in (n.get('texto_integral') or []) if str(p).strip()]
@@ -334,7 +338,7 @@ def main():
     antes = len(saida)
     saida, removidas = agrupar_duplicatas(saida)
     for item in saida:
-        for k in ('_h', '_lead', '_q'):
+        for k in ('_h', '_lead', '_q', '_ufx'):
             item.pop(k, None)
     for lote in list(detalhes):
         for chave in [c for c in detalhes[lote] if int(c) in removidas]:

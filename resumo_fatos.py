@@ -16,7 +16,7 @@ from localizar_uf import NOMES_ESTADOS, municipios_no_texto
 
 MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto',
          'setembro', 'outubro', 'novembro', 'dezembro']
-NUM = r'(?:\d{1,3}(?:\.\d{3})+|\d+)(?:,\d+)?'
+NUM = r'(?:\d{1,3}(?:\.\d{3})+|\d+\.\d{1,2}(?!\d)|\d+)(?:,\d+)?'  # "6.8 t" = 6,8 (ponto decimal)
 EXTENSO = {'um': 1, 'uma': 1, 'dois': 2, 'duas': 2, 'três': 3, 'tres': 3, 'quatro': 4, 'cinco': 5, 'seis': 6,
            'sete': 7, 'oito': 8, 'nove': 9, 'dez': 10, 'onze': 11, 'doze': 12, 'treze': 13, 'quatorze': 14,
            'quinze': 15, 'vinte': 20, 'trinta': 30, 'cem': 100}
@@ -68,6 +68,8 @@ def _num(texto, mult=None):
     t = texto.lower()
     if t in EXTENSO:
         valor = float(EXTENSO[t])
+    elif re.fullmatch(r'\d+\.\d{1,2}', t):
+        valor = float(t)  # "6.8" = 6,8
     else:
         valor = float(t.replace('.', '').replace(',', '.'))
     if mult:
