@@ -475,8 +475,12 @@ def main():
     # 1º as nunca lidas (ganham foto, trecho e fatos); depois as releituras de versões antigas.
     # Dentro de cada grupo: notas oficiais e as mais recentes primeiro.
     # Regiões de fronteira (sites e lugares dos polos) passam à frente: muitas matérias, sempre atuais.
-    from fronteira import de_fronteira
-    pendentes.sort(key=lambda p: (not p[0].get('materia_lida_v'), de_fronteira(p[0]), oficial(*p), p[0].get('data_iso') or ''), reverse=True)
+    from fronteira import de_fronteira, prioridade_regional
+    def regional(n):  # 10 = Foz do Iguaçu ... 2 = outras fronteiras; 0 = fora da fronteira
+        if not de_fronteira(n):
+            return 0
+        return 11 - prioridade_regional('', str(n.get('titulo') or ''), str(n.get('uf') or ''))
+    pendentes.sort(key=lambda p: (not p[0].get('materia_lida_v'), regional(p[0]), oficial(*p), p[0].get('data_iso') or ''), reverse=True)
     lote = pendentes[:max(0, args.limite)]
     print(f'Notícias com link original ainda não lidas: {len(pendentes)}; lendo agora: {len(lote)}', flush=True)
     fotos = textos = resumos = falhas = galerias = datas = 0

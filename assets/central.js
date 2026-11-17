@@ -114,9 +114,13 @@ function renderInicio() {
   // Fronteira: 2 principais (com foto) e até 6 menores, das últimas 24 h (amplia para 48 h e 7 dias
   // se houver poucas), sem repetir a manchete e os destaques. Ordem: importância com prazo de validade.
   const daFronteira = (h) => ns.filter((n) => n.polo && !usados.has(n) && n.data && horas(n) <= h && n.data.getTime() <= agora + 3600000);
+  // Ordem pedida pelo responsável: Foz do Iguaçu, Guaíra, Toledo, Santa Helena, Medianeira, São Miguel
+  // do Iguaçu, Itaipulândia, demais lindeiras de Itaipu e, por fim, as outras fronteiras. A região de
+  // Foz e do Lago de Itaipu entra sempre que tiver notícia nas últimas 48 h.
   const janelaFr = [24, 48, 7 * 24].map(daFronteira).find((l) => l.length >= 4) || daFronteira(7 * 24);
-  const ordemFr = [...janelaFr].sort((a, b) => nota(b) - nota(a) || b.data - a.data);
-  const frPrincipais = [...ordemFr.filter((n) => n.img), ...ordemFr.filter((n) => !n.img)].slice(0, 2);
+  const itaipu48 = daFronteira(48).filter((n) => n.prioridadeFr <= 8 && !janelaFr.includes(n));
+  const ordemFr = [...janelaFr, ...itaipu48].sort((a, b) => a.prioridadeFr - b.prioridadeFr || nota(b) - nota(a) || b.data - a.data);
+  const frPrincipais = ordemFr.slice(0, 2);  // a ordem regional manda (a foto vem do servidor quando falta)
   const frMenores = ordemFr.filter((n) => !frPrincipais.includes(n)).slice(0, 6);
   [...frPrincipais, ...frMenores].forEach((n) => usados.add(n));
   const lugarFr = (n) => `${n.cidade ? `${n.cidade} (${n.uf})` : (NOME_UF[n.uf] || '')}`;
