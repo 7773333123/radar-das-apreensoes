@@ -42,7 +42,9 @@ NAO_FOTO = re.compile(r'logo|icon|icone|avatar|sprite|banner|placeholder|blank|p
 # Parágrafos que não fazem parte da reportagem (chamadas, assinatura, redes sociais).
 RUIDO = re.compile(r'^(?:Leia (?:tamb[ée]m|mais)|Veja (?:tamb[ée]m|mais|o v[íi]deo)|Siga|Assine|Clique|Receba|Inscreva|'
                    r'Participe|Compartilhe|Acesse|Baixe|Entre (?:no|em) nosso|Publicidade|Continua (?:depois|ap[óo]s)|'
-                   r'Foto:|Imagem:|Cr[ée]dito|Reprodu[çc][ãa]o|Por\s+\w+\s*$|Atualizad[oa]|Publicad[oa] em)', re.I)
+                   r'Foto:|Imagem:|Cr[ée]dito|Reprodu[çc][ãa]o|Por\s+\w+\s*$|Atualizad[oa]|Publicad[oa] em|'
+                   r'A utiliza[çc][ãa]o deste site|Os coment[áa]rios n[ãa]o representam|Veja nossas not[íi]cias|'
+                   r'.*(?:Todos os direitos reservados|©|Copyright|Pol[íi]tica de Privacidade|Termos de [Uu]so|cookies))', re.I)
 # Trecho da reportagem com crédito e link (decisão do responsável pelo site):
 # 70% do texto original, sempre terminando numa frase; o restante fica só no site de origem.
 TRECHO_MIN, TRECHO_MAX, TRECHO_FRACAO = 600, 15000, 0.7
