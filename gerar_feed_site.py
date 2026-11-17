@@ -398,8 +398,22 @@ def main():
                              [x for x in ((fatos or {}).get('origem'), (fatos or {}).get('destino')) if x])
         if cid:
             item['cid'] = cid
-        secoes = resumo_secoes(item, fatos)
+        # Resumo e ficha ("Onde") citam só o local da apreensão, nunca a cidade da
+        # delegacia, da moradia ou da origem/destino da carga.
         alvo = detalhes[item['i'] % LOTES][str(item['i'])]
+        if fatos:
+            fatos = dict(fatos)
+            if cid:
+                fatos['cidades'] = [f"{cid} ({item['uf']})"]
+            else:
+                fatos.pop('cidades', None)
+            if isinstance(alvo.get('f'), dict):
+                alvo['f'] = dict(alvo['f'])
+                if cid:
+                    alvo['f']['cidades'] = fatos['cidades']
+                else:
+                    alvo['f'].pop('cidades', None)
+        secoes = resumo_secoes(item, fatos)
         alvo['s'] = '\n\n'.join(t for _, t in secoes)
         alvo['sx'] = [list(x) for x in secoes]
     for lote in list(detalhes):

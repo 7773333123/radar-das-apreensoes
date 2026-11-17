@@ -276,45 +276,67 @@ ANTES_NAO_LOCAL = re.compile(r'\b(?:natural de|morador(?:a|es)? de|residente (?:
                              r'proveniente de|oriund[oa]s? de|com destino a|destinad[oa]s? a|levad[oa]s? (?:para|a)|seguia (?:para|a)|'
                              r'rumo a|para|at[ée]|bairro|bairro d[aeo]s?|vila|jardim|rua|avenida|av\.|travessa|loteamento|'
                              r'conjunto|comunidade|residencial|praia|distrito de|estrada|fazenda|s[íi]tio|condom[íi]nio)\s+$', re.I)
-PERTO_DE_LOCAL = re.compile(r'\b(?:em|no município de|na cidade de|no interior de|na região de|perto de|próximo a)\s+$')
+PERTO_DE_LOCAL = re.compile(r'\b(?:em|no município de|na cidade de|no interior de|na zona rural de|perto de|próximo a|nas proximidades de)\s+$')
+
+
+# Contexto que indica que a cidade NÃO é o local da apreensão, mesmo depois de "em":
+# para onde o preso foi levado, onde mora, onde foi julgado ou enterrado.
+NAO_LOCAL_PERTO = re.compile(r'encaminhad|conduzid|levad[oa]|apresentad|transferid|recambiad|delegacia|presídio|penitenci|'
+                             r'cadeia|audi[êe]ncia|julgad|f[óo]rum|morador|mora |moram |reside|natural|nascid|vel[óo]rio|'
+                             r'sepultad|enterrad|internad|hospital', re.I)
+# Abertura com o lugar: "Ubatã: suspeito...", "MEDIANEIRA, PR – ...", "Foz do Iguaçu (PR) - ...".
+DATELINE = re.compile(r'^\s*([A-ZÀ-Ý][\wÀ-ÿ\'’. -]{2,40}?)\s*(?::|(?:[,/]\s*|\s+\()[A-Z]{2}\)?\s*[–—-])', re.U)
 
 
 def cidade_do_fato(uf, titulo='', resumo='', cidades_fatos=(), rota=()):
-    """Município onde o fato ocorreu, ou '' quando não há evidência clara.
+    """Município ONDE A APREENSÃO OCORREU, ou '' quando o texto não diz com clareza.
 
-    Ordem: título, começo do resumo, cidades da ficha de fatos. Só municípios da UF
-    da notícia; cidades de origem/destino da carga não são o local da apreensão.
+    Só vale a cidade escrita como local do fato: depois de "em", "no município de",
+    "na cidade de", "no interior de", "perto de" (título ou começo do resumo), ou na
+    abertura da notícia ("Ubatã: ...", "MEDIANEIRA, PR – ..."). Não valem: cidade só
+    citada (delegacia, moradia, origem/destino da carga, julgamento), bairros e nomes
+    de país. Só municípios da UF da notícia (resolve homônimos de outros estados).
     """
     if uf not in NOMES_ESTADOS:
         return ''
     regex = _cidades_da_uf(uf)
+    if not regex:
+        return ''
     rota_txt = ' '.join(rota or ())
 
-    def achar(texto):
-        if not texto or not regex:
-            return ''
-        texto = OPERACAO.sub(' ', texto)
+    def valida(nome):
+        return nome not in rota_txt and nome not in NAO_CIDADE
+
+    def no_local(texto):
+        texto = OPERACAO.sub(' ', texto or '')
         texto = re.sub(r"\b[Dd][’'´`]", "d'", texto)
-        achados = [(m.start(), m.group(1)) for m in regex.finditer(texto)
-                   if m.group(1) not in rota_txt and m.group(1) not in NAO_CIDADE
-                   and not ANTES_NAO_LOCAL.search(texto[max(0, m.start() - 30):m.start()])]
-        if not achados:
-            return ''
-        for ini, nome in achados:  # "... em Foz do Iguaçu" vence "polícia de Cascavel"
-            if PERTO_DE_LOCAL.search(texto[max(0, ini - 25):ini]):
+        for m in regex.finditer(texto):
+            nome, ini = m.group(1), m.start()
+            antes = texto[max(0, ini - 45):ini]
+            if (valida(nome) and PERTO_DE_LOCAL.search(texto[max(0, ini - 25):ini])
+                    and not NAO_LOCAL_PERTO.search(antes) and not ANTES_NAO_LOCAL.search(texto[max(0, ini - 30):ini])):
                 return nome
-        nomes = {n for _, n in achados}
-        return achados[0][1] if len(nomes) == 1 else ''
+        return ''
+
+    def abertura(texto):
+        m = DATELINE.match(texto or '')
+        if not m:
+            return ''
+        candidato = m.group(1).strip().rstrip('.').strip()
+        achado = regex.fullmatch(candidato) or regex.fullmatch(candidato.title())
+        if not achado:
+            for c in (candidato, candidato.title()):
+                a = regex.search(c)
+                if a and a.group(1).lower() == c.lower():
+                    achado = a
+                    break
+        return achado.group(1) if achado and valida(achado.group(1)) else ''
 
     for texto in (titulo, (resumo or '')[:400]):
-        c = achar(texto)
+        c = abertura(texto) or no_local(texto)
         if c:
             return c
     capital = CAPITAL_HOMONIMA.get(uf)
     if capital and INDICA_CAPITAL.search(f'{titulo} {(resumo or "")[:400]}'):
         return capital
-    for c in cidades_fatos or ():
-        nome, _, sigla = str(c).rpartition(' (')
-        if sigla.rstrip(')') == uf and nome not in rota_txt and nome not in NAO_CIDADE:
-            return nome
     return ''
