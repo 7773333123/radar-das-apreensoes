@@ -171,7 +171,11 @@ function renderInicio() {
 // ---------- lista e filtros ----------
 function filtrar() {
   const { q, uf, cat, ano } = st.filtro;
-  const termos = fold(q).split(/\s+/).filter(Boolean);
+  // Palavras curtas de ligação ("do", "de", "em") não filtram nada; cada termo precisa
+  // ser começo de palavra; com 2+ termos, a frase inteira também é aceita.
+  const LIGACAO = new Set(['a', 'o', 'as', 'os', 'e', 'de', 'da', 'do', 'das', 'dos', 'em', 'na', 'no', 'nas', 'nos']);
+  const palavras = fold(q).replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
+  const termos = palavras.filter((t) => !LIGACAO.has(t) || palavras.length === 1).map((t) => ' ' + t);
   const c = cat === '' ? -1 : Number(cat);
   return st.ctx.noticias.filter((n) => (!uf || n.uf === uf) && (c < 0 || n.cats.includes(c)) &&
     (!ano || String(n.ano) === ano) && termos.every((t) => n.busca.includes(t)));

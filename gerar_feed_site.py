@@ -80,6 +80,17 @@ except (OSError, ValueError):
     pass
 
 
+def limpar_rede_social(texto):
+    """Tira hashtags, emojis e chamadas de post ("Clique no link da bio", "De #cidade para o mundo")."""
+    if not texto or ('#' not in texto and 'link da bio' not in texto.lower()):
+        return texto
+    t = re.sub(r'(?i)\bclique no link da bio\b[^.!?]*|\bleia no\s+#\S+|\bde\s+#\S+\s+para o mundo', ' ', texto)
+    t = re.sub(r'#\w+', ' ', t)
+    t = re.sub(r'[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F]+', ' ', t)
+    t = re.sub(r'\s+', ' ', t).strip(' ·|-')
+    return t if not t or t[-1] in '.!?…' else t + '.'
+
+
 def limitar_trecho(trecho, n):
     """Corta o trecho no limite pedido pelo veículo (fração da reportagem e/ou caracteres), no fim de uma frase."""
     if not trecho or not TRECHO_VEICULO:
@@ -283,6 +294,7 @@ def main():
         nomes_presos = [] if oficial else nomes_dos_presos(resumo + '. ' + str(n.get('trecho') or ''))
         if nomes_presos:
             resumo = anonimizar(resumo, nomes_presos)
+        resumo = limpar_rede_social(resumo)
         if resumo:
             item['r'] = resumo[:700]  # resumo inteiro publicado pela fonte
         uf = inferir_uf(n, fontes)
