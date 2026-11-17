@@ -40,6 +40,8 @@ ESTADO = RAIZ / 'arquivo_sites_estado.json'
 UA = 'Mozilla/5.0 (compatible; RadarDasApreensoes/1.0; +https://www.radardasapreensoes.com.br)'
 # Termos da busca do WordPress (procura no título e no texto, por trecho de palavra).
 TERMOS = ('apreens', 'apreende', 'contrabando', 'tráfico de drogas')
+# Segunda passada (mês abaixo da meta): termos específicos que a busca geral perde.
+TERMOS_EXTRA = ('maconha', 'cocaína', 'fuzil', 'cigarros', 'munições', 'skunk', 'descaminho', 'DOF', 'Gefron', 'BPFron')
 POR_PAGINA = 100
 MAX_PAGINAS = 4  # por termo e mês: até 400 matérias de um veículo num mês
 TRAVA = threading.Lock()
@@ -86,7 +88,7 @@ def foto_destaque(post):
     return str(post.get('jetpack_featured_media_url') or '')
 
 
-def buscar_site(fonte, inicio, fim, estado):
+def buscar_site(fonte, inicio, fim, estado, termos=TERMOS):
     dominio = fonte['dominio'].lower().removeprefix('www.')
     info = estado.get(dominio, {})
     if info.get('wp') is False and info.get('testado', '') >= str(date.today().replace(day=1)):
@@ -97,7 +99,7 @@ def buscar_site(fonte, inicio, fim, estado):
             estado[dominio] = {'wp': False, 'motivo': 'robots', 'testado': str(date.today())}
         return []
     itens, vistos = [], set()
-    for termo in TERMOS:
+    for termo in termos:
         for pagina in range(1, MAX_PAGINAS + 1):
             params = {'search': termo, 'after': f'{inicio}T00:00:00', 'before': f'{fim}T00:00:00',
                       'per_page': POR_PAGINA, 'page': pagina, 'orderby': 'date', 'order': 'desc',
@@ -106,7 +108,7 @@ def buscar_site(fonte, inicio, fim, estado):
             try:
                 posts = http_json(f'{base}/wp-json/wp/v2/posts?{urlencode(params)}')
             except Exception as exc:
-                if pagina == 1 and termo == TERMOS[0]:
+                if pagina == 1 and termo == termos[0] and not info.get('wp'):
                     with TRAVA:
                         estado[dominio] = {'wp': False, 'motivo': type(exc).__name__, 'testado': str(date.today())}
                     return []
@@ -149,6 +151,7 @@ def main():
     ap.add_argument('--sites', type=int, default=2000, help='Máximo de sites nesta execução')
     ap.add_argument('--trabalhadores', type=int, default=10)
     ap.add_argument('--tempo-max', type=int, default=2400, help='Segundos no máximo')
+    ap.add_argument('--extra', action='store_true', help='Segunda passada: termos específicos, só sites WordPress')
     args = ap.parse_args()
     ano, mes = map(int, args.mes.split('-'))
     inicio = f'{ano}-{mes:02d}-01'
@@ -167,7 +170,10 @@ def main():
     limite = time.monotonic() + args.tempo_max
     novos, wp, sites_com_noticia = [], 0, 0
     with ThreadPoolExecutor(max_workers=args.trabalhadores) as pool:
-        tarefas = {pool.submit(buscar_site, f, inicio, fim, estado): f for f in fontes}
+        termos = TERMOS_EXTRA if args.extra else TERMOS
+        if args.extra:  # segunda passada: só os sites que já sabemos ser WordPress
+            fontes = [f for f in fontes if estado.get(f['dominio'].lower().removeprefix('www.'), {}).get('wp')]
+        tarefas = {pool.submit(buscar_site, f, inicio, fim, estado, termos): f for f in fontes}
         for fut in as_completed(tarefas):
             try:
                 itens = fut.result()

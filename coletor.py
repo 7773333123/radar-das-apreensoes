@@ -54,6 +54,13 @@ TIPOS_ORGAOS = [
     'secretaria segurança pública', 'Receita Federal',
 ]
 TERMOS_APREENSAO = '(apreensão OR apreende OR apreendido OR contrabando OR tráfico)'
+RETRO_EXTRA = [
+    'apreende maconha polícia', 'apreende cocaína polícia', 'apreensão skunk haxixe', 'apreensão crack pedras',
+    'apreende fuzil', 'apreensão armas munições', 'apreensão cigarros contrabandeados', 'apreensão agrotóxicos contrabando',
+    'DOF apreende', 'Gefron apreende', 'BPFron apreende', 'PRF apreende BR', 'Receita Federal apreende mercadorias',
+    'apreensão eletrônicos descaminho', 'apreensão medicamentos anabolizantes', 'apreensão dinheiro operação polícia',
+    'apreensão embarcação droga', 'apreensão aeronave droga', 'apreensão madeira ilegal Ibama', 'apreensão ouro garimpo',
+]
 FONTES_EXTRAS = Path('fontes.json')
 META_FONTES = 10000
 # Cadastro de domínios é distinto de consultas por execução.
@@ -416,6 +423,7 @@ def executar():
     parser.add_argument('--retroativo', metavar='AAAA-MM',
                         help='Busca retroativa ampla de um mês: semana a semana, por tema, estado e polo de fronteira')
     parser.add_argument('--pular', type=int, default=0, help='Retroativo: consultas já feitas em execução anterior')
+    parser.add_argument('--extra', action='store_true', help='Retroativo, segunda passada: termos específicos por semana')
     parser.add_argument('--limite-fontes', type=int, default=24, help='Fontes extras consultadas por execução (padrão: 24)')
     parser.add_argument('--limite-estados', type=int, default=9, help='Estados consultados por execução (padrão: 9)')
     parser.add_argument('--limite-fronteira', type=int, default=5, help='Polos de fronteira consultados por execução (padrão: 5)')
@@ -456,6 +464,11 @@ def executar():
             janelas.append((dia.isoformat(), prox.isoformat()))
             dia = prox
         for inicio, seguinte in janelas:
+            if args.extra:
+                # Segunda passada (mês abaixo da meta): o que a busca geral perde.
+                for termos in RETRO_EXTRA:
+                    consultas.append((f'{termos} after:{inicio} before:{seguinte}', None))
+                continue
             for polo in polos:  # fronteira primeiro
                 consultas.append((f'{TERMOS_APREENSAO} {termos_polo(polo)} after:{inicio} before:{seguinte}', None))
             for categoria, termos in TEMAS_HISTORICOS.items():
