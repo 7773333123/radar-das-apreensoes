@@ -30,6 +30,7 @@ import unicodedata
 from pathlib import Path
 
 from pagos import pago
+from fronteira import polo_do_item
 from localizar_uf import _ufs_no_texto, cidade_do_fato, inferir_uf
 from resumo_fatos import LUGAR
 from resumo_fatos import anonimizar, extrair, nomes_dos_presos
@@ -586,6 +587,9 @@ def main():
             item['rt'] = trajeto[:4]  # a busca do site ignora essas cidades
         if cid:
             item['cid'] = cid
+        polo = polo_do_item(item)  # bloco "Fronteira" da página inicial
+        if polo:
+            item['fr'] = polo
         # Resumo e ficha ("Onde") citam só o local da apreensão, nunca a cidade da
         # delegacia, da moradia ou da origem/destino da carga.
         alvo = detalhes[item['i'] % LOTES][str(item['i'])]

@@ -451,3 +451,16 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
 .share-btn { padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface);
   color: var(--ink); font: 600 14px/1 var(--sans); cursor: pointer; }
 .share-btn:hover { border-color: currentColor; }
+
+/* Bloco Fronteira (página inicial): 2 principais e lista menor */
+.fronteira { margin-top: 8px; }
+.fr-principais { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.fr-principais .media { aspect-ratio: 16 / 9; margin-bottom: 12px; }
+.fr-principais .headline { font-size: clamp(20px, 2.1vw, 26px); }
+.fr-principais .dek { font-size: 15px; line-height: 1.5; color: var(--ink-2); margin: 6px 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.fr-menores { list-style: none; margin: 22px 0 6px; padding: 18px 0 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 28px; }
+.fr-menores .headline { font-size: 16px; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.fr-lugar { font: 700 11px/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+@media (max-width: 760px) {
+  .fr-principais, .fr-menores { grid-template-columns: 1fr; }
+}
