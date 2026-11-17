@@ -14,6 +14,11 @@ DOMINIOS = {
     'em.com.br', 'gazetadopovo.com.br', 'veja.abril.com.br', 'nsctotal.com.br', 'otempo.com.br', 'correiobraziliense.com.br',
     'diariodonordeste.verdesmares.com.br', 'opovo.com.br', 'exame.com', 'crusoe.com.br', 'jota.info', 'revistaoeste.com',
     'atarde.com.br', 'correio24horas.com.br',
+    # Avaliação de 600 sites (avaliar_sites.yml, 17/11/2026): pagos, robots.txt proíbe ou bloqueiam sem RSS aberto:
+    '24horasmt.com.br', 'acheisudoeste.com.br', 'blogdojuares.com.br', 'campograndenews.com.br',
+    'cartacapital.com.br', 'espiritosantonoticias.com.br', 'extra.globo.com', 'guiamuriae.com.br', 'leiaja.com',
+    'marechalnews.com.br', 'midiabahia.com.br', 'oestemais.com', 'osepeense.com', 'parlamentopb.com.br',
+    'portalribeira.com.br', 'portalrondon.com.br', 'thmais.com.br',
     # Excluídos a pedido do responsável (bloqueiam a leitura das matérias e o RSS; verificar_rss.yml, 17/11/2026):
     'amazonasatual.com.br', 'ampost.com.br', 'atibaiahoje.com.br', 'bandnewsfmcuritiba.com',
     'blogdovalente.com.br', 'bol.uol.com.br', 'caldeiraopolitico.com.br', 'capitalnews.com.br', 'catve.com',
@@ -36,6 +41,7 @@ NOMES = {
     'diário do nordeste', 'o povo', 'exame', 'crusoé', 'jota', 'jota jornalismo', 'jota info', 'revista oeste', 'a tarde',
     'correio', 'top elegance',
     # veículos que bloqueiam leitura e RSS
+    '24 horas mt', 'achei sudoeste', 'blog do juares', 'campo grande news', 'cartacapital', 'extra online', 'guia muriaé', 'jornal espírito santo notícias', 'jornal o sepeense', 'leiajá', 'marechal news', 'mídia bahia', 'oeste mais', 'parlamento pb', 'portal rondon', 'portalribeira', 'thmais',
     'am post', 'amazonas atual', 'atibaia hoje', 'band news fm curitiba', 'blog do valente', 'bol',
     'caldeirão político', 'capital news', 'catve', 'cbn curitiba', 'cbn goiânia',
     'cbn são josé dos campos e vale', 'cgn', 'clique diário', 'd24am', 'diario de cuiabá', 'divinews',
