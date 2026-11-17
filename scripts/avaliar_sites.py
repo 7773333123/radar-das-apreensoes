@@ -20,9 +20,9 @@ POLICIA = ['/category/policia/feed/', '/policia/feed/', '/editoria/policia/feed/
            '/category/seguranca/feed/', '/seguranca/feed/', '/category/seguranca-publica/feed/', '/category/policial/feed/',
            '/policial/feed/', '/rss/policia', '/feed/policia']
 GERAL = ['/feed/', '/rss', '/rss.xml', '/feed', '/feed/rss/', '/index.xml', '/rss/ultimas-noticias', '/feed.xml']
-PAYWALL = re.compile(r'piano\.io|tinypass|"isAccessibleForFree"\s*:\s*"?(?:false|False)|exclusivo para assinantes|'
+PAYWALL = re.compile(r'piano\.io|tinypass\.com|"isAccessibleForFree"\s*:\s*"?(?:false|False)|exclusivo para assinantes|'
                      r'conte[úu]do exclusivo para assinante|assine para (?:continuar|ler|ter acesso)|para continuar lendo,? assine|'
-                     r'class="[^"]*paywall', re.I)
+                     r'class="[^"]*(?<!no-)paywall(?!-)[^"]*"', re.I)
 
 
 def get(url, limite=800_000, timeout=12):
@@ -30,27 +30,16 @@ def get(url, limite=800_000, timeout=12):
         return r.status, r.read(limite).decode('utf-8', 'replace')
 
 
-def robots_bloqueia(dominio):
+def robots_bloqueia(dominio, exemplo=''):
+    """urllib.robotparser: regras Allow/Disallow completas, para o agente do Radar."""
+    from urllib.robotparser import RobotFileParser
     try:
-        _, txt = get(f'https://{dominio}/robots.txt', 200_000, 8)
+        _, txt = get(f'https://{dominio}/robots.txt', 300_000, 8)
     except Exception:
         return False
-    grupo, bloqueia = [], False
-    for linha in txt.splitlines():
-        linha = linha.split('#')[0].strip()
-        if not linha:
-            continue
-        k, _, v = linha.partition(':')
-        k, v = k.strip().lower(), v.strip()
-        if k == 'user-agent':
-            grupo = grupo if grupo and grupo[-1] == '__agentes__' else []
-            grupo.append(v.lower())
-        elif k == 'disallow' and grupo:
-            alvo = any(a == '*' or 'radar' in a for a in grupo if a != '__agentes__')
-            if alvo and v == '/':
-                bloqueia = True
-            grupo.append('__agentes__')
-    return bloqueia
+    rp = RobotFileParser()
+    rp.parse(txt.splitlines())
+    return not rp.can_fetch('RadarDasApreensoes', exemplo or f'https://{dominio}/')
 
 
 def feed(url):
@@ -70,8 +59,8 @@ def feed(url):
 def avaliar(c):
     d = c['dominio']
     r = {**c, 'veredito': '', 'feed': None, 'motivo': ''}
-    if robots_bloqueia(d):
-        r.update(veredito='robots', motivo='robots.txt proíbe robôs')
+    if robots_bloqueia(d, c.get('exemplo', '')):
+        r.update(veredito='robots', motivo='robots.txt proíbe o Radar')
         return r
     pagina = ''
     if c.get('exemplo'):
@@ -104,7 +93,7 @@ def avaliar(c):
     return r
 
 
-cands = json.load(open('candidatos_sites.json'))
+cands = json.load(open(sys.argv[2] if len(sys.argv) > 2 else 'candidatos_sites.json'))
 N = int(sys.argv[1]) if len(sys.argv) > 1 else len(cands)
 with ThreadPoolExecutor(16) as p:
     res = list(p.map(avaliar, cands[:N]))
