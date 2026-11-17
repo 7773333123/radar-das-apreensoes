@@ -30,4 +30,8 @@ jobs:
       - name: Miniaturas e comparação das fotos recentes
         run: python hash_imagens.py --limite "${{ inputs.limite }}" --trabalhadores 16
       - name: Regenerar e salvar
-        run: python testes/test_duplicatas.py && python gerar_feed_site.py && python compactar_acervo.py && python acervo.py salvar 'Fotos recortadas: duplicatas por imagem'
+        run: |
+          python testes/test_duplicatas.py
+          python gerar_feed_site.py
+          python compactar_acervo.py
+          python acervo.py salvar 'Fotos recortadas - duplicatas por imagem'
