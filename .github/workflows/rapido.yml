@@ -25,6 +25,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       CICLOS: 40          # até 40 rodadas; o limite real é o tempo (5h20 por execução)
       INTERVALO: 600      # segundos entre o início de cada rodada (rodada mais longa: a próxima começa logo)
+      RADAR_AUDITOR_DIAS: 10  # auditor de duplicatas só nos últimos dias (o acervo inteiro nas outras coletas)
       DURACAO: 19200      # 5h20: depois disso não começa rodada nova e a execução dispara a seguinte
     steps:
       - name: Baixar repositório
