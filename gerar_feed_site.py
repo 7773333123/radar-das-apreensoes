@@ -92,7 +92,7 @@ TRAJETO = re.compile(r'(?:com destino (?:a|ao|à|para)|destinad[oa]s? (?:a|ao|à
 SEM_TRAJETO = re.compile(r'\s+(?:que\s+)?(?:seguiria|seguia|iria|com destino|destinad|vind[oa]s?|vinha|sa[íi]d[oa]s? d|levad[oa]s? para|'
                          r'seria(?:m)? levad|rumo a|procedente|oriund)', re.I)
 # Leitura antiga que pegou conectivo no lugar do material: '74 tabletes de e foi'.
-MATERIAL_QUEBRADO = re.compile(r'^[\d.,]+\s+\S+\s+de\s+(?:e|ou|foi|foram|que|em|no|na|com|para|por|a|o|os|as)\b', re.I)
+MATERIAL_QUEBRADO = re.compile(r'^[\d.,]+\s+\S+\s+(?:d[aeo]s?\s+)?(?:e|ou|foi|foram|que|em|no|na|com|para|por|a|o|os|as|mesm[ao]s?|dess[ae]s?|dest[ae]s?|tal|tais)\b', re.I)
 DEPOIS_PARA = re.compile(r'\s+(?:para|até|com destino a)\s+(?:o |a |os |as )?' + LUGAR)
 
 
@@ -137,6 +137,96 @@ def fechar_frase(texto):
     if not cortado and len(t) >= 60 and not PALAVRA_SOLTA.search(t):
         return t + '.'
     return ''
+
+
+TAMANHO_SOLTO = re.compile(r'\bde\s+(?:médi|pequen|grand|maior|menor)\w*\s+(?:(?:de|da|do|das|dos)\s+)?', re.I)
+MESMA = re.compile(r'\b(?:d[aeo]s?\s+)?mesm[ao]s?\s+(?:substância|droga|material|entorpecente)\b', re.I)
+
+
+def arrumar_itens(itens):
+    """Tira o tamanho solto ("de médias") e troca "da mesma substância" pelo material anterior."""
+    saida, anterior = [], ''
+    for a in itens:
+        a = TAMANHO_SOLTO.sub('de ', str(a)).replace('de de ', 'de ').strip()
+        if MESMA.search(a):
+            if not anterior:
+                continue
+            a = MESMA.sub(f'de {anterior}', a).replace('de de ', 'de ')
+        m = re.match(r'^[\d.,]+\s+\S+\s+de\s+(.+)$', a)
+        if m:
+            anterior = m.group(1)
+        saida.append(re.sub(r'\s+', ' ', a))
+    return saida
+
+
+def _tamanho(item):
+    """Tamanho da apreensão no tipo principal: kg de droga, armas, ou valor em R$."""
+    q = item.get('q') or {}
+    tipo = (item.get('c') or [8])[0]
+    if tipo == 0:
+        return sum(q.get(k, 0) for k in ('coc', 'mac', 'skh', 'cra', 'dro'))
+    if tipo == 1:
+        return q.get('arm', 0) or q.get('mun', 0) / 1000
+    return item.get('vq', 0) or 0
+
+
+def contexto_das_noticias(itens):
+    """Para o 'Por que importa': posição no estado e no país (30 dias), polo de fronteira, notícias na cidade (12 meses)."""
+    from bisect import bisect_left
+    from datetime import datetime, timedelta
+    def dia(it):
+        try:
+            return datetime.fromisoformat(it['d'][:16])
+        except (KeyError, ValueError):
+            return None
+    try:
+        polos = json.loads((Path(__file__).resolve().parent / 'polos_fronteira.json').read_text(encoding='utf-8'))['polos']
+    except (OSError, ValueError, KeyError):
+        polos = []
+    ctx = {}
+    grupos = {}
+    for it in itens:
+        d, t = dia(it), _tamanho(it)
+        tipo0 = (it.get('c') or [8])[0]
+        # Só entra no ranking apreensão relevante: 10 kg de droga, 2 armas, R$ 100 mil.
+        minimo = {0: 10, 1: 2}.get(tipo0, 100_000)
+        if d and t >= minimo:
+            tipo = (it.get('c') or [8])[0]
+            grupos.setdefault(('BR', tipo), []).append((d, t, it['i']))
+            if it.get('uf'):
+                grupos.setdefault((it['uf'], tipo), []).append((d, t, it['i']))
+    for chave, lista in grupos.items():
+        lista.sort()
+        datas = [x[0] for x in lista]
+        for d, t, i in lista:
+            ini = bisect_left(datas, d - timedelta(days=30))
+            fim = bisect_left(datas, d + timedelta(minutes=1))
+            janela = [x[1] for x in lista[ini:fim]]
+            rank = 1 + sum(1 for v in janela if v > t)
+            c = ctx.setdefault(i, {})
+            if chave[0] == 'BR':
+                c['rank_br'], c['total_br'] = rank, len(janela)
+            else:
+                c['rank_uf'], c['total_uf'] = rank, len(janela)
+    por_cidade = {}
+    for it in itens:
+        d = dia(it)
+        if d and it.get('cid') and it.get('uf'):
+            por_cidade.setdefault((it['uf'], it['cid']), []).append(d)
+    for v in por_cidade.values():
+        v.sort()
+    for it in itens:
+        d = dia(it)
+        c = ctx.setdefault(it['i'], {})
+        if d and it.get('cid') and it.get('uf'):
+            datas = por_cidade[(it['uf'], it['cid'])]
+            c['cidade_12m'] = bisect_left(datas, d) - bisect_left(datas, d - timedelta(days=365))
+        alvo = f"{it.get('cid', '')} {it.get('t', '')}"
+        for polo in polos:
+            if polo.get('uf') == it.get('uf') and any(re.search(r'(?<!\w)' + re.escape(t) + r'(?!\w)', alvo) for t in polo.get('termos', [])):
+                c['polo'] = polo['nome']
+                break
+    return ctx
 
 
 def limpar_rede_social(texto):
@@ -340,6 +430,9 @@ def main():
             links[i] = url_publica(n.get('url_google_noticias') or n.get('url'))
         fotos = []
         for k, foto in enumerate([n.get('imagem_url')] + list(n.get('imagens') or [])):
+            # Endereço corrompido na origem: "https://pm.am.gov.brhttps://pm.am.gov.br/foto.jpg".
+            if isinstance(foto, str) and foto.rfind('http', 8) > 0:
+                foto = foto[foto.rfind('http', 8):]
             foto = url_publica(foto)
             if not foto or foto in fotos:
                 continue
@@ -391,6 +484,8 @@ def main():
         if do_titulo:
             fatos_titulo[i] = do_titulo
         fatos = dict(n.get('fatos') or do_titulo or {})
+        if fatos.get('apreendido'):  # "90 pedras de médias de crack, 280 pedras de pequenas da mesma substância"
+            fatos['apreendido'] = arrumar_itens(fatos['apreendido'])
         if fatos.get('apreendido'):  # fichas antigas: trajeto colado no material
             fatos['apreendido'] = list(dict.fromkeys(SEM_TRAJETO.split(str(a))[0].strip(' ,;') for a in fatos['apreendido']
                                                      if not MATERIAL_QUEBRADO.search(str(a))))
@@ -460,7 +555,15 @@ def main():
                 elif 'valor' in base:
                     del base['valor']
             enriquecer(item, base)
-    # Resumo do Radar em parágrafos: fatos, quem atuou, base legal e outros veículos.
+    # Resumo do Radar em parágrafos: fatos, por que importa, quem atuou, entenda e outros veículos.
+    for item in saida:  # cidade antes do contexto (o contexto conta notícias por cidade)
+        if not item.get('cid'):
+            f0 = juntar_fatos([fatos_por_i.get(item['i'])] + [fatos_por_i.get(o[2]) for o in item.get('o', [])]) or {}
+            rota0 = cidades_de_trajeto(item.get('t', ''), item.get('r', '')) + [x for x in (f0.get('origem'), f0.get('destino')) if x]
+            c0 = cidade_do_fato(item.get('uf', ''), item.get('t', ''), item.get('r', ''), f0.get('cidades', ()), rota0)
+            if c0:
+                item['cid'] = c0
+    contexto = contexto_das_noticias(saida)
     for item in saida:
         fatos = juntar_fatos([fatos_por_i.get(item['i'])] + [fatos_por_i.get(o[2]) for o in item.get('o', [])])
         # Município do fato (filtro e páginas por cidade).
@@ -487,7 +590,7 @@ def main():
                     alvo['f']['cidades'] = fatos['cidades']
                 else:
                     alvo['f'].pop('cidades', None)
-        secoes = resumo_secoes(item, fatos)
+        secoes = resumo_secoes(item, fatos, contexto.get(item['i']))
         alvo['s'] = '\n\n'.join(t for _, t in secoes)
         alvo['sx'] = [list(x) for x in secoes]
     for lote in list(detalhes):

@@ -40,7 +40,7 @@ ORGAOS = [
 ]
 UNIDADES = (r'toneladas?|tonelada|kg|quilos?|gramas?|g\b|tabletes?|porções|por[çc][õo]es|papelotes?|pinos?|pedras?|'
             r'pés|mudas|unidades|maços|ma[çc]os|pacotes|caixas|fardos|litros|garrafas|cabeças|sacas|sacos|m³|metros cúbicos')
-MATERIAL = r'(?:de\s+)?(?!(?:e|ou|foi|foram|que|em|no|na|com|para|por|a|o|os|as)\b)(?P<mat>[a-zà-ú][a-zà-ú\- ]{2,40}?)(?=\s*(?:,|\.|;|\bem\b|\bna\b|\bno\b|\bnas\b|\bnos\b|\bdurante\b|\bapós\b|\bque\b|\bavaliad|\bescondid|\bapreendid|\bencontrad|\blocalizad|\bforam\b|\bé\b|\bsão\b|\bficou\b|\bdentro\b|\bpor\b|\bcom\b|\be\b|$))'
+MATERIAL = r'(?:de\s+)?(?!(?:e|ou|foi|foram|que|em|no|na|com|para|por|a|o|os|as|mesm[ao]s?|dess[ae]s?|dest[ae]s?|tal|tais)\b)(?P<mat>[a-zà-ú][a-zà-ú\- ]{2,40}?)(?=\s*(?:,|\.|;|\bem\b|\bna\b|\bno\b|\bnas\b|\bnos\b|\bdurante\b|\bapós\b|\bque\b|\bavaliad|\bescondid|\bapreendid|\bencontrad|\blocalizad|\bforam\b|\bé\b|\bsão\b|\bficou\b|\bdentro\b|\bpor\b|\bcom\b|\be\b|$))'
 ITEM_PESO = re.compile(rf'{QTD}\s*(?P<u>{UNIDADES})\s+{MATERIAL}', re.I)
 CONTAVEIS = (r'armas?(?: de fogo)?|fuzis|fuzil|pistolas?|rev[óo]lveres|rev[óo]lver|espingardas?|carabinas?|metralhadoras?|'
              r'muni[çc][õo]es|cartuchos|carregadores|granadas|explosivos|celulares|aparelhos celulares|ve[ií]culos|carros|'
@@ -475,8 +475,7 @@ def redigir(fatos, fonte='', data_iso='', uf=''):
         local = f' {PREP_UF[uf]} {NOMES_ESTADOS[uf]}'
     if fatos.get('rodovia'):
         local += f', na rodovia {fatos["rodovia"]}'
-    quando = _data_extenso(data_iso)
-    quando = f', em notícia publicada em {quando}' if quando else ''
+    quando = ''  # a data já aparece no cabeçalho da notícia; o resumo vai direto ao fato
     itens = fatos.get('apreendido', [])
     if any(re.search(r'\d', i) for i in itens):
         verbo = 'apreenderam' if plural else 'apreendeu'
@@ -498,8 +497,6 @@ def redigir(fatos, fonte='', data_iso='', uf=''):
         frases.append(f'Segundo a reportagem, {fatos["presos_texto"]}.')
     if fatos.get('valor'):
         frases.append(f'Os valores citados chegam a {fatos["valor"]}.')
-    if fonte:
-        frases.append(f'As informações foram publicadas por {fonte}; a íntegra está no link da reportagem.')
     return ' '.join(frases)
 
 

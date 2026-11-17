@@ -429,3 +429,15 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
   border-radius: 999px; text-decoration: none; color: inherit; font-size: 14px; background: var(--surface); }
 .chips-cidades a:hover { border-color: currentColor; }
 .chips-cidades span { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+
+/* Resumo do Radar: "Por que importa" e "Entenda" */
+.rs-importa { margin: 4px 0 18px; padding: 14px 16px; border-left: 4px solid var(--accent); background: var(--accent-soft, #fbeceb); border-radius: 0 var(--r, 8px) var(--r, 8px) 0; }
+.rs-importa h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font: 800 12px/1.2 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.rs-importa h3 svg { width: 16px; height: 16px; fill: currentColor; }
+.rs-importa p { margin: 0; font: 500 17px/1.55 var(--serif); color: var(--ink); }
+.rs-entenda { margin: 18px 0 4px; padding: 14px 16px; border: 1px dashed var(--line-strong); border-radius: var(--r, 8px); }
+.rs-entenda h3 { margin: 0 0 8px; font: 800 12px/1.2 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.rs-entenda dl { margin: 0; display: grid; gap: 8px; }
+.rs-entenda dt { display: inline; font-weight: 700; }
+.rs-entenda dt::after { content: ": "; }
+.rs-entenda dd { display: inline; margin: 0; color: var(--ink-2); }
