@@ -41,6 +41,7 @@ jobs:
           if [ -f coletar_fontes_diretas.py ]; then python -m py_compile coletar_fontes_diretas.py; fi
           if [ -f enriquecer_imagens.py ]; then python -m py_compile enriquecer_imagens.py; fi
       - name: Coletar notícias
+        continue-on-error: true  # Google Notícias recusando (429/503) não pode parar feeds, Bing e leitura
         env:
           ANO_HISTORICO: ${{ inputs.ano_historico || '' }}
         run: |
