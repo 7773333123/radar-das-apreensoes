@@ -8,7 +8,7 @@ module.exports = (req, res) => {
   const { feed } = dados();
   const hoje = new Date().toISOString().slice(0, 10);
   const urls = [
-    ['/', hoje, 'hourly'], ['/observatorio', hoje, 'daily'], ['/relatorios', hoje, 'daily'], ['/dados', hoje, 'daily'],
+    ['/', hoje, 'hourly'], ['/observatorio', hoje, 'daily'], ['/relatorios', hoje, 'daily'],
     ['/sobre', '', 'monthly'], ['/termos', '', 'yearly'], ['/privacidade', '', 'yearly'], ['/remocao', '', 'yearly'],
     ...Object.keys(ESTADOS).map((uf) => [`/estado/${uf}`, hoje, 'hourly']),
     ...cidades().filter(([, , v]) => v >= 3).map(([uf, c]) => [urlCidade(uf, c), hoje, 'daily']),

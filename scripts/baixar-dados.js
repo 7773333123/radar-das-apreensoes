@@ -31,7 +31,7 @@ async function baixar(nome, destino) {
   const tgz = path.join(require('os').tmpdir(), versao.site);
   await baixar(versao.site, tgz);
   execFileSync('tar', ['-xzf', tgz, '-C', RAIZ], { stdio: 'inherit' });
-  for (const f of ['feed.json', 'feed_links.json', 'det', 'dados']) {
+  for (const f of ['feed.json', 'feed_links.json', 'det']) {
     if (!fs.existsSync(path.join(RAIZ, f))) throw new Error(`faltou ${f} no pacote ${versao.site}`);
   }
   // A Vercel publica a pasta public/: páginas, arquivos estáticos e os dados.
@@ -40,7 +40,7 @@ async function baixar(nome, destino) {
   fs.rmSync(PUB, { recursive: true, force: true });
   fs.mkdirSync(PUB);
   const estaticos = fs.readdirSync(RAIZ).filter((f) => /\.(html|txt|xml|webmanifest|ico)$/.test(f))
-    .concat(['assets', 'img', 'feed.json', 'feed-recente.json', 'feed_links.json', 'det', 'dados']);
+    .concat(['assets', 'img', 'feed.json', 'feed-recente.json', 'feed_links.json', 'det']);  // dados/ (planilhas) não é publicado
   for (const f of estaticos) {
     if (fs.existsSync(path.join(RAIZ, f))) fs.cpSync(path.join(RAIZ, f), path.join(PUB, f), { recursive: true });
   }

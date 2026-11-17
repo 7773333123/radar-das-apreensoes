@@ -76,7 +76,7 @@ const corta = (t, n) => (t.length > n ? t.slice(0, n - 1).replace(/\s+\S*$/, '')
 const paragrafos = (t) => String(t || '').split(/\n{2,}/).filter((p) => p.trim()).map((p) => `<p class="reader-text">${esc(p.trim())}</p>`).join('');
 
 function cabecalho(atual) {
-  const nav = [['/', 'Notícias'], ['/observatorio', 'Observatório'], ['/relatorios', 'Relatórios'], ['/dados', 'Dados abertos']];
+  const nav = [['/', 'Notícias'], ['/observatorio', 'Observatório'], ['/relatorios', 'Relatórios']];
   return `<a class="skip" href="#conteudo">Pular para o conteúdo</a>
 <header class="masthead"><div class="wrap brandbar">
 <a class="brand" href="/" aria-label="Radar das Apreensões — página inicial"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 3C19 3 9 13 9 26c0 17 23 35.5 23 35.5S55 43 55 26C55 13 45 3 32 3z" fill="#b3261e"/><path d="M24.5 40V14.5h9a8 8 0 0 1 0 16h-9" fill="none" stroke="#fff" stroke-width="5.4" stroke-linejoin="round"/><path d="M31.5 30.5l9.5 9.5" stroke="#fff" stroke-width="5.4" stroke-linecap="round"/><path d="M40.5 9.6a11 11 0 0 1 7.9 7.9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".55"/><path d="M40.6 13.8a6.6 6.6 0 0 1 3.6 3.6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".9"/></svg>
@@ -89,7 +89,7 @@ function cabecalho(atual) {
 }
 const RODAPE = `<footer class="footer"><div class="wrap cols">
 <div><h4>Radar das Apreensões</h4><p>O conteúdo das reportagens pertence aos veículos de origem; cada notícia leva à fonte original.</p></div>
-<div><h4>Navegue</h4><p><a href="/observatorio">Observatório</a> · <a href="/relatorios">Relatórios mensais</a></p><p><a href="/dados">Dados abertos e metodologia</a></p><p><a href="/sobre">Sobre e expediente</a></p></div>
+<div><h4>Navegue</h4><p><a href="/observatorio">Observatório</a> · <a href="/relatorios">Relatórios mensais</a></p><p><a href="/sobre">Sobre e expediente</a></p></div>
 <div><h4>Transparência</h4><p><a href="/termos">Termos de uso</a> · <a href="/privacidade">Privacidade</a></p><p><a href="/remocao">Correções e pedidos de remoção</a></p>
 <p><button type="button" class="theme-toggle" id="tema">Alternar tema claro/escuro</button></p></div>
 </div></footer>`;
@@ -354,7 +354,7 @@ const INSTITUCIONAIS = {
   sobre: ['Sobre o Radar e expediente', 'O que é o Radar das Apreensões, como funciona, quem responde pelo site e como entrar em contato.', `
 <p class="reader-text">O <strong>Radar das Apreensões</strong> é uma central de notícias e um observatório de dados sobre apreensões no Brasil: drogas, armas e munições, contrabando, veículos, dinheiro, crimes ambientais, medicamentos e bloqueios de bens. Reunimos o que é publicado por mais de mil veículos de imprensa e órgãos públicos, sem duplicatas, organizado por estado, tipo e período.</p>
 <h2>Como funciona</h2>
-<p class="reader-text">A coleta é automática e roda o dia todo, a cada 20 minutos. Cada notícia passa por regras próprias que decidem se ela trata de uma apreensão e de qual tipo, identificam o estado, agrupam as versões da mesma notícia publicadas por veículos diferentes e extraem os fatos principais (o que foi apreendido, quanto, onde, quem atuou). O detalhamento está em <a href="/dados#metodologia">Dados abertos e metodologia</a>.</p>
+<p class="reader-text">A coleta é automática e roda o dia todo, a cada 20 minutos. Cada notícia passa por regras próprias que decidem se ela trata de uma apreensão e de qual tipo, identificam o estado, agrupam as versões da mesma notícia publicadas por veículos diferentes e extraem os fatos principais (o que foi apreendido, quanto, onde, quem atuou).</p>
 <h2>O que publicamos</h2>
 <p class="reader-text">Para cada notícia: título, data, fonte, foto com crédito, um resumo redigido pelo Radar a partir dos fatos, a ficha de informações e um trecho de abertura da reportagem, sempre com link para a íntegra no site de origem. Comunicados oficiais de órgãos públicos e textos com licença aberta são reproduzidos na íntegra, com crédito. O conteúdo das reportagens pertence aos veículos que as publicaram.</p>
 <h2>O que não somos</h2>
@@ -366,7 +366,7 @@ const INSTITUCIONAIS = {
 <p class="reader-note">Última atualização: novembro de 2026.</p>
 <h2>1. O serviço</h2><p class="reader-text">O Radar das Apreensões reúne e organiza notícias públicas sobre apreensões no Brasil e produz indicadores a partir delas. O uso do site é gratuito e não exige cadastro.</p>
 <h2>2. Conteúdo de terceiros</h2><p class="reader-text">Títulos, fotos, trechos e textos das reportagens pertencem aos veículos e órgãos que os publicaram e são exibidos com crédito e link para a fonte, nos limites da Lei 9.610/1998 (citação com indicação de autoria) ou da licença do próprio conteúdo. Para reutilizar esse material, procure o titular dos direitos.</p>
-<h2>3. Conteúdo do Radar e dados abertos</h2><p class="reader-text">Os resumos, fichas, indicadores e arquivos da seção <a href="/dados">Dados abertos</a> podem ser reutilizados, inclusive comercialmente, desde que citada a fonte: "Radar das Apreensões".</p>
+<h2>3. Conteúdo do Radar</h2><p class="reader-text">Os resumos, fichas e indicadores redigidos pelo Radar podem ser citados, desde que indicada a fonte: "Radar das Apreensões".</p>
 <h2>4. Precisão das informações</h2><p class="reader-text">A coleta e a classificação são automáticas e podem conter erros. As notícias refletem o que foi publicado na data, e pessoas citadas como suspeitas são presumidas inocentes até decisão judicial definitiva. Encontrou um erro? Use a página de <a href="/remocao">correções e pedidos de remoção</a>.</p>
 <h2>5. Uso proibido</h2><p class="reader-text">É proibido usar o site para assediar, expor ou ameaçar pessoas citadas nas notícias, sobrecarregar os servidores com acessos automatizados abusivos ou apresentar os dados como estatística oficial.</p>
 <h2>6. Responsabilidade</h2><p class="reader-text">O Radar não se responsabiliza pelo conteúdo dos sites de origem nem por decisões tomadas apenas com base nas informações aqui reunidas.</p>

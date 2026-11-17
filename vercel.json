@@ -76,10 +76,6 @@
       "destination": "/observatorio.html"
     },
     {
-      "source": "/dados",
-      "destination": "/dados.html"
-    },
-    {
       "source": "/noticia/:caminho",
       "destination": "/api/pagina?tipo=noticia&id=:caminho&caminho=:caminho"
     },
@@ -114,13 +110,23 @@
   ],
   "redirects": [
     {
-      "source": "/observatorio.html",
-      "destination": "/observatorio",
+      "source": "/dados",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/dados.html",
-      "destination": "/dados",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/dados/:caminho*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/observatorio.html",
+      "destination": "/observatorio",
       "permanent": true
     },
     {
