@@ -165,15 +165,21 @@ def trecho_de_abertura(paragrafos):
     for p in limpos[:80]:
         if len(p) < 40 or RUIDO.match(p) or CONTATO.match(p) or p.count('|') > 1:
             continue
-        if not re.search(r'[.!?…:;)"”»]$', p):
+        if not re.search(r'[.!?…:;)"”»]$', p) and len(p) < 160:
             continue  # intertítulo
         if total + len(p) > TRECHO_MAX:
-            frases = re.split(r'(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÇ“"])', p)
+            # Corta o parágrafo por frases até o limite. Se assim ficar curto
+            # demais (frase longa), aceita mais uma frase desde que não passe de 85%.
+            frases = re.split(r'(?<=[.!?…])\s+(?=[^\s])', p)
             corte = ''
             for f in frases:
-                if total + len(corte) + len(f) + 1 > TRECHO_MAX:
-                    break
-                corte = (corte + ' ' + f).strip()
+                novo = (corte + ' ' + f).strip()
+                if total + len(novo) <= TRECHO_MAX:
+                    corte = novo
+                    continue
+                if total + len(corte) < 0.6 * corpo and total + len(novo) <= 0.85 * corpo:
+                    corte = novo
+                break
             if corte:
                 partes.append(corte)
             break

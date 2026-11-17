@@ -164,6 +164,48 @@ def _sem_link(n):
     return 'news.google.com' in str(n.get('url') or '') and not (orig.startswith('http') and 'news.google.com' not in orig)
 
 
+def _nome(t):
+    import unicodedata
+    t = unicodedata.normalize('NFKD', t or '')
+    t = ''.join(c for c in t if not unicodedata.combining(c)).lower()
+    return ' '.join(re.findall(r'[a-z0-9]+', t))
+
+
+def _data_ordem(n):
+    if n.get('data_iso'):
+        return str(n['data_iso'])
+    try:
+        from email.utils import parsedate_to_datetime
+        return parsedate_to_datetime(str(n.get('data_publicacao'))).astimezone(timezone.utc).isoformat()
+    except (TypeError, ValueError, IndexError):
+        return ''
+
+
+def mapa_dominios(noticias, fontes):
+    """Nome do veículo -> domínio (fontes.json + notícias do acervo que já têm os dois).
+
+    As notícias antigas do Google guardam só o nome ("Terra"), sem o domínio.
+    """
+    from collections import Counter, defaultdict
+    votos = defaultdict(Counter)
+    for dom, (nome, _uf) in fontes.items():
+        votos[_nome(nome)][re.sub(r'^www\.', '', dom.lower())] += 5
+    for n in noticias:
+        if isinstance(n, dict) and n.get('fonte') and n.get('dominio_fonte') and 'news.google' not in str(n.get('dominio_fonte')):
+            votos[_nome(n['fonte'])][re.sub(r'^www\.', '', str(n['dominio_fonte']).lower())] += 1
+    mapa = {k: c.most_common(1)[0][0] for k, c in votos.items() if k}
+    mapa.setdefault('g1', 'g1.globo.com')
+    mapa.setdefault('r7', 'r7.com')
+    return mapa
+
+
+def _dominio_combina(dom, fonte):
+    """'terra.com.br' combina com 'Terra'; 'tnh1.com.br' com 'TNH1'."""
+    rotulo = re.sub(r'[^a-z0-9]', '', dom.split('.')[0] if not dom.startswith(('g1.', 'm.')) else dom.split('.')[1])
+    nome = _nome(fonte).replace(' ', '')
+    return len(rotulo) >= 3 and (rotulo in nome or nome in rotulo)
+
+
 def resolver_links(noticias, limite, fontes, antigas=False):
     """Busca no Bing o título de cada notícia do Google sem link original e grava o link direto.
 
@@ -177,15 +219,18 @@ def resolver_links(noticias, limite, fontes, antigas=False):
         # Execução própria para o acervo antigo: das mais antigas para as mais novas,
         # deixando os últimos 30 dias para a coleta rápida.
         corte = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
-        pendentes = [n for n in pendentes if (n.get('data_iso') or '') < corte]
-        pendentes.sort(key=lambda n: n.get('data_iso') or '')
+        pendentes = [n for n in pendentes if _data_ordem(n) < corte]
+        pendentes.sort(key=_data_ordem)
     else:
-        pendentes.sort(key=lambda n: n.get('data_iso') or '', reverse=True)
+        pendentes.sort(key=_data_ordem, reverse=True)
+    dominios = mapa_dominios(noticias, fontes)
     achados = 0
     for n in pendentes[:max(0, limite)]:
         fonte = str(n.get('fonte') or '')
         titulo = re.sub(r'\s+-\s+' + re.escape(fonte) + r'\s*$', '', str(n['titulo'])) if fonte else str(n['titulo'])
         dominio_alvo = re.sub(r'^www\.', '', str(n.get('dominio_fonte') or '').lower())
+        if not dominio_alvo or 'news.google' in dominio_alvo:
+            dominio_alvo = dominios.get(_nome(fonte), '')
         n['tentativas_bing'] = int(n.get('tentativas_bing') or 0) + 1
         try:
             resultados = buscar_bing(f'"{titulo[:120]}"', fontes, filtrar=False)
@@ -201,9 +246,20 @@ def resolver_links(noticias, limite, fontes, antigas=False):
                 resultados = buscar_bing_web(f'site:{dominio_alvo} "{titulo[:110]}"')
             except Exception:
                 resultados = []
+        elif not dominio_alvo and fonte and not resultados:
+            try:  # veículo sem domínio conhecido: busca geral pelo título
+                time.sleep(1.2)
+                resultados = buscar_bing_web(f'"{titulo[:110]}"')
+            except Exception:
+                resultados = []
         for r in resultados:
-            mesmo_site = dominio_alvo and (r['dominio_fonte'] == dominio_alvo or r['dominio_fonte'].endswith('.' + dominio_alvo))
-            if mesmo_site and alvo and len(alvo & _palavras(r['titulo'])) >= 0.8 * len(alvo):
+            if dominio_alvo:
+                mesmo_site = r['dominio_fonte'] == dominio_alvo or r['dominio_fonte'].endswith('.' + dominio_alvo)
+                minimo = 0.8
+            else:  # sem domínio: mesmo nome de veículo (Bing Notícias) ou domínio com o nome dele, título quase idêntico
+                mesmo_site = (_nome(r.get('fonte') or '') == _nome(fonte)) or _dominio_combina(r['dominio_fonte'], fonte)
+                minimo = 0.9
+            if mesmo_site and alvo and len(alvo & _palavras(r['titulo'])) >= minimo * len(alvo):
                 n.setdefault('url_google_noticias', n.get('url'))
                 n['url_original'] = r['url']
                 n['url_original_status'] = 'bing_titulo'
