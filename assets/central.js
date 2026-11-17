@@ -77,17 +77,27 @@ async function atualizarAoVivo() {
   try { novo = await carregarFeed('feed-recente.json', { novo: true }); } catch { return; }
   const ctx = st.ctx;
   const chegaram = novo.noticias.filter((n) => !ctx.porIndice.has(n.i));
-  if (chegaram.length) {
-    for (const n of chegaram) ctx.porIndice.set(n.i, n);
-    ctx.noticias = [...chegaram, ...ctx.noticias].sort((a, b) => (b.data?.getTime() || 0) - (a.data?.getTime() || 0));
+  // Período coberto pelo feed novo (31 dias): o que não está mais nele foi juntado como
+  // duplicata ou retirado do site; sai também da página aberta.
+  const ids = new Set(novo.noticias.map((n) => n.i));
+  const desde = Math.min(...novo.noticias.map((n) => n.data?.getTime() || Infinity));
+  const sairam = ctx.noticias.filter((n) => n.data && n.data.getTime() >= desde && !ids.has(n.i));
+  // Versões atualizadas (outras fontes, foto, resumo) das que continuam.
+  const mudaram = novo.noticias.filter((n) => ctx.porIndice.has(n.i));
+  if (chegaram.length || sairam.length || mudaram.length) {
+    for (const n of sairam) ctx.porIndice.delete(n.i);
+    for (const n of [...chegaram, ...mudaram]) ctx.porIndice.set(n.i, n);
+    const fora = new Set(sairam.map((n) => n.i));
+    ctx.noticias = [...chegaram, ...ctx.noticias.filter((n) => !fora.has(n.i)).map((n) => ctx.porIndice.get(n.i) || n)]
+      .sort((a, b) => (b.data?.getTime() || 0) - (a.data?.getTime() || 0));
   }
   if (novo.atualizado) {
     ctx.atualizado = novo.atualizado;
     if ($('atualizado')) $('atualizado').textContent = `Atualizado ${relativo(novo.atualizado)} · ${num(ctx.noticias.length)} notícias`;
   }
-  if (!chegaram.length) return renderAgora(ctx.noticias, Date.now());  // as antigas saem da faixa
+  if (!chegaram.length && !sairam.length) return renderAgora(ctx.noticias, Date.now());  // as antigas saem da faixa
   // No topo da página, sem leitor aberto e sem filtro: atualiza a página inicial inteira.
-  if (!temFiltro() && window.scrollY < 400 && !$('leitor')?.open) renderInicio();
+  if (!temFiltro() && window.scrollY < 400 && !$('leitor')?.open) { renderInicio(); render(); }
   else renderAgora(ctx.noticias, Date.now());
 }
 
