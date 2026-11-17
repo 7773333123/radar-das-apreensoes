@@ -54,7 +54,7 @@ jobs:
             python coletor.py --limite-fontes 15 --limite-estados 4 || echo 'Busca com falha; seguindo.'
             # Buscador alternativo (Bing Notícias): não depender só do Google. (GDELT recusa os servidores do GitHub: erro 429.)
             python buscadores.py --limite-bing 15 --resolver 60 || echo 'Buscadores alternativos com falha; seguindo.'
-            python recuperar_links.py --limite 200 --trabalhadores 4 || true
+            python recuperar_links.py --limite 600 --trabalhadores 4 || true
             # Notícias novas primeiro; o restante relê páginas antigas (trecho de abertura, fotos).
             python ler_materias.py --limite 500 --trabalhadores 10 || true
             python hash_imagens.py --limite 600 --trabalhadores 16 || true  # fotos: duplicatas por imagem

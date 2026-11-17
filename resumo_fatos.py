@@ -40,7 +40,7 @@ ORGAOS = [
 ]
 UNIDADES = (r'toneladas?|tonelada|kg|quilos?|gramas?|g\b|tabletes?|porções|por[çc][õo]es|papelotes?|pinos?|pedras?|'
             r'pés|mudas|unidades|maços|ma[çc]os|pacotes|caixas|fardos|litros|garrafas|cabeças|sacas|sacos|m³|metros cúbicos')
-MATERIAL = r'(?:de\s+)?(?P<mat>[a-zà-ú][a-zà-ú\- ]{2,40}?)(?=\s*(?:,|\.|;|\bem\b|\bna\b|\bno\b|\bnas\b|\bnos\b|\bdurante\b|\bapós\b|\bque\b|\bavaliad|\bescondid|\bapreendid|\bencontrad|\blocalizad|\bforam\b|\bé\b|\bsão\b|\bficou\b|\bdentro\b|\bpor\b|\bcom\b|\be\b|$))'
+MATERIAL = r'(?:de\s+)?(?!(?:e|ou|foi|foram|que|em|no|na|com|para|por|a|o|os|as)\b)(?P<mat>[a-zà-ú][a-zà-ú\- ]{2,40}?)(?=\s*(?:,|\.|;|\bem\b|\bna\b|\bno\b|\bnas\b|\bnos\b|\bdurante\b|\bapós\b|\bque\b|\bavaliad|\bescondid|\bapreendid|\bencontrad|\blocalizad|\bforam\b|\bé\b|\bsão\b|\bficou\b|\bdentro\b|\bpor\b|\bcom\b|\be\b|$))'
 ITEM_PESO = re.compile(rf'{QTD}\s*(?P<u>{UNIDADES})\s+{MATERIAL}', re.I)
 CONTAVEIS = (r'armas?(?: de fogo)?|fuzis|fuzil|pistolas?|rev[óo]lveres|rev[óo]lver|espingardas?|carabinas?|metralhadoras?|'
              r'muni[çc][õo]es|cartuchos|carregadores|granadas|explosivos|celulares|aparelhos celulares|ve[ií]culos|carros|'

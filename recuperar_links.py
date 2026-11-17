@@ -163,6 +163,7 @@ def main():
     ap.add_argument('--busca-fonte', action='store_true', help='Busca alternativa com validação forte de título e domínio')
     ap.add_argument('--max-tentativas', type=int, default=3, help='Máximo de falhas por notícia; 0 desativa o limite')
     ap.add_argument('--diagnostico', action='store_true', help='Exibe amostra de erros sem revelar dados privados')
+    ap.add_argument('--antigas', action='store_true', help='Mais antigas primeiro (a coleta rápida cuida das recentes)')
     args = ap.parse_args()
     if not ARQUIVO.exists(): raise SystemExit('noticias.json ausente; nada alterado')
     data = json.loads(ARQUIVO.read_text(encoding='utf-8'))
@@ -188,7 +189,8 @@ def main():
         # Menos tentativas primeiro; entre elas, as notícias mais recentes.
         # Órgãos oficiais (.gov.br etc.) antes: com o link original, ganham o texto completo.
         oficial = 0 if re.search(r'\.(?:gov|jus|mp|leg|def)\.br$', str(pair[0].get('dominio_fonte') or '')) else 1
-        return (n, oficial, -int(re.sub(r'\D', '', str(pair[0].get('data_iso') or ''))[:12] or 0))
+        quando = int(re.sub(r'\D', '', str(pair[0].get('data_iso') or ''))[:12] or 0)
+        return (n, oficial, quando if args.antigas else -quando)
     pending.sort(key=prioridade)
     batch=pending[:max(0,args.limite)]
     print('RADAR_RECUPERADOR_V5: busca em indices independentes e acervo preservado', flush=True)
