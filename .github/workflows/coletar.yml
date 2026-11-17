@@ -17,7 +17,7 @@ concurrency:
 jobs:
   coletar:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 75
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -78,14 +78,6 @@ jobs:
       - name: Impressão digital das fotos (detecção de duplicatas por imagem)
         continue-on-error: true
         run: python hash_imagens.py --limite 3000 --trabalhadores 16
-      - name: Gerar estatísticas (se disponível)
-        continue-on-error: true  # estatística antiga (analise_nacional.json): não pode derrubar a coleta
-        run: |
-          if [ -f analisar_noticias.py ]; then
-            python analisar_noticias.py
-          else
-            echo 'analisar_noticias.py não encontrado; estatísticas anteriores mantidas.'
-          fi
       - name: Gerar feed enxuto do site
         run: |
           python testes/test_duplicatas.py
