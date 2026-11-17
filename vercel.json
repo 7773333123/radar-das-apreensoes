@@ -88,6 +88,10 @@
       "destination": "/api/pagina?tipo=estado&id=:uf"
     },
     {
+      "source": "/cidade/:uf/:cidade",
+      "destination": "/api/pagina?tipo=cidade&id=:uf&cidade=:cidade"
+    },
+    {
       "source": "/categoria/:tipo",
       "destination": "/api/pagina?tipo=categoria&id=:tipo"
     },

@@ -1,5 +1,5 @@
-// /sitemap.xml gerado a partir do feed: páginas fixas, estados, tipos, relatórios e notícias.
-const { dados, urlNoticia, indexavel, meses, SLUG_CAT, ESTADOS } = require('./pagina.js');
+// /sitemap.xml gerado a partir do feed: páginas fixas, estados, cidades, tipos, relatórios e notícias.
+const { dados, urlNoticia, indexavel, meses, SLUG_CAT, ESTADOS, cidades, urlCidade } = require('./pagina.js');
 
 const SITE = 'https://www.radardasapreensoes.com.br';
 const esc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
@@ -11,6 +11,7 @@ module.exports = (req, res) => {
     ['/', hoje, 'hourly'], ['/observatorio', hoje, 'daily'], ['/relatorios', hoje, 'daily'], ['/dados', hoje, 'daily'],
     ['/sobre', '', 'monthly'], ['/termos', '', 'yearly'], ['/privacidade', '', 'yearly'], ['/remocao', '', 'yearly'],
     ...Object.keys(ESTADOS).map((uf) => [`/estado/${uf}`, hoje, 'hourly']),
+    ...cidades().filter(([, , v]) => v >= 3).map(([uf, c]) => [urlCidade(uf, c), hoje, 'daily']),
     ...SLUG_CAT.slice(0, 8).map((s) => [`/categoria/${s}`, hoje, 'hourly']),
     ...meses().filter(([, v]) => v >= 20).map(([ym]) => [`/relatorio/${ym}`, '', 'weekly']),
     ...feed.noticias.filter(indexavel).slice(0, 45000).map((n) => [urlNoticia(n), (n.d || '').slice(0, 10), '']),
