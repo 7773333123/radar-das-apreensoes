@@ -348,7 +348,7 @@ def main():
             detalhe['f'] = fatos
         # O que diz a fonte: 70% da reportagem (com crédito e link), ou o limite
         # do veículo em trecho_por_veiculo.json, se ele tiver pedido.
-        trecho = limitar_trecho(str(n.get('trecho') or '').strip(), n)
+        trecho = limitar_trecho(limpar_rede_social(str(n.get('trecho') or '').strip()), n)
         if trecho and _normal(trecho[:300]) in trechos_repetidos:
             trecho = ''  # bloco fixo do site (rodapé, "quem somos"), não a reportagem
         if nomes_presos:
