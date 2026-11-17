@@ -1,0 +1,13 @@
+name: Diagnóstico das fotos (manual)
+on: workflow_dispatch
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python acervo.py baixar --site
+      - run: python scripts/diagnostico_imagens.py 500
