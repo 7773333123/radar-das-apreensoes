@@ -126,8 +126,13 @@ function renderInicio() {
   // Primeiro o dia (hoje antes de ontem); dentro do dia, a ordem regional (Foz primeiro) e a relevância.
   const ordemFr = [...janelaFr, ...itaipu48].sort((a, b) => diaBR(b.data).localeCompare(diaBR(a.data)) ||
     (soPessoa(a) - soPessoa(b)) || a.prioridadeFr - b.prioridadeFr || nota(b) - nota(a) || b.data - a.data);
-  const frPrincipais = ordemFr.slice(0, 2);  // a ordem regional manda (a foto vem do servidor quando falta)
-  const frMenores = ordemFr.filter((n) => !frPrincipais.includes(n)).slice(0, 6).sort((a, b) => b.data - a.data);
+  // Destaque só com foto: a foto do próprio item ou a que o servidor busca no link original (sem link,
+  // não há foto). Na ordem acima; sem nenhuma com foto, vale a ordem pura.
+  const temFoto = (n) => Boolean(n.img || n.url);
+  const frPrincipais = [...ordemFr.filter(temFoto), ...ordemFr.filter((n) => !temFoto(n))].slice(0, 2);
+  // Menores: apreensão de adolescente sem material (moto roubada etc.) só entra se faltar notícia.
+  const restoFr = ordemFr.filter((n) => !frPrincipais.includes(n));
+  const frMenores = [...restoFr.filter((n) => !soPessoa(n)), ...restoFr.filter(soPessoa)].slice(0, 6).sort((a, b) => b.data - a.data);
   [...frPrincipais, ...frMenores].forEach((n) => usados.add(n));
   const lugarFr = (n) => `${n.cidade ? `${n.cidade} (${n.uf})` : (NOME_UF[n.uf] || '')}`;
   const blocoFronteira = frPrincipais.length ? `<section class="fronteira" aria-label="Fronteira">` +
