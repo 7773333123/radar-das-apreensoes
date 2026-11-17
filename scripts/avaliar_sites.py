@@ -18,7 +18,9 @@ from xml.etree import ElementTree as ET
 UA = 'Mozilla/5.0 (compatible; RadarDasApreensoes/1.0; +https://www.radardasapreensoes.com.br)'
 POLICIA = ['/category/policia/feed/', '/policia/feed/', '/editoria/policia/feed/', '/categoria/policia/feed/',
            '/category/seguranca/feed/', '/seguranca/feed/', '/category/seguranca-publica/feed/', '/category/policial/feed/',
-           '/policial/feed/', '/rss/policia', '/feed/policia']
+           '/policial/feed/', '/rss/policia', '/feed/policia', '/categoria/policial/feed/', '/editoria/policial/feed/',
+           '/category/policia/rss', '/policia/rss', '/rss/policial', '/rss/categoria/policia', '/noticias/policia/feed/',
+           '/category/noticias/policia/feed/', '/seguranca-publica/feed/', '/editorias/policia/feed/', '/tag/policia/feed/']
 GERAL = ['/feed/', '/rss', '/rss.xml', '/feed', '/feed/rss/', '/index.xml', '/rss/ultimas-noticias', '/feed.xml']
 PAYWALL = re.compile(r'piano\.io|tinypass\.com|"isAccessibleForFree"\s*:\s*"?(?:false|False)|exclusivo para assinantes|'
                      r'conte[úu]do exclusivo para assinante|assine para (?:continuar|ler|ter acesso)|para continuar lendo,? assine|'
@@ -75,7 +77,15 @@ def avaliar(c):
     base = f'https://{d}' if d.count('.') > 1 or d.startswith('www.') else f'https://www.{d}'
     achado = None
     m = re.search(r'<link[^>]+type=["\']application/(?:rss|atom)\+xml["\'][^>]*href=["\']([^"\']+)', pagina or '')
-    candidatos = [base + p for p in POLICIA] + ([m.group(1)] if m and m.group(1).startswith('http') else []) + [base + p for p in GERAL]
+    # Página inicial: RSS indicado pelo próprio site (inclusive o da editoria de polícia).
+    try:
+        _, inicio = get(f'https://{d}/', 600_000)
+    except Exception:
+        inicio = ''
+    links_rss = re.findall(r'href=["\']([^"\']*(?:rss|feed)[^"\']*)["\']', inicio, re.I)
+    policia_inicio = [u if u.startswith('http') else f'https://{d}' + ('' if u.startswith('/') else '/') + u
+                      for u in links_rss if re.search(r'polic|segur', u, re.I)][:3]
+    candidatos = policia_inicio + [base + p for p in POLICIA] + ([m.group(1)] if m and m.group(1).startswith('http') else []) + [base + p for p in GERAL]
     if base != f'https://{d}':
         candidatos += [f'https://{d}{p}' for p in ('/feed/', '/rss')]
     for u in candidatos:
