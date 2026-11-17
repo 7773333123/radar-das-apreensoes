@@ -1,474 +1,946 @@
 {
-  "observacao": "Feeds RSS/Atom próprios de veículos e órgãos. Cada item traz link original e, em geral, foto. \"uf\" vazio = fonte nacional (estado identificado pelo texto). \"verificado\": false = ainda não confirmado; se falhar, aparece no log da coleta e é ignorado.",
-  "feeds": [
-    {
-      "nome": "G1 Acre",
-      "fonte": "G1",
-      "uf": "AC",
-      "url": "https://g1.globo.com/rss/g1/ac/acre/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Alagoas",
-      "fonte": "G1",
-      "uf": "AL",
-      "url": "https://g1.globo.com/rss/g1/al/alagoas/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Amazonas",
-      "fonte": "G1",
-      "uf": "AM",
-      "url": "https://g1.globo.com/rss/g1/am/amazonas/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Amapá",
-      "fonte": "G1",
-      "uf": "AP",
-      "url": "https://g1.globo.com/rss/g1/ap/amapa/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Bahia",
-      "fonte": "G1",
-      "uf": "BA",
-      "url": "https://g1.globo.com/rss/g1/ba/bahia/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 BA – Feira De Santana Regiao",
-      "fonte": "G1",
-      "uf": "BA",
-      "url": "https://g1.globo.com/rss/g1/ba/feira-de-santana-regiao/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Ceará",
-      "fonte": "G1",
-      "uf": "CE",
-      "url": "https://g1.globo.com/rss/g1/ce/ceara/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Distrito Federal",
-      "fonte": "G1",
-      "uf": "DF",
-      "url": "https://g1.globo.com/rss/g1/df/distrito-federal/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Espírito Santo",
-      "fonte": "G1",
-      "uf": "ES",
-      "url": "https://g1.globo.com/rss/g1/es/espirito-santo/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Goiás",
-      "fonte": "G1",
-      "uf": "GO",
-      "url": "https://g1.globo.com/rss/g1/go/goias/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Maranhão",
-      "fonte": "G1",
-      "uf": "MA",
-      "url": "https://g1.globo.com/rss/g1/ma/maranhao/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 MG – Centro Oeste",
-      "fonte": "G1",
-      "uf": "MG",
-      "url": "https://g1.globo.com/rss/g1/mg/centro-oeste/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 MG – Grande Minas",
-      "fonte": "G1",
-      "uf": "MG",
-      "url": "https://g1.globo.com/rss/g1/mg/grande-minas/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Minas Gerais",
-      "fonte": "G1",
-      "uf": "MG",
-      "url": "https://g1.globo.com/rss/g1/mg/minas-gerais/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 MG – Sul De Minas",
-      "fonte": "G1",
-      "uf": "MG",
-      "url": "https://g1.globo.com/rss/g1/mg/sul-de-minas/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 MG – Triangulo Mineiro",
-      "fonte": "G1",
-      "uf": "MG",
-      "url": "https://g1.globo.com/rss/g1/mg/triangulo-mineiro/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 MG – Vales Mg",
-      "fonte": "G1",
-      "uf": "MG",
-      "url": "https://g1.globo.com/rss/g1/mg/vales-mg/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 MG – Zona Da Mata",
-      "fonte": "G1",
-      "uf": "MG",
-      "url": "https://g1.globo.com/rss/g1/mg/zona-da-mata/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Mato Grosso do Sul",
-      "fonte": "G1",
-      "uf": "MS",
-      "url": "https://g1.globo.com/rss/g1/ms/mato-grosso-do-sul/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Mato Grosso",
-      "fonte": "G1",
-      "uf": "MT",
-      "url": "https://g1.globo.com/rss/g1/mt/mato-grosso/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Pará",
-      "fonte": "G1",
-      "uf": "PA",
-      "url": "https://g1.globo.com/rss/g1/pa/para/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 PA – Santarem Regiao",
-      "fonte": "G1",
-      "uf": "PA",
-      "url": "https://g1.globo.com/rss/g1/pa/santarem-regiao/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Paraíba",
-      "fonte": "G1",
-      "uf": "PB",
-      "url": "https://g1.globo.com/rss/g1/pb/paraiba/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 PE – Caruaru Regiao",
-      "fonte": "G1",
-      "uf": "PE",
-      "url": "https://g1.globo.com/rss/g1/pe/caruaru-regiao/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Pernambuco",
-      "fonte": "G1",
-      "uf": "PE",
-      "url": "https://g1.globo.com/rss/g1/pe/pernambuco/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 PE – Petrolina Regiao",
-      "fonte": "G1",
-      "uf": "PE",
-      "url": "https://g1.globo.com/rss/g1/pe/petrolina-regiao/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Piauí",
-      "fonte": "G1",
-      "uf": "PI",
-      "url": "https://g1.globo.com/rss/g1/pi/piaui/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 PR – Campos Gerais Sul",
-      "fonte": "G1",
-      "uf": "PR",
-      "url": "https://g1.globo.com/rss/g1/pr/campos-gerais-sul/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 PR – Norte Noroeste",
-      "fonte": "G1",
-      "uf": "PR",
-      "url": "https://g1.globo.com/rss/g1/pr/norte-noroeste/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 PR – Oeste Sudoeste",
-      "fonte": "G1",
-      "uf": "PR",
-      "url": "https://g1.globo.com/rss/g1/pr/oeste-sudoeste/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Paraná",
-      "fonte": "G1",
-      "uf": "PR",
-      "url": "https://g1.globo.com/rss/g1/pr/parana/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 RJ – Norte Fluminense",
-      "fonte": "G1",
-      "uf": "RJ",
-      "url": "https://g1.globo.com/rss/g1/rj/norte-fluminense/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 RJ – Regiao Dos Lagos",
-      "fonte": "G1",
-      "uf": "RJ",
-      "url": "https://g1.globo.com/rss/g1/rj/regiao-dos-lagos/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 RJ – Regiao Serrana",
-      "fonte": "G1",
-      "uf": "RJ",
-      "url": "https://g1.globo.com/rss/g1/rj/regiao-serrana/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Rio de Janeiro",
-      "fonte": "G1",
-      "uf": "RJ",
-      "url": "https://g1.globo.com/rss/g1/rj/rio-de-janeiro/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 RJ – Sul Do Rio Costa Verde",
-      "fonte": "G1",
-      "uf": "RJ",
-      "url": "https://g1.globo.com/rss/g1/rj/sul-do-rio-costa-verde/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Rio Grande do Norte",
-      "fonte": "G1",
-      "uf": "RN",
-      "url": "https://g1.globo.com/rss/g1/rn/rio-grande-do-norte/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Rondônia",
-      "fonte": "G1",
-      "uf": "RO",
-      "url": "https://g1.globo.com/rss/g1/ro/rondonia/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Roraima",
-      "fonte": "G1",
-      "uf": "RR",
-      "url": "https://g1.globo.com/rss/g1/rr/roraima/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Rio Grande do Sul",
-      "fonte": "G1",
-      "uf": "RS",
-      "url": "https://g1.globo.com/rss/g1/rs/rio-grande-do-sul/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Santa Catarina",
-      "fonte": "G1",
-      "uf": "SC",
-      "url": "https://g1.globo.com/rss/g1/sc/santa-catarina/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Sergipe",
-      "fonte": "G1",
-      "uf": "SE",
-      "url": "https://g1.globo.com/rss/g1/se/sergipe/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 SP – Bauru Marilia",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/bauru-marilia/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 SP – Campinas Regiao",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/campinas-regiao/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 SP – Itapetininga Regiao",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/itapetininga-regiao/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 SP – Mogi Das Cruzes Suzano",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/mogi-das-cruzes-suzano/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 SP – Piracicaba Regiao",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/piracicaba-regiao/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 SP – Presidente Prudente E Regiao",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/presidente-prudente-e-regiao/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 SP – Ribeirao Preto Franca",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/ribeirao-preto-franca/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 SP – Santos Regiao",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/santos-regiao/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 SP – Sao Carlos Regiao",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/sao-carlos-regiao/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 SP – Sao Jose Do Rio Preto Aracatuba",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/sao-jose-do-rio-preto-aracatuba/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 São Paulo",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/sao-paulo/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 SP – Sorocaba Jundiai",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/sorocaba-jundiai/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 SP – Vale Do Paraiba Regiao",
-      "fonte": "G1",
-      "uf": "SP",
-      "url": "https://g1.globo.com/rss/g1/sp/vale-do-paraiba-regiao/",
-      "verificado": true
-    },
-    {
-      "nome": "G1 Tocantins",
-      "fonte": "G1",
-      "uf": "TO",
-      "url": "https://g1.globo.com/rss/g1/to/tocantins/",
-      "verificado": true
-    },
-    {
-      "nome": "Receita Federal",
-      "fonte": "Receita Federal",
-      "uf": "",
-      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/ultimas-noticias/RSS",
-      "verificado": true
-    },
-    {
-      "nome": "Ibama",
-      "fonte": "Ibama",
-      "uf": "",
-      "url": "https://www.gov.br/ibama/pt-br/assuntos/noticias/RSS",
-      "verificado": true
-    },
-    {
-      "nome": "Ministério da Defesa",
-      "fonte": "Ministério da Defesa",
-      "uf": "",
-      "url": "https://www.gov.br/defesa/pt-br/centrais-de-conteudo/noticias/RSS",
-      "verificado": true
-    },
-    {
-      "nome": "Agência Brasil",
-      "fonte": "Agência Brasil",
-      "uf": "",
-      "url": "https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml",
-      "verificado": false
-    },
-    {
-      "nome": "Metrópoles",
-      "fonte": "Metrópoles",
-      "uf": "",
-      "url": "https://www.metropoles.com/feed",
-      "verificado": false
-    },
-    {
-      "nome": "CNN Brasil",
-      "fonte": "CNN Brasil",
-      "uf": "",
-      "url": "https://www.cnnbrasil.com.br/feed/",
-      "verificado": false
-    },
-    {
-      "nome": "Folha – Cotidiano",
-      "fonte": "Folha de S.Paulo",
-      "uf": "",
-      "url": "https://feeds.folha.uol.com.br/cotidiano/rss091.xml",
-      "verificado": false
-    },
-    {
-      "nome": "R7 Notícias",
-      "fonte": "R7",
-      "uf": "",
-      "url": "https://noticias.r7.com/feed.xml",
-      "verificado": false
-    },
-    {
-      "nome": "Agência SP",
-      "fonte": "Agência SP",
-      "uf": "SP",
-      "url": "https://www.agenciasp.sp.gov.br/feed/",
-      "verificado": false
-    },
-    {
-      "nome": "Agência Pará",
-      "fonte": "Agência Pará",
-      "uf": "PA",
-      "url": "https://agenciapara.com.br/rss",
-      "verificado": false
-    },
-    {
-      "nome": "Agência Minas",
-      "fonte": "Agência Minas",
-      "uf": "MG",
-      "url": "https://www.agenciaminas.mg.gov.br/rss",
-      "verificado": false
-    }
-  ]
+ "observacao": "Feeds RSS/Atom próprios de veículos e órgãos. Cada item traz link original e, em geral, foto. \"uf\" vazio = fonte nacional (estado identificado pelo texto). \"verificado\": false = ainda não confirmado; se falhar, aparece no log da coleta e é ignorado.",
+ "feeds": [
+  {
+   "nome": "G1 Acre",
+   "fonte": "G1",
+   "uf": "AC",
+   "url": "https://g1.globo.com/rss/g1/ac/acre/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Alagoas",
+   "fonte": "G1",
+   "uf": "AL",
+   "url": "https://g1.globo.com/rss/g1/al/alagoas/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Amazonas",
+   "fonte": "G1",
+   "uf": "AM",
+   "url": "https://g1.globo.com/rss/g1/am/amazonas/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Amapá",
+   "fonte": "G1",
+   "uf": "AP",
+   "url": "https://g1.globo.com/rss/g1/ap/amapa/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Bahia",
+   "fonte": "G1",
+   "uf": "BA",
+   "url": "https://g1.globo.com/rss/g1/ba/bahia/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 BA – Feira De Santana Regiao",
+   "fonte": "G1",
+   "uf": "BA",
+   "url": "https://g1.globo.com/rss/g1/ba/feira-de-santana-regiao/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Ceará",
+   "fonte": "G1",
+   "uf": "CE",
+   "url": "https://g1.globo.com/rss/g1/ce/ceara/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Distrito Federal",
+   "fonte": "G1",
+   "uf": "DF",
+   "url": "https://g1.globo.com/rss/g1/df/distrito-federal/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Espírito Santo",
+   "fonte": "G1",
+   "uf": "ES",
+   "url": "https://g1.globo.com/rss/g1/es/espirito-santo/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Goiás",
+   "fonte": "G1",
+   "uf": "GO",
+   "url": "https://g1.globo.com/rss/g1/go/goias/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Maranhão",
+   "fonte": "G1",
+   "uf": "MA",
+   "url": "https://g1.globo.com/rss/g1/ma/maranhao/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 MG – Centro Oeste",
+   "fonte": "G1",
+   "uf": "MG",
+   "url": "https://g1.globo.com/rss/g1/mg/centro-oeste/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 MG – Grande Minas",
+   "fonte": "G1",
+   "uf": "MG",
+   "url": "https://g1.globo.com/rss/g1/mg/grande-minas/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Minas Gerais",
+   "fonte": "G1",
+   "uf": "MG",
+   "url": "https://g1.globo.com/rss/g1/mg/minas-gerais/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 MG – Sul De Minas",
+   "fonte": "G1",
+   "uf": "MG",
+   "url": "https://g1.globo.com/rss/g1/mg/sul-de-minas/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 MG – Triangulo Mineiro",
+   "fonte": "G1",
+   "uf": "MG",
+   "url": "https://g1.globo.com/rss/g1/mg/triangulo-mineiro/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 MG – Vales Mg",
+   "fonte": "G1",
+   "uf": "MG",
+   "url": "https://g1.globo.com/rss/g1/mg/vales-mg/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 MG – Zona Da Mata",
+   "fonte": "G1",
+   "uf": "MG",
+   "url": "https://g1.globo.com/rss/g1/mg/zona-da-mata/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Mato Grosso do Sul",
+   "fonte": "G1",
+   "uf": "MS",
+   "url": "https://g1.globo.com/rss/g1/ms/mato-grosso-do-sul/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Mato Grosso",
+   "fonte": "G1",
+   "uf": "MT",
+   "url": "https://g1.globo.com/rss/g1/mt/mato-grosso/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Pará",
+   "fonte": "G1",
+   "uf": "PA",
+   "url": "https://g1.globo.com/rss/g1/pa/para/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 PA – Santarem Regiao",
+   "fonte": "G1",
+   "uf": "PA",
+   "url": "https://g1.globo.com/rss/g1/pa/santarem-regiao/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Paraíba",
+   "fonte": "G1",
+   "uf": "PB",
+   "url": "https://g1.globo.com/rss/g1/pb/paraiba/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 PE – Caruaru Regiao",
+   "fonte": "G1",
+   "uf": "PE",
+   "url": "https://g1.globo.com/rss/g1/pe/caruaru-regiao/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Pernambuco",
+   "fonte": "G1",
+   "uf": "PE",
+   "url": "https://g1.globo.com/rss/g1/pe/pernambuco/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 PE – Petrolina Regiao",
+   "fonte": "G1",
+   "uf": "PE",
+   "url": "https://g1.globo.com/rss/g1/pe/petrolina-regiao/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Piauí",
+   "fonte": "G1",
+   "uf": "PI",
+   "url": "https://g1.globo.com/rss/g1/pi/piaui/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 PR – Campos Gerais Sul",
+   "fonte": "G1",
+   "uf": "PR",
+   "url": "https://g1.globo.com/rss/g1/pr/campos-gerais-sul/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 PR – Norte Noroeste",
+   "fonte": "G1",
+   "uf": "PR",
+   "url": "https://g1.globo.com/rss/g1/pr/norte-noroeste/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 PR – Oeste Sudoeste",
+   "fonte": "G1",
+   "uf": "PR",
+   "url": "https://g1.globo.com/rss/g1/pr/oeste-sudoeste/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Paraná",
+   "fonte": "G1",
+   "uf": "PR",
+   "url": "https://g1.globo.com/rss/g1/pr/parana/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 RJ – Norte Fluminense",
+   "fonte": "G1",
+   "uf": "RJ",
+   "url": "https://g1.globo.com/rss/g1/rj/norte-fluminense/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 RJ – Regiao Dos Lagos",
+   "fonte": "G1",
+   "uf": "RJ",
+   "url": "https://g1.globo.com/rss/g1/rj/regiao-dos-lagos/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 RJ – Regiao Serrana",
+   "fonte": "G1",
+   "uf": "RJ",
+   "url": "https://g1.globo.com/rss/g1/rj/regiao-serrana/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Rio de Janeiro",
+   "fonte": "G1",
+   "uf": "RJ",
+   "url": "https://g1.globo.com/rss/g1/rj/rio-de-janeiro/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 RJ – Sul Do Rio Costa Verde",
+   "fonte": "G1",
+   "uf": "RJ",
+   "url": "https://g1.globo.com/rss/g1/rj/sul-do-rio-costa-verde/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Rio Grande do Norte",
+   "fonte": "G1",
+   "uf": "RN",
+   "url": "https://g1.globo.com/rss/g1/rn/rio-grande-do-norte/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Rondônia",
+   "fonte": "G1",
+   "uf": "RO",
+   "url": "https://g1.globo.com/rss/g1/ro/rondonia/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Roraima",
+   "fonte": "G1",
+   "uf": "RR",
+   "url": "https://g1.globo.com/rss/g1/rr/roraima/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Rio Grande do Sul",
+   "fonte": "G1",
+   "uf": "RS",
+   "url": "https://g1.globo.com/rss/g1/rs/rio-grande-do-sul/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Santa Catarina",
+   "fonte": "G1",
+   "uf": "SC",
+   "url": "https://g1.globo.com/rss/g1/sc/santa-catarina/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Sergipe",
+   "fonte": "G1",
+   "uf": "SE",
+   "url": "https://g1.globo.com/rss/g1/se/sergipe/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 SP – Bauru Marilia",
+   "fonte": "G1",
+   "uf": "SP",
+   "url": "https://g1.globo.com/rss/g1/sp/bauru-marilia/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 SP – Campinas Regiao",
+   "fonte": "G1",
+   "uf": "SP",
+   "url": "https://g1.globo.com/rss/g1/sp/campinas-regiao/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 SP – Itapetininga Regiao",
+   "fonte": "G1",
+   "uf": "SP",
+   "url": "https://g1.globo.com/rss/g1/sp/itapetininga-regiao/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 SP – Mogi Das Cruzes Suzano",
+   "fonte": "G1",
+   "uf": "SP",
+   "url": "https://g1.globo.com/rss/g1/sp/mogi-das-cruzes-suzano/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 SP – Piracicaba Regiao",
+   "fonte": "G1",
+   "uf": "SP",
+   "url": "https://g1.globo.com/rss/g1/sp/piracicaba-regiao/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 SP – Presidente Prudente E Regiao",
+   "fonte": "G1",
+   "uf": "SP",
+   "url": "https://g1.globo.com/rss/g1/sp/presidente-prudente-e-regiao/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 SP – Ribeirao Preto Franca",
+   "fonte": "G1",
+   "uf": "SP",
+   "url": "https://g1.globo.com/rss/g1/sp/ribeirao-preto-franca/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 SP – Santos Regiao",
+   "fonte": "G1",
+   "uf": "SP",
+   "url": "https://g1.globo.com/rss/g1/sp/santos-regiao/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 SP – Sao Carlos Regiao",
+   "fonte": "G1",
+   "uf": "SP",
+   "url": "https://g1.globo.com/rss/g1/sp/sao-carlos-regiao/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 SP – Sao Jose Do Rio Preto Aracatuba",
+   "fonte": "G1",
+   "uf": "SP",
+   "url": "https://g1.globo.com/rss/g1/sp/sao-jose-do-rio-preto-aracatuba/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 São Paulo",
+   "fonte": "G1",
+   "uf": "SP",
+   "url": "https://g1.globo.com/rss/g1/sp/sao-paulo/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 SP – Sorocaba Jundiai",
+   "fonte": "G1",
+   "uf": "SP",
+   "url": "https://g1.globo.com/rss/g1/sp/sorocaba-jundiai/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 SP – Vale Do Paraiba Regiao",
+   "fonte": "G1",
+   "uf": "SP",
+   "url": "https://g1.globo.com/rss/g1/sp/vale-do-paraiba-regiao/",
+   "verificado": true
+  },
+  {
+   "nome": "G1 Tocantins",
+   "fonte": "G1",
+   "uf": "TO",
+   "url": "https://g1.globo.com/rss/g1/to/tocantins/",
+   "verificado": true
+  },
+  {
+   "nome": "Receita Federal",
+   "fonte": "Receita Federal",
+   "uf": "",
+   "url": "https://www.gov.br/receitafederal/pt-br/assuntos/noticias/ultimas-noticias/RSS",
+   "verificado": true
+  },
+  {
+   "nome": "Ibama",
+   "fonte": "Ibama",
+   "uf": "",
+   "url": "https://www.gov.br/ibama/pt-br/assuntos/noticias/RSS",
+   "verificado": true
+  },
+  {
+   "nome": "Ministério da Defesa",
+   "fonte": "Ministério da Defesa",
+   "uf": "",
+   "url": "https://www.gov.br/defesa/pt-br/centrais-de-conteudo/noticias/RSS",
+   "verificado": true
+  },
+  {
+   "nome": "Agência Brasil",
+   "fonte": "Agência Brasil",
+   "uf": "",
+   "url": "https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml",
+   "verificado": false
+  },
+  {
+   "nome": "Metrópoles",
+   "fonte": "Metrópoles",
+   "uf": "",
+   "url": "https://www.metropoles.com/feed",
+   "verificado": false
+  },
+  {
+   "nome": "CNN Brasil",
+   "fonte": "CNN Brasil",
+   "uf": "",
+   "url": "https://www.cnnbrasil.com.br/feed/",
+   "verificado": false
+  },
+  {
+   "nome": "Folha – Cotidiano",
+   "fonte": "Folha de S.Paulo",
+   "uf": "",
+   "url": "https://feeds.folha.uol.com.br/cotidiano/rss091.xml",
+   "verificado": false
+  },
+  {
+   "nome": "R7 Notícias",
+   "fonte": "R7",
+   "uf": "",
+   "url": "https://noticias.r7.com/feed.xml",
+   "verificado": false
+  },
+  {
+   "nome": "Agência SP",
+   "fonte": "Agência SP",
+   "uf": "SP",
+   "url": "https://www.agenciasp.sp.gov.br/feed/",
+   "verificado": false
+  },
+  {
+   "nome": "Agência Pará",
+   "fonte": "Agência Pará",
+   "uf": "PA",
+   "url": "https://agenciapara.com.br/rss",
+   "verificado": false
+  },
+  {
+   "nome": "Agência Minas",
+   "fonte": "Agência Minas",
+   "uf": "MG",
+   "url": "https://www.agenciaminas.mg.gov.br/rss",
+   "verificado": false
+  },
+  {
+   "nome": "Midiamax",
+   "fonte": "Midiamax",
+   "uf": "",
+   "url": "https://midiamax.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "OCP News",
+   "fonte": "OCP News",
+   "uf": "SC",
+   "url": "https://ocp.news/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "O Antagonista",
+   "fonte": "O Antagonista",
+   "uf": "",
+   "url": "https://oantagonista.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "RD Foco",
+   "fonte": "RD Foco",
+   "uf": "",
+   "url": "https://rdfoco.com.br/rss.xml",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "A Gazeta Web",
+   "fonte": "A Gazeta Web",
+   "uf": "",
+   "url": "https://agazetaweb.com/rss.xml",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "agorasul.com.br",
+   "fonte": "agorasul.com.br",
+   "uf": "",
+   "url": "https://agorasul.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "CidadeVerde.com",
+   "fonte": "CidadeVerde.com",
+   "uf": "",
+   "url": "https://cidadeverde.com/rss",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "Portal CM7",
+   "fonte": "Portal CM7",
+   "uf": "",
+   "url": "https://www.cm7brasil.com/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "Últimas Notícias",
+   "fonte": "Últimas Notícias",
+   "uf": "MG",
+   "url": "https://ultimasnoticias.inf.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "Bahia Notícias",
+   "fonte": "Bahia Notícias",
+   "uf": "BA",
+   "url": "https://www.bahianoticias.com.br/rss.xml",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "TNOnline",
+   "fonte": "TNOnline",
+   "uf": "",
+   "url": "https://tnonline.uol.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "Portal do Holanda",
+   "fonte": "Portal do Holanda",
+   "uf": "",
+   "url": "https://novo2026.portaldoholanda.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "Fala Piauí",
+   "fonte": "Fala Piauí",
+   "uf": "PI",
+   "url": "https://www.falapiaui.com/rss.xml",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "Cliquef5",
+   "fonte": "Cliquef5",
+   "uf": "MT",
+   "url": "https://www.cliquef5.com.br/feed",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "Blog do Chaguinhas",
+   "fonte": "Blog do Chaguinhas",
+   "uf": "",
+   "url": "https://www.blogdochaguinhas.com.br/rss.xml",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "1news.correiobraziliense.com.br",
+   "fonte": "1news.correiobraziliense.com.br",
+   "uf": "",
+   "url": "https://1news.correiobraziliense.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "Diário da Manhã",
+   "fonte": "Diário da Manhã",
+   "uf": "",
+   "url": "https://www.dm.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "correiodecorumbapantanal.com.br",
+   "fonte": "correiodecorumbapantanal.com.br",
+   "uf": "",
+   "url": "https://www.correiodecorumbapantanal.com.br/rss",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "Rafael Nemitz",
+   "fonte": "Rafael Nemitz",
+   "uf": "RS",
+   "url": "https://www.rafaelnemitz.com/rss.xml",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "bonitoinforma.com.br",
+   "fonte": "bonitoinforma.com.br",
+   "uf": "",
+   "url": "https://www.bonitoinforma.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "MS Notícias",
+   "fonte": "MS Notícias",
+   "uf": "",
+   "url": "https://www.msnoticias.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "pagina1news.com.br",
+   "fonte": "pagina1news.com.br",
+   "uf": "",
+   "url": "https://pagina1news.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "Imprensa 24h",
+   "fonte": "Imprensa 24h",
+   "uf": "",
+   "url": "https://imprensa24h.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "tvprime.correiobraziliense.com.br",
+   "fonte": "tvprime.correiobraziliense.com.br",
+   "uf": "",
+   "url": "https://tvprime.correiobraziliense.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "jgnoticias.com",
+   "fonte": "jgnoticias.com",
+   "uf": "",
+   "url": "https://www.jgnoticias.com/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "agorasudoeste.com.br",
+   "fonte": "agorasudoeste.com.br",
+   "uf": "",
+   "url": "https://www.agorasudoeste.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "portal6.com.br",
+   "fonte": "portal6.com.br",
+   "uf": "",
+   "url": "https://portal6.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "timesbrasil.com.br",
+   "fonte": "timesbrasil.com.br",
+   "uf": "",
+   "url": "https://timesbrasil.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "Revista Oeste",
+   "fonte": "Revista Oeste",
+   "uf": "",
+   "url": "https://revistaoeste.com/feed/atom/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "bahiaeconomica.com.br",
+   "fonte": "bahiaeconomica.com.br",
+   "uf": "",
+   "url": "https://bahiaeconomica.com.br/rss",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "monolitospost.com",
+   "fonte": "monolitospost.com",
+   "uf": "",
+   "url": "https://www.monolitospost.com/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "costalestenews.com.br",
+   "fonte": "costalestenews.com.br",
+   "uf": "",
+   "url": "https://costalestenews.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "jornalmaisbraganca.com.br",
+   "fonte": "jornalmaisbraganca.com.br",
+   "uf": "",
+   "url": "https://jornalmaisbraganca.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "amazoniareal.com.br",
+   "fonte": "amazoniareal.com.br",
+   "uf": "",
+   "url": "https://amazoniareal.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "JOTA Jornalismo",
+   "fonte": "JOTA Jornalismo",
+   "uf": "",
+   "url": "https://www.jota.info/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "apublica.org",
+   "fonte": "apublica.org",
+   "uf": "",
+   "url": "https://apublica.org/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "blogdohiellevy.com.br",
+   "fonte": "blogdohiellevy.com.br",
+   "uf": "",
+   "url": "https://blogdohiellevy.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "fronteiranews.com",
+   "fonte": "fronteiranews.com",
+   "uf": "",
+   "url": "https://fronteiranews.com/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "folhadedourados.com.br",
+   "fonte": "folhadedourados.com.br",
+   "uf": "",
+   "url": "https://www.folhadedourados.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "opantaneiro.com.br",
+   "fonte": "opantaneiro.com.br",
+   "uf": "",
+   "url": "https://www.opantaneiro.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "regionalzao.com.br",
+   "fonte": "regionalzao.com.br",
+   "uf": "",
+   "url": "https://regionalzao.com.br/rss",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "A Tribuna MT",
+   "fonte": "A Tribuna MT",
+   "uf": "MT",
+   "url": "https://www.atribunamt.com.br/category/policia/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "correiodobrasil.com.br",
+   "fonte": "correiodobrasil.com.br",
+   "uf": "",
+   "url": "https://correiodobrasil.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "informebaiano.com.br",
+   "fonte": "informebaiano.com.br",
+   "uf": "",
+   "url": "https://informebaiano.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "sonoticias.com.br",
+   "fonte": "sonoticias.com.br",
+   "uf": "",
+   "url": "https://www.sonoticias.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "sertaohoje.com.br",
+   "fonte": "sertaohoje.com.br",
+   "uf": "",
+   "url": "https://www.sertaohoje.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "diariodocentrodomundo.com.br",
+   "fonte": "diariodocentrodomundo.com.br",
+   "uf": "",
+   "url": "https://www.diariodocentrodomundo.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "radiosuper.com.br",
+   "fonte": "radiosuper.com.br",
+   "uf": "",
+   "url": "https://radiosuper.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "radioportalsudoeste.com.br",
+   "fonte": "radioportalsudoeste.com.br",
+   "uf": "",
+   "url": "https://www.radioportalsudoeste.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "mahoje.com.br",
+   "fonte": "mahoje.com.br",
+   "uf": "",
+   "url": "https://mahoje.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "jknoticias.com",
+   "fonte": "jknoticias.com",
+   "uf": "",
+   "url": "https://jknoticias.com/feed/atom/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "diario.dopovo.com.br",
+   "fonte": "diario.dopovo.com.br",
+   "uf": "",
+   "url": "https://diario.dopovo.com.br/rss.xml",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "portalal7.com.br",
+   "fonte": "portalal7.com.br",
+   "uf": "",
+   "url": "https://portalal7.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "elesbaonews.com",
+   "fonte": "elesbaonews.com",
+   "uf": "",
+   "url": "https://www.elesbaonews.com/rss.xml",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "jmais.com.br",
+   "fonte": "jmais.com.br",
+   "uf": "",
+   "url": "https://www.jmais.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "pretonobranco.com.br",
+   "fonte": "pretonobranco.com.br",
+   "uf": "",
+   "url": "https://pretonobranco.com.br/rss.xml",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "assiscity.com",
+   "fonte": "assiscity.com",
+   "uf": "",
+   "url": "https://www.assiscity.com/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "Portal Mário Adolfo",
+   "fonte": "Portal Mário Adolfo",
+   "uf": "",
+   "url": "https://www.blogdomarioadolfo.com.br/rss",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  },
+  {
+   "nome": "blogdojaime.com.br",
+   "fonte": "blogdojaime.com.br",
+   "uf": "",
+   "url": "https://blogdojaime.com.br/feed/",
+   "verificado": true,
+   "origem": "verificar_rss.yml (17/11/2026): RSS público do veículo"
+  }
+ ]
 }
