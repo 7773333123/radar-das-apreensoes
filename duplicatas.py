@@ -52,10 +52,16 @@ EXTENSO = {'um': '1', 'uma': '1', 'dois': '2', 'duas': '2', 'tres': '3', 'quatro
 ANOS = {str(a) for a in range(2000, 2031)}
 
 
+# Sinônimos de manchete: o mesmo fato escrito por veículos diferentes ("moto" x "motocicleta").
+SINONIMOS = {'motocicleta': 'moto', 'motocicletas': 'motos', 'automovel': 'carro', 'automoveis': 'carros',
+             'caminhonetes': 'caminhonete', 'camionete': 'caminhonete', 'pickup': 'caminhonete',
+             'municoes': 'municao', 'skank': 'skunk', 'cigarros': 'cigarro'}
+
+
 def normal(texto):
     texto = unicodedata.normalize('NFKD', texto or '')
     texto = ''.join(c for c in texto if not unicodedata.combining(c)).lower()
-    return re.sub(r'[^a-z0-9]+', ' ', texto).strip()
+    return ' '.join(SINONIMOS.get(w, w) for w in re.sub(r'[^a-z0-9]+', ' ', texto).split())
 
 
 def palavras(texto):
