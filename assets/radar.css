@@ -119,6 +119,9 @@ button, input, select { font: inherit; color: inherit; }
   repeating-linear-gradient(135deg, transparent 0 10px, rgb(0 0 0 / .025) 10px 20px), var(--surface-2); }
 .ph svg { width: 34%; max-width: 64px; height: auto; opacity: .55; }
 .ph span { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.ph-org { color: var(--ink-2); }
+.ph-org svg { opacity: .8; color: var(--accent); }
+.ph-org span { font-size: 13px; letter-spacing: .06em; text-align: center; padding: 0 12px; }
 
 .lead { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; padding-top: 28px; }
 .lead-main .media { aspect-ratio: 3 / 2; margin-bottom: 14px; }
