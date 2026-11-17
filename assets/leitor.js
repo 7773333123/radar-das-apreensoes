@@ -237,6 +237,8 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
 
   document.addEventListener('click', (e) => {
     const a = e.target.closest('[data-read]');
+    // Notícia que chegou depois da carga da página: segue o link para a página própria.
+    if (a && !ctx.porIndice.has(Number(a.dataset.read)) && a.href) return;
     if (a) { e.preventDefault(); abrir(a.dataset.read); }
   });
   $('leitor').addEventListener('click', (e) => {

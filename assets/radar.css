@@ -83,10 +83,18 @@ button, input, select { font: inherit; color: inherit; }
 .agora { background: var(--surface); border-bottom: 1px solid var(--line); }
 .agora .wrap { display: flex; align-items: center; gap: 14px; height: 42px; overflow: hidden; }
 .agora-tag { flex: none; background: var(--accent); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .12em; padding: 4px 8px; border-radius: 3px; }
-.agora ol { display: flex; gap: 28px; margin: 0; padding: 0; list-style: none; overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
+.agora-trilho { flex: 1; min-width: 0; overflow: hidden; }
+.agora ol { display: flex; gap: 0; margin: 0; padding: 0; list-style: none; overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
 .agora ol::-webkit-scrollbar { display: none; }
-.agora li button { background: none; border: 0; padding: 0; cursor: pointer; font-size: 14px; color: var(--ink-2); }
-.agora li button:hover { color: var(--ink); text-decoration: underline; }
+.agora li { flex: none; padding-right: 28px; }
+.agora li a { font-size: 14px; color: var(--ink-2); text-decoration: none; }
+.agora li a:hover { color: var(--ink); text-decoration: underline; }
+/* Faixa rolando sem parar (duas cópias: anda metade e recomeça sem salto); para ao passar o mouse ou tocar. */
+@media (prefers-reduced-motion: no-preference) {
+  .agora ol.rolando { width: max-content; overflow: visible; animation: agora-rolar var(--dur, 90s) linear infinite; will-change: transform; }
+  .agora .wrap:hover ol.rolando, .agora ol.rolando:focus-within { animation-play-state: paused; }
+}
+@keyframes agora-rolar { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .agora time { color: var(--accent); font-weight: 700; margin-right: 6px; font-variant-numeric: tabular-nums; }
 
 /* ---------- Tipografia editorial ---------- */

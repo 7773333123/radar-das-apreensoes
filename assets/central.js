@@ -42,15 +42,58 @@ function definir(parcial, { rolar = true } = {}) {
   if (rolar) (temFiltro() ? $('resultados') : $('conteudo')).scrollIntoView({ block: 'start' });
 }
 
+// ---------- faixa "Agora": as mais recentes, rolando sem parar ----------
+// A faixa anda sozinha (para quando o leitor passa o mouse ou toca nela) e a página busca
+// notícias novas no servidor a cada 5 minutos, sem precisar recarregar.
+let agoraAssinatura = '';
+function renderAgora(ns, agora) {
+  const itens = ns.filter((n) => n.data && n.data.getTime() <= agora + 3600000).slice(0, 15);
+  const assinatura = itens.map((n) => n.i).join(',');
+  if (assinatura === agoraAssinatura && $('agora').childElementCount) {
+    // Mesmas notícias: só atualiza as horas relativas.
+    return;
+  }
+  agoraAssinatura = assinatura;
+  const li = (n, copia) => `<li${copia ? ' aria-hidden="true"' : ''}><a href="${urlNoticia(n)}" data-read="${n.i}"${copia ? ' tabindex="-1"' : ''}>` +
+    `<time>${esc(agora - (n.data?.getTime() || 0) < DIA ? horaBR(n.data) : relativo(n.data))}</time>${esc(n.titulo)}</a></li>`;
+  const ol = $('agora');
+  // Duas cópias seguidas: a animação anda metade da largura e recomeça sem salto.
+  ol.innerHTML = itens.map((n) => li(n, false)).join('') + itens.map((n) => li(n, true)).join('');
+  ol.classList.remove('rolando');
+  requestAnimationFrame(() => {
+    const metade = ol.scrollWidth / 2;
+    ol.style.setProperty('--dur', `${Math.max(30, Math.round(metade / 55))}s`);  // ~55 px por segundo
+    ol.classList.add('rolando');
+  });
+  $('agoraFaixa').hidden = temFiltro();
+}
+
+async function atualizarAoVivo() {
+  if (document.hidden || !st.ctx) return;
+  let novo;
+  try { novo = await carregarFeed('feed-recente.json', { novo: true }); } catch { return; }
+  const ctx = st.ctx;
+  const chegaram = novo.noticias.filter((n) => !ctx.porIndice.has(n.i));
+  if (chegaram.length) {
+    for (const n of chegaram) ctx.porIndice.set(n.i, n);
+    ctx.noticias = [...chegaram, ...ctx.noticias].sort((a, b) => (b.data?.getTime() || 0) - (a.data?.getTime() || 0));
+  }
+  if (novo.atualizado) {
+    ctx.atualizado = novo.atualizado;
+    if ($('atualizado')) $('atualizado').textContent = `Atualizado ${relativo(novo.atualizado)} · ${num(ctx.noticias.length)} notícias`;
+  }
+  if (!chegaram.length) return;
+  // No topo da página, sem leitor aberto e sem filtro: atualiza a página inicial inteira.
+  if (!temFiltro() && window.scrollY < 400 && !$('leitor')?.open) renderInicio();
+  else renderAgora(ctx.noticias, Date.now());
+}
+
 // ---------- página inicial ----------
 function renderInicio() {
   const ns = st.ctx.noticias, agora = Date.now();
   const recentes = (dias) => ns.filter((n) => n.data && agora - n.data.getTime() <= dias * DIA && n.data.getTime() <= agora + 3600000);
 
-  // Faixa "Agora": as mais recentes, com hora.
-  $('agora').innerHTML = ns.slice(0, 12).map((n) =>
-    `<li><button type="button" data-read="${n.i}"><time>${esc(agora - (n.data?.getTime() || 0) < DIA ? horaBR(n.data) : relativo(n.data))}</time>${esc(n.titulo)}</button></li>`).join('');
-  $('agoraFaixa').hidden = false;
+  renderAgora(ns, agora);
 
   // Importância da notícia (manchete e "Em alta"):
   // - tamanho da apreensão (escala logarítmica: 1 t de droga pesa mais que 10 kg);
@@ -217,7 +260,7 @@ function filtrar() {
 function render() {
   const f = st.filtro, filtrado = temFiltro();
   $('inicio').hidden = filtrado;
-  $('agoraFaixa').hidden = filtrado;
+  $('agoraFaixa').hidden = filtrado;  // renderAgora respeita o mesmo filtro
   st.lista = filtrar();
   const partes = [f.cat !== '' ? st.ctx.categorias[f.cat] : '', f.uf ? NOME_UF[f.uf] : '', f.ano, f.q ? `“${f.q}”` : ''].filter(Boolean);
   $('resTitulo').textContent = filtrado ? partes.join(' · ') : 'Últimas notícias';
@@ -292,5 +335,7 @@ async function iniciar() {
   renderInicio();
   render();
   iniciarLeitor(st.ctx);
+  setInterval(atualizarAoVivo, 5 * 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) atualizarAoVivo(); });
 }
 iniciar();
