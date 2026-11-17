@@ -334,6 +334,17 @@ CAPA_GENERICA = re.compile(r'(?:^|[/_-])(?:logo|logotipo|brasao|default|og-?imag
                            r'/api/og-image|/thumb\.php$|/img$', re.I)
 
 
+BLOCO_FIXO = re.compile(
+    r'^(?:\s*(?:Conte[úu]dos? copiados?[^.]*?cr[ée]ditos?[^.]*\.|Nos adicione como fonte preferencial[^.]*\.|'
+    r'Siga (?:o|a|nosso|nossa)[^.]{0,80}(?:WhatsApp|Instagram|Google|canal)[^.]*\.|'
+    r'(?:Receba|Participe)[^.]{0,80}WhatsApp[^.]*\.|Ou[çc]a (?:a|esta) (?:not[íi]cia|mat[ée]ria)[^.]*\.|'
+    r'Clique aqui[^.]*\.|Publicidade\.?|Continua (?:depois|ap[óo]s) (?:da|a) publicidade\.?))+', re.I)
+
+
+def limpar_bloco_fixo(texto):
+    return BLOCO_FIXO.sub('', texto or '').strip()
+
+
 def contar_capas_genericas(noticias, limite=6):
     """Capa (imagem principal) repetida em 6+ notícias de 3+ dias: arte padrão, não foto do fato."""
     vistas = {}
@@ -420,6 +431,13 @@ def main():
     # anúncio, barra lateral ou chamada de outra matéria, não do fato.
     repetidas = contar_fotos_repetidas(noticias)
     capas_genericas = contar_capas_genericas(noticias)
+    # Avisos fixos dos sites no começo do texto lido ("Conteúdos copiados ... devem conter os
+    # devidos créditos", "Nos adicione como fonte preferencial no Google"): não são a reportagem.
+    for n in noticias:
+        if isinstance(n, dict) and n.get('trecho'):
+            limpo = limpar_bloco_fixo(str(n['trecho']))
+            if limpo != n['trecho']:
+                n['trecho'] = limpo
     # Mesmo "trecho" em matérias de títulos diferentes = a leitura pegou um bloco fixo do site.
     por_trecho = {}
     for n in noticias:
@@ -594,6 +612,7 @@ def main():
         detalhes.setdefault(i % LOTES, {})[str(i)] = detalhe
         saida.append(item)
     antes = len(saida)
+    textos_por_i = {it['i']: (it.get('t', ''), it.get('r', ''), it.get('uf', '')) for it in saida}  # cidade de outras versões
     saida, removidas = agrupar_duplicatas(saida)
     # Relatório do auditor: pares em dúvida (não juntados), para revisão periódica.
     from duplicatas import SUSPEITAS, JUNTADAS
@@ -662,6 +681,19 @@ def main():
         trajeto = cidades_de_trajeto(item.get('t', ''), item.get('r', ''))
         rota = trajeto + [x for x in ((fatos or {}).get('origem'), (fatos or {}).get('destino')) if x]
         cid = cidade_do_fato(item.get('uf', ''), item.get('t', ''), item.get('r', ''), (fatos or {}).get('cidades', ()), rota)
+        if not cid and item.get('o'):
+            # A versão exibida (ex.: nota oficial "no Paraná") não cita a cidade: vale a cidade
+            # que a maioria das outras versões da mesma notícia cita.
+            from collections import Counter as _C
+            votos = _C()
+            for o in item['o']:
+                t_o, r_o, uf_o = textos_por_i.get(o[2], ('', '', ''))
+                if uf_o == item.get('uf'):
+                    c_o = cidade_do_fato(uf_o, t_o, r_o, (), cidades_de_trajeto(t_o, r_o))
+                    if c_o:
+                        votos[c_o] += 1
+            if votos:
+                cid = votos.most_common(1)[0][0]
         trajeto = [x for x in trajeto if x != cid]
         if trajeto:
             item['rt'] = trajeto[:4]  # a busca do site ignora essas cidades

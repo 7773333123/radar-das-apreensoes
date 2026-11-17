@@ -73,13 +73,10 @@ def comparar_recortes(novas, noticias, corte):
     """Compara cada foto nova com as de notícias do mesmo dia (ou vizinho), do mesmo estado e
     com uma palavra própria em comum no título; guarda em img_iguais o endereço das fotos
     que são a mesma imagem recortada de outro jeito (duplicatas.py junta as notícias)."""
-    import re
-    from duplicatas import GENERICAS, MATERIAIS, mesma_foto_recortada, palavras, radical
+    from duplicatas import mesma_foto_recortada, palavras_proprias_foto
 
-    def chaves(n):
-        t = re.sub(r'pol[ií]cia rodovi[aá]ria(?: federal| estadual)?', ' ', str(n.get('titulo') or '').rsplit(' - ', 1)[0], flags=re.I)
-        return {radical(w) for w in palavras(t) if not w.isdigit() and w not in MATERIAIS
-                and (w not in GENERICAS or w in ('rodoviaria', 'rodoviario'))}
+    def chaves(n):  # palavras próprias do título (não valem "esquema", "lavagem", materiais...)
+        return palavras_proprias_foto(str(n.get('titulo') or '').rsplit(' - ', 1)[0])
 
     def dia(n):
         try:
@@ -117,8 +114,8 @@ def comparar_recortes(novas, noticias, corte):
                     if id(o) in vistos or o.get('imagem_url') == n.get('imagem_url'):
                         continue
                     vistos.add(id(o))
-                    if n.get('uf') and o.get('uf') and n['uf'] != o['uf']:
-                        continue
+                    if not (n.get('uf') and n.get('uf') == o.get('uf')):
+                        continue  # mesmo estado, nos dois
                     comparadas += 1
                     if mesma_foto_recortada((n['img_mini'], n.get('img_minih', '')), (o['img_mini'], o.get('img_minih', ''))):
                         for x, y in ((n, o), (o, n)):

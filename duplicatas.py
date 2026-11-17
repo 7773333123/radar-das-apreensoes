@@ -201,7 +201,7 @@ def _correlacao(a, b):
     ma, mb = sum(a) / n, sum(b) / n
     va = sum((x - ma) ** 2 for x in a)
     vb = sum((y - mb) ** 2 for y in b)
-    if va < n * 25 or vb < n * 25:  # imagem quase lisa (fundo branco, logotipo): não identifica
+    if va < n * 100 or vb < n * 100:  # imagem quase lisa (fundo, logotipo, foto escura): não identifica
         return 0.0
     return sum((x - ma) * (y - mb) for x, y in zip(a, b)) / (va * vb) ** 0.5
 
@@ -219,7 +219,7 @@ def _melhor_encaixe(ma, mb, vertical):
             return dados[ini * lado:fim * lado]
         return bytes(dados[r * n + c] for r in range(lado) for c in range(ini, fim))
 
-    minimo = max(5, int(0.4 * min(na, nb)))
+    minimo = max(6, int(0.5 * min(na, nb)))
     try:
         import numpy as np
     except ImportError:
@@ -240,7 +240,7 @@ def _melhor_encaixe(ma, mb, vertical):
             x = x - x.mean()
             y = y - y.mean()
             vx, vy = float((x * x).sum()), float((y * y).sum())
-            if vx < x.size * 25 or vy < y.size * 25:
+            if vx < x.size * 100 or vy < y.size * 100:
                 continue
             melhor = max(melhor, float((x * y).sum()) / (vx * vy) ** 0.5)
         return melhor
@@ -304,6 +304,16 @@ BAIRRO = re.compile(r'\b(?i:jardim|vila|bairro|conjunto|parque|residencial|lotea
 def bairro(titulo):
     m = BAIRRO.search(titulo or '')
     return normal(m.group(1)) if m else ''
+
+
+GENERICAS_FOTO = set('''esquema esquemas lavagem dinheiro contrabando descaminho investiga investigacao mira grupo
+    organizacao criminosa criminosas faccao mandados mandado cumpre deflagra fase nova operacao conjunta integrada
+    suspeito suspeitos envolvidos empresa empresas documentos ligam liga'''.split())
+
+
+def palavras_proprias_foto(titulo):
+    return {w for w in radicais_titulo(titulo) if not w.isdigit() and w not in MATERIAIS
+            and w not in GENERICAS_FOTO and radical(w) not in {radical(g) for g in GENERICAS_FOTO}}
 
 
 def nomes_proprios(titulo):
@@ -380,7 +390,8 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
         nota += 3
         motivos.append('mesma foto')
         fortes += 1
-    if b.get('img') and b['img'] in (a.get('_iguais') or ()) or a.get('img') and a['img'] in (b.get('_iguais') or ()):
+    if (a.get('uf') and a.get('uf') == b.get('uf')) and (b.get('img') and b['img'] in (a.get('_iguais') or ())
+                                                       or a.get('img') and a['img'] in (b.get('_iguais') or ())):
         nota += 3
         motivos.append('mesma foto recortada')
         fortes += 1
@@ -665,7 +676,9 @@ def agrupar(itens, motivos=None):
         delta = abs(dia[a] - dia[b])
         mesmo_uf = bool(ua and ua == ub)
         foto = (a, b) in pares_foto and a not in generica and b not in generica
-        lead = jaccard(sh[a], sh[b])
+        # Mesmo veículo: a abertura igual costuma ser bloco fixo do site ("Conteúdos copiados...
+        # devem conter os créditos"), não a reportagem. Só vale entre veículos diferentes.
+        lead = jaccard(sh[a], sh[b]) if itens[a].get('f') != itens[b].get('f') else 0.0
         # Palavras em comum que identificam o fato (lugar, nome, objeto específico).
         proprias = {w for w in inf[a] & inf[b] if not w[0].isdigit() and w not in MATERIAIS}
         numero_forte = bool(nf[a] and nf[b] and compativeis(nf[a], nf[b]))
@@ -706,9 +719,12 @@ def agrupar(itens, motivos=None):
                 if a == b or raiz(a) == raiz(b) or dia[a] is None or dia[b] is None or abs(dia[a] - dia[b]) > 1:
                     continue
                 ua, ub = it.get('uf'), itens[b].get('uf')
-                if ua and ub and ua != ub:
-                    continue
+                if not (ua and ub and ua == ub):
+                    continue  # mesmo estado, nos dois (a foto sozinha já juntou fatos de fora do país)
                 if qt[a] and qt[b] and not compativeis(qt[a], qt[b]):
+                    continue
+                # E uma palavra própria em comum nos títulos (não vale "esquema", "lavagem"...).
+                if not palavras_proprias_foto(it['t']) & palavras_proprias_foto(itens[b]['t']):
                     continue
                 unir(a, b, 'foto-recortada')
 
