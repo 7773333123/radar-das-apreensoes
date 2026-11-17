@@ -38,16 +38,22 @@ jobs:
           print(f"ano={c['mes'][:4]}")
           print(f"wp={'sim' if c.get('arquivo_sites_feito') else 'nao'}")
           print(f"pular={c.get('google_feitas', 0)}")
+          print(f"extra={'sim' if c.get('passada', 1) == 2 else 'nao'}")
+          print(f"oficiais={'sim' if c['mes'].endswith('-12') and c.get('passada', 1) == 1 and not c.get('arquivo_sites_feito') else 'nao'}")
           print(f"fim={'sim' if c['mes'] < c['ate'] else 'nao'}")
           PY
       - name: Arquivo dos sites dos veículos (WordPress)
         if: steps.c.outputs.fim == 'nao' && steps.c.outputs.wp == 'nao'
         continue-on-error: true
-        run: python arquivo_sites.py --mes ${{ steps.c.outputs.mes }} --tempo-max 2700
+        run: python arquivo_sites.py --mes ${{ steps.c.outputs.mes }} --tempo-max 2700 ${{ steps.c.outputs.extra == 'sim' && '--extra' || '' }}
       - name: Google Notícias semana a semana
         if: steps.c.outputs.fim == 'nao'
         continue-on-error: true
-        run: python coletor.py --retroativo ${{ steps.c.outputs.mes }} --pular ${{ steps.c.outputs.pular }}
+        run: python coletor.py --retroativo ${{ steps.c.outputs.mes }} --pular ${{ steps.c.outputs.pular }} ${{ steps.c.outputs.extra == 'sim' && '--extra' || '' }}
+      - name: Arquivos oficiais do ano (PF, PRF, Receita; uma vez por ano)
+        if: steps.c.outputs.oficiais == 'sim' && steps.c.outputs.ano >= 2015
+        continue-on-error: true
+        run: python coletar_fontes_diretas.py --ano ${{ steps.c.outputs.ano }} --paginas 12
       - name: Link original (notícias do ano)
         continue-on-error: true
         run: python recuperar_links.py --periodo ${{ steps.c.outputs.ano }} --antigas --limite 2000 --trabalhadores 4 --tempo-max 1500
@@ -57,6 +63,11 @@ jobs:
       - name: Fotos (impressão digital, recortes)
         continue-on-error: true
         run: python hash_imagens.py --periodo ${{ steps.c.outputs.ano }} --limite 4000 --trabalhadores 16
+      - name: Gerar o site
+        run: |
+          python testes/test_duplicatas.py
+          python gerar_feed_site.py
+          python compactar_acervo.py
       - name: Avançar o cursor
         if: steps.c.outputs.fim == 'nao'
         run: |
@@ -70,16 +81,22 @@ jobs:
               c['google_feitas'] = g.get('feitas', c.get('google_feitas', 0))
           # Mês concluído: Google terminou (ou 4 tentativas com bloqueio) e arquivo dos sites feito.
           if g.get('completo') or c['google_tentativas'] >= 4:
-              c.setdefault('meses_concluidos', []).append(c['mes'])
-              a, m = map(int, c['mes'].split('-'))
-              a, m = (a - 1, 12) if m == 1 else (a, m - 1)
-              c.update(mes=f'{a}-{m:02d}', arquivo_sites_feito=False, google_feitas=0, google_tentativas=0)
+              from metas_cobertura import meta_mes, publicadas_no_mes
+              feito = publicadas_no_mes(json.load(open('feed.json')), c['mes'])
+              meta = meta_mes(c['mes'][:4])
+              print(f"{c['mes']}: {feito} notícias publicadas (meta {meta}); passada {c.get('passada', 1)}")
+              c.setdefault('resultado', {})[c['mes']] = {'publicadas': feito, 'meta': meta, 'passada': c.get('passada', 1)}
+              if feito < meta and c.get('passada', 1) == 1:
+                  # Abaixo da meta: segunda passada com termos específicos.
+                  c.update(passada=2, arquivo_sites_feito=False, google_feitas=0, google_tentativas=0)
+              else:
+                  c.setdefault('meses_concluidos', []).append(c['mes'])
+                  a, m = map(int, c['mes'].split('-'))
+                  a, m = (a - 1, 12) if m == 1 else (a, m - 1)
+                  c.update(mes=f'{a}-{m:02d}', passada=1, arquivo_sites_feito=False, google_feitas=0, google_tentativas=0)
           json.dump(c, open('retroativo_cursor.json', 'w'), ensure_ascii=False, indent=1)
           print('Cursor:', c['mes'], '| concluídos:', len(c['meses_concluidos']))
           PY
-      - name: Gerar o site e salvar (mescla se outra coleta gravou antes)
+      - name: Salvar (mescla se outra coleta gravou antes)
         run: |
-          python testes/test_duplicatas.py
-          python gerar_feed_site.py
-          python compactar_acervo.py
           python acervo.py salvar "Coleta retroativa - ${{ steps.c.outputs.mes }}" retroativo_cursor.json arquivo_sites_estado.json

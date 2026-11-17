@@ -336,14 +336,21 @@ function meses() {
   return [...m].sort((a, b) => b[0].localeCompare(a[0]));
 }
 const nomeMes = (ym) => `${MESES[Number(ym.slice(5, 7)) - 1]} de ${ym.slice(0, 4)}`;
+// Meta de cobertura por mês (mesma de metas_cobertura.py): a coleta diária começou em out/2026 e
+// os meses anteriores estão sendo completados pela coleta retroativa.
+const INICIO_COLETA = '2026-10';
+const metaMes = (ym) => { const a = Number(ym.slice(0, 4)); return a >= 2026 ? 2500 : a >= 2020 ? 1500 : a >= 2015 ? 800 : 300; };
+const emFormacao = (ym, v) => ym < INICIO_COLETA && v < metaMes(ym);
+const AVISO_COBERTURA = '<p class="note">A coleta diária do Radar começou em outubro de 2026. Os meses anteriores estão sendo completados aos poucos pela coleta retroativa (arquivos dos veículos, buscas por período e fontes oficiais); meses marcados como <em>em formação</em> ainda não têm cobertura comparável. Compare meses diferentes com cautela.</p>';
 
 function paginaRelatorios() {
   const lista = meses().filter(([, v]) => v >= 20);
   const anos = new Map();
   for (const [ym, v] of lista) { const a = ym.slice(0, 4); if (!anos.has(a)) anos.set(a, []); anos.get(a).push([ym, v]); }
   const corpo = `<header class="pg-head"><h1 class="art-titulo">Relatórios mensais</h1><p class="dek">Para cada mês: total de notícias, estados e tipos mais frequentes, quantidades citadas e as maiores apreensões noticiadas. Gerados automaticamente a partir do acervo, sem duplicatas.</p></header>
+${AVISO_COBERTURA}
 ${[...anos].map(([a, ms]) => `<div class="section-head"><h2>${a}</h2></div><ul class="meses">${ms.map(([ym, v]) =>
-    `<li><a href="/relatorio/${ym}"><strong>${esc(nomeMes(ym))}</strong><span>${num(v)} notícias</span></a></li>`).join('')}</ul>`).join('')}`;
+    `<li><a href="/relatorio/${ym}"><strong>${esc(nomeMes(ym))}</strong><span>${num(v)} notícias${emFormacao(ym, v) ? ' · <em>em formação</em>' : ''}</span></a></li>`).join('')}</ul>`).join('')}`;
   return { html: pagina({ titulo: 'Relatórios mensais de apreensões | Radar das Apreensões', descricao: 'Relatórios mensais automáticos das apreensões noticiadas no Brasil: rankings por estado, tipos e maiores apreensões.', canonico: '/relatorios', atual: 'Relatórios', corpo }), canonico: '/relatorios' };
 }
 
@@ -368,7 +375,7 @@ function paginaRelatorio(ym) {
     `<li><span class="rot">${rotulo(k)}</span><span class="bar"><i style="width:${Math.max(2, (v / max) * 100).toFixed(1)}%"></i></span><span class="val">${num(v)}</span></li>`).join('')}</ol>`;
   const corpo = `<header class="pg-head"><p class="kicker">Relatório mensal</p><h1 class="art-titulo">Apreensões noticiadas em ${esc(nomeMes(ym))}</h1>
 <p class="dek">${num(itens.length)} notícias de apreensões no Brasil, sem duplicatas${topUf[0] ? `; ${esc(ESTADOS[topUf[0][0]])} foi o estado com mais registros (${num(topUf[0][1])})` : ''}${topCat[0] ? ` e ${esc(cats[topCat[0][0]].toLowerCase())} o tipo mais frequente (${num(topCat[0][1])})` : ''}.</p></header>
-${kpis(itens)}<p class="note">Estimativa: soma das quantidades citadas nas notícias, sem duplicatas. Só cerca de 1 em cada 7 notícias informa a quantidade, e a leitura automática pode errar; não são estatísticas oficiais.</p>
+${emFormacao(ym, itens.length) ? AVISO_COBERTURA : ''}${kpis(itens)}<p class="note">Estimativa: soma das quantidades citadas nas notícias, sem duplicatas. Só cerca de 1 em cada 7 notícias informa a quantidade, e a leitura automática pode errar; não são estatísticas oficiais.</p>
 <div class="duas"><section class="panel"><h3>Estados com mais notícias</h3>${barra(topUf, topUf[0] ? topUf[0][1] : 1, (uf) => `<a href="/estado/${uf}">${esc(ESTADOS[uf])}</a>`)}</section>
 <section class="panel"><h3>Tipos de apreensão</h3>${barra(topCat, topCat[0] ? topCat[0][1] : 1, (c) => `<a href="/categoria/${SLUG_CAT[c]}">${esc(cats[c])}</a>`)}</section></div>
 ${maiores.length ? `<div class="section-head"><h2>Maiores apreensões noticiadas</h2></div><div class="duas">${maiores.map(([nome, u, l]) =>
