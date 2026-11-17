@@ -273,7 +273,11 @@ def _cidades_da_uf(uf):
 
 # Siglas de cidade comuns nos títulos (só valem na UF da notícia).
 SIGLAS_CIDADE = {'SC': {'BC': 'Balneário Camboriú'}, 'MG': {'BH': 'Belo Horizonte'}, 'RS': {'POA': 'Porto Alegre'},
-                 'DF': {'BSB': 'Brasília'}, 'SP': {'SJC': 'São José dos Campos'}, 'RJ': {'SG': 'São Gonçalo'}}
+                 'DF': {'BSB': 'Brasília'}, 'SP': {'SJC': 'São José dos Campos'}, 'RJ': {'SG': 'São Gonçalo'},
+                 'PR': {'STI': 'Santa Terezinha de Itaipu', 'SMI': 'São Miguel do Iguaçu'}}
+# Nomes curtos usados pela imprensa da fronteira ("operação em São Miguel, STI e Foz").
+APELIDOS_CIDADE = {'PR': [(r'\bFoz\b(?!\s+do\s+Igua)', 'Foz do Iguaçu'),
+                          (r'\bSão Miguel\b(?!\s+d[oa]s?\s)', 'São Miguel do Iguaçu')]}
 
 # Capital com o mesmo nome do estado: só vale com indicação de que é a cidade.
 CAPITAL_HOMONIMA = {'SP': 'São Paulo', 'RJ': 'Rio de Janeiro'}
@@ -320,6 +324,8 @@ def cidade_do_fato(uf, titulo='', resumo='', cidades_fatos=(), rota=()):
         texto = OPERACAO.sub(' ', texto or '')
         for sigla, nome in SIGLAS_CIDADE.get(uf, {}).items():  # "em BC" = em Balneário Camboriú
             texto = re.sub(r'\b' + sigla + r'\b', nome, texto)
+        for padrao, nome in APELIDOS_CIDADE.get(uf, []):  # "em Foz" = em Foz do Iguaçu
+            texto = re.sub(padrao, nome, texto)
         texto = re.sub(r"\b[Dd][’'´`]", "d'", texto)
         for m in regex.finditer(texto):
             nome, ini = m.group(1), m.start()
