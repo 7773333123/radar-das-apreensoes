@@ -1,0 +1,33 @@
+name: Fotos recortadas (duplicatas por imagem, manual)
+# Calcula na hora as miniaturas de comparação das fotos recentes (hash_imagens.py) e
+# regenera o site, sem esperar a coleta. Usado quando a regra de fotos muda.
+on:
+  workflow_dispatch:
+    inputs:
+      limite:
+        description: 'Quantas fotos (das mais recentes)'
+        required: false
+        default: '4000'
+permissions:
+  contents: write
+concurrency:
+  group: publicar-site
+  cancel-in-progress: false
+jobs:
+  fotos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet pillow numpy
+      - name: Baixar o acervo (release "dados")
+        run: python acervo.py baixar
+      - name: Miniaturas e comparação das fotos recentes
+        run: python hash_imagens.py --limite "${{ inputs.limite }}" --trabalhadores 16
+      - name: Regenerar e salvar
+        run: python testes/test_duplicatas.py && python gerar_feed_site.py && python compactar_acervo.py && python acervo.py salvar 'Fotos recortadas: duplicatas por imagem'
