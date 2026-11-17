@@ -186,6 +186,92 @@ def operacoes(texto):
     return saida
 
 
+def _mini(texto):
+    """'v12:<base64>' -> (12, bytes) ou None."""
+    import base64
+    try:
+        tam, dados = texto.split(':', 1)
+        return int(tam[1:]), base64.b64decode(dados)
+    except (ValueError, AttributeError):
+        return None
+
+
+def _correlacao(a, b):
+    n = len(a)
+    ma, mb = sum(a) / n, sum(b) / n
+    va = sum((x - ma) ** 2 for x in a)
+    vb = sum((y - mb) ** 2 for y in b)
+    if va < n * 25 or vb < n * 25:  # imagem quase lisa (fundo branco, logotipo): não identifica
+        return 0.0
+    return sum((x - ma) * (y - mb) for x, y in zip(a, b)) / (va * vb) ** 0.5
+
+
+def _melhor_encaixe(ma, mb, vertical):
+    """Maior correlação entre duas miniaturas deslizando uma sobre a outra (recorte de
+    cima/baixo ou dos lados da mesma foto). Sobreposição mínima: 40% da menor e 5 linhas."""
+    (na, da), (nb, db) = ma, mb
+    lado = 16
+    if len(da) != na * lado or len(db) != nb * lado:
+        return 0.0
+
+    def faixa(dados, n, ini, fim):  # linhas (vertical) ou colunas (horizontal) ini..fim
+        if vertical:
+            return dados[ini * lado:fim * lado]
+        return bytes(dados[r * n + c] for r in range(lado) for c in range(ini, fim))
+
+    minimo = max(5, int(0.4 * min(na, nb)))
+    try:
+        import numpy as np
+    except ImportError:
+        np = None
+    if np is not None:
+        A = np.frombuffer(da, dtype=np.uint8).astype(np.float32).reshape(na, lado) if vertical else \
+            np.frombuffer(da, dtype=np.uint8).astype(np.float32).reshape(lado, na).T
+        B = np.frombuffer(db, dtype=np.uint8).astype(np.float32).reshape(nb, lado) if vertical else \
+            np.frombuffer(db, dtype=np.uint8).astype(np.float32).reshape(lado, nb).T
+        melhor = 0.0
+        for desl in range(-(nb - minimo), na - minimo + 1):
+            ia, ib = max(0, desl), max(0, -desl)
+            tam = min(na - ia, nb - ib)
+            if tam < minimo:
+                continue
+            x = A[ia:ia + tam].ravel()
+            y = B[ib:ib + tam].ravel()
+            x = x - x.mean()
+            y = y - y.mean()
+            vx, vy = float((x * x).sum()), float((y * y).sum())
+            if vx < x.size * 25 or vy < y.size * 25:
+                continue
+            melhor = max(melhor, float((x * y).sum()) / (vx * vy) ** 0.5)
+        return melhor
+    melhor = 0.0
+    for desl in range(-(nb - minimo), na - minimo + 1):
+        ia, ib = max(0, desl), max(0, -desl)
+        tam = min(na - ia, nb - ib)
+        if tam < minimo:
+            continue
+        melhor = max(melhor, _correlacao(faixa(da, na, ia, ia + tam), faixa(db, nb, ib, ib + tam)))
+    return melhor
+
+
+def mesma_foto_recortada(ma, mb, limiar=0.95):
+    """A mesma foto, mesmo recortada de outro jeito por cada veículo."""
+    if not ma or not mb:
+        return False
+    for k, vertical in ((0, True), (1, False)):
+        a, b = _mini(ma[k]), _mini(mb[k])
+        if a and b and _melhor_encaixe(a, b, vertical) >= limiar:
+            return True
+    return False
+
+
+def radical(w):
+    """rodoviária/rodoviário/rodoviárias -> rodoviari (gênero e número)."""
+    if len(w) > 5:
+        w = re.sub(r'(?:as|os|es|a|o|s)$', '', w)
+    return w
+
+
 def trechos(texto, n=5):
     """Trechos de 5 palavras seguidas (shingles) do começo do texto."""
     ws = normal(texto).split()[:120]
@@ -421,6 +507,25 @@ def agrupar(itens, motivos=None):
             # Estado não identificado em uma das versões: só valor quase igual,
             # em até 2 dias, e muito grande (>= 4x o mínimo: 1,2 t, 80 armas...).
             unir(a, b, 'grande-apreensao')
+
+    # Mesma foto recortada de outro jeito por cada veículo (o dHash não acha recortes):
+    # hash_imagens.py compara as fotos (mesmo dia, estado e palavra própria no título) e
+    # guarda os pares em img_iguais; aqui só se confirma data, estado e quantidades.
+    por_foto = {}
+    for k, it in enumerate(itens):
+        if it.get('img'):
+            por_foto.setdefault(it['img'], []).append(k)
+    for a, it in enumerate(itens):
+        for url in it.get('_iguais') or ():
+            for b in por_foto.get(url, ()):
+                if a == b or raiz(a) == raiz(b) or dia[a] is None or dia[b] is None or abs(dia[a] - dia[b]) > 1:
+                    continue
+                ua, ub = it.get('uf'), itens[b].get('uf')
+                if ua and ub and ua != ub:
+                    continue
+                if qt[a] and qt[b] and not compativeis(qt[a], qt[b]):
+                    continue
+                unir(a, b, 'foto-recortada')
 
     # Mesma operação com nome próprio, mesma fase (quando dita), até 1 dia: o mesmo fato,
     # mesmo com títulos e fotos diferentes (grande operação: muitos veículos no mesmo dia).

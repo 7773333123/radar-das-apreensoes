@@ -551,6 +551,8 @@ def main():
         # Evidências para o agrupamento de duplicatas (removidas antes de gravar).
         if n.get('img_dhash') and n.get('img_dhash_url') == n.get('imagem_url'):
             item['_h'] = int(n['img_dhash'], 16)
+            if n.get('img_iguais') and fotos and fotos[0] == url_publica(n.get('imagem_url')):  # não vale logotipo
+                item['_iguais'] = list(n['img_iguais'])
         item['_lead'] = str(n.get('trecho') or resumo)[:600]
         if do_titulo:
             q = {k: v for k, v in quantidades(do_titulo).items() if k != 'val'}
@@ -589,7 +591,7 @@ def main():
     antes -= len(bloqueadas)
     print(f'Sem conteúdo publicável (veículo bloqueia a leitura ou link não encontrado): {len(bloqueadas)} fora do site')
     for item in saida:
-        for k in ('_h', '_lead', '_q', '_ufx', '_tr', '_bloq'):
+        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq'):
             item.pop(k, None)
     for lote in list(detalhes):
         for chave in [c for c in detalhes[lote] if int(c) in removidas]:
