@@ -147,6 +147,45 @@ def mesma_materia(pa, pb, ia, ib, qa=frozenset(), qb=frozenset(), mesmo_uf=False
             and (inf >= 4 or numero_comum))
 
 
+# Operação com nome próprio ("3ª fase da Operação Lastro Oculto"): o nome identifica o fato.
+OPERACAO_NOME = re.compile(r'\bOpera[çc][ãa]o\s+(?P<nome>[A-ZÁ-Ú][\wÀ-ÿ\'’-]*(?:\s+(?:d[aeo]s?\s+)?[A-ZÁ-Ú0-9][\wÀ-ÿ\'’-]*){0,3})')
+FASE = re.compile(r'\b(\d{1,2})\s*[ªºa]?\s*fase\b|\b(primeira|segunda|terceira|quarta|quinta|sexta|s[ée]tima|oitava|nona|d[ée]cima)\s+fase\b', re.I)
+FASE_EXTENSO = {'primeira': '1', 'segunda': '2', 'terceira': '3', 'quarta': '4', 'quinta': '5', 'sexta': '6',
+                'setima': '7', 'sétima': '7', 'oitava': '8', 'nona': '9', 'decima': '10', 'décima': '10'}
+# Palavras que não são nome de operação ("Operação Policial", "Operação Conjunta da PF").
+NAO_NOME = set('''policial policiais conjunta integrada especial pf prf pm pc gaeco ficco dof bprv da do de em na no
+    nesta neste nessa nesse contra que deflagrada realizada pcpr pmpr bpfron gefron receita'''.split())
+# Operações permanentes: cada apreensão delas é um fato diferente.
+PERMANENTES = set('''horus agata muralha fronteira sentinela verao carnaval tiradentes natal rodovida egide protetor
+    oeste seguro brasil impacto saturacao narco divisas integrada finados feriado pascoa reveillon ano novo
+    independencia proclamacao carnaval semana santa ferias escola segura'''.split())
+JUDICIAL = re.compile(r'\b(?:justi[çc]a|juiz|ju[íi]za|TRF|STF|STJ|TJ[A-Z]{0,2}|anula|condena|absolv|r[ée]us?\b|den[úu]ncia|julgament|habeas|soltur|solto|liberad)', re.I)
+
+
+def operacoes(texto):
+    """{(nome normalizado, fase)} das operações citadas; fase '' quando não dita."""
+    texto = texto or ''
+    fases = set()
+    for m in FASE.finditer(texto):
+        fases.add(m.group(1) or FASE_EXTENSO.get(m.group(2).lower(), ''))
+    fase = next(iter(fases)) if len(fases) == 1 else ''
+    saida = set()
+    for m in OPERACAO_NOME.finditer(texto):
+        palavras_nome = normal(m.group('nome')).split()
+        for k, w in enumerate(palavras_nome):  # "Hórus da PRF" = "Hórus"
+            if k and w in ('da', 'do', 'de', 'das', 'dos') and k + 1 < len(palavras_nome) and palavras_nome[k + 1] in NAO_NOME:
+                palavras_nome = palavras_nome[:k]
+                break
+        while palavras_nome and palavras_nome[-1] in ('da', 'do', 'de', 'das', 'dos'):
+            palavras_nome.pop()
+        if not palavras_nome or palavras_nome[0] in NAO_NOME or palavras_nome[0] in PERMANENTES:
+            continue
+        nome = ' '.join(palavras_nome)
+        if len(nome) >= 4:
+            saida.add((nome, fase))
+    return saida
+
+
 def trechos(texto, n=5):
     """Trechos de 5 palavras seguidas (shingles) do começo do texto."""
     ws = normal(texto).split()[:120]
@@ -380,6 +419,43 @@ def agrupar(itens, motivos=None):
             # Estado não identificado em uma das versões: só valor quase igual,
             # em até 2 dias, e muito grande (>= 4x o mínimo: 1,2 t, 80 armas...).
             unir(a, b, 'grande-apreensao')
+
+    # Mesma operação com nome próprio, mesma fase (quando dita), até 1 dia: o mesmo fato,
+    # mesmo com títulos e fotos diferentes. Operação permanente (Hórus, Ágata, Fronteira),
+    # com muitas notícias no mesmo dia, não serve: cada apreensão dela é um fato.
+    por_op = {}
+    for k, it in enumerate(itens):
+        if dia[k] is None:
+            continue
+        for nome, fase in operacoes(it['t'] + ' . ' + it.get('_lead', '')):
+            por_op.setdefault(nome, []).append((dia[k], fase, k))
+    for nome, lista in por_op.items():
+        lista.sort()
+        # Nome que aparece em 4+ dias sem fase: operação permanente, não identifica o fato.
+        if len({d for d, f, _ in lista if not f}) >= 4:
+            continue
+        for x in range(len(lista)):
+            perto = [y for y in lista if abs(y[0] - lista[x][0]) <= 1]
+            if len({y[2] for y in perto}) > 6:
+                continue
+            for y in range(x + 1, len(lista)):
+                da, fa, a = lista[x]
+                db, fb, b = lista[y]
+                if db - da > 1:
+                    break
+                if a == b or (fa and fb and fa != fb):
+                    continue
+                ua, ub = itens[a].get('uf'), itens[b].get('uf')
+                if ua and ub and ua != ub:
+                    continue
+                # Uma palavra própria em comum nos títulos (lugar, alvo, objeto): a matéria geral da
+                # operação e a de uma prisão isolada dela em outra cidade não são a mesma notícia.
+                if not {w for w in inf[a] & inf[b] if not w[0].isdigit() and w not in MATERIAIS}:
+                    continue
+                # Desdobramento na Justiça é outra notícia.
+                if bool(JUDICIAL.search(itens[a]['t'])) != bool(JUDICIAL.search(itens[b]['t'])):
+                    continue
+                unir(a, b, 'operacao')
 
     grupos = {}
     for k in range(n):

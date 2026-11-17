@@ -279,6 +279,8 @@ def main():
                 pending.append((article,url))
     # Distribui o trabalho: notícias nunca testadas primeiro; depois falhas antigas.
     # A ordem do JSON é mantida, e nenhuma notícia é descartada.
+    from datetime import datetime, timedelta, timezone
+    recente_corte = int((datetime.now(timezone.utc) - timedelta(days=3)).strftime('%Y%m%d%H%M'))
     def prioridade(pair):
         try: n = int(pair[0].get('tentativas_busca_indice' if args.busca_fonte else 'tentativas_url_original_v2') or 0)
         except (TypeError, ValueError): n = 0
@@ -288,7 +290,11 @@ def main():
         quando = int(re.sub(r'\D', '', str(pair[0].get('data_iso') or ''))[:12] or 0)
         # Regiões de fronteira primeiro, na ordem regional (1 = Foz do Iguaçu ... 9 = outras fronteiras).
         fronteira = prioridade_regional('', str(pair[0].get('titulo') or ''), str(pair[0].get('uf') or '')) if de_fronteira(pair[0]) else 10
-        return (n, fronteira, oficial, quando if args.antigas else -quando)
+        if args.antigas:
+            return (n, fronteira, oficial, quando)
+        # Coleta rápida: as dos últimos 3 dias antes de tudo (o que está na página inicial).
+        recente = 0 if quando >= recente_corte else 1
+        return (recente, n, fronteira, oficial, -quando)
     pending.sort(key=prioridade)
     batch=pending[:max(0,args.limite)]
     print('RADAR_RECUPERADOR_V5: busca em indices independentes e acervo preservado', flush=True)
