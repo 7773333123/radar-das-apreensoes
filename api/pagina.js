@@ -135,9 +135,15 @@ function radarHTML(secoes, veiculos) {
   const icone = (t) => (ICONE_SECAO[t] ? `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONE_SECAO[t]}</svg>` : '');
   const lead = secoes.find(([t]) => t === 'O que aconteceu' || !t);
   const cartoes = secoes.filter(([t]) => ICONE_SECAO[t]);
+  const importa = secoes.find(([t]) => t === 'Por que importa');
+  const entenda = secoes.find(([t]) => t === 'Entenda');
+  // "Skunk: variedade... Fuzil: arma..." -> pares termo/explicação.
+  const termos = entenda ? entenda[1].split(/\s(?=[A-ZÀ-Ý][\wÀ-ÿ -]{1,40}: )/).map((x) => x.split(/: (.+)/s)).filter((x) => x[1]) : [];
   return `<section class="bloco radar"><header class="bloco-cab"><h2>Resumo do Radar</h2><p>Redigido pelo Radar a partir dos fatos publicados</p></header>` +
     (lead ? `<p class="rs-lead">${esc(lead[1])}</p>` : '') +
+    (importa ? `<div class="rs-importa"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.9L22 9.3l-5.4 4.8 1.6 7.2L12 17.6 5.8 21.3l1.6-7.2L2 9.3l7.1-.4z"/></svg>Por que importa</h3><p>${esc(importa[1])}</p></div>` : '') +
     (cartoes.length ? `<div class="rs-cards">${cartoes.map(([t, x]) => `<section class="rs-card"><h3>${icone(t)}${esc(t)}</h3><p>${esc(x)}</p></section>`).join('')}</div>` : '') +
+    (termos.length ? `<div class="rs-entenda"><h3>Entenda</h3><dl>${termos.map(([t, x]) => `<div><dt>${esc(t)}</dt><dd>${esc(x)}</dd></div>`).join('')}</dl></div>` : '') +
     (veiculos.length > 1 ? `<div class="rs-veiculos"><h3>Quem noticiou</h3><ul>${veiculos.map((v) => `<li>${esc(v)}</li>`).join('')}</ul></div>` : '') +
     '</section>';
 }

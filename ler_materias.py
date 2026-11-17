@@ -179,8 +179,10 @@ def trecho_de_abertura(paragrafos):
                 if total + len(novo) <= TRECHO_MAX:
                     corte = novo
                     continue
-                if total + len(corte) < 0.6 * corpo and total + len(novo) <= 0.85 * corpo:
+                # Nunca menos de 50% da reportagem: frase longa no limite entra (até 90%).
+                if total + len(corte) < 0.5 * corpo and total + len(novo) <= 0.9 * corpo:
                     corte = novo
+                    continue
                 break
             if corte:
                 partes.append(corte)
@@ -458,7 +460,10 @@ def main():
             continue
         # Notas oficiais lidas antes da versão estruturada são relidas (texto como o órgão editou).
         oficial_antigo = n.get('licenca_texto') == 'oficial' and int(n.get('texto_v') or 0) < 2
-        if int(n.get('materia_lida_v') or 0) >= VERSAO and not oficial_antigo:
+        # Trecho abaixo de 50% da reportagem (regra antiga de corte): relê uma vez.
+        curto = (n.get('trecho') and n.get('tamanho_texto') and int(n.get('trecho_v') or 0) < 2
+                 and len(str(n['trecho'])) < 0.5 * float(n['tamanho_texto']))
+        if int(n.get('materia_lida_v') or 0) >= VERSAO and not oficial_antigo and not curto:
             continue
         url = n.get('url_original') if valida(n.get('url_original')) else (n.get('url') if valida(n.get('url')) else '')
         if url and int(n.get('tentativas_leitura') or 0) < args.max_tentativas:
@@ -488,6 +493,7 @@ def main():
                 continue
             n['materia_lida'] = time.strftime('%Y-%m-%d')
             n['materia_lida_v'] = VERSAO
+            n['trecho_v'] = 2
             if r.get('publicada'):
                 # A data da página prevalece sobre a da busca (o Google às vezes
                 # informa a data de atualização ou de indexação).
