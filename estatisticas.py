@@ -40,7 +40,7 @@ TETO = {'arm': 300, 'fuz': 100, 'mun': 20_000}
 APREENSAO = re.compile(r'apreend|apreens|flagra|intercept|encontr|localiz|descobr|retid|confisc|'
                        r'pres[oa]s? com|carregad[oa] com|escondid|recolh|incinera', re.I)
 # ...e não balanços, hipóteses, acusações ou fatos no exterior.
-NAO_SOMAR = re.compile(r'\bbalan[çc]o\b|\btotal\b|acumulad|\bem (?:19|20)\d\d\b|\bno ano\b|\bdesde\b|'
+NAO_SOMAR = re.compile(r'\bbalan[çc]o\b|\btotal\b|\b(?:n?este|no último) ano\b|acumulad|\bem (?:19|20)\d\d\b|\bno ano\b|\bdesde\b|'
                        r'\bpoderia\b|refinaria|seria(?:m)? capaz|\bcapaz de\b|estimad|acusad|suspeit[oa] de traficar|'
                        r'procurad|\bBol[ií]via\b|\bParaguai\b|\bCol[ôo]mbia\b|\bPeru\b|\bEUA\b|\bEuropa\b|'
                        r'\bmundo\b|\bONU\b|\bInterpol\b|\bem \d+ (?:anos|meses)\b|\bsemestre\b|\bmês\b|\bsemana\b|'
@@ -55,6 +55,9 @@ NAO_SOMAR = re.compile(r'\bbalan[çc]o\b|\btotal\b|acumulad|\bem (?:19|20)\d\d\b
 
 
 def _numero(texto):
+    # "6.8 toneladas" (ponto como vírgula decimal) vs "1.500 kg" (milhar).
+    if re.fullmatch(r'\d{1,3}\.\d{1,2}', texto):
+        return float(texto)
     return float(texto.replace('.', '').replace(',', '.'))
 
 
@@ -81,6 +84,10 @@ def quantidades(fatos):
         unidade, material = (partes[0], partes[1]) if len(partes) == 2 else ('', resto)
         if unidade in ('kg', 'quilo', 'quilos', 'toneladas', 'tonelada', 'gramas', 'grama', 'g'):
             kg = valor * (1000 if unidade.startswith('tonelada') else 0.001 if unidade.startswith('g') else 1)
+            tipos = [c for c, padrao in _DROGA if c != 'dro' and re.search(padrao, material)]
+            if len(tipos) > 1:
+                somar('dro', kg)  # "8 t de cocaína, haxixe e maconha": total misto, não é tudo cocaína
+                continue
             for codigo, padrao in _DROGA:
                 if re.search(padrao, material):
                     somar(codigo, kg)
@@ -91,8 +98,14 @@ def quantidades(fatos):
                 somar('fuz', valor)
         elif re.match(r'^muni[çc][õo]es|^cartuchos', resto):
             somar('mun', valor)
+    # "8 t de drogas, sendo 7,6 t de maconha": o total genérico repete as específicas.
+    especificas = sum(q.get(c, 0) for c in ('coc', 'mac', 'skh', 'cra'))
+    if q.get('dro') and especificas:
+        resto = q['dro'] - especificas
+        if resto <= 0.5 * q['dro']:
+            del q['dro']
     valor = (fatos or {}).get('valor', '')
-    m = re.match(r'R\$ ([\d.,]+)(?: (mil|milhão|milhões|bilhão|bilhões))?', valor)
+    m = re.match(r'R\$ ([\d.,]+)(?: (milhões|milhão|mil|bilhões|bilhão))?\b', valor)
     if m:
         mult = {'mil': 1e3, 'milhão': 1e6, 'milhões': 1e6, 'bilhão': 1e9, 'bilhões': 1e9}.get(m.group(2), 1)
         somar('val', _numero(m.group(1)) * mult)

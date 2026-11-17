@@ -184,6 +184,23 @@ def _mesma_grande(qa, qb, tolerancia=0.2, escala=1):
     return False
 
 
+def _numero_raro(comuns):
+    """Número com 3+ algarismos significativos (581, 234,4, 7.603): raro de repetir por acaso."""
+    for w in comuns:
+        if not w[0].isdigit():
+            continue
+        try:
+            v = float(w)
+        except ValueError:
+            continue
+        if 1900 <= v <= 2100 and v == int(v):
+            continue  # ano
+        sig = re.sub(r'e[+-]?\d+$', '', f'{v:.6g}').replace('.', '').strip('0')
+        if len(sig) >= 3 and v >= 100:
+            return True
+    return False
+
+
 def _pontos(item):
     """Qual versão mostrar: texto integral, fotos, link original, estado, resumo."""
     return (item.get('x', 0) * 8 + min(item.get('g', 1 if item.get('img') else 0), 5) * 2 +
@@ -196,7 +213,8 @@ def agrupar(itens, motivos=None):
     motivos: lista opcional que recebe (regra, a, b) de cada união (diagnóstico)."""
     n = len(itens)
     pai = list(range(n))
-    ufs = [{it['uf']} if it.get('uf') else set() for it in itens]
+    # Só o estado escrito no título conta para o veto (o do veículo pode ser de outro estado).
+    ufs = [{it['uf']} if it.get('uf') and it.get('_ufx', True) else set() for it in itens]
 
     def raiz(k):
         while pai[k] != k:
@@ -314,7 +332,14 @@ def agrupar(itens, motivos=None):
     for a, b in candidatos:
         ua, ub = itens[a].get('uf'), itens[b].get('uf')
         if ua and ub and ua != ub:
-            continue
+            # Estados diferentes escritos nos títulos: fatos diferentes. Se um deles é só o
+            # estado do veículo (notícia nacional), segue, mas sem contar como mesmo estado.
+            if itens[a].get('_ufx', True) and itens[b].get('_ufx', True):
+                continue
+            ua = ub = None
+            uf_fraco = True
+        else:
+            uf_fraco = False
         if qt[a] and qt[b] and not compativeis(qt[a], qt[b]):
             continue
         if dia[a] is None or dia[b] is None:
@@ -339,6 +364,12 @@ def agrupar(itens, motivos=None):
             unir(a, b, 'fatos')
         elif delta <= 4 and _mesma_grande(qs[a], qs[b]) and (mesmo_uf or proprias):
             unir(a, b, 'grande-apreensao')
+        elif delta <= 2 and proprias and _numero_raro(inf[a] & inf[b]):
+            # Mesmo número incomum no título ("R$ 581 milhões", "7.603 kg") + palavra própria.
+            unir(a, b, 'numero-raro')
+        elif uf_fraco and delta <= 1 and len(proprias) >= 4 and len(proprias) >= 0.5 * min(len(inf[a]), len(inf[b])):
+            # Notícia nacional (Anvisa, Receita, PF) publicada por jornais de vários estados.
+            unir(a, b, 'nacional')
         elif delta <= 2 and not (ua and ub) and _mesma_grande(qs[a], qs[b], 0.05, 4):
             # Estado não identificado em uma das versões: só valor quase igual,
             # em até 2 dias, e muito grande (>= 4x o mínimo: 1,2 t, 80 armas...).
