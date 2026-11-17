@@ -29,6 +29,7 @@ import shutil
 import unicodedata
 from pathlib import Path
 
+from pagos import pago
 from localizar_uf import _ufs_no_texto, cidade_do_fato, inferir_uf
 from resumo_fatos import LUGAR
 from resumo_fatos import anonimizar, extrair, nomes_dos_presos
@@ -156,6 +157,12 @@ def arrumar_itens(itens):
         if m:
             anterior = m.group(1)
         saida.append(re.sub(r'\s+', ' ', a))
+    # "7 kg de droga" + "maconha" (citada sem quantidade) = "7 kg de maconha".
+    soltas = [x for x in saida if re.fullmatch(r'(?:maconha|coca[íi]na|crack|skunk|haxixe|pasta[ -]base(?: de coca[íi]na)?)', x, re.I)]
+    genericas = [x for x in saida if re.fullmatch(r'[\d.,]+\s+(?:kg|quilos?|toneladas?|gramas?)\s+d[ae]s?\s+(?:drogas?|entorpecentes?)', x, re.I)]
+    if len(soltas) == 1 and len(genericas) == 1:
+        novo = re.sub(r'd[ae]s?\s+(?:drogas?|entorpecentes?)$', 'de ' + soltas[0].lower(), genericas[0])
+        saida = [novo if x == genericas[0] else x for x in saida if x != soltas[0]]
     return saida
 
 
@@ -366,7 +373,7 @@ def main():
     dados = json.loads(ORIGEM.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
     fontes = json.loads(FONTES_JSON.read_text(encoding='utf-8')).get('fontes', []) if FONTES_JSON.exists() else []
-    saida, links, ocultas, portugal = [], {}, 0, 0
+    saida, links, ocultas, portugal, pagas = [], {}, 0, 0, 0
     usados = set()
     origem_por_i = {}
     detalhes = {}
@@ -404,6 +411,10 @@ def main():
         # Notícias de Portugal (o Google Notícias em português mistura os dois países).
         if str(n.get('dominio_fonte') or '').lower().endswith('.pt'):
             portugal += 1
+            continue
+        # Veículos com conteúdo pago (assinatura) ficam fora do site: pagos.py.
+        if pago(n):
+            pagas += 1
             continue
         titulo = limpar_titulo(n.get('titulo'), fonte)
         if not titulo:
@@ -638,7 +649,7 @@ def main():
     relatorio_coleta(saida, origem_por_i, PASTA / 'dados' / 'coleta_relatorio.json')
     print(f'dados/: {abertos} notícias em CSV (dados abertos); '
           f'{sum(1 for x in saida if x.get("q"))} com quantidades')
-    print(f'Duplicatas agrupadas: {antes - len(saida)}; notícias de Portugal excluídas: {portugal}')
+    print(f'Duplicatas agrupadas: {antes - len(saida)}; notícias de Portugal excluídas: {portugal}; de veículos pagos: {pagas}')
     print(f'{DESTINO.name}: {len(saida)} notícias ({ocultas} sem relação com apreensões ocultadas), '
           f'{DESTINO.stat().st_size / 1e6:.1f} MB')
     print(f'{LINKS.name}: {LINKS.stat().st_size / 1e6:.1f} MB (carregado só ao abrir uma notícia)')

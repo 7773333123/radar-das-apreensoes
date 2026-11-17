@@ -441,3 +441,13 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
 .rs-entenda dt { display: inline; font-weight: 700; }
 .rs-entenda dt::after { content: ": "; }
 .rs-entenda dd { display: inline; margin: 0; color: var(--ink-2); }
+
+/* Compartilhar (WhatsApp em destaque) */
+.share-bar { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 18px; }
+.share-wa { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; background: #1f8f4e;
+  color: #fff !important; font: 700 15px/1 var(--sans); text-decoration: none !important; }
+.share-wa:hover { background: #177a41; }
+.share-wa svg { width: 20px; height: 20px; fill: currentColor; }
+.share-btn { padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface);
+  color: var(--ink); font: 600 14px/1 var(--sans); cursor: pointer; }
+.share-btn:hover { border-color: currentColor; }

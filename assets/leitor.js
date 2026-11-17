@@ -19,6 +19,13 @@ const HTML = `
   <p class="viewer-credit" id="visorCredito"></p>
 </dialog>`;
 
+const compartilharHTML = (n) => {
+  const link = `https://www.radardasapreensoes.com.br${urlNoticia(n)}`;
+  const wa = `https://wa.me/?text=${encodeURIComponent(`${n.titulo} — Radar das Apreensões\n${link}`)}`;
+  return `<div class="share-bar" aria-label="Compartilhar"><a class="share-wa" href="${esc(wa)}" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>Enviar no WhatsApp</a>` +
+    `<button type="button" class="share-btn" data-copiar="${esc(link)}">Copiar link</button>` +
+    `<button type="button" class="share-btn" data-compartilhar="${esc(link)}" data-titulo="${esc(n.titulo)}">Compartilhar</button></div>`;
+};
 const detalhesCache = new Map();
 const carregarDetalhe = (i) => {
   const lote = Number(i) % 256; // mesmo LOTES de gerar_feed_site.py
@@ -167,9 +174,9 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
     const cats = n.cats.map((c) => ctx.categorias[c]).join(' · ') || 'Em classificação';
     const fonte = `<div id="leitorTexto">${n.texto ? '<p class="reader-note">Carregando o texto…</p>' : fonteHTML(n, null)}</div>`;
     const c = $('leitorConteudo');
-    c.innerHTML = `${kickerHTML(n, ctx)}<h1 id="leitorTitulo">${esc(n.titulo)}</h1>${metaHTML(n)}` +
+    c.innerHTML = `${kickerHTML(n, ctx)}<h1 id="leitorTitulo">${esc(n.titulo)}</h1>${metaHTML(n)}${compartilharHTML(n)}` +
       `<div id="leitorFotos" class="reader-media"></div><div id="leitorRadar"><p class="reader-note">Carregando o resumo…</p></div>${fonte}<div id="leitorMiniaturas"></div>` +
-      `<footer class="reader-foot"><span>Fonte: ${esc(n.fonte)}${n.uf ? ' · ' + esc(NOME_UF[n.uf]) : ''} · ${esc(cats)}</span>` +
+      compartilharHTML(n) + `<footer class="reader-foot"><span>Fonte: ${esc(n.fonte)}${n.uf ? ' · ' + esc(NOME_UF[n.uf]) : ''} · ${esc(cats)}</span>` +
       `<span class="links"><a class="link-sm" id="leitorLink" href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer"${n.url ? '' : ' aria-disabled="true"'}>ver original ↗</a>` +
       `<button type="button" class="link-sm" id="compartilhar">compartilhar</button></span>` +
       (n.outras.length ? `<span class="also">também em: ${n.outras.map(([f, url, k]) => `<a class="link-sm" href="${esc(urlSegura(url || '') || '#')}" target="_blank" rel="noopener noreferrer" data-outra="${Number(k)}">${esc(f)}</a>`).join(', ')}</span>` : '') +
@@ -272,3 +279,17 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
   if (inicial != null) abrir(inicial, { atualizarUrl: false });
   return abrir;
 }
+
+// Barra de compartilhamento (leitor): copiar link e menu do sistema.
+document.addEventListener('click', async (e) => {
+  const copiar = e.target.closest('[data-copiar]');
+  const comp = e.target.closest('[data-compartilhar]');
+  if (!copiar && !comp) return;
+  const b = copiar || comp;
+  const link = b.dataset.copiar || b.dataset.compartilhar;
+  try {
+    if (comp && navigator.share) { await navigator.share({ title: comp.dataset.titulo || document.title, url: link }); return; }
+    await navigator.clipboard.writeText(link);
+    const antes = b.textContent; b.textContent = 'Link copiado ✓'; setTimeout(() => { b.textContent = antes; }, 2000);
+  } catch { /* cancelado */ }
+});

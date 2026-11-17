@@ -12,6 +12,7 @@ sem criar duplicata.
 
 Uso: python coletar_feeds_estaduais.py
 """
+from pagos import pago
 import email.utils
 import html
 import json
@@ -164,6 +165,8 @@ def incorporar(noticias, resultados):
         if itens:
             print(f'{feed["nome"]}: {len(itens)} notícias sobre apreensões', flush=True)
         for item in itens:
+            if pago(item):  # veículo com conteúdo pago (pagos.py)
+                continue
             if agregador(item['url']):
                 continue
             if item['url'] in por_url:

@@ -79,6 +79,7 @@ OPERACAO = re.compile(r'\b[Oo]pera[çc][ãa]o\s+(?:[A-ZÀ-Ý][\wÀ-ÿ\'-]*\s*){1
 DOMINIO_ESTADUAL = re.compile(r'(?:^|\.)(' + '|'.join(u.lower() for u in ESTADOS) + r')\.(?:gov|leg|jus|mp|def)\.br$')
 # Veículos regionais frequentes no acervo (nome -> UF).
 VEICULOS = {
+    'TopElegance': 'SC', 'Top Elegance': 'SC',
     'Campo Grande News': 'MS', 'GZH': 'RS', 'Correio Braziliense': 'DF', 'Metrópoles': 'DF',
     'TNH1': 'AL', 'Folha Vitória': 'ES', 'Agência Pará': 'PA', 'O Liberal': 'PA',
     'Diário do Pará': 'PA', 'Roma News': 'PA', 'A Tarde': 'BA', 'Correio': 'BA',
@@ -214,6 +215,10 @@ def inferir_uf(noticia, fontes_cadastradas=None):
         return next(iter(cidades))
     if not estados and len(local) == 1:
         return next(iter(local))
+    # Sigla de cidade no título: "em BC" (Balneário Camboriú/SC), "em BH", "em POA".
+    for uf_sigla, siglas in SIGLAS_CIDADE.items():
+        if any(re.search(r'\b(?:em|de|da|na|no)\s+' + s + r'\b', titulo) for s in siglas):
+            return uf_sigla
     return ''
 
 
@@ -266,6 +271,10 @@ def _cidades_da_uf(uf):
     return re.compile(r'(?<![A-Za-zÀ-ÿ#])(' + '|'.join(re.escape(n) for n in nomes) + r')(?![A-Za-zÀ-ÿ])')
 
 
+# Siglas de cidade comuns nos títulos (só valem na UF da notícia).
+SIGLAS_CIDADE = {'SC': {'BC': 'Balneário Camboriú'}, 'MG': {'BH': 'Belo Horizonte'}, 'RS': {'POA': 'Porto Alegre'},
+                 'DF': {'BSB': 'Brasília'}, 'SP': {'SJC': 'São José dos Campos'}, 'RJ': {'SG': 'São Gonçalo'}}
+
 # Capital com o mesmo nome do estado: só vale com indicação de que é a cidade.
 CAPITAL_HOMONIMA = {'SP': 'São Paulo', 'RJ': 'Rio de Janeiro'}
 INDICA_CAPITAL = re.compile(r'capital (?:paulista|fluminense)|cidade d[eo] (?:São Paulo|Rio)|[Zz]ona (?:Norte|Sul|Leste|Oeste|Central)|'
@@ -309,6 +318,8 @@ def cidade_do_fato(uf, titulo='', resumo='', cidades_fatos=(), rota=()):
 
     def no_local(texto):
         texto = OPERACAO.sub(' ', texto or '')
+        for sigla, nome in SIGLAS_CIDADE.get(uf, {}).items():  # "em BC" = em Balneário Camboriú
+            texto = re.sub(r'\b' + sigla + r'\b', nome, texto)
         texto = re.sub(r"\b[Dd][’'´`]", "d'", texto)
         for m in regex.finditer(texto):
             nome, ini = m.group(1), m.start()
