@@ -75,7 +75,11 @@ function renderInicio() {
     if (/\b(solta|soltura|liberad[oa]|absolvid|julgament|condenad|habeas|den[uú]ncia|audi[êe]ncia|foragid|incinera|destr[oó]i|queima)/i.test(n.titulo)) p -= 2;
     return Math.max(0.2, p);
   };
-  const nota = (n) => importancia(n) * Math.pow(0.5, horas(n) / 12);
+  // "Adolescente apreendido": apreensão de pessoa (ato infracional), não de material. Fica no site,
+  // mas não disputa manchete, destaques nem as principais da Fronteira.
+  const SO_PESSOA = /\b(?:adolescentes?|menor(?:es)?(?: de idade)?|jove[mn]s? de 1[0-7] anos|crian[çc]as?)\b[^.]{0,60}?\bapreendid[oa]s?\b|\bapreendid[oa]s?\b[^.]{0,25}?\b(?:adolescentes?|menor(?:es)?)\b|\bapreend(?:e|em|eu|eram)\s+(?:(?:um|uma|dois|duas|tr[êe]s|\d+)\s+)?(?:adolescentes?|menor(?:es)?)\b|ato infracional/i;
+  const soPessoa = (n) => SO_PESSOA.test(n.titulo) && !(n.q && Object.keys(n.q).length);
+  const nota = (n) => importancia(n) * Math.pow(0.5, horas(n) / 12) * (soPessoa(n) ? 0.3 : 1);
   const tipo = (n) => n.cats[0] ?? 8;
   const tamanho = (n) => {
     const q = n.q || {};
@@ -87,7 +91,7 @@ function renderInicio() {
   };
   const tamanhoNo = (n, c) => tamanho({ ...n, cats: [c] });
   const desdobramento = (n) => /\b(solta|soltura|liberad[oa]|absolvid|julgament|condenad|habeas|den[uú]ncia|audi[êe]ncia|foragid|incinera|destr[oó]i|queima)/i.test(n.titulo);
-  const ordemPorTipo = (a, b) => (desdobramento(a) - desdobramento(b)) || (tipo(a) - tipo(b)) ||
+  const ordemPorTipo = (a, b) => (soPessoa(a) - soPessoa(b)) || (desdobramento(a) - desdobramento(b)) || (tipo(a) - tipo(b)) ||
     (tamanho(b) - tamanho(a)) || (importancia(b) - importancia(a)) || (b.data - a.data);
   const comFoto = ns.filter((n) => n.img && n.data && n.data.getTime() <= agora + 3600000);
   // Destaques = notícias DO DIA (horário de Brasília), da mais relevante para a
@@ -119,7 +123,7 @@ function renderInicio() {
   // Foz e do Lago de Itaipu entra sempre que tiver notícia nas últimas 48 h.
   const janelaFr = [24, 48, 7 * 24].map(daFronteira).find((l) => l.length >= 4) || daFronteira(7 * 24);
   const itaipu48 = daFronteira(48).filter((n) => n.prioridadeFr <= 8 && !janelaFr.includes(n));
-  const ordemFr = [...janelaFr, ...itaipu48].sort((a, b) => a.prioridadeFr - b.prioridadeFr || nota(b) - nota(a) || b.data - a.data);
+  const ordemFr = [...janelaFr, ...itaipu48].sort((a, b) => (soPessoa(a) - soPessoa(b)) || a.prioridadeFr - b.prioridadeFr || nota(b) - nota(a) || b.data - a.data);
   const frPrincipais = ordemFr.slice(0, 2);  // a ordem regional manda (a foto vem do servidor quando falta)
   const frMenores = ordemFr.filter((n) => !frPrincipais.includes(n)).slice(0, 6);
   [...frPrincipais, ...frMenores].forEach((n) => usados.add(n));
