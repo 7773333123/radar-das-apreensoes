@@ -242,7 +242,7 @@ async function paginaNoticia(i) {
       fonte = `<section class="bloco fonte-card">${cab('O que diz a fonte')}<blockquote class="reader-quote">${paragrafos(trecho)}</blockquote>` +
         `<footer class="fonte-pe"><span>${t.tr ? `Trecho da reportagem${pct ? `, cerca de ${pct}% do texto original` : ''}, reproduzido com crédito.` : 'Resumo publicado pelo veículo, reproduzido com crédito.'}</span>${botao}</footer></section>`;
     } else if (botao) {
-      fonte = `<section class="bloco fonte-card">${cab('O que diz a fonte')}<footer class="fonte-pe"><span>Este veículo não libera a leitura automática da reportagem. O texto completo e as fotos estão no site de origem.</span>${botao}</footer></section>`;
+      fonte = `<section class="bloco fonte-card">${cab('O que diz a fonte')}<footer class="fonte-pe"><span>O trecho da reportagem ainda está sendo preparado. O texto completo e as fotos estão no site de origem.</span>${botao}</footer></section>`;
     }
   }
   // Relacionadas: mesmo estado e tipo, mais próximas no tempo.

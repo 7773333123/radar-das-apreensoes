@@ -248,8 +248,10 @@ def _numero_raro(comuns):
 
 def _pontos(item):
     """Qual versão mostrar: texto integral, fotos, link original, estado, resumo."""
-    return (item.get('x', 0) * 8 + min(item.get('g', 1 if item.get('img') else 0), 5) * 2 +
-            (3 if item.get('u') else 0) + (1 if item.get('uf') else 0) + (1 if item.get('r') else 0))
+    # Versão de veículo que bloqueia a leitura nunca é a exibida se houver outra.
+    return (item.get('x', 0) * 8 + item.get('_tr', 0) * 6 + min(item.get('g', 1 if item.get('img') else 0), 5) * 2 +
+            (3 if item.get('u') else 0) + (1 if item.get('uf') else 0) + (1 if item.get('r') else 0)
+            - (100 if item.get('_bloq') else 0))
 
 
 def agrupar(itens, motivos=None):
@@ -421,8 +423,9 @@ def agrupar(itens, motivos=None):
             unir(a, b, 'grande-apreensao')
 
     # Mesma operação com nome próprio, mesma fase (quando dita), até 1 dia: o mesmo fato,
-    # mesmo com títulos e fotos diferentes. Operação permanente (Hórus, Ágata, Fronteira),
-    # com muitas notícias no mesmo dia, não serve: cada apreensão dela é um fato.
+    # mesmo com títulos e fotos diferentes (grande operação: muitos veículos no mesmo dia).
+    # Operação permanente (Hórus, Ágata, Fronteira; ou nome visto em 4+ dias sem fase)
+    # não serve: cada apreensão dela é um fato.
     por_op = {}
     for k, it in enumerate(itens):
         if dia[k] is None:
@@ -435,9 +438,6 @@ def agrupar(itens, motivos=None):
         if len({d for d, f, _ in lista if not f}) >= 4:
             continue
         for x in range(len(lista)):
-            perto = [y for y in lista if abs(y[0] - lista[x][0]) <= 1]
-            if len({y[2] for y in perto}) > 6:
-                continue
             for y in range(x + 1, len(lista)):
                 da, fa, a = lista[x]
                 db, fb, b = lista[y]
@@ -475,7 +475,7 @@ def agrupar(itens, motivos=None):
             principal['c'] = list(dict.fromkeys(principal.get('c', []) + outro.get('c', [])))
             if not principal['c']:
                 del principal['c']
-            if outro.get('f', '') not in vistas:
+            if outro.get('f', '') not in vistas and not outro.get('_bloq'):
                 vistas.add(outro.get('f', ''))
                 outras.append([outro.get('f', 'Outra fonte'), outro.get('u', ''), outro['i']])
         if outras:

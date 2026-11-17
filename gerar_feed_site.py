@@ -273,6 +273,23 @@ def limitar_trecho(trecho, n):
 from duplicatas import agrupar as _agrupar, mesma_materia, normal as _normal  # noqa: E402,F401
 
 
+BLOQUEIO_LEITURA = re.compile(r'^(?:erro_HTTPError|http_4\d\d|texto_insuficiente|nao_html|erro_nao_html|.*robots.*|.*bloque.*|.*paywall.*)$')
+
+
+def leitura_bloqueada(n):
+    """A página do veículo não pode ser lida (bloqueio, erro definitivo, sem texto), ou o
+    link original não foi achado depois de todas as tentativas."""
+    status = str(n.get('leitura_fonte_status') or '')
+    if BLOQUEIO_LEITURA.match(status):
+        return True
+    try:
+        tentativas = int(n.get('tentativas_url_original_v2') or 0)
+    except (TypeError, ValueError):
+        tentativas = 0
+    sem_link = not url_publica(n.get('url_original')) or 'news.google.com' in str(n.get('url_original'))
+    return sem_link and tentativas >= 3
+
+
 def agrupar_duplicatas(itens, motivos=None):
     return _agrupar(itens, motivos)
 
@@ -534,12 +551,24 @@ def main():
                 detalhe['tr'] = trecho
                 if n.get('tamanho_texto'):
                     detalhe['tt'] = int(n['tamanho_texto'])
+        if detalhe.get('tr'):
+            item['_tr'] = 1
+        # Veículo que não libera a leitura (bloqueio, erro, página sem texto) ou link original
+        # nunca encontrado: sem conteúdo para mostrar, a notícia não vai ao site. Se outro
+        # veículo publicou o mesmo fato, a versão dele é a exibida (duplicatas.py).
+        if not (detalhe.get('tr') or item.get('x')) and leitura_bloqueada(n):
+            item['_bloq'] = True
         detalhes.setdefault(i % LOTES, {})[str(i)] = detalhe
         saida.append(item)
     antes = len(saida)
     saida, removidas = agrupar_duplicatas(saida)
+    bloqueadas = [it for it in saida if it.get('_bloq')]
+    saida = [it for it in saida if not it.get('_bloq')]
+    removidas |= {it['i'] for it in bloqueadas}
+    antes -= len(bloqueadas)
+    print(f'Sem conteúdo publicável (veículo bloqueia a leitura ou link não encontrado): {len(bloqueadas)} fora do site')
     for item in saida:
-        for k in ('_h', '_lead', '_q', '_ufx'):
+        for k in ('_h', '_lead', '_q', '_ufx', '_tr', '_bloq'):
             item.pop(k, None)
     for lote in list(detalhes):
         for chave in [c for c in detalhes[lote] if int(c) in removidas]:
