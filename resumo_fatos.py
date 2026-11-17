@@ -45,7 +45,9 @@ ITEM_PESO = re.compile(rf'{QTD}\s*(?P<u>{UNIDADES})\s+{MATERIAL}', re.I)
 CONTAVEIS = (r'armas?(?: de fogo)?|fuzis|fuzil|pistolas?|rev[óo]lveres|rev[óo]lver|espingardas?|carabinas?|metralhadoras?|'
              r'muni[çc][õo]es|cartuchos|carregadores|granadas|explosivos|celulares|aparelhos celulares|ve[ií]culos|carros|'
              r'motocicletas?|motos?|caminh[õo]es|caminhão|carretas?|embarca[çc][õo]es|barcos?|aeronaves?|avi[õo]es|avião|'
-             r'animais|aves|p[áa]ssaros|cigarros eletr[ôo]nicos|vapes?|medicamentos|canetas emagrecedoras')
+             r'animais|aves|p[áa]ssaros|cigarros eletr[ôo]nicos|vapes?|medicamentos|canetas emagrecedoras|'
+             r'comprimidos(?: de (?:ecstasy|[êe]xtase|rohypnol|rivotril|metanfetamina|anfetamina|sibutramina))?|'
+             r'p[íi]lulas(?: de ecstasy)?|selos(?: de lsd)?|micropontos(?: de lsd)?|ampolas')
 ITEM_CONTAVEL = re.compile(rf'{QTD}\s+(?P<obj>{CONTAVEIS})\b', re.I)
 VALOR = re.compile(r'R\$\s?(?P<v>' + NUM + r')(?:\s?(?P<m>milhões|milhão|mil|bilhões|bilhão|mi\b|bi\b))?', re.I)
 Q_SIMPLES = rf'({NUM}|{"|".join(EXTENSO)})'

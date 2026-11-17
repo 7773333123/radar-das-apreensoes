@@ -15,3 +15,15 @@ document.addEventListener('error', (e) => {
   const img = e.target;
   if (img instanceof HTMLImageElement && img.hasAttribute('data-ph')) img.closest('.media')?.remove();
 }, true);
+
+// Barra de compartilhamento: copiar link e menu do sistema (WhatsApp é um link direto).
+document.addEventListener('click', async (e) => {
+  const b = e.target.closest('[data-copiar], [data-compartilhar]');
+  if (!b) return;
+  const link = b.dataset.copiar || b.dataset.compartilhar;
+  try {
+    if (b.dataset.compartilhar && navigator.share) { await navigator.share({ title: b.dataset.titulo || document.title, url: link }); return; }
+    await navigator.clipboard.writeText(link);
+    const antes = b.textContent; b.textContent = 'Link copiado ✓'; setTimeout(() => { b.textContent = antes; }, 2000);
+  } catch { /* cancelado */ }
+});
