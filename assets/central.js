@@ -47,7 +47,10 @@ function definir(parcial, { rolar = true } = {}) {
 // notícias novas no servidor a cada 5 minutos, sem precisar recarregar.
 let agoraAssinatura = '';
 function renderAgora(ns, agora) {
-  const itens = ns.filter((n) => n.data && n.data.getTime() <= agora + 3600000).slice(0, 15);
+  // Só o que é de agora: as das últimas 3 horas (no mínimo 6 notícias; se faltar, amplia até 6 e 12 horas).
+  const validas = ns.filter((n) => n.data && n.data.getTime() <= agora + 3600000);
+  const ate = (h) => validas.filter((n) => agora - n.data.getTime() <= h * 3600000);
+  const itens = ([3, 6, 12].map(ate).find((l) => l.length >= 6) || validas.slice(0, 8)).slice(0, 15);
   const assinatura = itens.map((n) => n.i).join(',');
   if (assinatura === agoraAssinatura && $('agora').childElementCount) {
     // Mesmas notícias: só atualiza as horas relativas.
@@ -82,7 +85,7 @@ async function atualizarAoVivo() {
     ctx.atualizado = novo.atualizado;
     if ($('atualizado')) $('atualizado').textContent = `Atualizado ${relativo(novo.atualizado)} · ${num(ctx.noticias.length)} notícias`;
   }
-  if (!chegaram.length) return;
+  if (!chegaram.length) return renderAgora(ctx.noticias, Date.now());  // as antigas saem da faixa
   // No topo da página, sem leitor aberto e sem filtro: atualiza a página inicial inteira.
   if (!temFiltro() && window.scrollY < 400 && !$('leitor')?.open) renderInicio();
   else renderAgora(ctx.noticias, Date.now());
