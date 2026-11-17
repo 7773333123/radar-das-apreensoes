@@ -289,12 +289,21 @@ VAZIAS_AUDITOR = PALAVRAS_VAZIAS | set('''policia policias policial policiais mi
     casal adolescente adolescentes menor menores pessoas individuo trafico drogas droga entorpecentes porte
     ilegal flagrante posse arma armas fogo municoes municao detido detida detidos conduzido abordagem
     ocorrencia denuncia anonima suspeita investigado investigada dois duas tres quatro cinco grande quantidade
-    durante contra pela pelo para após tem sao foi foram'''.split())
+    durante contra pela pelo para após tem sao foi foram tenta tentou acaba acabou termina terminou
+    pm prf pf pc gcm bm dof pmce pmpr pcpr pmerj pmesp pmmg pmdf pcdf bope rotam choque forca tatica'''.split())
 
 
 def radicais_titulo(texto):
     texto = re.sub(r'pol[ií]cia rodovi[aá]ria(?: federal| estadual)?', ' ', texto or '', flags=re.I)
     return {radical(w) for w in normal(texto).split() if len(w) > 2 and w not in VAZIAS_AUDITOR}
+
+
+BAIRRO = re.compile(r'\b(?i:jardim|vila|bairro|conjunto|parque|residencial|loteamento|n[úu]cleo|setor)\s+((?:[A-ZÀ-Ý][\wÀ-ÿ]*\s*){1,3})')
+
+
+def bairro(titulo):
+    m = BAIRRO.search(titulo or '')
+    return normal(m.group(1)) if m else ''
 
 
 def nomes_proprios(titulo):
@@ -320,6 +329,9 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
     ca, cb = a.get('_cid'), b.get('_cid')
     if ca and cb and ca != cb:
         return None, [], 0  # cidades do fato diferentes: fatos diferentes
+    ba, bb = bairro(a['t']), bairro(b['t'])
+    if ba and bb and ba != bb:
+        return None, [], 0  # bairros diferentes (Jardim São Manoel x Jardim Primavera)
     na_ = a['_np'] if '_np' in a else nomes_proprios(a['t'])
     nb_ = b['_np'] if '_np' in b else nomes_proprios(b['t'])
     if na_ and nb_ and not (na_ & nb_):
@@ -340,6 +352,18 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
     if ca and ca == cb:
         nota += 1.5
         motivos.append('mesma cidade')
+        # Mesma cidade + título parecido com ao menos duas palavras próprias em comum além
+        # do nome da cidade (Idosa ... filho ... Unei): evidência forte.
+        cidade = radicais_titulo(ca)
+        especificas = {w for w in comuns if not w.isdigit() and w not in cidade}
+        if len(especificas) >= 2 and jac >= 0.3:
+            fortes += 1
+            motivos.append('título específico na mesma cidade')
+    numeros = {w for w in (inf_a & inf_b) if re.fullmatch(r'\d+(?:\.\d+)?', w) and w not in ANOS and ('.' in w or float(w) >= 100)}
+    if numeros:
+        nota += 2
+        fortes += 1
+        motivos.append('mesmo número')
     aga, agb = set(a.get('_ag') or ()), set(b.get('_ag') or ())
     if aga and agb:
         nota += 0.7 if aga & agb else -0.7
@@ -381,7 +405,8 @@ def auditar(itens, dia, inf, qt, sh, hs, unir, raiz, dias=None):
         return
     limite = (max(validos) - dias) if dias else min(validos)
     recentes = [k for k in range(len(itens)) if dia[k] is not None and dia[k] >= limite]
-    rad = {k: radicais_titulo(itens[k]['t']) for k in recentes}
+    # O nome do veículo no título ("... - Ponta Porã Informa") não é palavra da notícia.
+    rad = {k: radicais_titulo(itens[k]['t']) - radicais_titulo(itens[k].get('f', '')) for k in recentes}
     for k in recentes:  # características calculadas uma vez por notícia
         itens[k]['_ops'] = {x for x, _ in operacoes(itens[k]['t'] + ' . ' + itens[k].get('_lead', ''))}
         itens[k]['_np'] = nomes_proprios(itens[k]['t'])
@@ -723,7 +748,9 @@ def agrupar(itens, motivos=None):
                 unir(a, b, 'operacao')
 
     # Auditor (notícias dos últimos dias): nota somando todas as evidências do par.
-    auditar(itens, dia, inf, qt, sh, hs, unir, raiz)
+    # Coleta rápida: só os últimos dias (RADAR_AUDITOR_DIAS); as demais coletas, o acervo inteiro.
+    import os
+    auditar(itens, dia, inf, qt, sh, hs, unir, raiz, int(os.environ.get('RADAR_AUDITOR_DIAS') or 0) or None)
 
     grupos = {}
     for k in range(n):
