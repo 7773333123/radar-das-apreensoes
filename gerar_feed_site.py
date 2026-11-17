@@ -29,7 +29,7 @@ import shutil
 import unicodedata
 from pathlib import Path
 
-from localizar_uf import _ufs_no_texto, inferir_uf
+from localizar_uf import _ufs_no_texto, cidade_do_fato, inferir_uf
 from resumo_fatos import anonimizar, extrair, nomes_dos_presos
 from contexto import resumo_secoes
 from estatisticas import MATERIAIS, ORGAOS_NOMES, enriquecer, exportar, quantidades
@@ -393,6 +393,11 @@ def main():
     # Resumo do Radar em parágrafos: fatos, quem atuou, base legal e outros veículos.
     for item in saida:
         fatos = juntar_fatos([fatos_por_i.get(item['i'])] + [fatos_por_i.get(o[2]) for o in item.get('o', [])])
+        # Município do fato (filtro e páginas por cidade).
+        cid = cidade_do_fato(item.get('uf', ''), item.get('t', ''), item.get('r', ''), (fatos or {}).get('cidades', ()),
+                             [x for x in ((fatos or {}).get('origem'), (fatos or {}).get('destino')) if x])
+        if cid:
+            item['cid'] = cid
         secoes = resumo_secoes(item, fatos)
         alvo = detalhes[item['i'] % LOTES][str(item['i'])]
         alvo['s'] = '\n\n'.join(t for _, t in secoes)

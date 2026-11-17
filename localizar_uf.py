@@ -253,3 +253,68 @@ def municipios_no_texto(texto):
             vistos.add(nome)
             saida.append((nome, uf))
     return saida
+
+
+@lru_cache(maxsize=None)
+def _cidades_da_uf(uf):
+    """Regex com os municípios de uma UF (inclui homônimos de outros estados: a UF já é conhecida)."""
+    municipios = json.loads((PASTA / 'municipios.json').read_text(encoding='utf-8'))
+    nomes = [c for c in municipios.get(uf, []) if c not in NOMES_AMBIGUOS and len(c) >= 4 and c != NOMES_ESTADOS.get(uf)]
+    if not nomes:
+        return None
+    nomes.sort(key=len, reverse=True)
+    return re.compile(r'(?<![A-Za-zÀ-ÿ#])(' + '|'.join(re.escape(n) for n in nomes) + r')(?![A-Za-zÀ-ÿ])')
+
+
+# Capital com o mesmo nome do estado: só vale com indicação de que é a cidade.
+CAPITAL_HOMONIMA = {'SP': 'São Paulo', 'RJ': 'Rio de Janeiro'}
+INDICA_CAPITAL = re.compile(r'capital (?:paulista|fluminense)|cidade d[eo] (?:São Paulo|Rio)|[Zz]ona (?:Norte|Sul|Leste|Oeste|Central)|'
+                            r'Baixada Fluminense|centro d[oe] (?:São Paulo|Rio)|\bna capital\b')
+# Município com nome de país ("Equador"/RN) e cidades citadas como origem, destino ou moradia.
+NAO_CIDADE = {'Equador', 'Bolívia', 'Paraguai', 'Peru', 'Chile', 'Colômbia', 'Argentina', 'Venezuela', 'Uruguai', 'México', 'Brasil'}
+ANTES_NAO_LOCAL = re.compile(r'\b(?:natural de|morador(?:a|es)? de|residente (?:em|de)|nascid[oa] em|vind[oa]s? de|saiu de|sa[íi]da de|'
+                             r'proveniente de|oriund[oa]s? de|com destino a|destinad[oa]s? a|levad[oa]s? (?:para|a)|seguia (?:para|a)|'
+                             r'rumo a|para|at[ée]|bairro|bairro d[aeo]s?|vila|jardim|rua|avenida|av\.|travessa|loteamento|'
+                             r'conjunto|comunidade|residencial|praia|distrito de|estrada|fazenda|s[íi]tio|condom[íi]nio)\s+$', re.I)
+PERTO_DE_LOCAL = re.compile(r'\b(?:em|no município de|na cidade de|no interior de|na região de|perto de|próximo a)\s+$')
+
+
+def cidade_do_fato(uf, titulo='', resumo='', cidades_fatos=(), rota=()):
+    """Município onde o fato ocorreu, ou '' quando não há evidência clara.
+
+    Ordem: título, começo do resumo, cidades da ficha de fatos. Só municípios da UF
+    da notícia; cidades de origem/destino da carga não são o local da apreensão.
+    """
+    if uf not in NOMES_ESTADOS:
+        return ''
+    regex = _cidades_da_uf(uf)
+    rota_txt = ' '.join(rota or ())
+
+    def achar(texto):
+        if not texto or not regex:
+            return ''
+        texto = OPERACAO.sub(' ', texto)
+        texto = re.sub(r"\b[Dd][’'´`]", "d'", texto)
+        achados = [(m.start(), m.group(1)) for m in regex.finditer(texto)
+                   if m.group(1) not in rota_txt and m.group(1) not in NAO_CIDADE
+                   and not ANTES_NAO_LOCAL.search(texto[max(0, m.start() - 30):m.start()])]
+        if not achados:
+            return ''
+        for ini, nome in achados:  # "... em Foz do Iguaçu" vence "polícia de Cascavel"
+            if PERTO_DE_LOCAL.search(texto[max(0, ini - 25):ini]):
+                return nome
+        nomes = {n for _, n in achados}
+        return achados[0][1] if len(nomes) == 1 else ''
+
+    for texto in (titulo, (resumo or '')[:400]):
+        c = achar(texto)
+        if c:
+            return c
+    capital = CAPITAL_HOMONIMA.get(uf)
+    if capital and INDICA_CAPITAL.search(f'{titulo} {(resumo or "")[:400]}'):
+        return capital
+    for c in cidades_fatos or ():
+        nome, _, sigla = str(c).rpartition(' (')
+        if sigla.rstrip(')') == uf and nome not in rota_txt and nome not in NAO_CIDADE:
+            return nome
+    return ''

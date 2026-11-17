@@ -83,12 +83,12 @@ function preparar(raw, ctx) {
     url: urlSegura(raw.u || ''), img: urlSegura(raw.img || ''), uf, cats, data,
     texto: raw.x === 1, nFotos: raw.g || (raw.img ? 1 : 0),
     outras: Array.isArray(raw.o) ? raw.o.filter((o) => Array.isArray(o) && o[0]) : [],
-    q: raw.q || null, ag: raw.ag || [], rd: raw.rd || '', vq: raw.vq || 0,
+    q: raw.q || null, ag: raw.ag || [], rd: raw.rd || '', vq: raw.vq || 0, cidade: uf ? raw.cid || '' : '',
     ano: data ? data.getUTCFullYear() : null,
   };
   // Texto de busca em palavras separadas por espaço (" foz do iguacu "): a busca casa
   // pelo começo da palavra, nunca no meio ("#fozdoiguacu" não vale como "iguacu").
-  n.busca = ' ' + fold([n.titulo, n.resumo, n.fonte, uf, NOME_UF[uf], cats.map((c) => ctx.categorias[c]).join(' '),
+  n.busca = ' ' + fold([n.titulo, n.resumo, n.fonte, n.cidade, uf, NOME_UF[uf], cats.map((c) => ctx.categorias[c]).join(' '),
     n.ag.map((a) => ctx.orgaos[a]).join(' '), n.rd].join(' ')).replace(/[^a-z0-9]+/g, ' ') + ' ';
   return n;
 }

@@ -1,5 +1,5 @@
 // Páginas próprias renderizadas no servidor (para o Google e para compartilhar):
-//   /noticia/<i>-<titulo>    /estado/<UF>    /categoria/<tipo>
+//   /noticia/<i>-<titulo>    /estado/<UF>    /cidade/<UF>/<cidade>    /categoria/<tipo>
 //   /relatorios              /relatorio/<AAAA-MM>
 // Lê feed.json, feed_links.json e det/ empacotados com a função (vercel.json).
 const fs = require('fs');
@@ -54,6 +54,16 @@ const urlOk = (v) => { try { const u = new URL(v); return /^https?:$/.test(u.pro
 const slug = (t) => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
   .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').split('-').slice(0, 12).join('-');
 const urlNoticia = (n) => `/noticia/${n.i}-${slug(n.t)}`;
+const urlCidade = (uf, cid) => `/cidade/${uf}/${slug(cid)}`;
+// Cidades com notícias: [[uf, cidade, quantidade], ...] da maior para a menor.
+function cidades() {
+  const { feed } = dados();
+  if (feed._cidades) return feed._cidades;
+  const m = new Map();
+  for (const n of feed.noticias) if (n.cid && n.uf) { const k = `${n.uf}|${n.cid}`; m.set(k, (m.get(k) || 0) + 1); }
+  feed._cidades = [...m].map(([k, v]) => [...k.split('|'), v]).sort((a, b) => b[2] - a[2]);
+  return feed._cidades;
+}
 // Só vão para o índice do Google as notícias com conteúdo próprio relevante: o
 // Google penaliza sites com milhares de páginas parecidas e pouco valor próprio.
 const indexavel = (n) => Boolean(n.x || n.q || (n.o && n.o.length) || (n.r && n.r.length >= 200) || n.g);
@@ -135,7 +145,8 @@ function radarHTML(secoes, veiculos) {
 function kicker(n, cats) {
   const c = (n.c || [])[0];
   return `<div class="kicker">${c != null ? `<a href="/categoria/${SLUG_CAT[c]}">${esc(cats[c])}</a>` : 'Em classificação'}` +
-    `${n.uf ? ` · <a class="uf" href="/estado/${n.uf}">${esc(ESTADOS[n.uf])}</a>` : ''}</div>`;
+    `${n.cid && n.uf ? ` · <a class="uf" href="${urlCidade(n.uf, n.cid)}">${esc(n.cid)} (${n.uf})</a>`
+      : n.uf ? ` · <a class="uf" href="/estado/${n.uf}">${esc(ESTADOS[n.uf])}</a>` : ''}</div>`;
 }
 function itemLista(n, cats) {
   const foto = urlOk(n.img);
@@ -226,7 +237,7 @@ ${relacionadas.length ? `<div class="section-head"><h2>Mais de ${esc(cats[(n.c |
   return { html: pagina({ titulo: `${corta(n.t, 90)} | Radar das Apreensões`, descricao, canonico: urlNoticia(n), imagem: fotos[0], atual: 'Notícias', corpo, jsonld, indexar: indexavel(n) }), canonico: urlNoticia(n) };
 }
 
-function paginaLista({ titulo, h1, intro, itens, canonico, atual, rodape = '' }) {
+function paginaLista({ titulo, h1, intro, itens, canonico, atual, rodape = '', indexar = true }) {
   const { feed } = dados();
   const agora = Date.now();
   const r30 = itens.filter((n) => data(n) && agora - data(n) <= 30 * 864e5);
@@ -236,7 +247,7 @@ function paginaLista({ titulo, h1, intro, itens, canonico, atual, rodape = '' })
 <div class="duas"><section class="panel"><h3>Últimos 30 dias</h3>${kpis(r30)}</section><section class="panel"><h3>Últimos 12 meses</h3>${kpis(r365)}</section></div>
 <p class="note">Estimativa: soma das quantidades citadas nas notícias, sem duplicatas. Só cerca de 1 em cada 7 notícias informa a quantidade, e a leitura automática pode errar; não são estatísticas oficiais.</p>
 <div class="section-head"><h2>Notícias mais recentes</h2><span class="count">${num(itens.length)} no acervo</span></div>${lista(recentes, feed.categorias)}${rodape}`;
-  return pagina({ titulo: `${titulo} | Radar das Apreensões`, descricao: intro, canonico, atual, corpo });
+  return pagina({ titulo: `${titulo} | Radar das Apreensões`, descricao: intro, canonico, atual, corpo, indexar });
 }
 
 function paginaEstado(uf) {
@@ -247,8 +258,30 @@ function paginaEstado(uf) {
   return { html: paginaLista({
     titulo: `Apreensões ${PREP[uf]} ${nome}`, h1: `Apreensões ${PREP[uf]} ${nome}`, canonico: `/estado/${uf}`, atual: 'Notícias', itens,
     intro: `Notícias de apreensões de drogas, armas, contrabando e outros bens ${PREP[uf]} ${nome}, reunidas de veículos de imprensa e órgãos públicos e atualizadas o dia todo.`,
-    rodape: `<p class="more"><a class="btn ghost" href="/#uf=${uf}">Ver todas e filtrar</a> <a class="btn ghost" href="/observatorio#uf=${uf}">Abrir no Observatório</a></p>`,
+    rodape: listaCidades(uf) + `<p class="more"><a class="btn ghost" href="/#uf=${uf}">Ver todas e filtrar</a> <a class="btn ghost" href="/observatorio#uf=${uf}">Abrir no Observatório</a></p>`,
   }), canonico: `/estado/${uf}` };
+}
+
+function listaCidades(uf) {
+  const lista = cidades().filter(([u, , v]) => u === uf && v >= 2).slice(0, 60);
+  if (!lista.length) return '';
+  return `<div class="section-head"><h2>Cidades com mais notícias</h2></div><ul class="chips-cidades">` +
+    lista.map(([u, c, v]) => `<li><a href="${urlCidade(u, c)}">${esc(c)} <span>${num(v)}</span></a></li>`).join('') + '</ul>';
+}
+
+function paginaCidade(uf, s) {
+  const { feed } = dados();
+  if (!ESTADOS[uf]) return null;
+  const achada = cidades().find(([u, c]) => u === uf && slug(c) === s);
+  if (!achada) return null;
+  const nome = achada[1];
+  const itens = feed.noticias.filter((n) => n.uf === uf && n.cid === nome);
+  return { html: paginaLista({
+    titulo: `Apreensões em ${nome} (${uf})`, h1: `Apreensões em ${nome} (${uf})`, canonico: urlCidade(uf, nome), atual: 'Notícias', itens,
+    intro: `Notícias de apreensões de drogas, armas, contrabando e outros bens em ${nome}, ${ESTADOS[uf]}, reunidas de veículos de imprensa e órgãos públicos e atualizadas o dia todo. A cidade é identificada automaticamente pelo texto da notícia.`,
+    rodape: `<p class="more"><a class="btn ghost" href="/estado/${uf}">Ver ${PREP[uf]} ${esc(ESTADOS[uf])}</a> <a class="btn ghost" href="/#q=${encodeURIComponent(nome)}">Buscar “${esc(nome)}”</a></p>`,
+    indexar: itens.length >= 3,
+  }), canonico: urlCidade(uf, nome) };
 }
 
 function paginaCategoria(s) {
@@ -374,6 +407,7 @@ module.exports = (req, res) => {
   try {
     if (tipo === 'noticia') r = paginaNoticia(Number((id.match(/^\d+/) || [''])[0]));
     else if (tipo === 'estado') r = paginaEstado(id.toUpperCase());
+    else if (tipo === 'cidade') r = paginaCidade(id.toUpperCase(), (u.searchParams.get('cidade') || '').toLowerCase());
     else if (tipo === 'categoria') r = paginaCategoria(id.toLowerCase());
     else if (tipo === 'relatorios') r = paginaRelatorios();
     else if (tipo === 'relatorio') r = paginaRelatorio(id);
@@ -399,3 +433,5 @@ module.exports.indexavel = indexavel;
 module.exports.meses = meses;
 module.exports.SLUG_CAT = SLUG_CAT;
 module.exports.ESTADOS = ESTADOS;
+module.exports.cidades = cidades;
+module.exports.urlCidade = urlCidade;

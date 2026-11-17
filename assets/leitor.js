@@ -64,7 +64,8 @@ function radarHTML(secoes, veiculos) {
 export function kickerHTML(n, ctx, preferida = null) {
   const c = preferida != null && n.cats.includes(Number(preferida)) ? Number(preferida) : n.cats[0];
   const cat = c != null ? ctx.categorias[c] : 'Apreensões';
-  return `<div class="kicker">${esc(cat)}${n.uf ? ` <span class="uf">· ${esc(NOME_UF[n.uf])}</span>` : ''}` +
+  const lugar = n.cidade ? `${n.cidade} (${n.uf})` : NOME_UF[n.uf];
+  return `<div class="kicker">${esc(cat)}${n.uf ? ` <span class="uf">· ${esc(lugar)}</span>` : ''}` +
     `${n.texto ? ' <span class="badge">· Texto completo</span>' : ''}</div>`;
 }
 export function metaHTML(n) {

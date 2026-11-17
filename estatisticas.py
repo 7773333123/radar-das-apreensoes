@@ -132,7 +132,7 @@ def enriquecer(item, fatos):
         item['rd'] = fatos['rodovia']
 
 
-CAMPOS_CSV = ['id', 'data', 'titulo', 'fonte', 'uf', 'categorias', 'orgaos', 'rodovia',
+CAMPOS_CSV = ['id', 'data', 'titulo', 'fonte', 'uf', 'cidade', 'categorias', 'orgaos', 'rodovia',
               'cocaina_kg', 'maconha_kg', 'skunk_haxixe_kg', 'crack_kg', 'outras_drogas_kg',
               'armas', 'fuzis', 'municoes', 'valor_rs', 'outras_fontes', 'link']
 DICIONARIO = {
@@ -141,6 +141,7 @@ DICIONARIO = {
     'titulo': 'Título da notícia, sem o nome do veículo',
     'fonte': 'Veículo ou órgão que publicou a versão exibida',
     'uf': 'Estado identificado por evidência explícita (vazio quando incerto)',
+    'cidade': 'Município do fato identificado no texto (vazio quando incerto)',
     'categorias': 'Tipos de apreensão separados por "|"',
     'orgaos': 'Órgãos citados (PF, PRF, PM, PC...) separados por "|"',
     'rodovia': 'Rodovia citada (BR-xxx ou estadual)',
@@ -166,7 +167,7 @@ def exportar(itens, categorias, links, pasta):
     for x in sorted(itens, key=lambda y: y.get('d', '')):
         q = x.get('q', {})
         linhas.append({
-            'id': x['i'], 'data': x.get('d', ''), 'titulo': x['t'], 'fonte': x.get('f', ''), 'uf': x.get('uf', ''),
+            'id': x['i'], 'data': x.get('d', ''), 'titulo': x['t'], 'fonte': x.get('f', ''), 'uf': x.get('uf', ''), 'cidade': x.get('cid', ''),
             'categorias': '|'.join(categorias[c] for c in x.get('c', [])),
             'orgaos': '|'.join(ORGAOS_NOMES[a] for a in x.get('ag', [])), 'rodovia': x.get('rd', ''),
             'cocaina_kg': q.get('coc', ''), 'maconha_kg': q.get('mac', ''), 'skunk_haxixe_kg': q.get('skh', ''),
