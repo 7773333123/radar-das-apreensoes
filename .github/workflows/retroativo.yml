@@ -5,12 +5,14 @@ name: Coleta retroativa (mês a mês até 2006)
 # Os mesmos padrões das outras coletas: robots.txt, veículos pagos fora, duplicatas (texto,
 # operação, foto inteira ou recortada, auditor), nada sem foto e sem conteúdo no site.
 # Um mês por vez; o cursor (retroativo_cursor.json) só passa ao mês anterior quando o mês terminou.
+# Ao terminar, dispara a si mesma (o cron fica de reserva).
 on:
   workflow_dispatch:
   schedule:
     - cron: '23 */2 * * *'
 permissions:
   contents: write
+  actions: write
 concurrency:
   group: coleta-retroativa
   cancel-in-progress: false
@@ -100,3 +102,6 @@ jobs:
       - name: Salvar (mescla se outra coleta gravou antes)
         run: |
           python acervo.py salvar "Coleta retroativa - ${{ steps.c.outputs.mes }}" retroativo_cursor.json arquivo_sites_estado.json
+      - name: Continuar com o mês seguinte (o agendamento do GitHub falha às vezes)
+        if: (success() || failure()) && steps.c.outputs.fim == 'nao'
+        run: gh workflow run retroativo.yml --ref main
