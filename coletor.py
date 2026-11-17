@@ -87,7 +87,7 @@ def carregar_fontes_extras():
         if dominio in vistos:
             continue
         vistos.add(dominio)
-        saida.append({'dominio': dominio, 'uf': uf, 'nome': str(item.get('nome', dominio))})
+        saida.append({'dominio': dominio, 'uf': uf, 'nome': str(item.get('nome', dominio)), 'fronteira': str(item.get('fronteira') or '')})
     return saida
 
 
@@ -416,6 +416,8 @@ def executar():
     parser.add_argument('--limite-fontes', type=int, default=24, help='Fontes extras consultadas por execução (padrão: 24)')
     parser.add_argument('--limite-estados', type=int, default=9, help='Estados consultados por execução (padrão: 9)')
     parser.add_argument('--limite-fronteira', type=int, default=5, help='Polos de fronteira consultados por execução (padrão: 5)')
+    parser.add_argument('--limite-sites-fronteira', type=int, default=10,
+                        help='Sites de fronteira (fontes.json com "fronteira") consultados por execução, em rodízio próprio')
     args = parser.parse_args()
     hoje = datetime.now(timezone.utc)
     ano_atual = hoje.year
@@ -432,6 +434,7 @@ def executar():
     proximo_estado = estado_anterior.get('rodizio_estados_proximo', 0)
     proxima_fonte = estado_anterior.get('rodizio_fontes_proximo', 0)
     proximo_polo = estado_anterior.get('rodizio_fronteira_proximo', 0)
+    proximo_site_fronteira = estado_anterior.get('rodizio_sites_fronteira_proximo', 0)
     polos = carregar_polos()
     registros, duplicadas_anteriores = deduplicar(existentes)
     extras = carregar_fontes_extras()
@@ -469,8 +472,16 @@ def executar():
         polos_selecionados, proximo_polo = selecionar_rodizio(polos, args.limite_fronteira, proximo_polo)
         for polo in polos_selecionados:
             consultas.append((f'{TERMOS_APREENSAO} {termos_polo(polo)} when:7d', None))
+        # Sites das regiões de fronteira: muitas matérias, sempre atuais. Rodízio próprio e mais
+        # frequente (124 sites / 10 por rodada = cada um a cada ~4 h), além do rodízio geral.
+        de_fronteira = [f for f in extras if f.get('fronteira')]
+        sites_fronteira, proximo_site_fronteira = selecionar_rodizio(de_fronteira, args.limite_sites_fronteira, proximo_site_fronteira)
+        for fonte in sites_fronteira:
+            consultas.append((f'{TERMOS_APREENSAO} site:{fonte["dominio"]} when:3d', None))
         fontes_selecionadas, proxima_fonte = selecionar_rodizio(extras, args.limite_fontes, proxima_fonte)
         for fonte in fontes_selecionadas:
+            if fonte in sites_fronteira:
+                continue
             consultas.append((f'{TERMOS_APREENSAO} site:{fonte["dominio"]} when:7d', None))
         print(f'Meta: {META_FONTES} fontes; extras cadastradas: {len(extras)}; consultadas nesta execução: {min(len(extras), args.limite_fontes)}')
     novos = 0
@@ -504,6 +515,7 @@ def executar():
         'rodizio_estados_proximo': proximo_estado,
         'rodizio_fontes_proximo': proxima_fonte,
         'rodizio_fronteira_proximo': proximo_polo,
+        'rodizio_sites_fronteira_proximo': proximo_site_fronteira,
     }
     temporario = ARQUIVO.with_suffix('.json.tmp')
     temporario.write_text(json.dumps(resultado, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
