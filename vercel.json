@@ -63,11 +63,21 @@
     "api/pagina.js": {
       "includeFiles": "{feed.json,feed_links.json,det/**}",
       "memory": 1024,
-      "maxDuration": 10
+      "maxDuration": 15
     },
     "api/sitemap.js": {
       "includeFiles": "feed.json",
       "maxDuration": 10
+    },
+    "api/materia.js": {
+      "includeFiles": "{feed.json,feed_links.json}",
+      "memory": 1024,
+      "maxDuration": 15
+    },
+    "api/foto.js": {
+      "includeFiles": "{feed.json,feed_links.json}",
+      "memory": 1024,
+      "maxDuration": 15
     }
   },
   "rewrites": [

@@ -159,7 +159,7 @@ function itemLista(n, cats) {
   return `<li><a class="story" href="${urlNoticia(n)}"><div>${kicker({ ...n, c: n.c }, cats).replace(/<a [^>]*>|<\/a>/g, '')}` +
     `<h3 class="headline">${esc(n.t)}</h3><div class="meta">${esc(fmtData(data(n)))} · ${esc(n.f || '')}` +
     `${n.o && n.o.length ? ` · <span class="sources">+${n.o.length} ${n.o.length === 1 ? 'fonte' : 'fontes'}</span>` : ''}</div></div>` +
-    `${foto ? `<div class="media"><img src="${esc(foto)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div>` : ''}</a></li>`;
+    `<div class="media" data-cat="${(n.c || [8])[0]}"><img src="${esc(foto || `/api/foto?i=${n.i}`)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-ph></div></a></li>`;
 }
 const lista = (itens, cats) => `<ol class="news">${itens.map((n) => itemLista(n, cats)).join('')}</ol>`;
 
@@ -178,13 +178,31 @@ function kpis(itens) {
 }
 
 // ---------- páginas ----------
-function paginaNoticia(i) {
+// Notícia ainda sem trecho ou sem fotos da matéria: lê o original na hora (até 4,5 s).
+async function completar(n, t) {
+  const falta = !(Array.isArray(t.p) && t.p.length) && !t.tr;
+  const poucasFotos = !(Array.isArray(t.g) && t.g.length > 1);
+  if (!falta && !poucasFotos) return t;
+  try {
+    const { lerNoticia } = require('./_extrair.js');
+    const r = await Promise.race([lerNoticia(n, links()[n.i]), new Promise((ok) => setTimeout(() => ok(null), 4500))]);
+    if (!r) return t;
+    const novo = { ...t };
+    if (falta && r.p) Object.assign(novo, { p: r.p, l: r.l });
+    else if (falta && r.tr) Object.assign(novo, { tr: r.tr, tt: r.tt });
+    if (poucasFotos && Array.isArray(r.g) && r.g.length > (t.g || []).length) novo.g = r.g;
+    if (r.u) novo._u = r.u;
+    return novo;
+  } catch { return t; }
+}
+
+async function paginaNoticia(i) {
   const { feed, porI } = dados();
   const n = porI.get(i);
   if (!n) return null;
   const cats = feed.categorias;
-  const t = detalhe(i);
-  const url = urlOk(n.u) || urlOk(links()[i] || '');
+  const t = await completar(n, detalhe(i));
+  const url = urlOk(n.u) || urlOk(t._u || '') || urlOk(links()[i] || '');
   const d = data(n);
   const fotos = (Array.isArray(t.g) && t.g.length ? t.g : [n.img]).map(urlOk).filter(Boolean);
   const f = t.f || {};
@@ -211,10 +229,10 @@ function paginaNoticia(i) {
         : `Reproduzido de ${esc(n.f)} sob a licença ${esc(t.l)}, que permite a reprodução com crédito.`}</span>${botao}</footer></section>`;
   } else {
     const trecho = t.tr && t.tr.length > (n.r || '').length ? t.tr : n.r;
-    const pct = t.tr && t.tt ? Math.min(50, Math.max(1, Math.round((t.tr.length / t.tt) * 100))) : 0;
+    const pct = t.tr && t.tt ? Math.min(100, Math.max(1, Math.round((t.tr.length / t.tt) * 100))) : 0;
     if (trecho) {
       fonte = `<section class="bloco fonte-card">${cab('O que diz a fonte')}<blockquote class="reader-quote">${paragrafos(trecho)}</blockquote>` +
-        `<footer class="fonte-pe"><span>${t.tr ? `Abertura da reportagem${pct ? `, cerca de ${pct}% do texto original` : ''}, reproduzida com crédito.` : 'Resumo publicado pelo veículo, reproduzido com crédito.'}</span>${botao}</footer></section>`;
+        `<footer class="fonte-pe"><span>${t.tr ? `Trecho da reportagem${pct ? `, cerca de ${pct}% do texto original` : ''}, reproduzido com crédito.` : 'Resumo publicado pelo veículo, reproduzido com crédito.'}</span>${botao}</footer></section>`;
     } else if (botao) {
       fonte = `<section class="bloco fonte-card">${cab('O que diz a fonte')}<footer class="fonte-pe"><span>A reportagem está disponível no site de origem.</span>${botao}</footer></section>`;
     }
@@ -404,13 +422,13 @@ function naoEncontrada() {
     corpo: '<header class="pg-head"><h1 class="art-titulo">Página não encontrada</h1><p class="dek">O endereço pode ter mudado. <a href="/">Voltar às notícias</a>.</p></header>' });
 }
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
   const u = new URL(req.url, SITE);
   const tipo = u.searchParams.get('tipo');
   const id = u.searchParams.get('id') || '';
   let r = null;
   try {
-    if (tipo === 'noticia') r = paginaNoticia(Number((id.match(/^\d+/) || [''])[0]));
+    if (tipo === 'noticia') r = await paginaNoticia(Number((id.match(/^\d+/) || [''])[0]));
     else if (tipo === 'estado') r = paginaEstado(id.toUpperCase());
     else if (tipo === 'cidade') r = paginaCidade(id.toUpperCase(), (u.searchParams.get('cidade') || '').toLowerCase());
     else if (tipo === 'categoria') r = paginaCategoria(id.toLowerCase());
@@ -433,6 +451,7 @@ module.exports = (req, res) => {
   res.end(r.html);
 };
 module.exports.dados = dados;
+module.exports.links = links;
 module.exports.urlNoticia = urlNoticia;
 module.exports.indexavel = indexavel;
 module.exports.meses = meses;

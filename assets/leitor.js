@@ -156,9 +156,9 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
     }
     const trecho = t?.tr && t.tr.length > (n.resumo || '').length ? t.tr : n.resumo;
     if (!trecho) return n.url ? `<section class="bloco fonte-card">${cab('O que diz a fonte')}<footer class="fonte-pe"><span>A reportagem está disponível no site de origem.</span>${link}</footer></section>` : '';
-    const pct = t?.tr && t?.tt ? Math.min(50, Math.max(1, Math.round((t.tr.length / t.tt) * 100))) : 0;
+    const pct = t?.tr && t?.tt ? Math.min(100, Math.max(1, Math.round((t.tr.length / t.tt) * 100))) : 0;
     return `<section class="bloco fonte-card">${cab('O que diz a fonte')}<blockquote class="reader-quote">${paragrafos(trecho)}</blockquote>` +
-      `<footer class="fonte-pe"><span>${t?.tr ? `Abertura da reportagem${pct ? `, cerca de ${pct}% do texto original` : ''}, reproduzida com crédito.` : 'Resumo publicado pelo veículo, reproduzido com crédito.'}</span>${link}</footer></section>`;
+      `<footer class="fonte-pe"><span>${t?.tr ? `Trecho da reportagem${pct ? `, cerca de ${pct}% do texto original` : ''}, reproduzido com crédito.` : 'Resumo publicado pelo veículo, reproduzido com crédito.'}</span>${link}</footer></section>`;
   }
 
   function abrir(i, { atualizarUrl = true } = {}) {
@@ -183,6 +183,24 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
       $('leitorTexto').innerHTML = fonteHTML(n, t);
       const ler = c.querySelector('[data-ler-original]');
       if (ler && n.url) ler.href = n.url;
+      // Ainda sem trecho ou sem as fotos da matéria: o servidor lê o original na hora.
+      const semTexto = !(Array.isArray(t.p) && t.p.length) && !t.tr;
+      const poucasFotos = !(Array.isArray(t.g) && t.g.length > 1);
+      if (!semTexto && !poucasFotos) return;
+      if (semTexto) $('leitorTexto').insertAdjacentHTML('afterbegin', '<p class="reader-note" id="lendoOriginal">Buscando o texto e as fotos na reportagem original…</p>');
+      fetch(`/api/materia?i=${n.i}`).then((r) => (r.ok ? r.json() : null)).catch(() => null).then((r) => {
+        if (c.dataset.i !== String(n.i)) return;
+        $('lendoOriginal')?.remove();
+        if (!r) return;
+        const u = urlSegura(r.u || '');
+        if (u && !n.url) { n.url = u; $('leitorLink').href = u; $('leitorLink').removeAttribute('aria-disabled'); }
+        const fotos = (Array.isArray(r.g) ? r.g : []).map(urlSegura).filter(Boolean);
+        if (poucasFotos && fotos.length > (Array.isArray(t.g) ? t.g.length : (n.img ? 1 : 0))) montarGaleria(n, fotos);
+        if (semTexto && (r.tr || (Array.isArray(r.p) && r.p.length))) {
+          $('leitorTexto').innerHTML = fonteHTML(n, { ...t, tr: r.tr, tt: r.tt, p: r.p, l: r.l });
+          c.querySelectorAll('[data-ler-original]').forEach((a) => { if (n.url) a.href = n.url; });
+        }
+      });
     });
     const semLink = [...c.querySelectorAll('[data-outra]')].filter((a) => a.getAttribute('href') === '#');
     if (semLink.length || !n.url) {
