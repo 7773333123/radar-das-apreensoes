@@ -226,7 +226,7 @@ def main():
             return feed, [], exc
 
     # Baixa todos os feeds em paralelo; o processamento abaixo segue a ordem da lista.
-    with ThreadPoolExecutor(max_workers=16) as pool:
+    with ThreadPoolExecutor(max_workers=24) as pool:  # ~1.300 feeds por rodada
         resultados = list(pool.map(tentar, feeds))
     novas, completadas, falhas = incorporar(noticias, resultados)
     for feed, itens, erro in resultados:
