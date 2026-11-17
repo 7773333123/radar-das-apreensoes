@@ -14,6 +14,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse, unquote, quote
 from urllib.request import Request, urlopen
+from fronteira import de_fronteira
 
 ARQUIVO = Path(__file__).resolve().parent / 'noticias.json'
 BLOQUEADOS = ('google.com', 'googleusercontent.com', 'googleapis.com', 'gstatic.com', 'youtube.com')
@@ -190,7 +191,8 @@ def main():
         # Órgãos oficiais (.gov.br etc.) antes: com o link original, ganham o texto completo.
         oficial = 0 if re.search(r'\.(?:gov|jus|mp|leg|def)\.br$', str(pair[0].get('dominio_fonte') or '')) else 1
         quando = int(re.sub(r'\D', '', str(pair[0].get('data_iso') or ''))[:12] or 0)
-        return (n, oficial, quando if args.antigas else -quando)
+        fronteira = 0 if de_fronteira(pair[0]) else 1  # regiões de fronteira primeiro
+        return (n, fronteira, oficial, quando if args.antigas else -quando)
     pending.sort(key=prioridade)
     batch=pending[:max(0,args.limite)]
     print('RADAR_RECUPERADOR_V5: busca em indices independentes e acervo preservado', flush=True)
