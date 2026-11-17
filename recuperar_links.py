@@ -165,6 +165,7 @@ def main():
     ap.add_argument('--max-tentativas', type=int, default=3, help='Máximo de falhas por notícia; 0 desativa o limite')
     ap.add_argument('--diagnostico', action='store_true', help='Exibe amostra de erros sem revelar dados privados')
     ap.add_argument('--antigas', action='store_true', help='Mais antigas primeiro (a coleta rápida cuida das recentes)')
+    ap.add_argument('--tempo-max', type=int, default=0, help='Segundos no máximo (0 = sem limite); o que faltar fica para a próxima')
     args = ap.parse_args()
     if not ARQUIVO.exists(): raise SystemExit('noticias.json ausente; nada alterado')
     data = json.loads(ARQUIVO.read_text(encoding='utf-8'))
@@ -199,8 +200,16 @@ def main():
     print('RADAR_RECUPERADOR_V5: busca em indices independentes e acervo preservado', flush=True)
     print(f'Acervo: {len(news)}; links originais: {existing}; pendentes elegíveis: {len(pending)}; tentativas: {len(batch)}', flush=True)
     successes=0; errors=Counter()
+    import time as _t
+    limite_t = _t.monotonic() + args.tempo_max if args.tempo_max else None
+    def com_prazo(funcao, alvo):
+        # Google bloqueando o servidor: cada tentativa espera o tempo limite. Esgotado o prazo,
+        # as que faltam ficam para a próxima rodada (sem contar como falha).
+        if limite_t and _t.monotonic() > limite_t:
+            return '', 'tempo_esgotado'
+        return funcao(alvo)
     with ThreadPoolExecutor(max_workers=max(1,min(args.trabalhadores,6))) as pool:
-        futures={pool.submit(buscar_fonte_por_titulo,article) if args.busca_fonte else pool.submit(resolver,url):(article,url) for article,url in batch}
+        futures={pool.submit(com_prazo, buscar_fonte_por_titulo, article) if args.busca_fonte else pool.submit(com_prazo, resolver, url):(article,url) for article,url in batch}
         for future in as_completed(futures):
             article,url=futures[future]
             try: original,status=future.result()
@@ -211,6 +220,8 @@ def main():
                 article['url_original_status']=status
                 article['leitura_fonte_status']='pendente_leitura_original'
                 successes+=1
+            elif status == 'tempo_esgotado':
+                errors[status]+=1
             else:
                 if args.busca_fonte and status == 'busca_sem_dados':
                     alt, alt_status = '', 'busca_sem_dados'
