@@ -289,7 +289,7 @@ def radical(w):
 # da reportagem, foto, cidade do fato, órgão, quantidades, operação, horário) e junta
 # quando a nota passa de JUNTAR. Pares entre DUVIDA e JUNTAR vão para SUSPEITAS
 # (relatório para revisão), sem juntar.
-JUNTAR = 5.5
+JUNTAR = 5.0
 DUVIDA = 4.0
 SUSPEITAS = []
 JUNTADAS = []  # diagnóstico: pares juntados pelo auditor e os motivos
@@ -353,6 +353,13 @@ def nomes_proprios(titulo):
     return saida
 
 
+def _numero(w):
+    try:
+        return float(w)
+    except ValueError:
+        return None
+
+
 def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b):
     # qa/qb: quantidades do título (conjuntos); as do item (_q, dicionário) vêm de a/b.
     """Nota de 'mesma notícia' e os motivos. None = veto (fatos incompatíveis)."""
@@ -395,11 +402,17 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
         if len(especificas) >= 2 and jac >= 0.3:
             fortes += 1
             motivos.append('título específico na mesma cidade')
-    numeros = {w for w in (inf_a & inf_b) if re.fullmatch(r'\d+(?:\.\d+)?', w) and w not in ANOS and ('.' in w or float(w) >= 100)}
+    numeros = {w for w in (inf_a & inf_b) if w[0].isdigit() and w not in ANOS and _numero(w) is not None
+               and (_numero(w) >= 100 or _numero(w) != int(_numero(w)))}
     if numeros:
         nota += 2
         fortes += 1
         motivos.append('mesmo número')
+        # Número incomum (decimal ou não redondo: 2,3 milhões, 734 munições) na mesma cidade:
+        # duas evidências independentes do mesmo fato.
+        if ca and ca == cb and any('.' in w or _numero(w) % 100 for w in numeros):
+            fortes += 1
+            motivos.append('número incomum na mesma cidade')
     aga, agb = set(a.get('_ag') or ()), set(b.get('_ag') or ())
     if aga and agb:
         nota += 0.7 if aga & agb else -0.7
@@ -407,7 +420,8 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
         nota += 2.5
         motivos.append('mesmas quantidades')
         fortes += 1
-    lead = jaccard(sha, shb)
+    # Abertura igual no mesmo veículo costuma ser bloco fixo do site: não conta.
+    lead = 0.0 if (a.get('f') and a.get('f') == b.get('f')) else jaccard(sha, shb)
     if lead >= 0.08:
         nota += min(3.0, 10 * lead)
         motivos.append(f'abertura {lead:.2f}')
