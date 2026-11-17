@@ -474,7 +474,9 @@ def main():
         return bool(OFICIAL.search(urlsplit(url).hostname or '') or OFICIAL.search(str(n.get('dominio_fonte') or '')))
     # 1º as nunca lidas (ganham foto, trecho e fatos); depois as releituras de versões antigas.
     # Dentro de cada grupo: notas oficiais e as mais recentes primeiro.
-    pendentes.sort(key=lambda p: (not p[0].get('materia_lida_v'), oficial(*p), p[0].get('data_iso') or ''), reverse=True)
+    # Regiões de fronteira (sites e lugares dos polos) passam à frente: muitas matérias, sempre atuais.
+    from fronteira import de_fronteira
+    pendentes.sort(key=lambda p: (not p[0].get('materia_lida_v'), de_fronteira(p[0]), oficial(*p), p[0].get('data_iso') or ''), reverse=True)
     lote = pendentes[:max(0, args.limite)]
     print(f'Notícias com link original ainda não lidas: {len(pendentes)}; lendo agora: {len(lote)}', flush=True)
     fotos = textos = resumos = falhas = galerias = datas = 0
