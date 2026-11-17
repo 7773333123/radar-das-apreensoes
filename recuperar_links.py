@@ -129,6 +129,100 @@ def buscar_fonte_por_titulo(artigo):
             erro = 'indice_' + type(exc).__name__
     return '', erro
 
+_CACHE_SITE = {}
+_TRAVA_SITE = __import__('threading').Lock()
+
+
+def _titulo_compativel(alvo, encontrado):
+    """Mesmo critério da busca por índice: título quase igual e quase todas as palavras."""
+    palavras_alvo = set(alvo.split())
+    cobertura = len(palavras_alvo & set(encontrado.split())) / max(1, len(palavras_alvo))
+    return SequenceMatcher(None, alvo, encontrado).ratio() >= .82 and cobertura >= .75
+
+
+def _do_dominio(link, dominio):
+    host = (urlparse(link).hostname or '').lower().removeprefix('www.')
+    return valida(link) and (host == dominio or host.endswith('.' + dominio))
+
+
+def _robots_permite(base, caminho):
+    from urllib.robotparser import RobotFileParser
+    with _TRAVA_SITE:
+        rp = _CACHE_SITE.get(('robots', base))
+    if rp is None:
+        rp = RobotFileParser()
+        try:
+            _, corpo = fetch(base + '/robots.txt', timeout=8, limite=200000)
+            rp.parse(corpo.splitlines())
+        except Exception:
+            rp.parse([])  # sem robots.txt: tudo permitido
+        with _TRAVA_SITE:
+            _CACHE_SITE[('robots', base)] = rp
+    return rp.can_fetch(HEADERS['User-Agent'], base + caminho)
+
+
+def buscar_no_site_da_fonte(artigo):
+    """Quando o Google bloqueia: procura a matéria pelo título no próprio site do veículo
+    (busca do WordPress e feed RSS do site). Só aceita link do domínio da fonte com título compatível."""
+    titulo = (artigo.get('titulo') or '').strip()
+    fonte = (artigo.get('fonte') or '').strip()
+    dominio = (artigo.get('dominio_fonte') or '').lower().removeprefix('www.')
+    if fonte and titulo.lower().endswith(' - ' + fonte.lower()):
+        titulo = titulo[:-(len(fonte) + 3)]
+    alvo = normalizar_titulo(titulo)
+    if len(alvo) < 25 or not dominio or '.' not in dominio or 'google' in dominio:
+        return '', 'site_sem_dados'
+    base = (artigo.get('pagina_fonte') or f'https://{dominio}').rstrip('/')
+    if not _do_dominio(base, dominio):
+        base = f'https://{dominio}'
+    # 1. Busca do WordPress (a maior parte dos portais regionais): poucas palavras do título.
+    palavras = [w for w in alvo.split() if len(w) > 3 and not w.isdigit()][:6]
+    consulta = '/wp-json/wp/v2/posts?' + urlencode({'search': ' '.join(palavras), 'per_page': 10, '_fields': 'link,title'})
+    try:
+        if _robots_permite(base, '/wp-json/wp/v2/posts'):
+            _, corpo = fetch(base + consulta, timeout=12, limite=400000)
+            for post in json.loads(corpo):
+                link = html.unescape(str(post.get('link') or ''))
+                nome = html.unescape(re.sub(r'<[^>]+>', '', str((post.get('title') or {}).get('rendered') or '')))
+                if _do_dominio(link, dominio) and _titulo_compativel(alvo, normalizar_titulo(nome)):
+                    return link, 'recuperada_site_da_fonte'
+    except Exception:
+        pass
+    # 2. Feed RSS do próprio site (as mais recentes); guardado por domínio durante a rodada.
+    with _TRAVA_SITE:
+        itens = _CACHE_SITE.get(('feed', dominio))
+    if itens is None:
+        itens = []
+        for caminho in ('/feed/', '/rss', '/feed', '/rss.xml'):
+            try:
+                if not _robots_permite(base, caminho):
+                    continue
+                _, corpo = fetch(base + caminho, timeout=10, limite=2000000)
+                raiz = ET.fromstring(corpo.encode('utf-8', 'replace'))
+                for it in raiz.iter():
+                    if it.tag.split('}')[-1] not in ('item', 'entry'):
+                        continue
+                    nome = link = ''
+                    for filho in it:
+                        tag = filho.tag.split('}')[-1]
+                        if tag == 'title':
+                            nome = filho.text or ''
+                        elif tag == 'link':
+                            link = (filho.text or filho.get('href') or '').strip()
+                    if link:
+                        itens.append((normalizar_titulo(html.unescape(nome)), html.unescape(link)))
+                if itens:
+                    break
+            except Exception:
+                continue
+        with _TRAVA_SITE:
+            _CACHE_SITE[('feed', dominio)] = itens
+    for nome, link in itens:
+        if _do_dominio(link, dominio) and _titulo_compativel(alvo, nome):
+            return link, 'recuperada_feed_da_fonte'
+    return '', 'site_sem_correspondencia'
+
+
 def resolver(url):
     embedded = codigo_embutido(url)
     if embedded: return embedded, 'recuperada_codigo'
@@ -208,8 +302,16 @@ def main():
         if limite_t and _t.monotonic() > limite_t:
             return '', 'tempo_esgotado'
         return funcao(alvo)
+    def resolver_ou_site(par):
+        # Google bloqueou ou não achou: procura a matéria no próprio site do veículo.
+        article, url = par
+        original, status = resolver(url)
+        if original or (limite_t and _t.monotonic() > limite_t):
+            return original, status
+        alt, alt_status = buscar_no_site_da_fonte(article)
+        return (alt, alt_status) if alt else ('', status + '+' + alt_status)
     with ThreadPoolExecutor(max_workers=max(1,min(args.trabalhadores,6))) as pool:
-        futures={pool.submit(com_prazo, buscar_fonte_por_titulo, article) if args.busca_fonte else pool.submit(com_prazo, resolver, url):(article,url) for article,url in batch}
+        futures={pool.submit(com_prazo, buscar_fonte_por_titulo, article) if args.busca_fonte else pool.submit(com_prazo, resolver_ou_site, (article, url)):(article,url) for article,url in batch}
         for future in as_completed(futures):
             article,url=futures[future]
             try: original,status=future.result()

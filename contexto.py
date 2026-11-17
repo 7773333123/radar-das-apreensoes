@@ -56,6 +56,7 @@ ENTENDA = [
     (r'mandados? de busca', 'Mandado de busca e apreensão', 'ordem da Justiça que autoriza a polícia a entrar num local e recolher provas.'),
     (r'\bFICCO\b', 'FICCO', 'Força Integrada de Combate ao Crime Organizado: une polícias federais e estaduais numa mesma equipe.'),
     (r'\bDOF\b|Departamento de Opera[çc][õo]es de Fronteira', 'DOF', 'Departamento de Operações de Fronteira, a polícia de fronteira de Mato Grosso do Sul.'),
+    (r'\bGefron\b|\bGEFRON\b', 'Gefron', 'Grupo Especial de Segurança na Fronteira, a polícia de fronteira de Mato Grosso.'),
     (r'\bBPFron\b|Batalh[ãa]o de Pol[íi]cia de Fronteira', 'BPFron', 'Batalhão de Polícia de Fronteira, da Polícia Militar do Paraná.'),
     (r'\bfundo falso|compartimento (?:oculto|secreto|falso)', 'Fundo falso', 'espaço escondido montado no veículo ou na bagagem para transportar a carga sem ser visto na abordagem.'),
     (r'\bmula\b|\bmulas\b', 'Mula', 'pessoa paga para transportar a droga, em geral sem saber o tamanho da organização para quem trabalha.'),
@@ -147,6 +148,9 @@ def resumo_secoes(item, fatos, ctx=None):
     # Presos, mandados, operação e valores ficam nas seções próprias.
     for k in ('presos', 'presos_texto', 'mandados', 'operacao', 'valor'):
         local.pop(k, None)
+    # Sem quantidade, o valor ("R$ 355 mil em mercadorias") é o tamanho da apreensão: fica no fato.
+    if fatos.get('valor') and fatos.get('apreendido') and not any(re.search(r'\d', i) for i in fatos['apreendido']):
+        local['valor'] = fatos['valor']
     base = redigir(local, '', item.get('d', ''), uf) if fatos else ''
     if not base:
         tema = CAT_NOME[cats[0]] if cats else 'apreensões'
@@ -239,10 +243,13 @@ def resumo_secoes(item, fatos, ctx=None):
         frases.append(f'O caso foi encaminhado à {fatos["encaminhamento"]}.'.replace('à Polícia', 'à Polícia')
                       .replace('à Delegacia', 'à Delegacia').replace('à DP', 'ao DP').replace('à Distrito', 'ao Distrito')
                       .replace('à Plantão', 'ao Plantão'))
-    if fatos.get('valor') and re.search(r'mil|milh|bilh|\d\.\d{3}', fatos['valor']):  # R$ 379 não informa nada
+    pessoas = bool(frases)  # presos, mandados, crimes ou encaminhamento: há pessoas envolvidas
+    if (fatos.get('valor') and re.search(r'mil|milh|bilh|\d\.\d{3}', fatos['valor'])  # R$ 379 não informa nada
+            and fatos['valor'] not in base):
         frases.append(f'Os valores citados chegam a {fatos["valor"]}.')
-    if frases:
+    if pessoas:
         frases.append('Pessoas presas ou investigadas são consideradas inocentes até decisão definitiva da Justiça.')
+    if frases:
         secoes.append(('Envolvidos e próximos passos', ' '.join(frases)))
 
     # 4. Quem atuou

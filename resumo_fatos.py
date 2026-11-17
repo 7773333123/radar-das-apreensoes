@@ -37,6 +37,10 @@ ORGAOS = [
     ('Força Nacional', r'For[çc]a Nacional'),
     ('Marinha', r'\bMarinha\b'),
     ('Exército', r'\bEx[ée]rcito\b'),
+    # Polícias de fronteira (no fim da lista: os índices dos órgãos antigos não mudam).
+    ('DOF', r'\bDOF\b|Departamento de Opera[çc][õo]es de Fronteira'),
+    ('Gefron', r'\bGefron\b|\bGEFRON\b|Grupo Especial de (?:Seguran[çc]a na )?Fronteira'),
+    ('BPFron', r'\bBPFron\b|\bBPFRON\b|Batalh[ãa]o de Pol[íi]cia de Fronteira'),
 ]
 UNIDADES = (r'toneladas?|tonelada|kg|quilos?|gramas?|g\b|tabletes?|porções|por[çc][õo]es|papelotes?|pinos?|pedras?|'
             r'pés|mudas|unidades|maços|ma[çc]os|pacotes|caixas|fardos|litros|garrafas|cabeças|sacas|sacos|m³|metros cúbicos')
@@ -439,7 +443,8 @@ def detalhes(texto):
 
 
 ARTIGO = {'Receita Federal': 'a', 'Ibama': 'o', 'Ministério Público': 'o', 'Exército': 'o', 'FICCO': 'a',
-          'Guarda Municipal': 'a', 'Força Nacional': 'a', 'Marinha': 'a'}
+          'Guarda Municipal': 'a', 'Força Nacional': 'a', 'Marinha': 'a',
+          'DOF': 'o', 'Gefron': 'o', 'BPFron': 'o'}
 PREP_UF = {'AC': 'no', 'AL': 'em', 'AP': 'no', 'AM': 'no', 'BA': 'na', 'CE': 'no', 'DF': 'no', 'ES': 'no', 'GO': 'em',
            'MA': 'no', 'MT': 'em', 'MS': 'em', 'MG': 'em', 'PA': 'no', 'PB': 'na', 'PR': 'no', 'PE': 'em', 'PI': 'no',
            'RJ': 'no', 'RN': 'no', 'RS': 'no', 'RO': 'em', 'RR': 'em', 'SC': 'em', 'SP': 'em', 'SE': 'em', 'TO': 'no'}
@@ -482,6 +487,9 @@ def redigir(fatos, fonte='', data_iso='', uf=''):
     if any(re.search(r'\d', i) for i in itens):
         verbo = 'apreenderam' if plural else 'apreendeu'
         frases.append(f'{sujeito} {verbo} {_juntar(itens)}{local}{quando}.')
+    elif itens and fatos.get('valor') and orgaos:  # "R$ 355 mil em mercadorias": o valor dá o tamanho
+        verbo = 'apreenderam' if plural else 'apreendeu'
+        frases.append(f'{sujeito} {verbo} {_juntar(itens)}, com valor estimado em {fatos["valor"]},{local}{quando}.')
     elif itens:  # sem quantidade: descreve sem afirmar o tamanho da apreensão
         verbo = 'participaram' if plural else 'participou'
         frases.append(f'{sujeito} {verbo} de uma ação envolvendo {_juntar(itens)}{local}{quando}.')
@@ -497,7 +505,7 @@ def redigir(fatos, fonte='', data_iso='', uf=''):
         frases.append('Uma pessoa foi presa.' if n == 1 else f'{_fmt(n)} pessoas foram presas.')
     elif fatos.get('presos_texto'):
         frases.append(f'Segundo a reportagem, {fatos["presos_texto"]}.')
-    if fatos.get('valor'):
+    if fatos.get('valor') and fatos['valor'] not in frases[0]:
         frases.append(f'Os valores citados chegam a {fatos["valor"]}.')
     return ' '.join(frases)
 
