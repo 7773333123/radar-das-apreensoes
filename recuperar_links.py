@@ -14,7 +14,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlparse, unquote, quote
 from urllib.request import Request, urlopen
-from fronteira import de_fronteira
+from fronteira import de_fronteira, prioridade_regional
 
 ARQUIVO = Path(__file__).resolve().parent / 'noticias.json'
 BLOQUEADOS = ('google.com', 'googleusercontent.com', 'googleapis.com', 'gstatic.com', 'youtube.com')
@@ -191,7 +191,8 @@ def main():
         # Órgãos oficiais (.gov.br etc.) antes: com o link original, ganham o texto completo.
         oficial = 0 if re.search(r'\.(?:gov|jus|mp|leg|def)\.br$', str(pair[0].get('dominio_fonte') or '')) else 1
         quando = int(re.sub(r'\D', '', str(pair[0].get('data_iso') or ''))[:12] or 0)
-        fronteira = 0 if de_fronteira(pair[0]) else 1  # regiões de fronteira primeiro
+        # Regiões de fronteira primeiro, na ordem regional (1 = Foz do Iguaçu ... 9 = outras fronteiras).
+        fronteira = prioridade_regional('', str(pair[0].get('titulo') or ''), str(pair[0].get('uf') or '')) if de_fronteira(pair[0]) else 10
         return (n, fronteira, oficial, quando if args.antigas else -quando)
     pending.sort(key=prioridade)
     batch=pending[:max(0,args.limite)]

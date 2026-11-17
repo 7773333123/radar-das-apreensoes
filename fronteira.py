@@ -69,7 +69,35 @@ def _polos_estritos():
 def polo_do_item(item):
     """Polo de fronteira de uma notícia do site (feed): pela cidade do fato ou pelo lugar no título, no mesmo estado."""
     texto = f"{item.get('cid', '')} {item.get('t', '')}"
+    if prioridade_regional(item.get('cid', ''), item.get('t', ''), item.get('uf', '')) <= 8:
+        return 'Foz do Iguaçu e Lago de Itaipu'
     for nome, uf, regex in _polos_estritos():
         if (not uf or not item.get('uf') or item.get('uf') == uf) and regex.search(texto):
             return nome
     return ''
+
+
+# Prioridade regional (pedido do responsável, 17/11/2026): sempre Foz do Iguaçu, depois as cidades
+# do Lago de Itaipu na ordem abaixo, depois as demais lindeiras e, por último, as outras fronteiras.
+PRIORIDADE_CIDADES = [
+    ('Foz do Iguaçu', 1), ('Guaíra', 2), ('Toledo', 3), ('Santa Helena', 4), ('Medianeira', 5),
+    ('São Miguel do Iguaçu', 6), ('Itaipulândia', 7),
+]
+LINDEIROS = ['Santa Terezinha de Itaipu', 'Missal', "Diamante D'Oeste", 'Diamante do Oeste', 'São José das Palmeiras',
+             'Entre Rios do Oeste', 'Pato Bragado', 'Marechal Cândido Rondon', 'Mercedes', 'Terra Roxa', 'Mundo Novo',
+             'Lago de Itaipu', 'Ponte da Amizade']
+_CIDADE_RE = [(re.compile(r'(?<![\wÀ-ÿ])' + re.escape(c) + r'(?![\wÀ-ÿ])', re.I), p) for c, p in PRIORIDADE_CIDADES]
+_LINDEIRO_RE = re.compile(r'(?<![\wÀ-ÿ])(?:' + '|'.join(re.escape(c) for c in LINDEIROS) + r')(?![\wÀ-ÿ])', re.I)
+
+
+def prioridade_regional(cidade='', titulo='', uf=''):
+    """1 = Foz do Iguaçu ... 7 = Itaipulândia; 8 = demais lindeiras de Itaipu; 9 = outras fronteiras/demais."""
+    if uf and uf not in ('PR', 'MS'):
+        return 9
+    for alvo in (cidade or '', titulo or ''):  # a cidade do fato vale antes de uma citação no título
+        for regex, p in _CIDADE_RE:
+            if regex.search(alvo) and (uf != 'MS'):
+                return p
+        if _LINDEIRO_RE.search(alvo):
+            return 8
+    return 9
