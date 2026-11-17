@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Veículos com conteúdo pago (assinatura para ler a matéria): fora da coleta e do site.
+"""Veículos fora da coleta e do site: conteúdo pago (assinatura) e exclusões pedidas pelo responsável.
 
 Decisão do responsável pelo site (17/11/2026): o leitor do Radar não pode cair numa
 matéria que exige assinatura. A notícia sai do acervo; se outro veículo gratuito
@@ -14,6 +14,8 @@ DOMINIOS = {
     'em.com.br', 'gazetadopovo.com.br', 'veja.abril.com.br', 'nsctotal.com.br', 'otempo.com.br', 'correiobraziliense.com.br',
     'diariodonordeste.verdesmares.com.br', 'opovo.com.br', 'exame.com', 'crusoe.com.br', 'jota.info', 'revistaoeste.com',
     'atarde.com.br', 'correio24horas.com.br',
+    # Excluídos a pedido do responsável (bloqueiam a leitura das matérias e o RSS):
+    'topelegance.com.br',
 }
 # Notícias do Google Notícias sem link do veículo: pelo nome da fonte (nome exato).
 NOMES = {
@@ -21,7 +23,7 @@ NOMES = {
     'revista piauí', 'estadão', 'estadão mobilidade', 'o estado de s. paulo', 'gzh', 'estado de minas',
     'jornal estado de minas on msn', 'gazeta do povo', 'veja', 'nsc total', 'o tempo', 'correio braziliense',
     'diário do nordeste', 'o povo', 'exame', 'crusoé', 'jota', 'jota jornalismo', 'jota info', 'revista oeste', 'a tarde',
-    'correio',
+    'correio', 'topelegance', 'top elegance',
 }
 
 
