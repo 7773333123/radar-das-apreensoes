@@ -475,7 +475,7 @@ def main():
         titulo = limpar_titulo(n.get('titulo'), fonte)
         if not titulo:
             continue
-        if not relevante(titulo):
+        if re.match(r'(?i)resultados? (?:para|da busca|de pesquisa)', titulo) or not relevante(titulo):
             ocultas += 1
             continue
         cats = categorias(n, titulo)

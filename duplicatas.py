@@ -82,6 +82,17 @@ MATERIAIS = set('''quilos quilo kg toneladas tonelada gramas porcoes porcao tabl
     maconha cocaina skunk crack haxixe pasta base armas arma fogo municoes municao fuzil fuzis pistola pistolas
     revolver espingardas cigarros celulares veiculo veiculos carro caminhao carreta onibus moto motocicleta
     mercadorias dinheiro reais valor avaliada avaliado avaliadas avaliados mil milhao milhoes'''.split())
+# Drogas/objetos citados no título: duas notícias com materiais diferentes e sem nenhum em
+# comum (600 kg de maconha x 540 kg de cocaína) não são o mesmo fato.
+MATERIAL_TITULO = [('maconha', r'maconha|skunk|supermaconha|haxixe|cannabis'), ('cocaina', r'coca[ií]na|pasta[ -]base|crack'),
+                   ('armas', r'armas?|fuzis|fuzil|pistolas?|rev[óo]lver(?:es)?|espingardas?|muni[çc](?:[ãa]o|[õo]es)'),
+                   ('cigarros', r'cigarros?|vapes?|ma[çc]os'), ('dinheiro', r'dinheiro|reais|d[óo]lares'),
+                   ('medicamentos', r'medicamentos?|emagrecedor(?:es)?|anabolizantes?|canetas?'),
+                   ('veiculos', r've[íi]culos?|carros?|caminh[ãa]o|carreta|caminhonete|motos?|motocicleta')]
+
+
+def materiais_titulo(t):
+    return {nome for nome, padrao in MATERIAL_TITULO if re.search(r'\b(?:' + padrao + r')\b', t or '', re.I)}
 
 
 def numeros(texto):
@@ -311,9 +322,20 @@ GENERICAS_FOTO = set('''esquema esquemas lavagem dinheiro contrabando descaminho
     suspeito suspeitos envolvidos empresa empresas documentos ligam liga'''.split())
 
 
+# Palavras de avisos de órgãos reguladores (Anvisa etc.): comuns a decisões diferentes.
+REGULACAO = {radical(w) for w in '''anvisa determina proibe proibicao manda apreender apreensao comercializacao venda
+    vendidos vendidas lotes produtos produto marcas marca populares internet suspende suspensao recolhimento
+    uso irregular irregulares'''.split()}
+
+
+MATERIAIS_RAD = None
+
+
 def palavras_proprias_foto(titulo):
-    return {w for w in radicais_titulo(titulo) if not w.isdigit() and w not in MATERIAIS
-            and w not in GENERICAS_FOTO and radical(w) not in {radical(g) for g in GENERICAS_FOTO}}
+    global MATERIAIS_RAD
+    if MATERIAIS_RAD is None:
+        MATERIAIS_RAD = {radical(m) for m in MATERIAIS | GENERICAS_FOTO} | {'quil', 'tonelad', 'meia', 'cerca', 'mais'}
+    return {w for w in radicais_titulo(titulo) if not w.isdigit() and w not in MATERIAIS_RAD}
 
 
 def nomes_proprios(titulo):
@@ -339,6 +361,9 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
     ca, cb = a.get('_cid'), b.get('_cid')
     if ca and cb and ca != cb:
         return None, [], 0  # cidades do fato diferentes: fatos diferentes
+    ma, mb = materiais_titulo(a['t']), materiais_titulo(b['t'])
+    if ma and mb and not (ma & mb):
+        return None, [], 0  # materiais diferentes nos títulos
     ba, bb = bairro(a['t']), bairro(b['t'])
     if ba and bb and ba != bb:
         return None, [], 0  # bairros diferentes (Jardim São Manoel x Jardim Primavera)
@@ -347,8 +372,9 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
     if na_ and nb_ and not (na_ & nb_):
         return None, [], 0  # lugares/nomes diferentes nos títulos (Barra do Choça x Irecê)
     nota, motivos = 0.0, []
-    ra = {w for w in ra if w not in MATERIAIS}
-    rb = {w for w in rb if w not in MATERIAIS}
+    palavras_proprias_foto('')  # garante MATERIAIS_RAD
+    ra = {w for w in ra if w not in MATERIAIS_RAD}
+    rb = {w for w in rb if w not in MATERIAIS_RAD}
     comuns = ra & rb
     jac = len(comuns) / max(1, len(ra | rb))
     fortes = 0  # evidências independentes e fortes; para juntar, ao menos duas
@@ -649,16 +675,37 @@ def agrupar(itens, motivos=None):
     generica = {k for k, v in sem_relacao.items() if v >= 2}
     candidatos.update(pares_foto)
     # Mesmo resumo da fonte (primeiros 140 caracteres) com até 3 dias.
+    # Só entre veículos diferentes, e não vale resumo repetido em muitas notícias (descrição
+    # fixa do site, como "Correio da Cidade: notícias de Conselheiro Lafaiete...").
     por_resumo = {}
     for k, it in enumerate(itens):
         r = normal(it.get('r', ''))[:140]
         if len(r) >= 80 and dia[k] is not None:
-            for j in por_resumo.get(r, []):
-                if abs(dia[j] - dia[k]) <= 3:
-                    unir(j, k, 'resumo-igual')
             por_resumo.setdefault(r, []).append(k)
+    for r, lista in por_resumo.items():
+        if len(lista) < 2 or len(lista) > 12 or len({itens[k].get('f', '') for k in lista}) < 2:
+            continue
+        if len({normal(itens[k]['t'])[:40] for k in lista}) > 0.5 * len(lista) and len({itens[k].get('f', '') for k in lista}) < len(lista) / 2:
+            continue  # muitos títulos diferentes no mesmo veículo: é descrição fixa
+        for x in range(len(lista)):
+            for y in range(x + 1, len(lista)):
+                j, k = lista[x], lista[y]
+                if itens[j].get('f') != itens[k].get('f') and abs(dia[j] - dia[k]) <= 3:
+                    unir(j, k, 'resumo-igual')
 
+    _esp = {}
+
+    def especificas(a, b):
+        """Palavras próprias em comum nos títulos (sem materiais, verbos e termos de regulação)."""
+        for k in (a, b):
+            if k not in _esp:
+                _esp[k] = {w for w in palavras_proprias_foto(itens[k]['t']) if w not in REGULACAO}
+        return _esp[a] & _esp[b]
+
+    mats = [materiais_titulo(it['t']) for it in itens]
     for a, b in candidatos:
+        if mats[a] and mats[b] and not (mats[a] & mats[b]):
+            continue  # materiais diferentes nos títulos
         ua, ub = itens[a].get('uf'), itens[b].get('uf')
         if ua and ub and ua != ub:
             # Estados diferentes escritos nos títulos: fatos diferentes. Se um deles é só o
@@ -678,7 +725,8 @@ def agrupar(itens, motivos=None):
         foto = (a, b) in pares_foto and a not in generica and b not in generica
         # Mesmo veículo: a abertura igual costuma ser bloco fixo do site ("Conteúdos copiados...
         # devem conter os créditos"), não a reportagem. Só vale entre veículos diferentes.
-        lead = jaccard(sh[a], sh[b]) if itens[a].get('f') != itens[b].get('f') else 0.0
+        mesmo_veiculo = bool(itens[a].get('f')) and itens[a].get('f') == itens[b].get('f')
+        lead = 0.0 if mesmo_veiculo else jaccard(sh[a], sh[b])
         # Palavras em comum que identificam o fato (lugar, nome, objeto específico).
         proprias = {w for w in inf[a] & inf[b] if not w[0].isdigit() and w not in MATERIAIS}
         numero_forte = bool(nf[a] and nf[b] and compativeis(nf[a], nf[b]))
@@ -693,15 +741,17 @@ def agrupar(itens, motivos=None):
             unir(a, b, 'foto')
         elif delta <= 3 and mesmo_uf and _mesmas_quantidades(qs[a], qs[b]) and proprias:
             unir(a, b, 'fatos')
-        elif delta <= 4 and _mesma_grande(qs[a], qs[b]) and (mesmo_uf or proprias):
+        elif delta <= 2 and _mesma_grande(qs[a], qs[b], 0.1) and mesmo_uf and especificas(a, b):
+            # Grande apreensão do mesmo material com valor quase igual (arredondamento), mesmo
+            # estado e uma palavra própria em comum (540 kg de cocaína != 600 kg de maconha).
             unir(a, b, 'grande-apreensao')
         elif delta <= 2 and proprias and _numero_raro(inf[a] & inf[b]):
             # Mesmo número incomum no título ("R$ 581 milhões", "7.603 kg") + palavra própria.
             unir(a, b, 'numero-raro')
-        elif uf_fraco and delta <= 1 and len(proprias) >= 4 and len(proprias) >= 0.5 * min(len(inf[a]), len(inf[b])):
+        elif uf_fraco and delta <= 1 and len(especificas(a, b)) >= 3 and len(proprias) >= 0.5 * min(len(inf[a]), len(inf[b])):
             # Notícia nacional (Anvisa, Receita, PF) publicada por jornais de vários estados.
             unir(a, b, 'nacional')
-        elif delta <= 2 and not (ua and ub) and _mesma_grande(qs[a], qs[b], 0.05, 4):
+        elif delta <= 2 and not (ua and ub) and _mesma_grande(qs[a], qs[b], 0.05, 4) and especificas(a, b):
             # Estado não identificado em uma das versões: só valor quase igual,
             # em até 2 dias, e muito grande (>= 4x o mínimo: 1,2 t, 80 armas...).
             unir(a, b, 'grande-apreensao')
