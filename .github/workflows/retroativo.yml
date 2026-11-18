@@ -6,15 +6,23 @@ name: Coleta retroativa (mês a mês até 2006)
 # operação, foto inteira ou recortada, auditor), nada sem foto e sem conteúdo no site.
 # Um mês por vez; o cursor (retroativo_cursor.json) só passa ao mês anterior quando o mês terminou.
 # Ao terminar, dispara a si mesma (o cron fica de reserva).
+# Quatro frentes em paralelo (input faixa), cada uma com o próprio cursor e o próprio período:
+# a = 2025-2021 (retroativo_cursor.json), b = 2020-2016, c = 2015-2011, d = 2010-2006
+# (retroativo_cursor_<faixa>.json). Cada ano tem a sua parte do acervo: as frentes não se atrapalham.
 on:
   workflow_dispatch:
+    inputs:
+      faixa:
+        description: 'Frente: a (2025-2021), b (2020-2016), c (2015-2011), d (2010-2006)'
+        required: false
+        default: 'a'
   schedule:
     - cron: '23 */2 * * *'
 permissions:
   contents: write
   actions: write
 concurrency:
-  group: coleta-retroativa
+  group: coleta-retroativa-${{ inputs.faixa || 'a' }}
   cancel-in-progress: false
 jobs:
   retroativo:
@@ -22,6 +30,8 @@ jobs:
     timeout-minutes: 170
     env:
       GH_TOKEN: ${{ github.token }}
+      FAIXA: ${{ inputs.faixa || 'a' }}
+      CURSOR: ${{ (inputs.faixa || 'a') == 'a' && 'retroativo_cursor.json' || format('retroativo_cursor_{0}.json', inputs.faixa) }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -32,8 +42,10 @@ jobs:
         id: c
         run: |
           python - <<'PY' >> "$GITHUB_OUTPUT"
-          import json
-          c = json.load(open('retroativo_cursor.json'))
+          import json, os
+          c = json.load(open(os.environ['CURSOR']))
+          # Limite de cada frente (o mês mais antigo que ela coleta).
+          c['ate'] = {'a': '2021-01', 'b': '2016-01', 'c': '2011-01', 'd': '2006-01'}[os.environ['FAIXA']]
           print(f"mes={c['mes']}")
           print(f"ano={c['mes'][:4]}")
           print(f"wp={'sim' if c.get('arquivo_sites_feito') else 'nao'}")
@@ -82,7 +94,7 @@ jobs:
         run: |
           python - <<'PY'
           import json, os
-          c = json.load(open('retroativo_cursor.json'))
+          c = json.load(open(os.environ['CURSOR']))
           c['arquivo_sites_feito'] = True
           g = json.load(open('retroativo_google.json')) if os.path.exists('retroativo_google.json') else {}
           c['google_tentativas'] = c.get('google_tentativas', 0) + 1
@@ -103,13 +115,13 @@ jobs:
                   a, m = map(int, c['mes'].split('-'))
                   a, m = (a - 1, 12) if m == 1 else (a, m - 1)
                   c.update(mes=f'{a}-{m:02d}', passada=1, arquivo_sites_feito=False, google_feitas=0, google_tentativas=0)
-          json.dump(c, open('retroativo_cursor.json', 'w'), ensure_ascii=False, indent=1)
+          json.dump(c, open(os.environ['CURSOR'], 'w'), ensure_ascii=False, indent=1)
           print('Cursor:', c['mes'], '| concluídos:', len(c['meses_concluidos']))
           PY
       - name: Salvar (mescla se outra coleta gravou antes)
         if: steps.c.outputs.fim == 'nao'
         run: |
-          python acervo.py salvar "Coleta retroativa - ${{ steps.c.outputs.mes }}" retroativo_cursor.json arquivo_sites_estado.json
+          python acervo.py salvar "Coleta retroativa ($FAIXA) - ${{ steps.c.outputs.mes }}" "$CURSOR" arquivo_sites_estado.json
       - name: Continuar com o mês seguinte (o agendamento do GitHub falha às vezes)
         if: (success() || failure()) && steps.c.outputs.fim == 'nao'
-        run: gh workflow run retroativo.yml --ref main
+        run: gh workflow run retroativo.yml --ref main -f faixa="$FAIXA"
