@@ -399,7 +399,8 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
         # do nome da cidade (Idosa ... filho ... Unei): evidência forte.
         cidade = radicais_titulo(ca)
         especificas = {w for w in comuns if not w.isdigit() and w not in cidade}
-        if len(especificas) >= 2 and jac >= 0.3:
+        mesmo_veiculo = bool(a.get('f')) and a.get('f') == b.get('f')  # o mesmo site repete o padrão de título
+        if len(especificas) >= 2 and jac >= 0.3 and not mesmo_veiculo:
             fortes += 1
             motivos.append('título específico na mesma cidade')
     numeros = {w for w in (inf_a & inf_b) if w[0].isdigit() and w not in ANOS and _numero(w) is not None
