@@ -110,22 +110,43 @@ def calibrar(juiz, arquivo):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--modelo', required=True)
-    ap.add_argument('--calibrar')
+    ap.add_argument('--modelo', default='')
+    ap.add_argument('--calibrar', help='Casos conferidos à mão: calibra antes de julgar (uma vez por dia)')
+    ap.add_argument('--so-calibrar', action='store_true')
+    ap.add_argument('--so-contar', action='store_true', help='Só conta os pares pendentes (sem o modelo)')
     ap.add_argument('--max', type=int, default=200)
     ap.add_argument('--tempo-max', type=int, default=2400)
     ap.add_argument('--threads', type=int)
     args = ap.parse_args()
     inicio = time.monotonic()
+    dados = json.loads(DECISOES.read_text(encoding='utf-8')) if DECISOES.exists() else {}
+    decisoes = dados.get('decisoes', {})
+    suspeitas = json.loads(SUSPEITAS.read_text(encoding='utf-8')).get('suspeitas', []) if SUSPEITAS.exists() else []
+    pendentes = [s for s in suspeitas if len(s['a']) >= 6 and chave_par(s['a'][0], s['b'][0]) not in decisoes]
+    print(f'{len(suspeitas)} pares em dúvida; {len(pendentes)} ainda sem decisão do juiz.', flush=True)
+    if args.so_contar:
+        print(f'PENDENTES={len(pendentes)}')
+        return
+    if not pendentes and not args.so_calibrar:
+        print('Nenhum par novo para julgar.')
+        return
     juiz = Juiz(args.modelo, args.threads)
     print(f'Modelo carregado em {time.monotonic() - inicio:.0f}s', flush=True)
     if args.calibrar:
-        sys.exit(0 if calibrar(juiz, args.calibrar) else 1)
-    dados = json.loads(DECISOES.read_text(encoding='utf-8')) if DECISOES.exists() else {}
-    decisoes = dados.get('decisoes', {})
-    suspeitas = json.loads(SUSPEITAS.read_text(encoding='utf-8')).get('suspeitas', [])
-    pendentes = [s for s in suspeitas if len(s['a']) >= 6 and chave_par(s['a'][0], s['b'][0]) not in decisoes]
-    print(f'{len(suspeitas)} pares em dúvida; {len(pendentes)} ainda sem decisão do juiz.', flush=True)
+        # Calibração: sempre que o juiz, os casos ou o modelo mudam, e ao menos uma vez por dia.
+        import hashlib
+        assinatura = hashlib.sha1((Path(__file__).read_bytes() + Path(args.calibrar).read_bytes()
+                                   + Path(args.modelo).name.encode())).hexdigest()[:16]
+        cal = dados.get('calibracao', {})
+        recente = cal.get('em', '') >= (datetime.now(timezone.utc).replace(microsecond=0).isoformat()[:10])
+        if cal.get('assinatura') == assinatura and recente and not args.so_calibrar:
+            print(f"Calibração de hoje vale (assinatura {assinatura}); pulando.")
+        else:
+            if not calibrar(juiz, args.calibrar):
+                sys.exit(1)
+            dados['calibracao'] = {'assinatura': assinatura, 'em': datetime.now(timezone.utc).isoformat(timespec='seconds')}
+        if args.so_calibrar:
+            return
     contagem = {'mesmo': 0, 'diferente': 0, 'incerto': 0}
     for s in pendentes[:args.max]:
         if time.monotonic() - inicio > args.tempo_max:
@@ -145,6 +166,7 @@ def main():
     decisoes = {k: v for k, v in decisoes.items()
                 if datetime.fromisoformat(v.get('em', '2000-01-01T00:00:00+00:00')).timestamp() >= limite}
     DECISOES.write_text(json.dumps({'atualizado_em': datetime.now(timezone.utc).isoformat(timespec='seconds'),
+                                    'calibracao': dados.get('calibracao', {}),
                                     'decisoes': decisoes}, ensure_ascii=False, indent=0, sort_keys=True) + '\n',
                         encoding='utf-8')
     print(f"Juiz: {contagem['mesmo']} mesmo fato, {contagem['diferente']} diferentes, {contagem['incerto']} incertos; "
