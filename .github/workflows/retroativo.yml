@@ -42,7 +42,9 @@ jobs:
           print(f"pular={c.get('google_feitas', 0)}")
           print(f"extra={'sim' if c.get('passada', 1) == 2 else 'nao'}")
           print(f"oficiais={'sim' if c['mes'].endswith('-12') and c.get('passada', 1) == 1 and not c.get('arquivo_sites_feito') else 'nao'}")
-          print(f"fim={'sim' if c['mes'] < c['ate'] else 'nao'}")
+          import os
+          # Pausa manual (arquivo retroativo_pausa no repositório): não coleta nem dispara a seguinte.
+          print(f"fim={'sim' if c['mes'] < c['ate'] or os.path.exists('retroativo_pausa') else 'nao'}")
           PY
       - name: Arquivo dos sites dos veículos (WordPress)
         if: steps.c.outputs.fim == 'nao' && steps.c.outputs.wp == 'nao'
