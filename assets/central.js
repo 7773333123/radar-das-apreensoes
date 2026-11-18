@@ -184,7 +184,7 @@ function renderInicio() {
     (soPessoa(a) - soPessoa(b)) || a.prioridadeFr - b.prioridadeFr || nota(b) - nota(a) || b.data - a.data);
   // Destaque só com foto: a foto do próprio item ou a que o servidor busca no link original (sem link,
   // não há foto). Na ordem acima; sem nenhuma com foto, vale a ordem pura.
-  const temFoto = (n) => Boolean(n.img || n.url);
+  const temFoto = (n) => Boolean(n.img || n.temLink);
   const frPrincipais = [...ordemFr.filter(temFoto), ...ordemFr.filter((n) => !temFoto(n))].slice(0, 2);
   // Menores: apreensão de adolescente sem material (moto roubada etc.) só entra se faltar notícia.
   const restoFr = ordemFr.filter((n) => !frPrincipais.includes(n));
