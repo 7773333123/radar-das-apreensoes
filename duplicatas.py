@@ -293,6 +293,27 @@ JUNTAR = 5.0
 DUVIDA = 4.0
 SUSPEITAS = []
 JUNTADAS = []  # diagnóstico: pares juntados pelo auditor e os motivos
+# Decisões do juiz de IA (juiz_duplicatas.py) sobre os pares em dúvida: "mesmo" junta,
+# "diferente" tira da lista de dúvidas. Chave: "<menor id>-<maior id>".
+JUIZ = None
+
+
+def decisoes_juiz():
+    global JUIZ
+    if JUIZ is None:
+        try:
+            import json as _json
+            from pathlib import Path as _P
+            arq = _P(__file__).resolve().parent / 'juiz_decisoes.json'
+            JUIZ = _json.loads(arq.read_text(encoding='utf-8')).get('decisoes', {}) if arq.exists() else {}
+        except Exception:
+            JUIZ = {}
+    return JUIZ
+
+
+def chave_par(ia, ib):
+    ia, ib = sorted((str(ia), str(ib)), key=lambda x: (len(x), x))
+    return f'{ia}-{ib}'
 VAZIAS_AUDITOR = PALAVRAS_VAZIAS | set('''policia policias policial policiais militar militares civil federal
     apreende apreendem apreendeu apreendido apreendida apreendidos apreendidas apreensao apreensoes
     prende prendem prendeu preso presa presos presas prisao suspeito suspeitos suspeita durante
@@ -567,9 +588,17 @@ def auditar(itens, dia, inf, qt, sh, hs, unir, raiz, dias=None):
             unir(a, b, 'auditor')
             JUNTADAS.append((round(nota, 2), motivos, itens[a].get('f', ''), itens[a]['t'], itens[b].get('f', ''), itens[b]['t']))
         elif nota >= DUVIDA:
-            SUSPEITAS.append({'nota': round(nota, 2), 'motivos': motivos,
-                              'a': [itens[a]['i'], itens[a].get('f', ''), itens[a]['t']],
-                              'b': [itens[b]['i'], itens[b].get('f', ''), itens[b]['t']]})
+            juiz = decisoes_juiz().get(chave_par(itens[a].get('i'), itens[b].get('i')), {})
+            if juiz.get('v') == 'mesmo':  # o juiz de IA leu as duas e confirmou (nos dois sentidos)
+                unir(a, b, 'auditor')
+                JUNTADAS.append((round(nota, 2), motivos + ['juiz IA'], itens[a].get('f', ''), itens[a]['t'],
+                                 itens[b].get('f', ''), itens[b]['t']))
+            elif juiz.get('v') != 'diferente':
+                SUSPEITAS.append({'nota': round(nota, 2), 'motivos': motivos,
+                                  'a': [itens[a]['i'], itens[a].get('f', ''), itens[a]['t'], itens[a].get('d', ''),
+                                        itens[a].get('uf', ''), str(itens[a].get('_lead', ''))[:400]],
+                                  'b': [itens[b]['i'], itens[b].get('f', ''), itens[b]['t'], itens[b].get('d', ''),
+                                        itens[b].get('uf', ''), str(itens[b].get('_lead', ''))[:400]]})
     SUSPEITAS.sort(key=lambda x: -x['nota'])
     for k in recentes:
         itens[k].pop('_ops', None)
