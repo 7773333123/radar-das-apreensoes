@@ -45,6 +45,7 @@ jobs:
           print(f"fim={'sim' if c['mes'] < c['ate'] or os.path.exists('retroativo_pausa') else 'nao'}")
           PY
       - name: Baixar a parte do acervo deste mês (release "dados")
+        if: steps.c.outputs.fim == 'nao'
         run: python acervo.py baixar --parte "$(python acervo.py parte-de ${{ steps.c.outputs.mes }})"
       - name: Arquivo dos sites dos veículos (WordPress)
         if: steps.c.outputs.fim == 'nao' && steps.c.outputs.wp == 'nao'
@@ -55,19 +56,23 @@ jobs:
         continue-on-error: true
         run: python coletor.py --retroativo ${{ steps.c.outputs.mes }} --pular ${{ steps.c.outputs.pular }} ${{ steps.c.outputs.extra == 'sim' && '--extra' || '' }}
       - name: Arquivos oficiais do ano (PF, PRF, Receita; uma vez por ano)
-        if: steps.c.outputs.oficiais == 'sim' && steps.c.outputs.ano >= 2015
+        if: steps.c.outputs.fim == 'nao' && steps.c.outputs.oficiais == 'sim' && steps.c.outputs.ano >= 2015
         continue-on-error: true
         run: python coletar_fontes_diretas.py --ano ${{ steps.c.outputs.ano }} --paginas 12
       - name: Link original (notícias do ano)
+        if: steps.c.outputs.fim == 'nao'
         continue-on-error: true
         run: python recuperar_links.py --periodo ${{ steps.c.outputs.ano }} --antigas --limite 2000 --trabalhadores 4 --tempo-max 1500
       - name: Ler as matérias do ano (foto, trecho, fatos)
+        if: steps.c.outputs.fim == 'nao'
         continue-on-error: true
         run: python ler_materias.py --periodo ${{ steps.c.outputs.ano }} --limite 3000 --trabalhadores 10
       - name: Fotos (impressão digital, recortes)
+        if: steps.c.outputs.fim == 'nao'
         continue-on-error: true
         run: python hash_imagens.py --periodo ${{ steps.c.outputs.ano }} --limite 4000 --trabalhadores 16
       - name: Gerar o site
+        if: steps.c.outputs.fim == 'nao'
         run: |
           python testes/test_duplicatas.py
           python gerar_feed_site.py
@@ -102,6 +107,7 @@ jobs:
           print('Cursor:', c['mes'], '| concluídos:', len(c['meses_concluidos']))
           PY
       - name: Salvar (mescla se outra coleta gravou antes)
+        if: steps.c.outputs.fim == 'nao'
         run: |
           python acervo.py salvar "Coleta retroativa - ${{ steps.c.outputs.mes }}" retroativo_cursor.json arquivo_sites_estado.json
       - name: Continuar com o mês seguinte (o agendamento do GitHub falha às vezes)

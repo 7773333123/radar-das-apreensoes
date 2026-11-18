@@ -291,6 +291,10 @@ def unir_com_release(parte):
 
 def salvar(msg, extras, sem_dados=False, parte=None):
     parte = parte or parte_baixada()
+    if parte != 'quente' and not sem_dados and not ponteiro().get('partes'):
+        # Antes da divisão (acervo.py dividir), uma parte de ano gravada sozinha faria a parte
+        # quente esconder todas as notícias antigas do site.
+        raise SystemExit(f'Acervo ainda não dividido em partes: a parte {parte} não pode ser gravada.')
     configurar_git()
     if not sem_dados:
         garantir_release()
