@@ -30,6 +30,10 @@ def main():
     for n in noticias:
         if isinstance(n, dict) and n.get('url_google_noticias') and n.get('url_google_noticias') == n.get('url'):
             del n['url_google_noticias']
+        # Campos da antiga análise de texto (analisar_noticias.py, desligada): nada mais os lê.
+        if isinstance(n, dict):
+            for campo in ('texto_analisado_resumo', 'evidencias_classificacao'):
+                n.pop(campo, None)
         if isinstance(n, dict) and n.get('img_mini') and str(n.get('data_iso') or '') < corte:
             n.pop('img_mini', None)
             n.pop('img_minih', None)
