@@ -32,7 +32,7 @@ from pathlib import Path
 from pagos import pago
 from fronteira import polo_do_item, prioridade_regional
 from localizar_uf import _ufs_no_texto, cidade_do_fato, inferir_uf
-from resumo_fatos import LUGAR
+from resumo_fatos import LUGAR, droga_pelo_nome
 from resumo_fatos import anonimizar, extrair, nomes_dos_presos
 from contexto import resumo_secoes
 from estatisticas import MATERIAIS, ORGAOS_NOMES, enriquecer, exportar, quantidades
@@ -572,6 +572,8 @@ def main():
         if do_titulo:
             fatos_titulo[i] = do_titulo
         fatos = dict(n.get('fatos') or do_titulo or {})
+        if fatos.get('apreendido'):  # "substância análoga à maconha" -> "maconha" (fichas antigas também)
+            fatos['apreendido'] = [droga_pelo_nome(str(a)) for a in fatos['apreendido']]
         if fatos.get('apreendido'):  # "90 pedras de médias de crack, 280 pedras de pequenas da mesma substância"
             fatos['apreendido'] = arrumar_itens(fatos['apreendido'])
         if fatos.get('apreendido'):  # fichas antigas: trajeto colado no material
