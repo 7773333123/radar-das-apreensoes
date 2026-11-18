@@ -177,9 +177,20 @@ def _valor(texto):
     return f'R$ {_fmt(v)}'
 
 
+# "Substância análoga à maconha", "material semelhante à cocaína": o Radar registra como a
+# própria droga (é como a polícia descreve antes do laudo), no texto e nas somas.
+ANALOGA = re.compile(r'\b(?:(?:subst[âa]ncias?|materia(?:l|is)|entorpecentes?|produtos?|ervas?|tabletes?|por[çc][õo]es)\s+)?'
+                     r'(?:an[áa]log[oa]s?|semelhantes?|similar(?:es)?|parecid[oa]s?|com caracter[íi]sticas? de)\s+(?:[àa]s?|ao?s?|de|com)?\s*'
+                     r'(maconha|coca[íi]na|crack|skunk|haxixe)\b', re.I)
+
+
+def droga_pelo_nome(texto):
+    return ANALOGA.sub(lambda m: m.group(1), texto or '')
+
+
 def extrair(titulo, resumo='', texto=''):
     """Fatos objetivos da notícia. Campos vazios ficam de fora."""
-    fontes = [titulo or '', resumo or '', (texto or '')[:6000]]
+    fontes = [droga_pelo_nome(titulo), droga_pelo_nome(resumo), droga_pelo_nome((texto or '')[:6000])]
     tudo = '. '.join(f for f in fontes if f)
     fatos = {}
     itens, tipos = [], set()

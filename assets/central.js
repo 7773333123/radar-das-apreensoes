@@ -252,7 +252,7 @@ function renderInicio() {
         `<div class="kpi"><dt>Cocaína</dt><dd>≈ ${qtd(soma('coc'), 'kg')}</dd></div>` +
         `<div class="kpi"><dt>Maconha e skunk</dt><dd>≈ ${qtd(soma('mac') + soma('skh'), 'kg')}</dd></div>` +
         `<div class="kpi"><dt>Armas de fogo</dt><dd>≈ ${qtd(soma('arm'), 'un')}</dd></div>` +
-      `</dl><p class="note">Estimativa: soma das quantidades citadas nas notícias, sem duplicatas. Só cerca de 1 em cada 7 notícias informa a quantidade, e a leitura automática pode errar; não são estatísticas oficiais.</p></div>` +
+      `</dl><p class="note">Estimativa: soma das quantidades citadas nas notícias, sem duplicatas. Entre as notícias de tráfico de drogas, cerca de uma em cada cinco informa a quantidade apreendida; apreensões de pequenas porções cujo peso não consta da ocorrência não entram na contabilização do site. Substâncias descritas como análogas a uma droga são contabilizadas como a própria droga. A leitura automática pode conter imprecisões, e os números não constituem estatística oficial.</p></div>` +
       `<div class="panel"><h3>Notícias por estado · 30 dias</h3><div class="map" id="mapaInicio"></div></div>` +
     `</section>` +
     `<div class="editorias">${editorias.map(([c, itens]) => {
