@@ -1,5 +1,5 @@
 /* Central de notícias: manchete, destaques, Em alta, panorama, editorias e busca. */
-import { $, esc, num, fold, debounce, relativo, horaBR, qtd, ESTADOS, NOME_UF, CURTO, carregarFeed, iniciarCabecalho, midia, renderMapa, ranking, urlNoticia } from './core.js';
+import { $, esc, num, fold, debounce, relativo, horaBR, qtd, ESTADOS, NOME_UF, CURTO, carregarFeed, carregarAnos, anosForaDoFeed, indiceAnos, iniciarCabecalho, midia, renderMapa, ranking, urlNoticia } from './core.js';
 import { iniciarLeitor, kickerHTML, metaHTML } from './leitor.js';
 
 const POR_PAGINA = 20;
@@ -37,9 +37,28 @@ const temFiltro = () => Object.values(st.filtro).some(Boolean);
 function definir(parcial, { rolar = true } = {}) {
   Object.assign(st.filtro, parcial);
   st.limite = POR_PAGINA;
-  render();
   escreverHash();
-  if (rolar) (temFiltro() ? $('resultados') : $('conteudo')).scrollIntoView({ block: 'start' });
+  garantirAno().then(() => {
+    render();
+    if (rolar) (temFiltro() ? $('resultados') : $('conteudo')).scrollIntoView({ block: 'start' });
+  });
+  render();
+}
+// O feed.json traz os últimos 6 meses; um ano anterior é carregado quando escolhido no filtro.
+async function garantirAno() {
+  const ano = Number(st.filtro.ano);
+  if (!ano || !st.ctx || (st.ctx.anosCarregados || new Set()).has(String(ano))) return;
+  if (!(await anosForaDoFeed()).includes(ano)) return;
+  $('lista').innerHTML = `<li class="empty">Carregando as notícias de ${ano}…</li>`;
+  await carregarAnos(st.ctx, [ano]);
+}
+// Busca em todo o acervo (todos os anos), a pedido do leitor.
+async function buscarTudo(botao) {
+  const anos = await anosForaDoFeed();
+  botao.disabled = true;
+  await carregarAnos(st.ctx, anos, (feitos, total) => { botao.textContent = `Carregando o acervo… ${feitos}/${total} anos`; });
+  st.tudo = true;
+  render();
 }
 
 // ---------- faixa "Agora": as mais recentes, rolando sem parar ----------
@@ -281,6 +300,12 @@ function render() {
   $('lista').innerHTML = st.lista.length ? st.lista.slice(0, st.limite).map(linha).join('')
     : '<li class="empty">Nenhuma notícia encontrada. Tente outro termo ou remova um filtro.</li>';
   $('mais').hidden = st.limite >= st.lista.length;
+  // Busca sem ano escolhido: procura nos últimos 6 meses e oferece o acervo inteiro.
+  if (f.q && !f.ano && !st.tudo && st.ctx.recorte) {
+    $('lista').insertAdjacentHTML('beforeend', `<li class="empty busca-tudo">Resultados dos últimos 6 meses. ` +
+      `<button type="button" class="btn ghost" id="buscarTudo">Buscar em todo o acervo (desde 2006)</button></li>`);
+    $('buscarTudo').addEventListener('click', (e) => buscarTudo(e.currentTarget));
+  }
   $('limpar').hidden = !filtrado;
   $('fEstado').value = f.uf; $('fCategoria').value = f.cat; $('fAno').value = f.ano;
   if ($('buscaTopo').value.trim() !== f.q) $('buscaTopo').value = f.q;  // não apaga o espaço que a pessoa acabou de digitar
@@ -299,8 +324,13 @@ function montarControles() {
     `<span class="sep" aria-hidden="true"></span><label class="sr" for="selEstado">Estado</label><select id="selEstado"><option value="">Todos os estados</option>${ESTADOS.map(([uf, n]) => `<option value="${uf}">${esc(n)}</option>`).join('')}</select>`;
   $('fEstado').insertAdjacentHTML('beforeend', ESTADOS.map(([uf, n]) => `<option value="${uf}">${esc(n)}</option>`).join(''));
   $('fCategoria').insertAdjacentHTML('beforeend', st.ctx.categorias.map((c, k) => `<option value="${k}">${esc(c)}</option>`).join(''));
-  const anos = [...new Set(st.ctx.noticias.map((n) => n.ano).filter(Boolean))].sort((a, b) => b - a);
-  $('fAno').insertAdjacentHTML('beforeend', anos.map((a) => `<option value="${a}">${a}</option>`).join(''));
+  // Anos do acervo inteiro (anos/indice.json); os anteriores aos 6 meses do feed carregam ao escolher.
+  indiceAnos().then((ind) => {
+    const anos = [...new Set([...Object.keys(ind?.anos || {}).map(Number), ...st.ctx.noticias.map((n) => n.ano)])]
+      .filter((a) => a >= 2006).sort((a, b) => b - a);
+    $('fAno').insertAdjacentHTML('beforeend', anos.map((a) => `<option value="${a}">${a}</option>`).join(''));
+    $('fAno').value = st.filtro.ano;
+  });
 
   document.addEventListener('click', (e) => {
     const a = e.target.closest('[data-cat]');
@@ -347,6 +377,7 @@ async function iniciar() {
   Object.assign(st.filtro, lerHash());
   renderInicio();
   render();
+  if (st.filtro.ano) garantirAno().then(render);
   iniciarLeitor(st.ctx);
   setInterval(atualizarAoVivo, 5 * 60000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) atualizarAoVivo(); });

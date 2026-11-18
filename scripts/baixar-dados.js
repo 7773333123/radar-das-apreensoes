@@ -64,6 +64,7 @@ function juntarPartes(origem) {
 // buscar. O link original, o resumo completo e os links das outras fontes vão para det/ (que o
 // leitor carrega ao abrir a notícia); as funções em api/ continuam lendo o feed.json completo.
 const RESUMO_LISTA = 200;
+const DIAS_FEED = 180;  // feed.json do navegador: últimos 180 dias
 function cortarResumo(r) {
   if (!r || r.length <= RESUMO_LISTA) return r;
   return r.slice(0, RESUMO_LISTA).replace(/\s+\S*$/, '') + '…';
@@ -94,13 +95,35 @@ function enxugarParaNavegador() {
   };
   const leve = { ...feed, noticias: feed.noticias.map(enxuto) };
   for (const [lote, conteudo] of Object.entries(lotes)) fs.writeFileSync(path.join(RAIZ, 'det', lote), JSON.stringify(conteudo));
-  const saida = { 'feed.json': JSON.stringify(leve) };
+  // O navegador baixa só os últimos DIAS_FEED dias (feed.json); o resto fica em um arquivo
+  // por ano (anos/AAAA.json), carregado quando o leitor escolhe um ano, busca em todo o
+  // acervo ou abre um período antigo no Observatório. anos/indice.json traz as contagens
+  // por ano e mês (filtros, Relatórios) e anos/ids.json diz em que ano está cada notícia.
+  const corte = new Date(Date.now() - DIAS_FEED * 864e5).toISOString().slice(0, 10);
+  const recentes = [], porAno = {}, ids = {}, contAno = {}, contMes = {};
+  for (const n of leve.noticias) {
+    const d = n.d || '';
+    if (d >= '2000') {
+      contAno[d.slice(0, 4)] = (contAno[d.slice(0, 4)] || 0) + 1;
+      contMes[d.slice(0, 7)] = (contMes[d.slice(0, 7)] || 0) + 1;
+    }
+    if (!d || d >= corte) { recentes.push(n); continue; }
+    const a = d.slice(0, 4);
+    (porAno[a] ??= []).push(n);
+    (ids[a] ??= []).push(n.i);
+  }
+  const saida = { 'feed.json': JSON.stringify({ ...leve, noticias: recentes, recorte: corte }) };
+  for (const [a, lista] of Object.entries(porAno)) saida[`anos/${a}.json`] = JSON.stringify({ ano: a, noticias: lista });
+  saida['anos/indice.json'] = JSON.stringify({ recorte: corte, atualizado_em: feed.atualizado_em, total: leve.noticias.length,
+    anos: contAno, meses: contMes, arquivos: Object.keys(porAno).sort() });
+  saida['anos/ids.json'] = JSON.stringify(ids);
   const arqRecente = path.join(RAIZ, 'feed-recente.json');
   if (fs.existsSync(arqRecente)) {
     const r = JSON.parse(fs.readFileSync(arqRecente, 'utf8'));
     saida['feed-recente.json'] = JSON.stringify({ ...r, noticias: r.noticias.map(enxuto) });
   }
-  console.log(`Feed para o navegador: ${(saida['feed.json'].length / 1e6).toFixed(1)} MB (completo: ${(fs.statSync(path.join(RAIZ, 'feed.json')).size / 1e6).toFixed(1)} MB)`);
+  console.log(`Feed para o navegador: ${(saida['feed.json'].length / 1e6).toFixed(1)} MB, ${recentes.length} notícias desde ${corte} ` +
+    `(completo: ${(fs.statSync(path.join(RAIZ, 'feed.json')).size / 1e6).toFixed(1)} MB); anos à parte: ${Object.keys(porAno).sort().join(', ')}`);
   return saida;
 }
 
@@ -135,6 +158,9 @@ function enxugarParaNavegador() {
   for (const f of estaticos) {
     if (fs.existsSync(path.join(RAIZ, f))) fs.cpSync(path.join(RAIZ, f), path.join(PUB, f), { recursive: true });
   }
-  for (const [nome, conteudo] of Object.entries(enxutos)) fs.writeFileSync(path.join(PUB, nome), conteudo);
+  for (const [nome, conteudo] of Object.entries(enxutos)) {
+    fs.mkdirSync(path.dirname(path.join(PUB, nome)), { recursive: true });
+    fs.writeFileSync(path.join(PUB, nome), conteudo);
+  }
   console.log(`Dados do site prontos: ${pacotes.length} pacote(s) (versão de ${versao.atualizado_em}); public/: ${estaticos.length} itens`);
 })().catch((e) => { console.error(e); process.exit(1); });

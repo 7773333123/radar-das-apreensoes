@@ -47,7 +47,9 @@ async function carregar(req) {
       if (!r.ok) throw new Error(`feed.json: HTTP ${r.status}`);
       const feed = await r.json();
       const porI = new Map(feed.noticias.map((n) => [n.i, n]));
-      cache = { t: Date.now(), etag: r.headers.get('etag'), base: b, feed, porI, links: null, det: new Map() };
+      let indice = null;
+      try { const ri = await buscarJSON(`${b}/anos/indice.json`); if (ri.ok) indice = await ri.json(); } catch { /* sem índice */ }
+      cache = { t: Date.now(), etag: r.headers.get('etag'), base: b, feed, porI, links: null, det: new Map(), indice, anos: new Map(), ids: null };
       return cache;
     } catch (e) {
       if (cache) { cache.t = Date.now() - VALIDADE + 60e3; return cache; }  // usa o que tem; tenta em 1 min
@@ -77,10 +79,39 @@ async function detalhe(i) {
   }
   return (await c.det.get(lote))[String(i)] || {};
 }
+// Anos anteriores ao feed.json (anos/AAAA.json), carregados só quando uma página precisa
+// (notícia antiga, relatório de mês antigo). Guarda no máximo 3 anos na memória.
+async function anoArquivo(a) {
+  const c = dados();
+  a = String(a);
+  if (!(c.indice?.arquivos || []).includes(a)) return [];
+  if (!c.anos.has(a)) {
+    if (c.anos.size >= 3) c.anos.delete(c.anos.keys().next().value);
+    c.anos.set(a, buscarJSON(`${c.base}/anos/${a}.json`).then((r) => (r.ok ? r.json() : { noticias: [] }))
+      .then((d) => { const lista = d.noticias || []; lista._porI = new Map(lista.map((n) => [n.i, n])); return lista; })
+      .catch(() => { c.anos.delete(a); return []; }));
+  }
+  return c.anos.get(a);
+}
+async function anoDaNoticia(i) {
+  const c = dados();
+  if (!c.ids) {
+    c.ids = buscarJSON(`${c.base}/anos/ids.json`).then((r) => (r.ok ? r.json() : {}))
+      .then((d) => { const m = new Map(); for (const [a, lista] of Object.entries(d)) for (const x of lista) m.set(x, a); return m; })
+      .catch(() => { c.ids = null; return new Map(); });
+  }
+  return (await c.ids).get(i);
+}
+async function buscarNoticia(i) {
+  const n = dados().porI.get(i);
+  if (n) return n;
+  const a = await anoDaNoticia(i);
+  return a ? ((await anoArquivo(a))._porI || new Map()).get(i) || null : null;
+}
 // Notícia com os campos completos (link original, resumo inteiro, links das outras fontes),
 // que o feed publicado deixa em det/.
 async function noticiaCompleta(i) {
-  const n = dados().porI.get(i);
+  const n = await buscarNoticia(i);
   if (!n) return null;
   const t = await detalhe(i);
   const c = { ...n };
@@ -374,7 +405,8 @@ function paginaCategoria(s) {
 }
 
 function meses() {
-  const { feed } = dados();
+  const { feed, indice } = dados();
+  if (indice && indice.meses) return Object.entries(indice.meses).filter(([ym]) => ym >= '2006').sort((a, b) => b[0].localeCompare(a[0]));
   const m = new Map();
   for (const n of feed.noticias) if (n.d && n.d >= '2006') m.set(n.d.slice(0, 7), (m.get(n.d.slice(0, 7)) || 0) + 1);
   return [...m].sort((a, b) => b[0].localeCompare(a[0]));
@@ -398,10 +430,13 @@ ${[...anos].map(([a, ms]) => `<div class="section-head"><h2>${a}</h2></div><ul c
   return { html: pagina({ titulo: 'Relatórios mensais de apreensões | Radar das Apreensões', descricao: 'Relatórios mensais automáticos das apreensões noticiadas no Brasil: rankings por estado, tipos e maiores apreensões.', canonico: '/relatorios', atual: 'Relatórios', corpo }), canonico: '/relatorios' };
 }
 
-function paginaRelatorio(ym) {
-  const { feed } = dados();
+async function paginaRelatorio(ym) {
+  const { feed, indice } = dados();
   if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(ym)) return null;
-  const itens = feed.noticias.filter((n) => n.d && n.d.startsWith(ym));
+  // Mês anterior ao feed.json: junta o arquivo do ano (sem repetir as que estão nos dois).
+  const doAno = indice && indice.recorte && ym < indice.recorte.slice(0, 7) + '~' ? await anoArquivo(ym.slice(0, 4)) : [];
+  const vistos = new Set();
+  const itens = [...doAno, ...feed.noticias].filter((n) => n.d && n.d.startsWith(ym) && !vistos.has(n.i) && vistos.add(n.i));
   if (!itens.length) return null;
   const cats = feed.categorias;
   const porUf = {}, porCat = {};
@@ -494,7 +529,7 @@ module.exports = async (req, res) => {
     else if (tipo === 'cidade') r = paginaCidade(id.toUpperCase(), (u.searchParams.get('cidade') || '').toLowerCase());
     else if (tipo === 'categoria') r = paginaCategoria(id.toLowerCase());
     else if (tipo === 'relatorios') r = paginaRelatorios();
-    else if (tipo === 'relatorio') r = paginaRelatorio(id);
+    else if (tipo === 'relatorio') r = await paginaRelatorio(id);
     else if (tipo === 'institucional') r = paginaInstitucional(id);
   } catch (e) {
     console.error(e);

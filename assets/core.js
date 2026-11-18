@@ -187,10 +187,51 @@ export function carregarFeed(arquivo = 'feed.json', { novo = false } = {}) {
       .sort((a, b) => (b.data?.getTime() || 0) - (a.data?.getTime() || 0));
     ctx.porIndice = new Map(ctx.noticias.map((n) => [n.i, n]));
     ctx.parcial = Boolean(dados.parcial);
+    ctx.recorte = dados.recorte || '';  // feed parcial: notícias a partir desta data (o resto em anos/)
     return ctx;
   });
   if (!novo) feeds.set(arquivo, feedPromise);
   return feedPromise;
+}
+
+/** anos/indice.json: contagens por ano e mês do acervo inteiro e a data de corte do feed.json. */
+let indicePromise = null;
+export const indiceAnos = () => (indicePromise ??= fetch('anos/indice.json').then((r) => (r.ok ? r.json() : null)).catch(() => null));
+
+/**
+ * O feed.json traz só os últimos meses; os anos anteriores ficam em anos/AAAA.json e entram
+ * no mesmo contexto quando o leitor pede (filtro de ano, busca em todo o acervo, Observatório).
+ * anos: lista de anos (números ou textos); devolve o ctx com as notícias somadas.
+ */
+const anosCarregando = new Map();
+export async function carregarAnos(ctx, anos, aoProgresso) {
+  const indice = await indiceAnos();
+  const arquivos = new Set(indice?.arquivos || []);
+  const faltam = [...new Set(anos.map(String))].filter((a) => arquivos.has(a) && !(ctx.anosCarregados ??= new Set()).has(a));
+  let feitos = 0;
+  await Promise.all(faltam.map((a) => {
+    if (!anosCarregando.has(a)) {
+      anosCarregando.set(a, fetch(`anos/${a}.json`).then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }));
+    }
+    return anosCarregando.get(a).then((dados) => {
+      if (ctx.anosCarregados.has(a)) return;
+      ctx.anosCarregados.add(a);
+      for (const raw of dados.noticias || []) {
+        if (ctx.porIndice.has(raw.i)) continue;
+        const n = preparar(raw, ctx);
+        ctx.noticias.push(n);
+        ctx.porIndice.set(n.i, n);
+      }
+      aoProgresso?.(++feitos, faltam.length);
+    }).catch(() => { anosCarregando.delete(a); });
+  }));
+  if (faltam.length) ctx.noticias.sort((a, b) => (b.data?.getTime() || 0) - (a.data?.getTime() || 0));
+  return ctx;
+}
+/** Anos que estão (ao menos em parte) fora do feed.json. */
+export async function anosForaDoFeed() {
+  const indice = await indiceAnos();
+  return (indice?.arquivos || []).map(Number);
 }
 
 // ---------- cabeçalho comum ----------
@@ -198,7 +239,11 @@ export function iniciarCabecalho(ctxPromise) {
   const hoje = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Sao_Paulo' });
   if ($('hoje')) $('hoje').textContent = hoje.charAt(0).toUpperCase() + hoje.slice(1);
   ctxPromise.then((ctx) => {
-    if ($('atualizado') && ctx.atualizado) $('atualizado').textContent = `Atualizado ${relativo(ctx.atualizado)} · ${num(ctx.noticias.length)} notícias`;
+    if (!$('atualizado') || !ctx.atualizado) return;
+    $('atualizado').textContent = `Atualizado ${relativo(ctx.atualizado)} · ${num(ctx.noticias.length)} notícias`;
+    indiceAnos().then((ind) => {  // total do acervo inteiro (todos os anos)
+      if (ind?.total) $('atualizado').textContent = `Atualizado ${relativo(ctx.atualizado)} · ${num(ind.total)} notícias`;
+    });
   }).catch(() => {});
   const form = $('formBusca');
   form?.addEventListener('submit', (e) => {
