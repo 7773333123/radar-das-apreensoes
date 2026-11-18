@@ -353,6 +353,61 @@ def nomes_proprios(titulo):
     return saida
 
 
+_LUGARES = None
+# Nomes próprios comuns que não identificam um fato (facções, países, regiões, meses).
+NOMES_COMUNS = set('''comando vermelho primeiro capital terceiro puro brasil paraguai bolivia colombia peru argentina
+uruguai venezuela china estados unidos europa africa norte sul nordeste sudeste centro oeste regiao metropolitana
+janeiro fevereiro marco abril maio junho julho agosto setembro outubro novembro dezembro natal carnaval pascoa
+operacao fase nova deus sao santa santo dom'''.split())
+
+
+def lugares():
+    """Radicais das palavras dos nomes de municípios e estados (não distinguem um fato de outro)."""
+    global _LUGARES
+    if _LUGARES is None:
+        _LUGARES = set()
+        try:
+            import json as _json
+            from pathlib import Path as _P
+            mun = _json.loads((_P(__file__).resolve().parent / 'municipios.json').read_text(encoding='utf-8'))
+            nomes = [c for lista in mun.values() for c in (lista if isinstance(lista, list) else list(lista))]
+        except Exception:
+            nomes = []
+        estados = '''acre alagoas amapa amazonas bahia ceara distrito federal espirito santo goias maranhao mato grosso
+        minas gerais para paraiba parana pernambuco piaui rio janeiro grande norte sul rondonia roraima santa catarina
+        sao paulo sergipe tocantins'''.split()
+        for nome in nomes + estados:
+            for w in normal(str(nome)).split():
+                if len(w) > 2:
+                    _LUGARES.add(radical(w))
+        _LUGARES |= {radical(w) for w in NOMES_COMUNS}
+    return _LUGARES
+
+
+LOCAL_ANTES = set('''no na nos nas em bairro conjunto residencial complexo beco comunidade morro favela vila jardim
+parque loteamento setor presidio penitenciaria aldeia distrito rua avenida rodovia'''.split())
+
+
+def nomes_raros(titulo):
+    """Nomes próprios do título que identificam o fato (pessoa, empresa, filme), sem lugares:
+    fora cidades/estados/países e nomes que vêm depois de "no", "na", "bairro", "complexo"..."""
+    validos = nomes_proprios(titulo)
+    if not validos:
+        return set()
+    saida, local, anterior = set(), False, ''
+    for w in re.findall(r"[A-Za-zÀ-ÿ][\wÀ-ÿ'’-]*", titulo):
+        nw = normal(w)
+        if w[0].isupper():
+            if not local and anterior not in ('',) and normal(anterior) in LOCAL_ANTES:
+                local = True  # começa um nome de lugar
+            if not local and radical(nw) in validos:
+                saida.add(radical(nw))
+        elif nw not in ('do', 'da', 'de', 'dos', 'das'):
+            local = False  # palavra comum: termina a sequência de nome
+        anterior = w
+    return saida - lugares()
+
+
 def _numero(w):
     try:
         return float(w)
@@ -403,6 +458,17 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
         if len(especificas) >= 2 and jac >= 0.3 and not mesmo_veiculo:
             fortes += 1
             motivos.append('título específico na mesma cidade')
+    # Dois ou mais nomes próprios raros em comum no título (filme "Dark Horse", nome de
+    # empresa ou pessoa), fora cidades, estados, países e facções: o mesmo fato.
+    nomes_r = nomes_raros(a['t']) & nomes_raros(b['t'])
+    if nomes_r:  # nome de operação já conta como "mesma operação": não conta duas vezes
+        ops_t = a['_ops'] if '_ops' in a else {x for x, _ in operacoes(a['t'])}
+        ops_t = ops_t | (b['_ops'] if '_ops' in b else {x for x, _ in operacoes(b['t'])})
+        nomes_r -= {radical(w) for x in ops_t for w in x.split()}
+    if len(nomes_r) >= 2 and jac >= 0.5 and not (a.get('f') and a.get('f') == b.get('f')):
+        nota += 1
+        fortes += 1
+        motivos.append('mesmos nomes próprios')
     numeros = {w for w in (inf_a & inf_b) if w[0].isdigit() and w not in ANOS and _numero(w) is not None
                and (_numero(w) >= 100 or _numero(w) != int(_numero(w)))}
     if numeros:
