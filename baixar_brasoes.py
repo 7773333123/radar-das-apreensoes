@@ -51,6 +51,8 @@ for uf, nome in ESTADOS.items():
                                   f'Polícia Civil do Estado de {nome}', f'Polícia Civil {nome}'], ['civil'])
 # Arquivos do Commons escolhidos à mão (quando a busca acha o item errado ou sem imagem).
 MANUAL = {}
+# Conferidos à mão e recusados (imagem de outra unidade ou ilegível): ficam com o nome do órgão.
+RECUSADOS = {'bpfron', 'pc-mt', 'pc-ma'}
 
 
 def normal(t):
@@ -113,6 +115,8 @@ def main():
     PASTA.mkdir(parents=True, exist_ok=True)
     origem = {}
     for chave, (buscas, palavras) in ALVOS.items():
+        if chave in RECUSADOS:
+            continue
         uf = chave.split('-')[1].upper() if chave[:3] in ('pm-', 'pc-') else None
         if chave in MANUAL:
             arquivo, qid, rotulo, prop = MANUAL[chave], '', 'manual', 'manual'
