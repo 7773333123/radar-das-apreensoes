@@ -85,6 +85,14 @@ AVANCADOS = [
     # Mesmo estado, valores muito diferentes: não se juntam.
     ({'t': 'PRF apreende 2 toneladas de maconha na BR-163', 'd': '2026-10-20', 'uf': 'MS', '_q': {'mac': 2000.0}},
      {'t': 'DOF apreende 500 kg de maconha em Ponta Porã', 'd': '2026-10-21', 'uf': 'MS', '_q': {'mac': 500.0}}, False),
+    # Mesmo fato em veículos diferentes com nomes próprios raros em comum (caso real, 18/11/2026).
+    ({'t': 'PF deflagra nova fase da operação sobre o desvio de emendas no filme Dark Horse', 'd': '2026-11-18'},
+     {'t': 'Operação da PF mira desvio de emendas para filme “Dark Horse”', 'd': '2026-11-18'}, True),
+    ({'t': 'PF faz nova operação sobre suspeita de desvio de emendas ligada ao filme Dark Horse', 'd': '2026-11-18'},
+     {'t': "Operação da Polícia Federal investiga desvio de emendas para o filme 'Dark Horse'", 'd': '2026-11-18'}, True),
+    # Nomes de lugar ou facção em comum não bastam.
+    ({'t': 'PRF apreende cocaína em carro na BR-277 em Foz do Iguaçu', 'd': '2026-11-18', 'uf': 'PR'},
+     {'t': 'Receita apreende cocaína em ônibus na Ponte da Amizade em Foz do Iguaçu', 'd': '2026-11-18', 'uf': 'PR'}, False),
 ]
 
 
