@@ -1,5 +1,5 @@
 /* Observatório: KPIs, mapa, evolução, rankings e maiores apreensões, com filtros na URL. */
-import { $, esc, num, qtd, dataBR, ESTADOS, NOME_UF, carregarFeed, iniciarCabecalho, renderMapa, ranking, serie, urlNoticia } from './core.js';
+import { $, esc, num, qtd, dataBR, ESTADOS, NOME_UF, carregarFeed, carregarAnos, anosForaDoFeed, indiceAnos, iniciarCabecalho, renderMapa, ranking, serie, urlNoticia } from './core.js';
 import { iniciarLeitor } from './leitor.js';
 
 const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
@@ -11,13 +11,15 @@ const METRICAS = {
   arm: { nome: 'Armas de fogo', un: 'un', valor: (n) => n.q?.arm || 0 },
   mun: { nome: 'Munições', un: 'un', valor: (n) => n.q?.mun || 0 },
 };
-const st = { ctx: null, f: { p: '12m', uf: '', cat: '', org: '', m: 'n' } };
+const st = { ctx: null, f: { p: '6m', uf: '', cat: '', org: '', m: 'n' } };
 const fmt = (m, v) => (METRICAS[m].un === 'n' ? `${num(v)} ${v === 1 ? 'notícia' : 'notícias'}` : qtd(v, METRICAS[m].un));
 
 function periodo(p) {
   const agora = new Date();
   const ini = (meses) => new Date(Date.UTC(agora.getUTCFullYear(), agora.getUTCMonth() - meses + 1, 1));
   if (p === '30d') return { ini: new Date(Date.now() - 30 * 86400000), fim: agora, diario: true, nome: 'últimos 30 dias' };
+  // 6 meses: o mesmo período do feed.json (não precisa baixar nenhum ano à parte).
+  if (p === '6m') return { ini: st.ctx?.recorte ? new Date(st.ctx.recorte + 'T00:00:00Z') : ini(6), fim: agora, nome: 'últimos 6 meses' };
   if (p === '12m') return { ini: ini(12), fim: agora, nome: 'últimos 12 meses' };
   if (p === '24m') return { ini: ini(24), fim: agora, nome: 'últimos 24 meses' };
   if (/^\d{4}$/.test(p)) return { ini: new Date(Date.UTC(+p, 0, 1)), fim: new Date(Date.UTC(+p + 1, 0, 1) - 1), nome: p };
@@ -36,10 +38,23 @@ function lerHash() {
 }
 function escreverHash() {
   const h = new URLSearchParams();
-  for (const [k, v] of Object.entries(st.f)) if (v && !(k === 'p' && v === '12m') && !(k === 'm' && v === 'n')) h.set(k, v);
+  for (const [k, v] of Object.entries(st.f)) if (v && !(k === 'p' && v === '6m') && !(k === 'm' && v === 'n')) h.set(k, v);
   history.replaceState(history.state, '', h.toString() ? '#' + h : location.pathname);
 }
-function definir(parcial) { Object.assign(st.f, parcial); escreverHash(); render(); }
+function definir(parcial) { Object.assign(st.f, parcial); escreverHash(); garantirPeriodo().then(render); }
+// O feed.json traz os últimos 6 meses; períodos mais longos carregam os anos que faltam (anos/AAAA.json).
+async function garantirPeriodo() {
+  const per = periodo(st.f.p);
+  if (st.ctx.recorte && per.ini >= new Date(st.ctx.recorte + 'T00:00:00Z')) return;  // cabe no feed.json
+  const fora = await anosForaDoFeed();
+  const precisa = fora.filter((a) => a >= per.ini.getUTCFullYear() && a <= per.fim.getUTCFullYear() &&
+    !(st.ctx.anosCarregados || new Set()).has(String(a)));
+  if (!precisa.length) return;
+  $('oKpis').innerHTML = `<p class="note">Carregando ${precisa.length === 1 ? `as notícias de ${precisa[0]}` : `${precisa.length} anos do acervo`}…</p>`;
+  await carregarAnos(st.ctx, precisa, (feitos, total) => {
+    if (total > 1) $('oKpis').innerHTML = `<p class="note">Carregando o acervo… ${feitos}/${total} anos</p>`;
+  });
+}
 
 function render() {
   const { ctx, f } = st;
@@ -84,7 +99,7 @@ function render() {
       pontos.push({ k, curto: `${dia.getUTCDate()}/${dia.getUTCMonth() + 1}`, longo: dataBR(dia), v: 0 });
     }
   } else {
-    const ini = sel.length && f.p === 'tudo' ? new Date(Math.max(per.ini, Math.min(...sel.map((n) => n.data)))) : per.ini;
+    const ini = sel.length && f.p === 'tudo' ? new Date(Math.max(per.ini, sel.reduce((m, n) => Math.min(m, n.data.getTime()), Infinity))) : per.ini;
     for (let d = new Date(Date.UTC(ini.getUTCFullYear(), ini.getUTCMonth(), 1)); d <= per.fim; d = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1))) {
       pontos.push({ k: d.toISOString().slice(0, 7), curto: `${MESES[d.getUTCMonth()]}${d.getUTCMonth() === 0 || pontos.length === 0 ? '/' + String(d.getUTCFullYear()).slice(2) : ''}`, longo: `${MESES_L[d.getUTCMonth()]} de ${d.getUTCFullYear()}`, v: 0 });
     }
@@ -117,8 +132,10 @@ async function iniciar() {
   const promessa = carregarFeed();
   iniciarCabecalho(promessa);
   try { st.ctx = await promessa; } catch (e) { $('oKpis').innerHTML = '<p class="empty">Não foi possível carregar os dados.</p>'; return; }
-  const anos = [...new Set(st.ctx.noticias.map((n) => n.ano).filter((a) => a >= 2006))].sort((a, b) => b - a);
-  $('oPeriodo').innerHTML = [['30d', 'Últimos 30 dias'], ['12m', 'Últimos 12 meses'], ['24m', 'Últimos 24 meses'], ...anos.map((a) => [String(a), String(a)]), ['tudo', 'Todo o acervo']]
+  const ind = await indiceAnos();
+  const anos = [...new Set([...Object.keys(ind?.anos || {}).map(Number), ...st.ctx.noticias.map((n) => n.ano)])]
+    .filter((a) => a >= 2006).sort((a, b) => b - a);
+  $('oPeriodo').innerHTML = [['30d', 'Últimos 30 dias'], ['6m', 'Últimos 6 meses'], ['12m', 'Últimos 12 meses'], ['24m', 'Últimos 24 meses'], ...anos.map((a) => [String(a), String(a)]), ['tudo', 'Todo o acervo']]
     .map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
   $('oEstado').insertAdjacentHTML('beforeend', ESTADOS.map(([uf, n]) => `<option value="${uf}">${esc(n)}</option>`).join(''));
   $('oTipo').insertAdjacentHTML('beforeend', st.ctx.categorias.map((c, k) => `<option value="${k}">${esc(c)}</option>`).join(''));
@@ -127,7 +144,7 @@ async function iniciar() {
   $('oEstado').addEventListener('change', (e) => definir({ uf: e.target.value }));
   $('oTipo').addEventListener('change', (e) => definir({ cat: e.target.value }));
   $('oOrgao').addEventListener('change', (e) => definir({ org: e.target.value }));
-  $('oLimpar').addEventListener('click', () => definir({ p: '12m', uf: '', cat: '', org: '' }));
+  $('oLimpar').addEventListener('click', () => definir({ p: '6m', uf: '', cat: '', org: '' }));
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-m],[data-uf],[data-cat],[data-org]');
     if (!b || b.tagName !== 'BUTTON') return;
@@ -139,5 +156,6 @@ async function iniciar() {
   st.f = lerHash();
   render();
   iniciarLeitor(st.ctx);
+  garantirPeriodo().then(render);
 }
 iniciar();
