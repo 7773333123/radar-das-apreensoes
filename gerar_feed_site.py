@@ -331,7 +331,7 @@ def _chave_foto(url):
 # foto buscada na matéria entra no lugar.
 CAPA_GENERICA = re.compile(r'(?:^|[/_-])(?:logo|logotipo|brasao|default|og-?image|share|avatar|placeholder|'
                            r'thumb_\d+x\d+_agbrasil|default-meta-image|sem-?imagem|no-?image)[\w.-]*(?:\.(?:png|jpe?g|webp|svg)|$)|'
-                           r'/api/og-image|/thumb\.php$|/img$', re.I)
+                           r'/api/og-image|/thumb\.php$|/img$|/(?:None|null|undefined)$', re.I)
 
 
 BLOCO_FIXO = re.compile(
@@ -346,12 +346,22 @@ def limpar_bloco_fixo(texto):
 
 
 def contar_capas_genericas(noticias, limite=6):
-    """Capa (imagem principal) repetida em 6+ notícias de 3+ dias: arte padrão, não foto do fato."""
-    vistas = {}
+    """Capa (imagem principal) repetida em 6+ notícias de 3+ dias: arte padrão, não foto do fato.
+    Também: o MESMO veículo usando a mesma imagem em 3+ notícias de títulos diferentes, em 3+
+    dias diferentes (foto de arquivo da GCM, arte de categoria do portal)."""
+    vistas, por_site = {}, {}
     for n in noticias:
         if isinstance(n, dict) and n.get('imagem_url'):
-            vistas.setdefault(_chave_foto(str(n['imagem_url'])), []).append(str(n.get('data_iso') or '')[:10])
-    return {f for f, dias in vistas.items() if len(dias) >= limite and len(set(dias)) >= 3}
+            chave = _chave_foto(str(n['imagem_url']))
+            dia = str(n.get('data_iso') or '')[:10]
+            vistas.setdefault(chave, []).append(dia)
+            site = str(n.get('dominio_fonte') or n.get('fonte') or '').lower().removeprefix('www.')
+            por_site.setdefault((chave, site), []).append((dia, str(n.get('titulo') or '')[:60].lower()))
+    genericas = {f for f, dias in vistas.items() if len(dias) >= limite and len(set(dias)) >= 3}
+    for (f, _), lista in por_site.items():
+        if len({t for _, t in lista}) >= 3 and len({d for d, _ in lista if d}) >= 3:
+            genericas.add(f)
+    return genericas
 
 
 def contar_fotos_repetidas(noticias, limite=3):
