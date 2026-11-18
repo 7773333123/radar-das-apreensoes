@@ -88,6 +88,10 @@ AVANCADOS = [
     # Mesmo fato em veículos diferentes com nomes próprios raros em comum (caso real, 18/11/2026).
     ({'t': 'PF deflagra nova fase da operação sobre o desvio de emendas no filme Dark Horse', 'd': '2026-11-18'},
      {'t': 'Operação da PF mira desvio de emendas para filme “Dark Horse”', 'd': '2026-11-18'}, True),
+    # O texto de um só lado cita "Operação Dark Horse": não anula os nomes em comum.
+    ({'t': 'PF faz nova operação sobre suspeita de desvio de emendas ligada ao filme Dark Horse', 'd': '2026-11-18',
+      '_lead': 'A Polícia Federal deflagrou nesta terça a nova fase da Operação Dark Horse.'},
+     {'t': "PF faz nova operação sobre suspeita de desvio de emendas para filme 'Dark Horse'", 'd': '2026-11-18'}, True),
     ({'t': 'PF faz nova operação sobre suspeita de desvio de emendas ligada ao filme Dark Horse', 'd': '2026-11-18'},
      {'t': "Operação da Polícia Federal investiga desvio de emendas para o filme 'Dark Horse'", 'd': '2026-11-18'}, True),
     # Nomes de lugar ou facção em comum não bastam.
