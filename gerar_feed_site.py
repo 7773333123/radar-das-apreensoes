@@ -420,6 +420,14 @@ def relatorio_coleta(saida, origem_por_i, destino, dias=30):
 def main():
     dados = json.loads(ORIGEM.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
+    # Acervo em partes (acervo.py): a parte "quente" gera só as notícias recentes (e as sem
+    # data); as mais antigas estão na parte do ano delas, que gera o próprio pedaço do site.
+    import acervo
+    if acervo.parte_baixada() == 'quente' and (acervo.ponteiro().get('partes') or {}):
+        corte = acervo.corte_quente()
+        antes_corte = len(noticias)
+        noticias = [n for n in noticias if not isinstance(n, dict) or not n.get('data_iso') or str(n['data_iso'])[:10] >= corte]
+        print(f'Parte quente: {len(noticias)} notícias desde {corte} ({antes_corte - len(noticias)} antigas ficam com a parte do ano)')
     fontes = json.loads(FONTES_JSON.read_text(encoding='utf-8')).get('fontes', []) if FONTES_JSON.exists() else []
     saida, links, ocultas, portugal, pagas = [], {}, 0, 0, 0
     usados = set()

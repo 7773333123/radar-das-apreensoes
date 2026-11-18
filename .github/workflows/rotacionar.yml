@@ -1,0 +1,25 @@
+name: Rotacionar o acervo (diário)
+# Notícias que passaram de 45 dias saem da parte quente e vão para a parte do ano delas.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 7 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: rotacionar-acervo
+  cancel-in-progress: false
+jobs:
+  rotacionar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet numpy
+      - name: Rotacionar
+        run: python acervo.py rotacionar
