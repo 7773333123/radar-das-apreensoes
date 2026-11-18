@@ -97,7 +97,8 @@ def calibrar(juiz, arquivo):
         v, r1, r2 = juiz.julgar(c['a'], c['b'])
         certo = (v == 'mesmo') == c['mesmo']
         acertos += certo
-        print(f"{'OK ' if certo else 'ERRO'} esperado={'mesmo' if c['mesmo'] else 'diferente'} juiz={v} | "
+        conf = f"{r1.get('mesmo_fato')}/{r1.get('confianca')}" + (f" {r2.get('mesmo_fato')}/{r2.get('confianca')}" if r2 else '')
+        print(f"{'OK ' if certo else 'ERRO'} esperado={'mesmo' if c['mesmo'] else 'diferente'} juiz={v} [{conf}] | "
               f"{c['a'][2][:60]} | {c['b'][2][:60]} | {r1.get('motivo', '')[:90]}", flush=True)
         if v == 'mesmo' and not c['mesmo']:
             juntou_errado.append(c)
@@ -136,7 +137,8 @@ def main():
             'v': v, 'c': int(r1.get('confianca', 0)), 'm': str(r1.get('motivo', ''))[:160],
             'em': datetime.now(timezone.utc).isoformat(timespec='seconds'),
             't': [s['a'][2][:120], s['b'][2][:120]]}
-        print(f"{v:9} {s['a'][1][:20]:20} {s['a'][2][:55]:55} | {s['b'][1][:20]:20} {s['b'][2][:55]} | {r1.get('motivo', '')[:80]}",
+        conf = f"{r1.get('mesmo_fato')}/{r1.get('confianca')}" + (f" {r2.get('mesmo_fato')}/{r2.get('confianca')}" if r2 else '')
+        print(f"{v:9} [{conf}] {s['a'][1][:20]:20} {s['a'][2][:55]:55} | {s['b'][1][:20]:20} {s['b'][2][:55]} | {r1.get('motivo', '')[:80]}",
               flush=True)
     # Guarda só as decisões dos últimos 60 dias (o auditor olha as notícias recentes).
     limite = datetime.now(timezone.utc).timestamp() - 60 * 86400
