@@ -121,6 +121,8 @@ button, input, select { font: inherit; color: inherit; }
 .ph span { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .ph-org { color: var(--ink-2); }
 .ph-org svg { opacity: .8; color: var(--accent); }
+.ph-org:has(.brasao) { display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.ph-org .brasao { flex: 0 1 auto; min-height: 0; height: auto; max-height: 58%; max-width: 70%; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0,0,0,.18)); }
 .ph-org span { font-size: 13px; letter-spacing: .06em; text-align: center; padding: 0 12px; }
 
 .lead { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; padding-top: 28px; }

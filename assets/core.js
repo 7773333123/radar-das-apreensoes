@@ -1,3 +1,4 @@
+import { BRASOES } from './brasoes.js';
 /* Radar das Apreensões — núcleo compartilhado (dados, utilidades, mapa e gráficos). */
 export const $ = (id) => document.getElementById(id);
 export const ESTADOS = [
@@ -52,16 +53,24 @@ export const ICONES = [
   I('<path d="M8 40h32M10 36h28M12 20h24v16H12zM8 20l16-12 16 12"/><path d="M18 24v8M24 24v8M30 24v8"/>'),
   I('<circle cx="20" cy="20" r="11"/><path d="M28 28l12 12"/>'),
 ];
-// Sem foto: o nome da instituição que fez a ação (texto do Radar, não o brasão oficial);
-// sem órgão identificado, a editoria.
+// Sem foto: o brasão oficial da instituição que fez a ação (img/brasoes, conferidos à mão) e o
+// nome dela; sem brasão disponível, um escudo genérico; sem órgão identificado, a editoria.
+const CHAVE_BRASAO = { 'Polícia Rodoviária Federal': 'prf', 'Polícia Federal': 'pf', 'Receita Federal': 'receita',
+  'Força Nacional': 'forca-nacional', 'Marinha': 'marinha', 'Exército': 'exercito', 'Polícia Militar': 'pm-', 'Polícia Civil': 'pc-' };
+function brasao(orgao, uf) {
+  let k = CHAVE_BRASAO[orgao];
+  if (!k) return '';
+  if (k.endsWith('-')) k = uf ? k + uf.toLowerCase() : '';
+  return k && BRASOES.has(k) ? `<img class="brasao" src="/img/brasoes/${k}.png" alt="" loading="lazy" decoding="async">` : '';
+}
 const ESCUDO = I('<path d="M24 5l15 5v11c0 10-6.5 17.5-15 22-8.5-4.5-15-12-15-22V10z"/><path d="M17 24l5 5 9-10"/>');
-function marcador(c, orgao) {
+function marcador(c, orgao, uf = '') {
   return orgao
-    ? `<div class="ph ph-org" role="img" aria-label="Sem foto: ${esc(orgao)}">${ESCUDO}<span>${esc(orgao)}</span></div>`
+    ? `<div class="ph ph-org" role="img" aria-label="Sem foto: ${esc(orgao)}">${brasao(orgao, uf) || ESCUDO}<span>${esc(orgao)}</span></div>`
     : `<div class="ph" role="img" aria-label="Sem foto: ${esc(CURTO[c])}">${ICONES[c]}<span>${esc(CURTO[c])}</span></div>`;
 }
 export function placeholder(n) {
-  return marcador(n.cats[0] ?? 8, n.orgao);
+  return marcador(n.cats[0] ?? 8, n.orgao, n.uf);
 }
 export const imgTag = (src, alt = '', extra = '') =>
   `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" ${extra}>`;
@@ -69,7 +78,7 @@ export function midia(n, { contador = false } = {}) {
   // Sem foto ainda: o servidor busca a foto da matéria original (cache de 7 dias); se não houver, vira o marcador.
   const foto = n.img ? imgTag(n.img, '', 'data-ph') : imgTag(`/api/foto?i=${n.i}`, '', 'data-ph');
   const extra = contador && n.nFotos > 1 ? `<span class="count">${n.nFotos} fotos</span>` : '';
-  return `<div class="media" data-cat="${n.cats[0] ?? 8}"${n.orgao ? ` data-org="${esc(n.orgao)}"` : ''}>${foto}${extra}</div>`;
+  return `<div class="media" data-cat="${n.cats[0] ?? 8}"${n.orgao ? ` data-org="${esc(n.orgao)}" data-uf="${esc(n.uf || '')}"` : ''}>${foto}${extra}</div>`;
 }
 // Foto externa que falha vira o marcador da editoria.
 document.addEventListener('error', (e) => {
@@ -77,7 +86,7 @@ document.addEventListener('error', (e) => {
   if (!(img instanceof HTMLImageElement) || !img.hasAttribute('data-ph')) return;
   const box = img.closest('.media');
   const c = Number(box?.dataset.cat ?? 8);
-  img.outerHTML = marcador(c, box?.dataset.org || '');
+  img.outerHTML = marcador(c, box?.dataset.org || '', box?.dataset.uf || '');
 }, true);
 
 // ---------- dados ----------
