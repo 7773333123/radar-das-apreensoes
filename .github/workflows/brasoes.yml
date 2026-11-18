@@ -1,0 +1,20 @@
+name: Brasões oficiais (manual)
+# Baixa os brasões das instituições (Wikidata/Wikimedia Commons) para img/brasoes/.
+# As imagens são conferidas à mão antes de o site passar a usá-las (assets/brasoes.js).
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  brasoes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python baixar_brasoes.py
+      - run: python acervo.py salvar --sem-dados 'Brasões oficiais das instituições' img/brasoes assets/brasoes.js
