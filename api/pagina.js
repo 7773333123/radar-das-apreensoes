@@ -1,7 +1,7 @@
 // Páginas próprias renderizadas no servidor (para o Google e para compartilhar):
 //   /noticia/<i>-<titulo>    /estado/<UF>    /cidade/<UF>/<cidade>    /categoria/<tipo>
 //   /relatorios              /relatorio/<AAAA-MM>
-// Lê feed.json, feed_links.json e det/ empacotados com a função (vercel.json).
+// Lê feed.json, feed_links.json e det/ publicados pelo próprio site (por HTTP, com cache).
 const fs = require('fs');
 const path = require('path');
 
@@ -22,30 +22,73 @@ const MATERIAIS = [['coc', 'Cocaína', 'kg'], ['mac', 'Maconha', 'kg'], ['skh', 
   ['arm', 'Armas de fogo', 'un'], ['mun', 'Munições', 'un']];
 
 // ---------- dados (em memória enquanto a função estiver aquecida) ----------
+// As funções não levam cópia dos dados (limite de 250 MB da Vercel): buscam os arquivos
+// estáticos já publicados pelo próprio site (/feed.json, /det/<lote>.json, /feed_links.json).
+const VALIDADE = 5 * 60e3;
 let cache = null;
+let carregando = null;
+function base(req) {
+  if (process.env.RADAR_DADOS_BASE) return process.env.RADAR_DADOS_BASE.replace(/\/$/, '');
+  const h = req && req.headers ? String(req.headers['x-forwarded-host'] || req.headers.host || '') : '';
+  return /^[a-z0-9.-]+(:\d+)?$/i.test(h) && !/^localhost|^127\./.test(h) ? `https://${h}` : SITE;
+}
+async function buscarJSON(url, opcoes = {}) {
+  const r = await fetch(url, { ...opcoes, signal: AbortSignal.timeout(9000) });
+  return r;
+}
+async function carregar(req) {
+  if (cache && Date.now() - cache.t < VALIDADE) return cache;
+  if (carregando) return carregando;
+  carregando = (async () => {
+    const b = base(req);
+    try {
+      const r = await buscarJSON(`${b}/feed.json`, { headers: cache && cache.etag ? { 'If-None-Match': cache.etag } : {} });
+      if (r.status === 304 && cache) { cache.t = Date.now(); return cache; }
+      if (!r.ok) throw new Error(`feed.json: HTTP ${r.status}`);
+      const feed = await r.json();
+      const porI = new Map(feed.noticias.map((n) => [n.i, n]));
+      cache = { t: Date.now(), etag: r.headers.get('etag'), base: b, feed, porI, links: null, det: new Map() };
+      return cache;
+    } catch (e) {
+      if (cache) { cache.t = Date.now() - VALIDADE + 60e3; return cache; }  // usa o que tem; tenta em 1 min
+      throw e;
+    }
+  })().finally(() => { carregando = null; });
+  return carregando;
+}
 function dados() {
-  const arq = path.join(RAIZ, 'feed.json');
-  const mtime = fs.statSync(arq).mtimeMs;
-  if (cache && cache.mtime === mtime) return cache;
-  const feed = JSON.parse(fs.readFileSync(arq, 'utf8'));
-  const porI = new Map(feed.noticias.map((n) => [n.i, n]));
-  cache = { mtime, feed, porI, links: null, det: new Map() };
+  if (!cache) throw new Error('dados ainda não carregados (chame carregar)');
   return cache;
 }
-function links() {
+async function links() {
   const c = dados();
   if (!c.links) {
-    try { c.links = JSON.parse(fs.readFileSync(path.join(RAIZ, 'feed_links.json'), 'utf8')); } catch { c.links = {}; }
+    c.links = buscarJSON(`${c.base}/feed_links.json`).then((r) => (r.ok ? r.json() : {})).catch(() => { c.links = null; return {}; });
   }
   return c.links;
 }
-function detalhe(i) {
+async function detalhe(i) {
   const c = dados();
   const lote = i % 256; // mesmo LOTES de gerar_feed_site.py
   if (!c.det.has(lote)) {
-    try { c.det.set(lote, JSON.parse(fs.readFileSync(path.join(RAIZ, 'det', `${lote}.json`), 'utf8'))); } catch { c.det.set(lote, {}); }
+    if (c.det.size >= 48) c.det.delete(c.det.keys().next().value);  // guarda no máximo 48 lotes
+    c.det.set(lote, buscarJSON(`${c.base}/det/${lote}.json`).then((r) => (r.ok ? r.json() : {}))
+      .catch(() => { c.det.delete(lote); return {}; }));
   }
-  return c.det.get(lote)[String(i)] || {};
+  return (await c.det.get(lote))[String(i)] || {};
+}
+// Notícia com os campos completos (link original, resumo inteiro, links das outras fontes),
+// que o feed publicado deixa em det/.
+async function noticiaCompleta(i) {
+  const n = dados().porI.get(i);
+  if (!n) return null;
+  const t = await detalhe(i);
+  const c = { ...n };
+  if (t.u) c.u = t.u;
+  if (t.r) c.r = t.r;
+  if (t.o) c.o = t.o;
+  if (!c.u) { const l = (await links())[i]; if (l) c.u = l; }
+  return { n: c, t };
 }
 
 // ---------- utilidades ----------
@@ -66,7 +109,7 @@ function cidades() {
 }
 // Só vão para o índice do Google as notícias com conteúdo próprio relevante: o
 // Google penaliza sites com milhares de páginas parecidas e pouco valor próprio.
-const indexavel = (n) => Boolean(n.x || n.q || (n.o && n.o.length) || (n.r && n.r.length >= 200) || n.g);
+const indexavel = (n) => Boolean(n.x || n.q || (n.o && n.o.length) || (n.r && (n.r.length >= 200 || n.r.endsWith('…'))) || n.g);
 const data = (n) => (n.d ? new Date(n.d.length === 16 ? n.d + 'Z' : n.d) : null);
 const fmtData = (d, hora = false) => (d ? d.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: 'numeric', month: 'long', year: 'numeric',
   ...(hora ? { hour: '2-digit', minute: '2-digit' } : {}) }) : '');
@@ -185,7 +228,7 @@ async function completar(n, t) {
   if (!falta && !poucasFotos) return t;
   try {
     const { lerNoticia } = require('./_extrair.js');
-    const r = await Promise.race([lerNoticia(n, links()[n.i]), new Promise((ok) => setTimeout(() => ok(null), 4500))]);
+    const r = await Promise.race([lerNoticia(n, (await links())[n.i]), new Promise((ok) => setTimeout(() => ok(null), 4500))]);
     if (!r) return t;
     const novo = { ...t };
     if (falta && r.p) Object.assign(novo, { p: r.p, l: r.l });
@@ -205,12 +248,13 @@ function compartilharHTML(n) {
 }
 
 async function paginaNoticia(i) {
-  const { feed, porI } = dados();
-  const n = porI.get(i);
-  if (!n) return null;
+  const { feed } = dados();
+  const comp = await noticiaCompleta(i);
+  if (!comp) return null;
+  const { n } = comp;
   const cats = feed.categorias;
-  const t = await completar(n, detalhe(i));
-  const url = urlOk(n.u) || urlOk(t._u || '') || urlOk(links()[i] || '');
+  const t = await completar(n, comp.t);
+  const url = urlOk(n.u) || urlOk(t._u || '');
   const d = data(n);
   const fotos = (Array.isArray(t.g) && t.g.length ? t.g : [n.img]).map(urlOk).filter(Boolean);
   const f = t.f || {};
@@ -444,6 +488,7 @@ module.exports = async (req, res) => {
   const id = u.searchParams.get('id') || '';
   let r = null;
   try {
+    await carregar(req);
     if (tipo === 'noticia') r = await paginaNoticia(Number((id.match(/^\d+/) || [''])[0]));
     else if (tipo === 'estado') r = paginaEstado(id.toUpperCase());
     else if (tipo === 'cidade') r = paginaCidade(id.toUpperCase(), (u.searchParams.get('cidade') || '').toLowerCase());
@@ -468,6 +513,8 @@ module.exports = async (req, res) => {
 };
 module.exports.dados = dados;
 module.exports.links = links;
+module.exports.carregar = carregar;
+module.exports.noticiaCompleta = noticiaCompleta;
 module.exports.urlNoticia = urlNoticia;
 module.exports.indexavel = indexavel;
 module.exports.meses = meses;

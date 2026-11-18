@@ -126,7 +126,7 @@ function enxugarParaNavegador() {
   }
   const enxutos = enxugarParaNavegador();
   // A Vercel publica a pasta public/: páginas, arquivos estáticos e os dados.
-  // (As funções em api/ leem os dados da raiz, por includeFiles.)
+  // (As funções em api/ buscam estes mesmos arquivos publicados, por HTTP.)
   const PUB = path.join(RAIZ, 'public');
   fs.rmSync(PUB, { recursive: true, force: true });
   fs.mkdirSync(PUB);

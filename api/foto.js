@@ -1,16 +1,16 @@
 // /api/foto?i=<id>: foto principal da matéria original (miniatura das listas para notícias ainda
 // sem foto). Redireciona para a imagem do veículo; cache de 7 dias na Vercel.
-const { dados, links } = require('./pagina.js');
+const { carregar, noticiaCompleta } = require('./pagina.js');
 const { lerNoticia } = require('./_extrair.js');
 
 module.exports = async (req, res) => {
   const i = Number(new URL(req.url, 'https://x').searchParams.get('i'));
-  const { feed } = dados();
-  const item = Number.isFinite(i) && (feed._porId ||= new Map(feed.noticias.map((n) => [n.i, n]))).get(i);
+  let item = null;
+  try { await carregar(req); item = Number.isFinite(i) && ((await noticiaCompleta(i)) || {}).n; } catch (e) { console.error(e); }
   try {
     if (!item) throw new Error('id');
     if (item.img) { res.statusCode = 302; res.setHeader('Location', item.img); res.setHeader('Cache-Control', 'public, s-maxage=604800'); return res.end(); }
-    const r = await lerNoticia(item, links()[i]);
+    const r = await lerNoticia(item, item.u);
     if (!r || !r.img) throw new Error('sem foto');
     res.statusCode = 302;
     res.setHeader('Location', r.img);

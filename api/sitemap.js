@@ -1,10 +1,11 @@
 // /sitemap.xml gerado a partir do feed: páginas fixas, estados, cidades, tipos, relatórios e notícias.
-const { dados, urlNoticia, indexavel, meses, SLUG_CAT, ESTADOS, cidades, urlCidade } = require('./pagina.js');
+const { carregar, dados, urlNoticia, indexavel, meses, SLUG_CAT, ESTADOS, cidades, urlCidade } = require('./pagina.js');
 
 const SITE = 'https://www.radardasapreensoes.com.br';
 const esc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
+  await carregar(req);
   const { feed } = dados();
   const hoje = new Date().toISOString().slice(0, 10);
   const urls = [

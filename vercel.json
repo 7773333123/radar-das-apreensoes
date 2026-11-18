@@ -61,23 +61,20 @@
   ],
   "functions": {
     "api/pagina.js": {
-      "includeFiles": "{feed.json,feed_links.json,det/**}",
       "memory": 1024,
-      "maxDuration": 15
+      "maxDuration": 20
     },
     "api/sitemap.js": {
-      "includeFiles": "feed.json",
-      "maxDuration": 10
+      "maxDuration": 20,
+      "memory": 1024
     },
     "api/materia.js": {
-      "includeFiles": "{feed.json,feed_links.json}",
       "memory": 1024,
-      "maxDuration": 15
+      "maxDuration": 20
     },
     "api/foto.js": {
-      "includeFiles": "{feed.json,feed_links.json}",
       "memory": 1024,
-      "maxDuration": 15
+      "maxDuration": 20
     }
   },
   "rewrites": [
