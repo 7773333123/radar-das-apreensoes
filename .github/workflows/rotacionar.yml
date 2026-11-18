@@ -12,7 +12,7 @@ concurrency:
 jobs:
   rotacionar:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 300  # a primeira rotação moveu 95 mil notícias (mais de 90 min)
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
