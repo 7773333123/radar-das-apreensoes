@@ -24,14 +24,14 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: Baixar o acervo (release "dados")
-        run: python acervo.py baixar
       - name: Escolher o ano da vez
         id: ano
         run: |
           ANO=$(python -c "import json;print(json.load(open('historico_cursor.json'))['proximo_ano'])")
           echo "ano=$ANO" >> "$GITHUB_OUTPUT"
           echo "Ano desta execução: $ANO"
+      - name: Baixar a parte do acervo deste ano (release "dados")
+        run: python acervo.py baixar --parte "$(python acervo.py parte-de ${{ steps.ano.outputs.ano }}-01)"
       - name: Buscar notícias do ano (Google Notícias, mês a mês)
         run: python coletor.py --historico --ano ${{ steps.ano.outputs.ano }}
       - name: Buscar arquivos oficiais do ano (gov.br; PF desde ~2015)

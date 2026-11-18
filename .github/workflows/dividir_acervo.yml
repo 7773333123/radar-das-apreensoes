@@ -1,0 +1,23 @@
+name: Dividir o acervo em partes (manual, uma vez)
+# Separa o acervo único em parte quente (últimos 45 dias) + uma parte por ano (acervo.py dividir).
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: dividir-acervo
+  cancel-in-progress: false
+jobs:
+  dividir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet numpy
+      - name: Dividir
+        run: python acervo.py dividir

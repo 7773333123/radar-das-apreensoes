@@ -19,11 +19,11 @@ permissions:
   contents: write
 concurrency:
   group: publicar-site
-  cancel-in-progress: true
+  cancel-in-progress: false
 jobs:
   publicar:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 120
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -33,11 +33,7 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: Baixar o acervo (release "dados")
-        run: python acervo.py baixar
       - name: Testar a regra de duplicidade
         run: python testes/test_duplicatas.py && python classificar.py
-      - name: Regenerar o feed do site
-        run: python gerar_feed_site.py
-      - name: Salvar
-        run: python acervo.py salvar 'Regenerar o site com a regra atualizada'
+      - name: Regenerar o site de todas as partes do acervo (recente e cada ano)
+        run: python acervo.py regenerar 'Regenerar o site com a regra atualizada'

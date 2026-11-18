@@ -28,8 +28,6 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install --quiet googlenewsdecoder pillow numpy
-      - name: Baixar o acervo (release "dados")
-        run: python acervo.py baixar
       - name: Mês da vez
         id: c
         run: |
@@ -46,6 +44,8 @@ jobs:
           # Pausa manual (arquivo retroativo_pausa no repositório): não coleta nem dispara a seguinte.
           print(f"fim={'sim' if c['mes'] < c['ate'] or os.path.exists('retroativo_pausa') else 'nao'}")
           PY
+      - name: Baixar a parte do acervo deste mês (release "dados")
+        run: python acervo.py baixar --parte "$(python acervo.py parte-de ${{ steps.c.outputs.mes }})"
       - name: Arquivo dos sites dos veículos (WordPress)
         if: steps.c.outputs.fim == 'nao' && steps.c.outputs.wp == 'nao'
         continue-on-error: true
