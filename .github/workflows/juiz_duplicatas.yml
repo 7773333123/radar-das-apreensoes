@@ -21,7 +21,7 @@ concurrency:
 jobs:
   juiz:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     env:
       GH_TOKEN: ${{ github.token }}
       MODELO_REPO: bartowski/Qwen2.5-7B-Instruct-GGUF
@@ -53,11 +53,21 @@ jobs:
             python -c "from huggingface_hub import hf_hub_download as h; import os; h(os.environ['MODELO_REPO'], os.environ['MODELO_ARQ'], local_dir=os.path.expanduser('~/modelo'))"
           fi
           ls -la ~/modelo
-      - name: Calibração (pares conferidos à mão)
-        run: python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --calibrar testes/juiz_casos.json
-      - name: Julgar os pares em dúvida
-        if: ${{ !inputs.so_calibrar }}
-        run: python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --tempo-max 2100
+      - name: Calibração (uma vez por dia) e julgamento dos pares em dúvida
+        run: |
+          if [ "${{ inputs.so_calibrar }}" = "true" ]; then
+            python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --calibrar testes/juiz_casos.json --so-calibrar
+          else
+            python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --calibrar testes/juiz_casos.json --tempo-max 2400
+          fi
       - name: Gravar as decisões
         if: ${{ !inputs.so_calibrar }}
         run: python acervo.py salvar --sem-dados 'Juiz de duplicatas (IA)' juiz_decisoes.json
+      # O agendamento do GitHub falha com frequência: o juiz chama a próxima rodada sozinho
+      # (a concorrência impede duas ao mesmo tempo). Sem pares novos, espera 20 min antes.
+      - name: Próxima rodada
+        if: ${{ success() && !inputs.so_calibrar }}
+        run: |
+          git pull -q origin main || true
+          if python juiz_duplicatas.py --so-contar | grep -q '^PENDENTES=0$'; then sleep 1200; fi
+          gh workflow run juiz_duplicatas.yml --ref main
