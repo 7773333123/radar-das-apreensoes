@@ -352,7 +352,7 @@ function paginaLista({ titulo, h1, intro, itens, canonico, atual, rodape = '', i
   const recentes = [...itens].sort((a, b) => (b.d || '').localeCompare(a.d || '')).slice(0, 60);
   const corpo = `<header class="pg-head"><h1 class="art-titulo">${esc(h1)}</h1><p class="dek">${esc(intro)}</p></header>
 <div class="duas"><section class="panel"><h3>Últimos 30 dias</h3>${kpis(r30)}</section><section class="panel"><h3>Últimos 12 meses</h3>${kpis(r365)}</section></div>
-<p class="note">Estimativa: soma das quantidades citadas nas notícias, sem duplicatas. Entre as notícias de tráfico de drogas, cerca de uma em cada cinco informa a quantidade apreendida; apreensões de pequenas porções cujo peso não consta da ocorrência não entram na contabilização do site. Substâncias descritas como análogas a uma droga são contabilizadas como a própria droga. A leitura automática pode conter imprecisões, e os números não constituem estatística oficial.</p>
+<p class="note">Valores estimados com base nas quantidades informadas pela imprensa. Apreensões sem peso divulgado não integram a soma. Dados de caráter informativo, sem valor de estatística oficial.</p>
 <div class="section-head"><h2>Notícias mais recentes</h2><span class="count">${num(itens.length)} no acervo</span></div>${lista(recentes, feed.categorias)}${rodape}`;
   return pagina({ titulo: `${titulo} | Radar das Apreensões`, descricao: intro, canonico, atual, corpo, indexar });
 }
@@ -454,7 +454,7 @@ async function paginaRelatorio(ym) {
     `<li><span class="rot">${rotulo(k)}</span><span class="bar"><i style="width:${Math.max(2, (v / max) * 100).toFixed(1)}%"></i></span><span class="val">${num(v)}</span></li>`).join('')}</ol>`;
   const corpo = `<header class="pg-head"><p class="kicker">Relatório mensal</p><h1 class="art-titulo">Apreensões noticiadas em ${esc(nomeMes(ym))}</h1>
 <p class="dek">${num(itens.length)} notícias de apreensões no Brasil, sem duplicatas${topUf[0] ? `; ${esc(ESTADOS[topUf[0][0]])} foi o estado com mais registros (${num(topUf[0][1])})` : ''}${topCat[0] ? ` e ${esc(cats[topCat[0][0]].toLowerCase())} o tipo mais frequente (${num(topCat[0][1])})` : ''}.</p></header>
-${emFormacao(ym, itens.length) ? AVISO_COBERTURA : ''}${kpis(itens)}<p class="note">Estimativa: soma das quantidades citadas nas notícias, sem duplicatas. Entre as notícias de tráfico de drogas, cerca de uma em cada cinco informa a quantidade apreendida; apreensões de pequenas porções cujo peso não consta da ocorrência não entram na contabilização do site. Substâncias descritas como análogas a uma droga são contabilizadas como a própria droga. A leitura automática pode conter imprecisões, e os números não constituem estatística oficial.</p>
+${emFormacao(ym, itens.length) ? AVISO_COBERTURA : ''}${kpis(itens)}<p class="note">Valores estimados com base nas quantidades informadas pela imprensa. Apreensões sem peso divulgado não integram a soma. Dados de caráter informativo, sem valor de estatística oficial.</p>
 <div class="duas"><section class="panel"><h3>Estados com mais notícias</h3>${barra(topUf, topUf[0] ? topUf[0][1] : 1, (uf) => `<a href="/estado/${uf}">${esc(ESTADOS[uf])}</a>`)}</section>
 <section class="panel"><h3>Tipos de apreensão</h3>${barra(topCat, topCat[0] ? topCat[0][1] : 1, (c) => `<a href="/categoria/${SLUG_CAT[c]}">${esc(cats[c])}</a>`)}</section></div>
 ${maiores.length ? `<div class="section-head"><h2>Maiores apreensões noticiadas</h2></div><div class="duas">${maiores.map(([nome, u, l]) =>
