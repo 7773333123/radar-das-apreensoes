@@ -60,6 +60,50 @@ function juntarPartes(origem) {
   console.log(`Site montado de ${nomes.length} partes: ${feed.total} notícias`);
 }
 
+// Arquivo que o navegador baixa (busca, filtros, Observatório): só o necessário para listar e
+// buscar. O link original, o resumo completo e os links das outras fontes vão para det/ (que o
+// leitor carrega ao abrir a notícia); as funções em api/ continuam lendo o feed.json completo.
+const RESUMO_LISTA = 200;
+function cortarResumo(r) {
+  if (!r || r.length <= RESUMO_LISTA) return r;
+  return r.slice(0, RESUMO_LISTA).replace(/\s+\S*$/, '') + '…';
+}
+function enxugarParaNavegador() {
+  const feed = JSON.parse(fs.readFileSync(path.join(RAIZ, 'feed.json'), 'utf8'));
+  const lotes = {};
+  const det = (i) => {
+    const lote = `${Number(i) % 256}.json`;
+    if (!lotes[lote]) {
+      const arq = path.join(RAIZ, 'det', lote);
+      lotes[lote] = fs.existsSync(arq) ? JSON.parse(fs.readFileSync(arq, 'utf8')) : {};
+    }
+    return (lotes[lote][String(i)] ??= {});
+  };
+  const enxuto = (n) => {
+    const y = { ...n };
+    if (n.u || n.r || (n.o || []).some((o) => o[1])) {
+      const d = det(n.i);
+      if (n.u) d.u = n.u;
+      if (n.r && n.r.length > RESUMO_LISTA) d.r = n.r;
+      if ((n.o || []).some((o) => o[1])) d.o = n.o;
+    }
+    if (y.u) { delete y.u; y.uh = 1; }  // tem link original (o servidor busca a foto por ele)
+    if (y.r) y.r = cortarResumo(y.r);
+    if (y.o) y.o = y.o.map((o) => [o[0], '', o[2]]);
+    return y;
+  };
+  const leve = { ...feed, noticias: feed.noticias.map(enxuto) };
+  for (const [lote, conteudo] of Object.entries(lotes)) fs.writeFileSync(path.join(RAIZ, 'det', lote), JSON.stringify(conteudo));
+  const saida = { 'feed.json': JSON.stringify(leve) };
+  const arqRecente = path.join(RAIZ, 'feed-recente.json');
+  if (fs.existsSync(arqRecente)) {
+    const r = JSON.parse(fs.readFileSync(arqRecente, 'utf8'));
+    saida['feed-recente.json'] = JSON.stringify({ ...r, noticias: r.noticias.map(enxuto) });
+  }
+  console.log(`Feed para o navegador: ${(saida['feed.json'].length / 1e6).toFixed(1)} MB (completo: ${(fs.statSync(path.join(RAIZ, 'feed.json')).size / 1e6).toFixed(1)} MB)`);
+  return saida;
+}
+
 (async () => {
   const versao = JSON.parse(fs.readFileSync(path.join(RAIZ, 'dados_versao.json'), 'utf8'));
   if (!versao.site) throw new Error('dados_versao.json sem a versão do site');
@@ -80,6 +124,7 @@ function juntarPartes(origem) {
   for (const f of ['feed.json', 'feed_links.json', 'det']) {
     if (!fs.existsSync(path.join(RAIZ, f))) throw new Error(`faltou ${f} no pacote ${versao.site}`);
   }
+  const enxutos = enxugarParaNavegador();
   // A Vercel publica a pasta public/: páginas, arquivos estáticos e os dados.
   // (As funções em api/ leem os dados da raiz, por includeFiles.)
   const PUB = path.join(RAIZ, 'public');
@@ -90,5 +135,6 @@ function juntarPartes(origem) {
   for (const f of estaticos) {
     if (fs.existsSync(path.join(RAIZ, f))) fs.cpSync(path.join(RAIZ, f), path.join(PUB, f), { recursive: true });
   }
+  for (const [nome, conteudo] of Object.entries(enxutos)) fs.writeFileSync(path.join(PUB, nome), conteudo);
   console.log(`Dados do site prontos: ${pacotes.length} pacote(s) (versão de ${versao.atualizado_em}); public/: ${estaticos.length} itens`);
 })().catch((e) => { console.error(e); process.exit(1); });

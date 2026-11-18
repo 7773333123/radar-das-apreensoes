@@ -88,7 +88,7 @@ function preparar(raw, ctx) {
   const uf = NOME_UF[raw.uf] ? raw.uf : '';
   const n = {
     i: raw.i, titulo: raw.t, fonte: raw.f || 'Fonte não informada', resumo: raw.r || '',
-    url: urlSegura(raw.u || ''), img: urlSegura(raw.img || ''), uf, cats, data,
+    url: urlSegura(raw.u || ''), temLink: Boolean(raw.u || raw.uh), img: urlSegura(raw.img || ''), uf, cats, data,
     texto: raw.x === 1, nFotos: raw.g || (raw.img ? 1 : 0),
     outras: Array.isArray(raw.o) ? raw.o.filter((o) => Array.isArray(o) && o[0]) : [],
     q: raw.q || null, ag: raw.ag || [], orgao: (raw.ag || []).map((a) => ctx.orgaos?.[a]).find(Boolean) || '', rd: raw.rd || '', vq: raw.vq || 0, cidade: uf ? raw.cid || '' : '', polo: raw.fr || '', prioridadeFr: raw.frp || 9,
@@ -127,7 +127,7 @@ function mesmaMateria(a, b, mesmoUf) {
   const numero = comuns(a.qt, b.qt) > 0 || [...a.inf].some((w) => /^\d+$/.test(w) && b.inf.has(w));
   return inf >= 3 && inf / Math.max(1, Math.min(a.inf.size, b.inf.size)) >= 0.75 && (mesmoUf || numero) && (inf >= 4 || numero);
 }
-const pontos = (n) => (n.texto ? 8 : 0) + Math.min(n.nFotos || 0, 5) * 2 + (n.url ? 3 : 0) + (n.uf ? 1 : 0) + (n.resumo ? 1 : 0);
+const pontos = (n) => (n.texto ? 8 : 0) + Math.min(n.nFotos || 0, 5) * 2 + (n.temLink ? 3 : 0) + (n.uf ? 1 : 0) + (n.resumo ? 1 : 0);
 function deduplicar(lista) {
   const pai = lista.map((_, k) => k);
   const raiz = (k) => { while (pai[k] !== k) { pai[k] = pai[pai[k]]; k = pai[k]; } return k; };

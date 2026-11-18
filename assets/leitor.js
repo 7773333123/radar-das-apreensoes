@@ -185,6 +185,18 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
     montarGaleria(n, n.img ? [n.img] : []);
     carregarDetalhe(n.i).then((t) => {
       if (c.dataset.i !== String(n.i)) return;
+      // O arquivo leve do navegador não traz o link original, o resumo completo nem os links das
+      // outras fontes: vêm aqui, com os detalhes da notícia.
+      const u = urlSegura(t.u || '');
+      if (u && !n.url) { n.url = u; $('leitorLink').href = u; $('leitorLink').removeAttribute('aria-disabled'); }
+      if (t.r && t.r.length > (n.resumo || '').length) n.resumo = t.r;
+      if (Array.isArray(t.o)) {
+        for (const [, url, k] of t.o) {
+          const a = c.querySelector(`[data-outra="${Number(k)}"]`);
+          const v = urlSegura(url || '');
+          if (a && v && a.getAttribute('href') === '#') a.href = v;
+        }
+      }
       if (Array.isArray(t.g) && t.g.length > 1) montarGaleria(n, t.g.map(urlSegura).filter(Boolean));
       $('leitorRadar').innerHTML = fichaHTML(n, t);
       $('leitorTexto').innerHTML = fonteHTML(n, t);
@@ -209,6 +221,9 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
         }
       });
     });
+    // Depois dos detalhes (que já trazem os links), o que faltar vem de feed_links.json.
+    carregarDetalhe(n.i).then(() => {
+    if (c.dataset.i !== String(n.i)) return;
     const semLink = [...c.querySelectorAll('[data-outra]')].filter((a) => a.getAttribute('href') === '#');
     if (semLink.length || !n.url) {
       carregarLinks().then((links) => {
@@ -222,6 +237,7 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
         }
       });
     }
+    });
     $('leitorLink').addEventListener('click', (e) => { if (e.currentTarget.getAttribute('aria-disabled') === 'true') e.preventDefault(); });
     $('compartilhar').addEventListener('click', async () => {
       const link = `${location.origin}${urlNoticia(n)}`;
