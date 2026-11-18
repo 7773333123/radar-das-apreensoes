@@ -462,8 +462,9 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
     # empresa ou pessoa), fora cidades, estados, países e facções: o mesmo fato.
     nomes_r = nomes_raros(a['t']) & nomes_raros(b['t'])
     if nomes_r:  # nome de operação já conta como "mesma operação": não conta duas vezes
-        ops_t = a['_ops'] if '_ops' in a else {x for x, _ in operacoes(a['t'])}
-        ops_t = ops_t | (b['_ops'] if '_ops' in b else {x for x, _ in operacoes(b['t'])})
+        # Só a operação citada nas duas (essa já conta como "mesma operação").
+        ops_t = (a['_ops'] if '_ops' in a else {x for x, _ in operacoes(a['t'])}) & \
+            (b['_ops'] if '_ops' in b else {x for x, _ in operacoes(b['t'])})
         nomes_r -= {radical(w) for x in ops_t for w in x.split()}
     if len(nomes_r) >= 2 and jac >= 0.5 and not (a.get('f') and a.get('f') == b.get('f')):
         nota += 1
