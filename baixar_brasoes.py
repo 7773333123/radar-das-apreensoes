@@ -75,7 +75,9 @@ def item_wikidata(buscas, palavras, uf=None):
             {'action': 'wbsearchentities', 'search': busca, 'language': 'pt', 'uselang': 'pt', 'limit': 8, 'format': 'json'}))
         for c in r.get('search', []):
             rotulo = normal(c.get('label', '') + ' ' + c.get('description', ''))
-            if all(p in rotulo for p in palavras) and (not estado or estado in normal(c.get('label', ''))):
+            # O nome do estado no FIM do rótulo (evita Mato Grosso x Mato Grosso do Sul, Pará x Paraná).
+            fim = re.sub(r'\s+', ' ', normal(c.get('label', ''))).strip()
+            if all(p in rotulo for p in palavras) and (not estado or fim.endswith(re.sub(r'\s+', ' ', estado).strip())):
                 return c['id'], c.get('label', '')
     return None, None
 
