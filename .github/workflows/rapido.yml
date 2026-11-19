@@ -56,6 +56,11 @@ jobs:
             python coletar_feeds_estaduais.py || echo 'Feeds com falha; seguindo.'
             # Notícias novas dos feeds vão ao ar já (em poucos minutos), sem esperar as etapas
             # lentas (busca no Google, links, leitura das matérias), que salvam de novo no fim.
+            # Antes de publicar, a foto de cada notícia nova passa pela comparação de imagens
+            # (duplicatas por foto e por recorte); a que não foi analisada espera (gerar_feed_site.py).
+            if [ "$(sha1sum noticias.json | cut -c1-40)" != "$antes" ]; then
+              python hash_imagens.py --limite 300 --trabalhadores 16 --timeout 8 >/dev/null || true
+            fi
             if [ "$(sha1sum noticias.json | cut -c1-40)" != "$antes" ] && python testes/test_duplicatas.py >/dev/null \
                && python gerar_feed_site.py >/dev/null && python compactar_acervo.py >/dev/null; then
               python acervo.py salvar "Coleta rápida (rodada $ciclo, notícias novas)" feeds_saude.json \

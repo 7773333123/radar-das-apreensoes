@@ -275,6 +275,9 @@ from duplicatas import agrupar as _agrupar, mesma_materia, normal as _normal  # 
 
 from datetime import datetime as _dt, timedelta as _td, timezone as _tz  # noqa: E402
 RECENTE_AUDITORIA = (_dt.now(_tz.utc) - _td(days=5)).isoformat()[:10]
+# Análise antes da publicação: notícia das últimas 6 h com foto ainda não analisada (dHash e
+# recorte, hash_imagens.py) espera a análise para não entrar no site como duplicata.
+PENDENTE_DESDE = (_dt.now(_tz.utc) - _td(hours=6)).isoformat()[:19]
 BLOQUEIO_LEITURA = re.compile(r'^(?:erro_HTTPError|http_4\d\d|texto_insuficiente|nao_html|erro_nao_html|.*robots.*|.*bloque.*|.*paywall.*)$')
 
 
@@ -594,6 +597,9 @@ def main():
             if n.get('img_iguais') and fotos and fotos[0] == url_publica(n.get('imagem_url')):  # não vale logotipo
                 item['_iguais'] = list(n['img_iguais'])
         item['_lead'] = str(n.get('trecho') or resumo)[:600]
+        if (n.get('imagem_url') and not n.get('img_dhash') and int(n.get('img_dhash_tentativas') or 0) < 2
+                and str(data or '')[:19] >= PENDENTE_DESDE):
+            item['_pend'] = 1  # foto ainda não analisada (duas falhas de download liberam)
         if do_titulo:
             q = {k: v for k, v in quantidades(do_titulo).items() if k != 'val'}
             if q:
@@ -645,6 +651,14 @@ def main():
     removidas |= {it['i'] for it in bloqueadas}
     antes -= len(bloqueadas)
     print(f'Sem conteúdo publicável (veículo bloqueia a leitura ou link não encontrado): {len(bloqueadas)} fora do site')
+    # Análise antes da publicação: notícia recente cuja foto ainda não passou pela comparação de
+    # imagens fica fora até a próxima rodada (se já foi agrupada com outra versão, sai normalmente).
+    pendentes = [it for it in saida if it.get('_pend') and not it.get('o')]
+    if pendentes:
+        saida = [it for it in saida if not (it.get('_pend') and not it.get('o'))]
+        removidas |= {it['i'] for it in pendentes}
+        antes -= len(pendentes)
+    print(f'Aguardando a análise da foto (duplicatas por imagem): {len(pendentes)} fora do site até a próxima rodada')
     # Padrão do site: nenhuma notícia sem foto E sem conteúdo (trecho da reportagem ou texto
     # integral). Fica no acervo e entra no site assim que a leitura trouxer foto ou trecho
     # (de qualquer versão da mesma notícia: o agrupamento já copiou a foto de outra fonte).
@@ -658,7 +672,7 @@ def main():
         antes -= len(vazias)
     print(f'Sem foto e sem conteúdo (aguardando leitura): {len(vazias)} fora do site')
     for item in saida:
-        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag'):
+        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend'):
             item.pop(k, None)
     for lote in list(detalhes):
         for chave in [c for c in detalhes[lote] if int(c) in removidas]:
