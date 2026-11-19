@@ -122,6 +122,10 @@
     {
       "source": "/sitemap.xml",
       "destination": "/api/sitemap"
+    },
+    {
+      "source": "/sitemap-noticias.xml",
+      "destination": "/api/sitemap?tipo=noticias"
     }
   ],
   "redirects": [
