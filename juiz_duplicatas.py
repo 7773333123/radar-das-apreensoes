@@ -145,6 +145,23 @@ def calibracao_valida(modelo, casos):
     return bool(c.get('ok')) and c.get('assinatura') == assinatura_calibracao(modelo, casos) and idade < 26 * 3600
 
 
+def situacao_calibracao(modelo, casos):
+    """ok: aprovada (vale); reprovada: esta mesma versão foi reprovada nas últimas 26 h (não
+    recalibra à toa; só uma mudança no juiz, no modelo ou nos casos, ou o dia seguinte, refaz);
+    precisa: nunca calibrada ou vencida."""
+    if calibracao_valida(modelo, casos):
+        return 'ok'
+    if CALIBRACAO.exists():
+        c = json.loads(CALIBRACAO.read_text(encoding='utf-8'))
+        try:
+            idade = time.time() - datetime.fromisoformat(c.get('em', '')).timestamp()
+        except ValueError:
+            idade = 10 ** 9
+        if not c.get('ok') and c.get('assinatura') == assinatura_calibracao(modelo, casos) and idade < 26 * 3600:
+            return 'reprovada'
+    return 'precisa'
+
+
 def calibrar(juiz, arquivo, modelo, shard=None, shards=1, saida=None):
     """Julga os casos conferidos à mão (ou a parte deles desta fatia) e grava o resultado."""
     casos = json.loads(Path(arquivo).read_text(encoding='utf-8'))
@@ -204,7 +221,7 @@ def main():
     args = ap.parse_args()
     inicio = time.monotonic()
     if args.situacao_calibracao:
-        print('CALIBRACAO=' + ('ok' if calibracao_valida(args.modelo, args.calibrar) else 'precisa'))
+        print('CALIBRACAO=' + situacao_calibracao(args.modelo, args.calibrar))
         return
     if args.aprovar:
         aprovar(args.aprovar, args.modelo, args.calibrar)
