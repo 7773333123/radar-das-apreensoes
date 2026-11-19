@@ -67,9 +67,14 @@ def main():
     atual = json.loads(ARQUIVO.read_text(encoding='utf-8'))
     lista_atual = atual['noticias'] if isinstance(atual, dict) else atual
     lista_nossa = nossa['noticias'] if isinstance(nossa, dict) else nossa
-    indice = {chave(n): n for n in lista_atual if isinstance(n, dict)}
-    novas = completadas = ignoradas = 0
     removidas = removidas_pela_rotacao()
+    ignoradas = 0
+    if removidas:  # a versão publicada também não guarda as que já foram para a parte do ano
+        antes = len(lista_atual)
+        lista_atual[:] = [n for n in lista_atual if not (isinstance(n, dict) and marca(chave(n)) in removidas)]
+        ignoradas = antes - len(lista_atual)
+    indice = {chave(n): n for n in lista_atual if isinstance(n, dict)}
+    novas = completadas = 0
     for n in lista_nossa:
         if not isinstance(n, dict):
             continue

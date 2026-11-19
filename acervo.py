@@ -513,6 +513,27 @@ def rotacionar():
     salvar(f'Rotação: {len(movidas)} notícias saíram da parte quente', [ROTACAO_ARQ.name], parte='quente')
 
 
+def limpar_rotacionadas():
+    """Tira da parte quente as notícias que a rotação já levou para a parte do ano delas
+    (rotacao_quente.json), sem refazer as partes dos anos."""
+    import mesclar_acervo
+    removidas = set(json.loads(ROTACAO_ARQ.read_text(encoding='utf-8')).get('removidas', {})) if ROTACAO_ARQ.exists() else set()
+    if not removidas:
+        print('Nenhuma notícia rotacionada registrada.')
+        return
+    configurar_git()
+    garantir_release()
+    baixar(parte='quente')
+    dados, noticias = _ler(ACERVO)
+    restantes = [n for n in noticias if not (isinstance(n, dict) and mesclar_acervo.marca(mesclar_acervo.chave(n)) in removidas)]
+    if len(restantes) == len(noticias):
+        print('A parte quente já está limpa.')
+        return
+    _gravar(ACERVO, dict(dados, noticias=restantes, total=len(restantes)) if isinstance(dados, dict) else restantes)
+    _gerar_parte('quente')
+    salvar(f'Limpeza: {len(noticias) - len(restantes)} notícias já rotacionadas saíram da parte quente', [], parte='quente')
+
+
 def regenerar_todas(msg):
     """Regra do site mudou: regenera o site de todas as partes (o acervo não muda)."""
     partes = ['quente'] + sorted(ponteiro().get('partes') or {}, reverse=True)
@@ -524,7 +545,7 @@ def regenerar_todas(msg):
 
 def main():
     args = sys.argv[1:]
-    if not args or args[0] not in ('baixar', 'salvar', 'dividir', 'rotacionar', 'regenerar', 'parte-de', 'montar'):
+    if not args or args[0] not in ('baixar', 'salvar', 'dividir', 'rotacionar', 'regenerar', 'parte-de', 'montar', 'limpar'):
         raise SystemExit(__doc__)
     parte = None
     if '--parte' in args:
@@ -539,6 +560,8 @@ def main():
         dividir()
     elif args[0] == 'rotacionar':
         rotacionar()
+    elif args[0] == 'limpar':  # tira da parte quente as notícias já rotacionadas
+        limpar_rotacionadas()
     elif args[0] == 'parte-de':  # parte de um mês/data: python acervo.py parte-de 2025-12
         print(parte_de_data(args[1]))
     elif args[0] == 'regenerar':
