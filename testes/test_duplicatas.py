@@ -158,6 +158,23 @@ AVANCADOS = [
     # Número de rodovia em comum não identifica o fato.
     ({'t': 'PRF apreende cocaína em carro na BR-163 em Sorriso', 'd': '2026-11-09', 'uf': 'MT', '_cid': 'Sorriso', '_q': {'cocaina': 3.0}},
      {'t': 'PRF apreende cocaína em caminhão na BR-163 em Sorriso', 'd': '2026-11-09', 'uf': 'MT', '_cid': 'Sorriso', '_q': {'cocaina': 40.0}}, False),
+    # Mesmos fatos no texto, títulos diferentes (Foz do Iguaçu, 19/11/2026: o caso que o usuário mostrou).
+    ({'t': 'PCPR apreende fuzil, pistola e drogas e prende quatro pessoas em Foz do Iguaçu', 'd': '2026-11-19T15:45',
+      'uf': 'PR', '_cid': 'Foz do Iguaçu', '_fx': {'r': ['fuzil'], 'p': 4}},
+     {'t': 'Polícia prende jovem em Foz do Iguaçu após ostentar armas na internet', 'd': '2026-11-19T21:49',
+      'uf': 'PR', '_cid': 'Foz do Iguaçu', '_fx': {'r': ['fuzil'], 'p': 4}}, True),
+    ({'t': 'Jovem de 18 anos ostenta armas nas redes sociais, vira alvo de operação e acaba preso com outras três pessoas no Paraná',
+      'd': '2026-11-19T18:48', 'uf': 'PR', '_cid': 'Foz do Iguaçu', '_fx': {'r': ['fuzil'], 'i': [18]}},
+     {'t': 'Jovem que ostentava armas nas redes é preso em operação no Paraná', 'd': '2026-11-19T19:01',
+      'uf': 'PR', '_cid': 'Foz do Iguaçu', '_fx': {'r': ['fuzil'], 'p': 4, 'i': [18]}}, True),
+    # Dois fuzis apreendidos na mesma cidade e dia, com número de presos diferente: fatos diferentes.
+    ({'t': 'PM prende dois homens com fuzil no bairro Centro', 'd': '2026-11-19', 'uf': 'RJ', '_cid': 'Duque de Caxias',
+      '_fx': {'r': ['fuzil'], 'p': 2}},
+     {'t': 'Operação prende cinco suspeitos e apreende fuzil', 'd': '2026-11-19', 'uf': 'RJ', '_cid': 'Duque de Caxias',
+      '_fx': {'r': ['fuzil'], 'p': 5}}, False),
+    # Só o fuzil em comum, sem outro sinal: não basta.
+    ({'t': 'Polícia encontra fuzil escondido em matagal', 'd': '2026-11-19', 'uf': 'MG', '_cid': 'Contagem', '_fx': {'r': ['fuzil']}},
+     {'t': 'PM prende suspeito com fuzil após perseguição', 'd': '2026-11-19', 'uf': 'MG', '_cid': 'Contagem', '_fx': {'r': ['fuzil']}}, False),
     # O mesmo link da matéria com títulos diferentes (o feed cortou a cidade; caso real, 18/11/2026).
     ({'t': 'Jovem é preso com mais de 1 kg de maconha em Nova Andradina', 'd': '2026-11-18T13:55', 'uf': 'MS',
       'u': 'https://www.radiojotafm.com.br/ivinhema/2026/11/18/jovem-e-preso-com-mais-de-1-kg-de-maconha.html'},

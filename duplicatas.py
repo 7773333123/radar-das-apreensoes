@@ -766,6 +766,47 @@ AREAS_GENERICAS |= {radical(w) for w in '''acre alagoas amapa amazonas bahia cea
     santa catarina sao paulo sergipe tocantins brasil'''.split()}
 
 
+# Itens apreendidos raros o bastante para identificar o fato (junto com cidade e dia).
+ITENS_RAROS = [(k, re.compile(r)) for k, r in (
+    ('fuzil', r'\bfuzi[ls]\b'), ('metralhadora', r'metralhadora'), ('granada', r'\bgranadas?\b'),
+    ('explosivo', r'explosiv|dinamite'), ('drone', r'\bdrones?\b'), ('aeronave', r'\b(avi[aã]o|avi[oõ]es|aeronaves?|helic[oó]pteros?)\b'),
+    ('embarcacao', r'embarca[cç][aãoõ]|\blanchas?\b'), ('ouro', r'\bouro\b'), ('canhao', r'\bcanh[aã]o\b'),
+    ('maquina_fuzil', r'fabrica.*arma|arma.*fabrica'))]
+
+
+RADICAIS_ITENS_RAROS = {radical(w) for w in '''fuzil fuzis metralhadora granada granadas explosivo explosivos drone drones
+    aviao avioes aeronave aeronaves helicoptero embarcacao lancha ouro canhao arma armas apreende apreensao preso presa'''.split()}
+
+
+def fatos_auditor(fatos):
+    """Resumo dos fatos para o auditor: itens raros apreendidos, número de presos e idades."""
+    fatos = fatos or {}
+    texto = normal(' '.join(str(x) for x in fatos.get('apreendido') or []))
+    raros = sorted(k for k, r in ITENS_RAROS if r.search(texto))
+    saida = {}
+    if raros:
+        saida['r'] = raros
+    if isinstance(fatos.get('presos'), int) and fatos['presos'] > 0:
+        saida['p'] = fatos['presos']
+    if fatos.get('idades'):
+        saida['i'] = sorted({int(x) for x in fatos['idades'] if str(x).isdigit()})
+    return saida
+
+
+def mesmos_fatos(fa, fb, radicais_comuns):
+    """Fatos do texto batem: o mesmo item raro apreendido (fuzil, granada, avião...), nada
+    contraditório (número de presos, idades) e mais um sinal: o mesmo número de presos (2 ou
+    mais), a mesma idade ou 2+ palavras do título em comum."""
+    if not fa or not fb or not set(fa.get('r') or ()) & set(fb.get('r') or ()):
+        return False
+    if fa.get('p') and fb.get('p') and fa['p'] != fb['p']:
+        return False
+    if fa.get('i') and fb.get('i') and not set(fa['i']) & set(fb['i']):
+        return False
+    return ((fa.get('p') or 0) >= 2 and fa.get('p') == fb.get('p')) or bool(set(fa.get('i') or ()) & set(fb.get('i') or ())) \
+        or radicais_comuns >= 2
+
+
 def link_da_materia(u):
     """Endereço normalizado de uma matéria; vazio para endereços genéricos (página inicial,
     seções, buscas, agregadores), que não identificam uma notícia."""
@@ -951,6 +992,14 @@ def agrupar(itens, motivos=None):
             cidade |= comuns & lugares()  # cidade só citada no título: o nome dela não distingue
         return bool(comuns - cidade)
 
+    def _radicais_fato(a, b):
+        # Radicais do título em comum, sem a cidade, o estado e partes genéricas.
+        cidade = set(AREAS_GENERICAS)
+        for k in (a, b):
+            cidade |= radicais_titulo(itens[k].get('_cid') or '')
+        cidade |= RADICAIS_ITENS_RAROS  # o próprio item raro já conta como fato
+        return (radicais_titulo(itens[a]['t']) & radicais_titulo(itens[b]['t'])) - cidade
+
     def _jac_titulo(a, b):
         return len(pal[a] & pal[b]) / max(1, len(pal[a] | pal[b]))
 
@@ -1010,6 +1059,12 @@ def agrupar(itens, motivos=None):
             # Mesma cidade do fato (lida nos dois), mesmo dia e o mesmo número no título
             # (5 kg ~ 5,1 kg; 25 kg; "adolescente de 15 anos"): o mesmo fato em veículos diferentes.
             unir(a, b, 'cidade-numero')
+        elif (delta <= 1 and not mesmo_veiculo and itens[a].get('_cid') and itens[a].get('_cid') == itens[b].get('_cid')
+              and mesmos_fatos(itens[a].get('_fx'), itens[b].get('_fx'), len(_radicais_fato(a, b)))):
+            # Mesma cidade do fato, mesmo dia e os mesmos fatos no texto (item raro apreendido e o
+            # mesmo número de presos ou a mesma idade): títulos diferentes do mesmo fato (Foz do
+            # Iguaçu, 19/11/2026: "PCPR apreende fuzil... prende quatro" x "Jovem ostenta armas...").
+            unir(a, b, 'cidade-fatos')
         elif delta <= 2 and _mesma_grande(qs[a], qs[b], 0.1) and mesmo_uf and especificas(a, b):
             # Grande apreensão do mesmo material com valor quase igual (arredondamento), mesmo
             # estado e uma palavra própria em comum (540 kg de cocaína != 600 kg de maconha).
