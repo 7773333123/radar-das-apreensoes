@@ -1,10 +1,10 @@
 name: Juiz de duplicatas (IA própria)
 # Um modelo de IA aberto (Qwen2.5, roda aqui mesmo, sem chave paga) lê os pares que o auditor
 # deixou em dúvida (duplicatas_suspeitas.json) e decide se são o mesmo fato.
-# 1. Calibração (uma vez por dia e sempre que o juiz muda): os casos conferidos à mão
+# 1. Calibração (sempre que o juiz, o modelo ou os casos mudam; e a cada 7 dias): os casos conferidos à mão
 #    (testes/juiz_casos.json) são julgados em 4 partes paralelas; se o juiz juntar algum par
 #    diferente, a versão é reprovada e nada é julgado (juiz_calibracao.json).
-# 2. Julgamento: quatro juízes em paralelo, cada um com a sua fatia dos pares e o seu arquivo
+# 2. Julgamento: 4 juízes em paralelo (6 enquanto a fila passar de 150 pares), cada um com a sua fatia dos pares e o seu arquivo
 #    (juiz_decisoes_<n>.json). Pares novos primeiro (os recentes na frente); depois os que uma
 #    versão anterior deixou em dúvida. As decisões valem na próxima geração do site (10 minutos).
 on:
@@ -38,6 +38,8 @@ jobs:
     outputs:
       calibrar: ${{ steps.s.outputs.calibrar }}
       estado: ${{ steps.s.outputs.estado }}
+      juizes: ${{ steps.f.outputs.juizes }}
+      fatias: ${{ steps.f.outputs.fatias }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -48,8 +50,14 @@ jobs:
           r=$(python juiz_duplicatas.py --situacao-calibracao --modelo "$MODELO_ARQ")
           echo "$r"
           echo "estado=${r#CALIBRACAO=}" >> "$GITHUB_OUTPUT"
-          # Reprovada hoje nesta mesma versão: não recalibra nem julga (aguarda correção ou o dia seguinte).
+          # Reprovada nesta mesma versão: não recalibra nem julga (aguarda correção do juiz).
           if [ "${{ inputs.so_calibrar }}" = "true" ] || [ "$r" = "CALIBRACAO=precisa" ]; then echo calibrar=sim >> "$GITHUB_OUTPUT"; else echo calibrar=nao >> "$GITHUB_OUTPUT"; fi
+      # Fila grande (mais de 150 pares): 6 juízes; senão, 4 (sobra vaga para a coleta no GitHub).
+      - id: f
+        run: |
+          python juiz_duplicatas.py --so-contar --modelo "$MODELO_ARQ" | tee contagem.txt
+          echo "juizes=$(grep '^JUIZES=' contagem.txt | cut -d= -f2)" >> "$GITHUB_OUTPUT"
+          echo "fatias=$(grep '^FATIAS=' contagem.txt | cut -d= -f2)" >> "$GITHUB_OUTPUT"
 
   calibrar:
     needs: situacao
@@ -97,14 +105,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fatia: [0, 1, 2, 3]
+        fatia: ${{ fromJSON(needs.situacao.outputs.fatias || '[0, 1, 2, 3]') }}
     steps:
       - uses: actions/checkout@v5
         with:
           ref: main  # pega a calibração gravada agora
       - uses: ./.github/acoes/modelo-juiz
       - name: Julgar os pares em dúvida (fatia ${{ matrix.fatia }})
-        run: python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --tempo-max 3000 --threads 4 --shard ${{ matrix.fatia }} --shards 4
+        run: python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --tempo-max 3000 --threads 4 --shard ${{ matrix.fatia }} --shards ${{ needs.situacao.outputs.juizes || 4 }}
       - name: Gravar as decisões
         run: python acervo.py salvar --sem-dados "Juiz de duplicatas (IA, fatia ${{ matrix.fatia }})" juiz_decisoes_${{ matrix.fatia }}.json
 
