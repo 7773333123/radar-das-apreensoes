@@ -37,6 +37,7 @@ jobs:
     timeout-minutes: 10
     outputs:
       calibrar: ${{ steps.s.outputs.calibrar }}
+      estado: ${{ steps.s.outputs.estado }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -46,7 +47,9 @@ jobs:
         run: |
           r=$(python juiz_duplicatas.py --situacao-calibracao --modelo "$MODELO_ARQ")
           echo "$r"
-          if [ "${{ inputs.so_calibrar }}" = "true" ] || [ "$r" != "CALIBRACAO=ok" ]; then echo calibrar=sim >> "$GITHUB_OUTPUT"; else echo calibrar=nao >> "$GITHUB_OUTPUT"; fi
+          echo "estado=${r#CALIBRACAO=}" >> "$GITHUB_OUTPUT"
+          # Reprovada hoje nesta mesma versão: não recalibra nem julga (aguarda correção ou o dia seguinte).
+          if [ "${{ inputs.so_calibrar }}" = "true" ] || [ "$r" = "CALIBRACAO=precisa" ]; then echo calibrar=sim >> "$GITHUB_OUTPUT"; else echo calibrar=nao >> "$GITHUB_OUTPUT"; fi
 
   calibrar:
     needs: situacao
@@ -88,7 +91,7 @@ jobs:
 
   juiz:
     needs: [situacao, aprovar]
-    if: ${{ !cancelled() && !inputs.so_calibrar && needs.situacao.result == 'success' && needs.aprovar.result != 'failure' }}
+    if: ${{ !cancelled() && !inputs.so_calibrar && needs.situacao.result == 'success' && needs.aprovar.result != 'failure' && needs.situacao.outputs.estado != 'reprovada' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     strategy:
