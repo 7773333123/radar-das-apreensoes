@@ -644,7 +644,7 @@ def main():
     from duplicatas import SUSPEITAS, JUNTADAS
     (PASTA / 'duplicatas_suspeitas.json').write_text(json.dumps({
         'gerado_em': _dt.now(_tz.utc).isoformat(timespec='seconds'),
-        'juntadas_pelo_auditor': len(JUNTADAS), 'suspeitas': SUSPEITAS[:200]}, ensure_ascii=False, indent=1), encoding='utf-8')
+        'juntadas_pelo_auditor': len(JUNTADAS), 'suspeitas': SUSPEITAS[:600]}, ensure_ascii=False, indent=1), encoding='utf-8')
     print(f'Auditor de duplicatas: {len(JUNTADAS)} pares juntados; {len(SUSPEITAS)} em dúvida (duplicatas_suspeitas.json)')
     bloqueadas = [it for it in saida if it.get('_bloq')]
     saida = [it for it in saida if not it.get('_bloq')]
