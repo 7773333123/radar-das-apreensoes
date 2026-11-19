@@ -14,12 +14,13 @@ async function baixar(nome, destino) {
   for (let k = 1; k <= 5; k++) {
     try {
       const r = await fetch(url, { redirect: 'follow' });
+      if (r.status === 404) throw Object.assign(new Error(`HTTP 404: ${nome}`), { naoExiste: true });
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       fs.writeFileSync(destino, Buffer.from(await r.arrayBuffer()));
       return;
     } catch (e) {
       console.log(`Download de ${nome} falhou (${e.message}); tentativa ${k}/5`);
-      if (k === 5) throw e;
+      if (k === 5 || e.naoExiste) throw e;
       await new Promise((ok) => setTimeout(ok, 3000 * k));
     }
   }
@@ -125,17 +126,45 @@ function escreverDet(pastasDet, extras, destino) {
   return lotes.size;
 }
 
-(async () => {
-  const versao = JSON.parse(fs.readFileSync(path.join(RAIZ, 'dados_versao.json'), 'utf8'));
+// Ponteiro mais novo da main: a coleta apaga os pacotes antigos ao gravar, então um build que
+// começa com um ponteiro velho (deploy de um commit anterior, branch desatualizada) busca o atual.
+async function ponteiroAtual() {
+  const r = await fetch(`https://raw.githubusercontent.com/${REPO}/main/dados_versao.json?t=${Date.now()}`, { cache: 'no-store' });
+  if (!r.ok) throw new Error(`ponteiro da main: HTTP ${r.status}`);
+  return r.json();
+}
+
+async function baixarPacotes(versao) {
   if (!versao.site) throw new Error('dados_versao.json sem a versão do site');
   const tmp = fs.mkdtempSync(path.join(require('os').tmpdir(), 'radar-'));
   const pacotes = [versao.site, ...Object.values(versao.partes || {}).map((p) => p.site).filter(Boolean)];
-  for (const nome of pacotes) {
-    const tgz = path.join(tmp, nome);
-    await baixar(nome, tgz);
-    execFileSync('tar', ['-xzf', tgz, '-C', tmp], { stdio: 'inherit' });
-    fs.rmSync(tgz);
+  try {
+    for (const nome of pacotes) {
+      const tgz = path.join(tmp, nome);
+      await baixar(nome, tgz);
+      execFileSync('tar', ['-xzf', tgz, '-C', tmp], { stdio: 'inherit' });
+      fs.rmSync(tgz);
+    }
+  } catch (e) {
+    fs.rmSync(tmp, { recursive: true, force: true });
+    throw e;
   }
+  return { tmp, pacotes };
+}
+
+(async () => {
+  let versao = JSON.parse(fs.readFileSync(path.join(RAIZ, 'dados_versao.json'), 'utf8'));
+  let baixado = null;
+  for (let tentativa = 1; !baixado; tentativa++) {
+    try {
+      baixado = await baixarPacotes(versao);
+    } catch (e) {
+      if (!e.naoExiste || tentativa >= 4) throw e;
+      console.log(`Pacote já substituído por uma gravação mais nova; usando o ponteiro atual da main (tentativa ${tentativa}).`);
+      versao = await ponteiroAtual();
+    }
+  }
+  const { tmp, pacotes } = baixado;
   // Partes (partes/<parte>/) ou pacote único antigo (tudo na raiz do pacote).
   const pastas = fs.existsSync(path.join(tmp, 'partes'))
     ? fs.readdirSync(path.join(tmp, 'partes')).sort().map((p) => path.join(tmp, 'partes', p)) : [tmp];
