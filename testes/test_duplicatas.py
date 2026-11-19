@@ -175,6 +175,27 @@ AVANCADOS = [
     # Só o fuzil em comum, sem outro sinal: não basta.
     ({'t': 'Polícia encontra fuzil escondido em matagal', 'd': '2026-11-19', 'uf': 'MG', '_cid': 'Contagem', '_fx': {'r': ['fuzil']}},
      {'t': 'PM prende suspeito com fuzil após perseguição', 'd': '2026-11-19', 'uf': 'MG', '_cid': 'Contagem', '_fx': {'r': ['fuzil']}}, False),
+    # A mesma foto recortada/com zoom (fotos_orb.py), títulos genéricos (casos reais, 18-19/11/2026).
+    ({'t': 'Polícia Civil apreende revólver durante operação', 'd': '2026-11-18T18:52', 'uf': 'PR',
+      'img': 'https://midiasudoeste.com.br/arquivos/noticias/32362/P7.jpg',
+      '_mesma': ['https://i0.wp.com/ppnewsfb.com.br/wp-content/uploads/2026/11/Captura.png']},
+     {'t': 'Polícia Civil prende homem por posse irregular de arma de fogo na zona rural de Francisco Beltrão',
+      'd': '2026-11-18T18:10', 'uf': 'PR', '_cid': 'Francisco Beltrão',
+      'img': 'https://i0.wp.com/ppnewsfb.com.br/wp-content/uploads/2026/11/Captura.png',
+      '_mesma': ['https://midiasudoeste.com.br/arquivos/noticias/32362/P7.jpg']}, True),
+    ({'t': 'Encheu a mesa da polícia! Jovem é preso com três tipos de drogas diferentes no Litoral do Paraná',
+      'd': '2026-11-19T16:34', 'uf': 'PR', 'img': 'https://imagens.bandab.com.br/jovem.jpg', '_mesma': ['https://pcpr/b7d5.jpg']},
+     {'t': 'PCPR e PCSC prendem homem por tráfico de drogas e apreendem maconha em Matinhos', 'd': '2026-11-19T16:54',
+      'uf': 'PR', '_cid': 'Matinhos', 'img': 'https://pcpr/b7d5.jpg', '_mesma': ['https://imagens.bandab.com.br/jovem.jpg']}, True),
+    # A mesma foto em cidades do fato diferentes: foto de arquivo, fatos diferentes.
+    ({'t': 'PM apreende drogas em Londrina', 'd': '2026-11-19', 'uf': 'PR', '_cid': 'Londrina',
+      'img': 'https://x/arquivo1.jpg', '_mesma': ['https://y/arquivo2.jpg']},
+     {'t': 'PM apreende drogas em Maringá', 'd': '2026-11-19', 'uf': 'PR', '_cid': 'Maringá',
+      'img': 'https://y/arquivo2.jpg', '_mesma': ['https://x/arquivo1.jpg']}, False),
+    # Foto de banco de imagens (casada com muitas outras): não vale.
+    ({'t': 'Polícia prende suspeito', 'd': '2026-11-19', 'uf': 'PR', 'img': 'https://x/viatura.jpg',
+      '_mesma': ['https://y/v1.jpg', 'https://y/v2.jpg', 'https://y/v3.jpg', 'https://y/v4.jpg']},
+     {'t': 'Homem é detido após denúncia', 'd': '2026-11-19', 'uf': 'PR', 'img': 'https://y/v1.jpg', '_mesma': ['https://x/viatura.jpg']}, False),
     # O mesmo link da matéria com títulos diferentes (o feed cortou a cidade; caso real, 18/11/2026).
     ({'t': 'Jovem é preso com mais de 1 kg de maconha em Nova Andradina', 'd': '2026-11-18T13:55', 'uf': 'MS',
       'u': 'https://www.radiojotafm.com.br/ivinhema/2026/11/18/jovem-e-preso-com-mais-de-1-kg-de-maconha.html'},

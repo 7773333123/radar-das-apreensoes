@@ -39,6 +39,8 @@ def juntar(base, outro):
                 base[campo] = max(int(atual), int(valor))
             except (TypeError, ValueError):
                 pass
+        elif campo == 'img_mesma' and isinstance(valor, dict) and isinstance(atual, dict):
+            base[campo] = {**valor, **atual}  # pares de fotos achados pelas duas coletas
         elif isinstance(valor, list) and isinstance(atual, list) and len(valor) > len(atual):
             base[campo] = valor
         elif campo == 'url_original' and 'news.google.com' in str(atual) and 'news.google.com' not in str(valor):

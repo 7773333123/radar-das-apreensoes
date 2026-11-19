@@ -35,7 +35,14 @@ jobs:
         with:
           python-version: '3.12'
       - name: Instalar decodificador
-        run: python -m pip install --quiet googlenewsdecoder pillow numpy
+        run: python -m pip install --quiet googlenewsdecoder pillow numpy opencv-python-headless
+      # Pontos característicos das fotos recentes (fotos_orb.py): guardados entre execuções.
+      - name: Restaurar a análise das fotos recentes
+        uses: actions/cache/restore@v4
+        with:
+          path: orb_cache
+          key: orb-${{ github.run_id }}
+          restore-keys: orb-
       - name: Disparar coleta completa e histórica
         continue-on-error: true
         run: |
@@ -60,6 +67,7 @@ jobs:
             # (duplicatas por foto e por recorte); a que não foi analisada espera (gerar_feed_site.py).
             if [ "$(sha1sum noticias.json | cut -c1-40)" != "$antes" ]; then
               python hash_imagens.py --limite 300 --trabalhadores 16 --timeout 8 >/dev/null || true
+              python fotos_orb.py --limite 400 --timeout 8 || true  # mesma foto com recorte/zoom
             fi
             if [ "$(sha1sum noticias.json | cut -c1-40)" != "$antes" ] && python testes/test_duplicatas.py >/dev/null \
                && python gerar_feed_site.py >/dev/null && python compactar_acervo.py >/dev/null; then
@@ -81,6 +89,7 @@ jobs:
             # Notícias novas primeiro; o restante relê páginas antigas (trecho de abertura, fotos).
             python ler_materias.py --limite 800 --trabalhadores 10 || true
             python hash_imagens.py --limite 600 --trabalhadores 16 || true  # fotos: duplicatas por imagem
+            python fotos_orb.py --limite 1500 || true  # mesma foto com recorte/zoom, mesmo com título genérico
             if [ "$(sha1sum noticias.json | cut -c1-40)" = "$antes" ]; then
               echo 'Nada novo nesta rodada.'
             elif python testes/test_duplicatas.py && python gerar_feed_site.py && python compactar_acervo.py; then
@@ -93,6 +102,12 @@ jobs:
             espera=$(( INTERVALO - ($(date +%s) - inicio) ))
             [ "$espera" -gt 0 ] && sleep "$espera"
           done
+      - name: Guardar a análise das fotos recentes
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: orb_cache
+          key: orb-${{ github.run_id }}
       - name: Continuar o ciclo
         if: success() || failure()  # cancelado à mão = o ciclo para
         run: gh workflow run rapido.yml --ref main

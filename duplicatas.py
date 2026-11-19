@@ -1109,6 +1109,41 @@ def agrupar(itens, motivos=None):
                     continue
                 unir(a, b, 'foto-recortada')
 
+    # A MESMA FOTO com recorte, zoom ou outro tamanho (fotos_orb.py: pontos característicos em
+    # comum). Caso real de 19/11/2026: veículos republicam o comunicado da polícia com a foto
+    # dela e títulos genéricos ("Polícia Civil apreende revólver durante operação"). Vale com:
+    # mesmo estado nos dois, até 2 dias, veículos diferentes, nada contraditório (materiais,
+    # quantidades, presos, idades) e foto que não seja de banco de imagens (casada com no
+    # máximo 3 outras fotos).
+    for a, it in enumerate(itens):
+        mesmas = it.get('_mesma') or ()
+        if not mesmas or len(mesmas) > 3:
+            continue
+        for url in mesmas:
+            for b in por_foto.get(url, ()):
+                if a == b or raiz(a) == raiz(b) or dia[a] is None or dia[b] is None or abs(dia[a] - dia[b]) > 2:
+                    continue
+                ob = itens[b]
+                if len(ob.get('_mesma') or ()) > 3:
+                    continue
+                if not (it.get('uf') and it.get('uf') == ob.get('uf')):
+                    continue
+                if it.get('f') and it.get('f') == ob.get('f'):
+                    continue  # o mesmo veículo reusa foto de arquivo em matérias diferentes
+                if mats[a] and mats[b] and not (mats[a] & mats[b]):
+                    continue
+                if qt[a] and qt[b] and not compativeis(qt[a], qt[b]):
+                    continue
+                fa, fb = it.get('_fx') or {}, ob.get('_fx') or {}
+                if fa.get('p') and fb.get('p') and fa['p'] != fb['p']:
+                    continue
+                if fa.get('i') and fb.get('i') and not set(fa['i']) & set(fb['i']):
+                    continue
+                ca, cb = it.get('_cid'), ob.get('_cid')
+                if ca and cb and ca != cb:
+                    continue
+                unir(a, b, 'mesma-foto')
+
     # Mesma operação com nome próprio, mesma fase (quando dita), até 1 dia: o mesmo fato,
     # mesmo com títulos e fotos diferentes (grande operação: muitos veículos no mesmo dia).
     # Operação permanente (Hórus, Ágata, Fronteira; ou nome visto em 4+ dias sem fase)
