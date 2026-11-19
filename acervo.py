@@ -35,6 +35,7 @@ from pathlib import Path
 from urllib.request import Request, urlopen
 
 RAIZ = Path(__file__).resolve().parent
+ROTACAO_ARQ = RAIZ / 'rotacao_quente.json'  # notícias que a rotação tirou da parte quente
 PONTEIRO = RAIZ / 'dados_versao.json'
 ACERVO = RAIZ / 'noticias.json'
 SITE = ['feed.json', 'feed-recente.json', 'feed_links.json', 'det', 'dados']
@@ -500,7 +501,16 @@ def rotacionar():
     restantes = [n for n in noticias if not (isinstance(n, dict) and mesclar_acervo.chave(n) in movidas)]
     _gravar(ACERVO, dict(dados, noticias=restantes, total=len(restantes)) if isinstance(dados, dict) else restantes)
     _gerar_parte('quente')
-    salvar(f'Rotação: {len(movidas)} notícias saíram da parte quente', [], parte='quente')
+    # Registro das que saíram (por 3 dias): uma coleta que baixou a parte quente antes desta
+    # rotação não as devolve ao gravar (mesclar_acervo.removidas_pela_rotacao).
+    hoje = datetime.now(timezone.utc).date().isoformat()
+    reg = json.loads(ROTACAO_ARQ.read_text(encoding='utf-8')) if ROTACAO_ARQ.exists() else {}
+    limite = (datetime.now(timezone.utc) - timedelta(days=3)).date().isoformat()
+    removidas = {h: d for h, d in reg.get('removidas', {}).items() if d >= limite}
+    removidas.update({mesclar_acervo.marca(k): hoje for k in movidas})
+    ROTACAO_ARQ.write_text(json.dumps({'atualizado_em': hoje, 'removidas': removidas}, separators=(',', ':')) + '\n',
+                           encoding='utf-8')
+    salvar(f'Rotação: {len(movidas)} notícias saíram da parte quente', [ROTACAO_ARQ.name], parte='quente')
 
 
 def regenerar_todas(msg):

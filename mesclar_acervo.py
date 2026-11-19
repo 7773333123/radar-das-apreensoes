@@ -14,6 +14,7 @@ import unicodedata
 from pathlib import Path
 
 ARQUIVO = Path(__file__).resolve().parent / 'noticias.json'
+ROTACAO = Path(__file__).resolve().parent / 'rotacao_quente.json'
 MAIOR = ('materia_lida_v', 'tentativas_leitura', 'tentativas_url_original_v2', 'tentativas_busca_indice', 'tentativas_imagem')
 
 
@@ -44,13 +45,31 @@ def juntar(base, outro):
             base[campo] = valor
 
 
+def marca(k):
+    import hashlib
+    return hashlib.sha1(k.encode('utf-8')).hexdigest()[:12]
+
+
+def removidas_pela_rotacao():
+    """Notícias que a rotação diária tirou da parte quente (já estão na parte do ano delas).
+    Uma coleta que baixou a parte quente antes da rotação não deve devolvê-las ao gravar."""
+    try:
+        import acervo
+        if acervo.parte_baixada() != 'quente' or not ROTACAO.exists():
+            return set()
+        return set(json.loads(ROTACAO.read_text(encoding='utf-8')).get('removidas', {}))
+    except Exception:
+        return set()
+
+
 def main():
     nossa = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
     atual = json.loads(ARQUIVO.read_text(encoding='utf-8'))
     lista_atual = atual['noticias'] if isinstance(atual, dict) else atual
     lista_nossa = nossa['noticias'] if isinstance(nossa, dict) else nossa
     indice = {chave(n): n for n in lista_atual if isinstance(n, dict)}
-    novas = completadas = 0
+    novas = completadas = ignoradas = 0
+    removidas = removidas_pela_rotacao()
     for n in lista_nossa:
         if not isinstance(n, dict):
             continue
@@ -59,6 +78,8 @@ def main():
             antes = json.dumps(indice[k], sort_keys=True)
             juntar(indice[k], n)
             completadas += antes != json.dumps(indice[k], sort_keys=True)
+        elif removidas and marca(k) in removidas:
+            ignoradas += 1  # já foi para a parte do ano pela rotação
         else:
             lista_atual.append(n)
             indice[k] = n
@@ -69,7 +90,8 @@ def main():
     tmp = ARQUIVO.with_suffix('.json.tmp')
     tmp.write_text(json.dumps(atual, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     tmp.replace(ARQUIVO)
-    print(f'Mesclagem: {novas} notícias desta execução acrescentadas, {completadas} completadas; acervo: {len(lista_atual)}')
+    print(f'Mesclagem: {novas} notícias desta execução acrescentadas, {completadas} completadas'
+          f'{f", {ignoradas} já rotacionadas para a parte do ano" if ignoradas else ""}; acervo: {len(lista_atual)}')
 
 
 if __name__ == '__main__':
