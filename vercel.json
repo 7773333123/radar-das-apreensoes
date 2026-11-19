@@ -151,6 +151,6 @@
       "permanent": true
     }
   ],
-  "buildCommand": "node scripts/baixar-dados.js",
+  "buildCommand": "node --max-old-space-size=6144 scripts/baixar-dados.js",
   "outputDirectory": "public"
 }
