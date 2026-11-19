@@ -304,8 +304,10 @@ def decisoes_juiz():
         try:
             import json as _json
             from pathlib import Path as _P
-            arq = _P(__file__).resolve().parent / 'juiz_decisoes.json'
-            JUIZ = _json.loads(arq.read_text(encoding='utf-8')).get('decisoes', {}) if arq.exists() else {}
+            JUIZ = {}
+            # juiz_decisoes.json e um arquivo por juiz em paralelo (juiz_decisoes_<n>.json).
+            for arq in sorted(_P(__file__).resolve().parent.glob('juiz_decisoes*.json')):
+                JUIZ.update(_json.loads(arq.read_text(encoding='utf-8')).get('decisoes', {}))
         except Exception:
             JUIZ = {}
     return JUIZ
@@ -610,7 +612,15 @@ def auditar(itens, dia, inf, qt, sh, hs, unir, raiz, dias=None):
                                         itens[a].get('uf', ''), str(itens[a].get('_lead', ''))[:400]],
                                   'b': [itens[b]['i'], itens[b].get('f', ''), itens[b]['t'], itens[b].get('d', ''),
                                         itens[b].get('uf', ''), str(itens[b].get('_lead', ''))[:400]]})
-    SUSPEITAS.sort(key=lambda x: -x['nota'])
+    # Os mais recentes primeiro (o que está na página inicial), depois a nota: o juiz de IA
+    # julga nessa ordem.
+    recente = (max(validos) - 3) if validos else 0
+    def _prioridade(x):
+        ka = dia_por_i.get(x['a'][0], 0)
+        kb = dia_por_i.get(x['b'][0], 0)
+        return (0 if max(ka, kb) >= recente else 1, -x['nota'])
+    dia_por_i = {itens[k].get('i'): dia[k] for k in recentes}
+    SUSPEITAS.sort(key=_prioridade)
     for k in recentes:
         itens[k].pop('_ops', None)
         itens[k].pop('_np', None)
@@ -853,6 +863,13 @@ def agrupar(itens, motivos=None):
 
     _esp = {}
 
+    def mesma_cid(a, b):
+        ca, cb = itens[a].get('_cid'), itens[b].get('_cid')
+        return bool(ca) and ca == cb
+
+    def _jac_titulo(a, b):
+        return len(pal[a] & pal[b]) / max(1, len(pal[a] | pal[b]))
+
     def especificas(a, b):
         """Palavras próprias em comum nos títulos (sem materiais, verbos e termos de regulação)."""
         for k in (a, b):
@@ -889,7 +906,10 @@ def agrupar(itens, motivos=None):
         proprias = {w for w in inf[a] & inf[b] if not w[0].isdigit() and w not in MATERIAIS}
         numero_forte = bool(nf[a] and nf[b] and compativeis(nf[a], nf[b]))
         titulo = len(pal[a]) >= 3 and mesma_materia(pal[a], pal[b], inf[a], inf[b], qt[a], qt[b], mesmo_uf)
-        if titulo and delta <= 1:
+        if titulo and delta <= 3 and mesma_cid(a, b) and _jac_titulo(a, b) >= 0.8:
+            # Título quase idêntico, mesma cidade do fato, até 3 dias (republicação tardia).
+            unir(a, b, 'titulo-cidade')
+        elif titulo and delta <= 1:
             unir(a, b, 'titulo')
         elif titulo and ((numero_forte and proprias) or foto or lead >= 0.3):
             unir(a, b, 'titulo+evidencia')

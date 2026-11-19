@@ -2,8 +2,9 @@ name: Juiz de duplicatas (IA própria)
 # Um modelo de IA aberto (Qwen2.5 7B, roda aqui mesmo, sem chave paga) lê os pares que o
 # auditor deixou em dúvida (duplicatas_suspeitas.json) e decide se são o mesmo fato.
 # Antes de decidir, passa pela calibração com pares conferidos à mão (testes/juiz_casos.json):
-# se juntar algum par diferente, nada é gravado. As decisões (juiz_decisoes.json) valem na
-# próxima geração do site (coleta rápida, a cada 10 minutos).
+# se juntar algum par diferente, nada é gravado. Quatro juízes trabalham em paralelo, cada um
+# com a sua fatia dos pares e o seu arquivo (juiz_decisoes_<n>.json); as decisões valem na
+# próxima geração do site (coleta rápida, a cada 10 minutos). Pares recentes são julgados primeiro.
 on:
   schedule:
     - cron: '35 * * * *'
@@ -23,6 +24,10 @@ jobs:
   juiz:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        fatia: ${{ fromJSON(inputs.so_calibrar && '[0]' || '[0, 1, 2, 3]') }}
     env:
       GH_TOKEN: ${{ github.token }}
       MODELO_REPO: bartowski/Qwen2.5-7B-Instruct-GGUF
@@ -59,15 +64,26 @@ jobs:
           if [ "${{ inputs.so_calibrar }}" = "true" ]; then
             python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --calibrar testes/juiz_casos.json --so-calibrar
           else
-            python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --calibrar testes/juiz_casos.json --tempo-max 2400
+            python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --calibrar testes/juiz_casos.json --tempo-max 2400 --shard ${{ matrix.fatia }} --shards 4
           fi
       - name: Gravar as decisões
         if: ${{ !inputs.so_calibrar }}
-        run: python acervo.py salvar --sem-dados 'Juiz de duplicatas (IA)' juiz_decisoes.json
-      # O agendamento do GitHub falha com frequência: o juiz chama a próxima rodada sozinho
-      # (a concorrência impede duas ao mesmo tempo). Sem pares novos, espera 20 min antes.
+        run: python acervo.py salvar --sem-dados "Juiz de duplicatas (IA, fatia ${{ matrix.fatia }})" juiz_decisoes_${{ matrix.fatia }}.json
+  # O agendamento do GitHub falha com frequência: o juiz chama a próxima rodada sozinho
+  # (a concorrência impede duas ao mesmo tempo). Sem pares novos, espera 20 min antes.
+  proxima:
+    needs: juiz
+    if: ${{ needs.juiz.result == 'success' && !inputs.so_calibrar }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
       - name: Próxima rodada
-        if: ${{ success() && !inputs.so_calibrar }}
         run: |
           git pull -q origin main || true
           if python juiz_duplicatas.py --so-contar | grep -q '^PENDENTES=0$'; then sleep 1200; fi

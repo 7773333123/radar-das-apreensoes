@@ -114,6 +114,11 @@ AVANCADOS = [
       '_q': {'mac': 1600.0}}, False),
     ({'t': 'PRF apreende 1,4 tonelada de maconha em Guia Lopes da Laguna (MS)', 'd': '2026-06-21T10:00', 'uf': 'MS', '_q': {'mac': 1400.0}},
      {'t': 'Polícia apreende 1,4 tonelada de maconha escondida em galões metálicos', 'd': '2026-06-21T15:00', 'uf': 'MS', '_q': {'mac': 1400.0}}, True),
+    # Título quase idêntico, mesma cidade, 2 dias depois (republicação; caso real, 19/11/2026).
+    ({'t': 'Adolescente suspeito de participar de invasão ao Complexo Vila Brasília é apreendido', 'd': '2026-11-19T09:52',
+      'uf': 'RJ', '_cid': 'Volta Redonda'},
+     {'t': 'Adolescente suspeito de participar de invasão à Vila Brasília é apreendido', 'd': '2026-11-17T20:37',
+      'uf': 'RJ', '_cid': 'Volta Redonda'}, True),
     # Mesmo fato em veículos diferentes com nomes próprios raros em comum (caso real, 18/11/2026).
     ({'t': 'PF deflagra nova fase da operação sobre o desvio de emendas no filme Dark Horse', 'd': '2026-11-18'},
      {'t': 'Operação da PF mira desvio de emendas para filme “Dark Horse”', 'd': '2026-11-18'}, True),

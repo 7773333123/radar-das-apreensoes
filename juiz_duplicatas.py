@@ -13,7 +13,7 @@ Cuidados para não juntar fatos diferentes:
 - as vetos do auditor (cidades, materiais, bairros, nomes diferentes) continuam valendo: o
   juiz só é consultado para pares que o auditor já achou parecidos.
 
-Decisões em juiz_decisoes.json ({"decisoes": {"<id>-<id>": {"v": "mesmo"|"diferente"|"incerto", ...}}}),
+Decisões em juiz_decisoes.json ou, com juízes em paralelo, juiz_decisoes_<n>.json ({"decisoes": {"<id>-<id>": {"v": "mesmo"|"diferente"|"incerto", ...}}}),
 lidas pelo auditor na próxima geração do site.
 
   python juiz_duplicatas.py --modelo modelo.gguf [--max 200] [--tempo-max 2400]
@@ -117,15 +117,33 @@ def main():
     ap.add_argument('--max', type=int, default=200)
     ap.add_argument('--tempo-max', type=int, default=2400)
     ap.add_argument('--threads', type=int)
+    ap.add_argument('--shard', type=int, help='Juízes em paralelo: esta fatia (0..shards-1)')
+    ap.add_argument('--shards', type=int, default=1)
     args = ap.parse_args()
     inicio = time.monotonic()
-    dados = json.loads(DECISOES.read_text(encoding='utf-8')) if DECISOES.exists() else {}
+    # Com juízes em paralelo, cada um grava o seu arquivo (juiz_decisoes_<n>.json) e só julga a
+    # sua fatia dos pares; o auditor lê todos os arquivos juntos.
+    proprio = DECISOES if args.shard is None else RAIZ / f'juiz_decisoes_{args.shard}.json'
+    dados = json.loads(proprio.read_text(encoding='utf-8')) if proprio.exists() else {}
     decisoes = dados.get('decisoes', {})
+    ja_julgados = set(decisoes)
+    for arq in RAIZ.glob('juiz_decisoes*.json'):
+        if arq != proprio:
+            try:
+                ja_julgados |= set(json.loads(arq.read_text(encoding='utf-8')).get('decisoes', {}))
+            except Exception:
+                pass
     suspeitas = json.loads(SUSPEITAS.read_text(encoding='utf-8')).get('suspeitas', []) if SUSPEITAS.exists() else []
-    pendentes = [s for s in suspeitas if len(s['a']) >= 6 and chave_par(s['a'][0], s['b'][0]) not in decisoes]
-    print(f'{len(suspeitas)} pares em dúvida; {len(pendentes)} ainda sem decisão do juiz.', flush=True)
+    pendentes = [s for s in suspeitas if len(s['a']) >= 6 and chave_par(s['a'][0], s['b'][0]) not in ja_julgados]
+    total_pendentes = len(pendentes)
+    if args.shard is not None:
+        import hashlib
+        pendentes = [s for s in pendentes if int(hashlib.sha1(chave_par(s['a'][0], s['b'][0]).encode()).hexdigest()[:8], 16)
+                     % args.shards == args.shard]
+    print(f'{len(suspeitas)} pares em dúvida; {total_pendentes} ainda sem decisão do juiz'
+          + (f'; {len(pendentes)} nesta fatia ({args.shard}/{args.shards}).' if args.shard is not None else '.'), flush=True)
     if args.so_contar:
-        print(f'PENDENTES={len(pendentes)}')
+        print(f'PENDENTES={total_pendentes}')
         return
     if not pendentes and not args.so_calibrar:
         print('Nenhum par novo para julgar.')
@@ -165,7 +183,7 @@ def main():
     limite = datetime.now(timezone.utc).timestamp() - 60 * 86400
     decisoes = {k: v for k, v in decisoes.items()
                 if datetime.fromisoformat(v.get('em', '2000-01-01T00:00:00+00:00')).timestamp() >= limite}
-    DECISOES.write_text(json.dumps({'atualizado_em': datetime.now(timezone.utc).isoformat(timespec='seconds'),
+    proprio.write_text(json.dumps({'atualizado_em': datetime.now(timezone.utc).isoformat(timespec='seconds'),
                                     'calibracao': dados.get('calibracao', {}),
                                     'decisoes': decisoes}, ensure_ascii=False, indent=0, sort_keys=True) + '\n',
                         encoding='utf-8')
