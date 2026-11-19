@@ -35,6 +35,8 @@ SUSPEITAS = RAIZ / 'duplicatas_suspeitas.json'
 DECISOES = RAIZ / 'juiz_decisoes.json'
 CALIBRACAO = RAIZ / 'juiz_calibracao.json'
 CONFIANCA_MIN = 80
+VALIDADE_CALIBRACAO = 7 * 86400  # segundos
+FILA_GRANDE = 150  # pares pendentes: acima disso, 6 juízes em vez de 4
 
 INSTRUCOES = """Você confere duplicatas num site que reúne notícias de apreensões policiais publicadas por vários veículos de imprensa.
 Receberá duas matérias de veículos diferentes. Decida se as duas noticiam o MESMO FATO: a mesma ação policial
@@ -137,7 +139,9 @@ def assinatura_calibracao(modelo, casos):
 
 
 def calibracao_valida(modelo, casos):
-    """A calibração aprovou esta versão do juiz (instruções + modelo + casos) nas últimas 26 horas."""
+    """A calibração aprovou esta versão do juiz (instruções + modelo + casos). O juiz é
+    determinístico (temperatura 0): a mesma versão dá as mesmas respostas, então só se recalibra
+    quando algo muda ou, por segurança, a cada 7 dias."""
     if not CALIBRACAO.exists():
         return False
     c = json.loads(CALIBRACAO.read_text(encoding='utf-8'))
@@ -145,12 +149,12 @@ def calibracao_valida(modelo, casos):
         idade = time.time() - datetime.fromisoformat(c.get('em', '')).timestamp()
     except ValueError:
         return False
-    return bool(c.get('ok')) and c.get('assinatura') == assinatura_calibracao(modelo, casos) and idade < 26 * 3600
+    return bool(c.get('ok')) and c.get('assinatura') == assinatura_calibracao(modelo, casos) and idade < VALIDADE_CALIBRACAO
 
 
 def situacao_calibracao(modelo, casos):
-    """ok: aprovada (vale); reprovada: esta mesma versão foi reprovada nas últimas 26 h (não
-    recalibra à toa; só uma mudança no juiz, no modelo ou nos casos, ou o dia seguinte, refaz);
+    """ok: aprovada (vale); reprovada: esta mesma versão foi reprovada (não recalibra à toa;
+    só uma mudança no juiz, no modelo ou nos casos refaz; os juízes ficam parados até lá);
     precisa: nunca calibrada ou vencida."""
     if calibracao_valida(modelo, casos):
         return 'ok'
@@ -160,7 +164,7 @@ def situacao_calibracao(modelo, casos):
             idade = time.time() - datetime.fromisoformat(c.get('em', '')).timestamp()
         except ValueError:
             idade = 10 ** 9
-        if not c.get('ok') and c.get('assinatura') == assinatura_calibracao(modelo, casos) and idade < 26 * 3600:
+        if not c.get('ok') and c.get('assinatura') == assinatura_calibracao(modelo, casos) and idade < VALIDADE_CALIBRACAO:
             return 'reprovada'
     return 'precisa'
 
@@ -258,6 +262,9 @@ def main():
           + (f'; {len(pendentes)} nesta fatia ({args.shard}/{args.shards}).' if args.shard is not None else '.'), flush=True)
     if args.so_contar:
         print(f'PENDENTES={total_pendentes}')
+        n = 6 if total_pendentes > FILA_GRANDE else 4
+        print(f'JUIZES={n}')
+        print('FATIAS=' + json.dumps(list(range(n))))
         return
     if not pendentes and not args.so_calibrar:
         print('Nenhum par novo para julgar.')
