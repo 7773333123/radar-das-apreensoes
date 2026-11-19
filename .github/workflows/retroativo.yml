@@ -7,13 +7,14 @@ name: Coleta retroativa (mês a mês até 2006)
 # Um mês por vez; o cursor (retroativo_cursor.json) só passa ao mês anterior quando o mês terminou.
 # Ao terminar, dispara a si mesma (o cron fica de reserva).
 # Quatro frentes em paralelo (input faixa), cada uma com o próprio cursor e o próprio período:
-# a = 2025-2021 (retroativo_cursor.json), b = 2020-2016, c = 2015-2011, d = 2010-2006
+# a = 2025-2021 (retroativo_cursor.json), b = 2020-2016, c = 2015-2011, d = 2010-2006,
+# e = nov e out/2026 (o começo da coleta diária, com menos notícias que os outros meses de 2026)
 # (retroativo_cursor_<faixa>.json). Cada ano tem a sua parte do acervo: as frentes não se atrapalham.
 on:
   workflow_dispatch:
     inputs:
       faixa:
-        description: 'Frente: a (2025-2021), b (2020-2016), c (2015-2011), d (2010-2006)'
+        description: 'Frente: a (2025-2021), b (2020-2016), c (2015-2011), d (2010-2006), e (nov-out/2026: completa o início da coleta diária)'
         required: false
         default: 'a'
   schedule:
@@ -45,7 +46,7 @@ jobs:
           import json, os
           c = json.load(open(os.environ['CURSOR']))
           # Limite de cada frente (o mês mais antigo que ela coleta).
-          c['ate'] = {'a': '2021-01', 'b': '2016-01', 'c': '2011-01', 'd': '2006-01'}[os.environ['FAIXA']]
+          c['ate'] = {'a': '2021-01', 'b': '2016-01', 'c': '2011-01', 'd': '2006-01', 'e': '2026-10'}[os.environ['FAIXA']]
           print(f"mes={c['mes']}")
           print(f"ano={c['mes'][:4]}")
           print(f"wp={'sim' if c.get('arquivo_sites_feito') else 'nao'}")
