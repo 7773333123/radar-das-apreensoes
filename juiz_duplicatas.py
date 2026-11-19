@@ -96,7 +96,10 @@ def materia(rotulo, m):
 class Juiz:
     def __init__(self, modelo, threads=None):
         from llama_cpp import Llama, LlamaGrammar
-        self.llm = Llama(model_path=str(modelo), n_ctx=3072, n_threads=threads, verbose=False)
+        import os
+        # Todos os núcleos (o padrão do motor usa só a metade na geração da resposta).
+        threads = threads or os.cpu_count()
+        self.llm = Llama(model_path=str(modelo), n_ctx=3072, n_threads=threads, n_threads_batch=threads, verbose=False)
         self.gramatica = LlamaGrammar.from_string(GRAMATICA, verbose=False)
 
     def perguntar(self, a, b):
