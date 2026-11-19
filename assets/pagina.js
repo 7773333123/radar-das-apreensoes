@@ -1,4 +1,5 @@
 /* Páginas próprias (notícia, estado, tipo, relatório, institucionais): tema e busca. */
+import './medir.js';
 const raiz = document.documentElement;
 try { const t = localStorage.getItem('tema'); if (t) raiz.dataset.theme = t; } catch { /* armazenamento indisponível */ }
 document.getElementById('tema')?.addEventListener('click', () => {
