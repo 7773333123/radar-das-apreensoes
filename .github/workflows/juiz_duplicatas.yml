@@ -64,7 +64,7 @@ jobs:
       - uses: actions/checkout@v5
       - uses: ./.github/acoes/modelo-juiz
       - name: Calibração (parte ${{ matrix.parte }} de 4)
-        run: python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --so-calibrar --shard ${{ matrix.parte }} --shards 4 --saida cal_${{ matrix.parte }}.json
+        run: python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --so-calibrar --threads 4 --shard ${{ matrix.parte }} --shards 4 --saida cal_${{ matrix.parte }}.json
       - uses: actions/upload-artifact@v4
         with:
           name: calibracao-${{ matrix.parte }}
@@ -104,7 +104,7 @@ jobs:
           ref: main  # pega a calibração gravada agora
       - uses: ./.github/acoes/modelo-juiz
       - name: Julgar os pares em dúvida (fatia ${{ matrix.fatia }})
-        run: python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --tempo-max 3000 --shard ${{ matrix.fatia }} --shards 4
+        run: python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --tempo-max 3000 --threads 4 --shard ${{ matrix.fatia }} --shards 4
       - name: Gravar as decisões
         run: python acervo.py salvar --sem-dados "Juiz de duplicatas (IA, fatia ${{ matrix.fatia }})" juiz_decisoes_${{ matrix.fatia }}.json
 
