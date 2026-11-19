@@ -643,6 +643,31 @@ def _dia(item):
         return None
 
 
+def _numero_do_fato(ta, tb, qa, qb, palavras_comuns, mesmo_dia=True):
+    """O mesmo número identifica o fato nos dois títulos: quantidade do mesmo material a até 3%
+    ou o mesmo número forte, sem contar rodovias e quilômetros (BR-116, km 30). A idade
+    ("de 15 anos") só conta com mais palavras em comum."""
+    if palavras_comuns < 2:
+        return False
+    if _quantidade_proxima(qa, qb):
+        return True
+    def nums(t):
+        t = re.sub(r'\b[A-Z]{2,3}-\d+|(?i:\bkm\s?\d+)', ' ', t or '')
+        idades = set(numeros(' '.join(re.findall(r'(\d+)\s+anos', t))))
+        return numeros_fortes(t), idades
+    (na, ia), (nb, ib) = nums(ta), nums(tb)
+    comuns = na & nb
+    if comuns - (ia & ib):
+        return True
+    return bool(comuns) and palavras_comuns >= 3 and mesmo_dia  # só a idade: no mesmo dia
+
+
+def _quantidade_proxima(qa, qb):
+    """O mesmo material com valor quase igual (até 3%: 5 kg ~ 5,1 kg) e nenhum divergente."""
+    comuns = set(qa) & set(qb)
+    return bool(comuns) and all(abs(qa[m] - qb[m]) <= 0.03 * max(qa[m], qb[m]) for m in comuns)
+
+
 def _mesmas_quantidades(qa, qb):
     """F: ao menos uma quantidade relevante (>= 10) igual, e nenhuma divergente no mesmo material."""
     comuns = set(qa) & set(qb)
@@ -975,6 +1000,13 @@ def agrupar(itens, motivos=None):
             unir(a, b, 'foto')
         elif delta <= 3 and mesmo_uf and _mesmas_quantidades(qs[a], qs[b]) and proprias:
             unir(a, b, 'fatos')
+        elif (delta <= 1 and not mesmo_veiculo and itens[a].get('_cid') and itens[a].get('_cid') == itens[b].get('_cid')
+              and qt[a] and qt[b] and _numero_do_fato(itens[a]['t'], itens[b]['t'], qs[a], qs[b],
+                                                        len({w for w in pal[a] & pal[b] if not w[0].isdigit()}),
+                                                        delta == 0)):
+            # Mesma cidade do fato (lida nos dois), mesmo dia e o mesmo número no título
+            # (5 kg ~ 5,1 kg; 25 kg; "adolescente de 15 anos"): o mesmo fato em veículos diferentes.
+            unir(a, b, 'cidade-numero')
         elif delta <= 2 and _mesma_grande(qs[a], qs[b], 0.1) and mesmo_uf and especificas(a, b):
             # Grande apreensão do mesmo material com valor quase igual (arredondamento), mesmo
             # estado e uma palavra própria em comum (540 kg de cocaína != 600 kg de maconha).

@@ -137,6 +137,27 @@ AVANCADOS = [
      {'t': 'PM apreende drogas, loló e rádios comunicadores em comunidades de Campos', 'd': '2026-11-14', 'uf': 'RJ'}, False),
     ({'t': 'Polícia Civil deflagra operação contra tráfico de drogas e lavagem de dinheiro em Pernambuco e São Paulo', 'd': '2026-11-12', 'uf': 'PE'},
      {'t': 'Polícia Civil realiza operação contra tráfico de drogas e lavagem de dinheiro em Pernambuco e São Paulo', 'd': '2026-11-10', 'uf': 'PE', '_cid': 'Recife'}, False),
+    # Mesma cidade, mesmo dia e o mesmo número no título (casos reais, 17-18/11/2026).
+    ({'t': 'Casal é preso com 5 kg de derivado potente de maconha em rodovia em Martinópolis', 'd': '2026-11-18T19:01',
+      'uf': 'SP', '_cid': 'Martinópolis', '_q': {'maconha': 5.0}},
+     {'t': 'Casal é preso transportando 5,1 kg de maconha dry em Martinópolis', 'd': '2026-11-18T15:22',
+      'uf': 'SP', '_cid': 'Martinópolis', '_q': {'maconha': 5.1}}, True),
+    ({'t': 'Mulher é presa com mais de 25 kg de drogas e 755 comprimidos de ecstasy em SC', 'd': '2026-11-18T17:16',
+      'uf': 'SC', '_cid': 'Palhoça'},
+     {'t': 'Mulher de 24 anos é presa com mais de 25 quilos de drogas em Palhoça', 'd': '2026-11-18T12:52',
+      'uf': 'SC', '_cid': 'Palhoça'}, True),
+    ({'t': 'Homem usa adolescente de 15 anos para vender drogas e acaba preso pela Cavalaria', 'd': '2026-11-17T22:46',
+      'uf': 'MT', '_cid': 'Barra do Bugres'},
+     {'t': 'Homem é preso por usar adolescente de 15 anos para vender drogas', 'd': '2026-11-17T16:28',
+      'uf': 'MT', '_cid': 'Barra do Bugres'}, True),
+    # Quantidades diferentes (57 kg x 61 kg) na mesma cidade: não basta o número parecido.
+    ({'t': 'FICCO apreende cerca de 57 kg de entorpecentes em Porto Velho', 'd': '2026-10-28', 'uf': 'RO',
+      '_cid': 'Porto Velho', '_q': {'maconha': 57.0}},
+     {'t': 'Motorista de ônibus e esposa são flagrados com mais de 61 kg de maconha em Porto Velho', 'd': '2026-10-27', 'uf': 'RO',
+      '_cid': 'Porto Velho', '_q': {'maconha': 61.0}}, False),
+    # Número de rodovia em comum não identifica o fato.
+    ({'t': 'PRF apreende cocaína em carro na BR-163 em Sorriso', 'd': '2026-11-09', 'uf': 'MT', '_cid': 'Sorriso', '_q': {'cocaina': 3.0}},
+     {'t': 'PRF apreende cocaína em caminhão na BR-163 em Sorriso', 'd': '2026-11-09', 'uf': 'MT', '_cid': 'Sorriso', '_q': {'cocaina': 40.0}}, False),
     # O mesmo link da matéria com títulos diferentes (o feed cortou a cidade; caso real, 18/11/2026).
     ({'t': 'Jovem é preso com mais de 1 kg de maconha em Nova Andradina', 'd': '2026-11-18T13:55', 'uf': 'MS',
       'u': 'https://www.radiojotafm.com.br/ivinhema/2026/11/18/jovem-e-preso-com-mais-de-1-kg-de-maconha.html'},
