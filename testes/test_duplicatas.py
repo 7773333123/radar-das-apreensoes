@@ -85,6 +85,35 @@ AVANCADOS = [
     # Mesmo estado, valores muito diferentes: não se juntam.
     ({'t': 'PRF apreende 2 toneladas de maconha na BR-163', 'd': '2026-10-20', 'uf': 'MS', '_q': {'mac': 2000.0}},
      {'t': 'DOF apreende 500 kg de maconha em Ponta Porã', 'd': '2026-10-21', 'uf': 'MS', '_q': {'mac': 500.0}}, False),
+    # Grande apreensão no mesmo estado e dia, cada veículo cita uma cidade (caso real, 19/11/2026).
+    ({'t': 'PRF e Polícia Militar apreendem mais de 1,3 tonelada de maconha após perseguição em Campo Grande',
+      'd': '2026-11-19T13:45', 'uf': 'MS', '_q': {'mac': 1300.0}, '_cid': 'Campo Grande'},
+     {'t': 'Motorista foge de bloqueio em Sidrolândia, mas acaba preso com 1,3 tonelada de maconha',
+      'd': '2026-11-19T10:30', 'uf': 'MS', '_q': {'mac': 1300.0}, '_cid': 'Sidrolândia',
+      '_lead': 'Apreensão de 1.389,3 quilos de maconha no Jardim Centenário, em Campo Grande.'}, True),
+    # Cidades distantes que nenhuma das matérias cita: fatos diferentes (caso real, PR 11/09/2025).
+    ({'t': 'PRF apreende mais de 1,6 tonelada de maconha em caminhão em Arapongas', 'd': '2025-09-11T10:00', 'uf': 'PR',
+      '_q': {'mac': 1600.0}, '_cid': 'Arapongas', '_lead': 'A PRF abordou um caminhão na BR-369 em Arapongas.'},
+     {'t': 'Polícia apreende mais de 1,6 tonelada de maconha em chácara em Nova Santa Rosa', 'd': '2025-09-11T15:00', 'uf': 'PR',
+      '_q': {'mac': 1600.0}, '_cid': 'Nova Santa Rosa', '_lead': 'A droga estava em uma chácara na zona rural de Nova Santa Rosa.'}, False),
+    # ...mas quantidades diferentes, material diferente ou dias distantes continuam separados.
+    ({'t': 'PRF apreende 1,3 tonelada de maconha em Campo Grande', 'd': '2026-11-19T13:45', 'uf': 'MS', '_q': {'mac': 1300.0}},
+     {'t': 'DOF apreende 500 kg de maconha em Ponta Porã', 'd': '2026-11-19T10:30', 'uf': 'MS', '_q': {'mac': 500.0}}, False),
+    ({'t': 'PRF apreende 1,3 tonelada de maconha em Campo Grande', 'd': '2026-11-19T13:45', 'uf': 'MS', '_q': {'mac': 1300.0}},
+     {'t': 'PF apreende 1,3 tonelada de cocaína em Corumbá', 'd': '2026-11-19T10:30', 'uf': 'MS', '_q': {'coc': 1300.0}}, False),
+    ({'t': 'PRF apreende 1,3 tonelada de maconha em Campo Grande', 'd': '2026-11-19T13:45', 'uf': 'MS', '_q': {'mac': 1300.0}},
+     {'t': 'Polícia apreende 1,3 tonelada de maconha em Dourados', 'd': '2026-11-14T10:30', 'uf': 'MS', '_q': {'mac': 1300.0}}, False),
+    # Valor redondo (2 t) no mesmo estado e dia, cidades diferentes: fatos diferentes (MS, 08/07/2025).
+    ({'t': 'PRF apreende 2 toneladas de maconha em caminhão na BR-158', 'd': '2025-07-08T10:00', 'uf': 'MS', '_q': {'mac': 2000.0}},
+     {'t': 'Ônibus escolar é apreendido com mais de 2 toneladas de maconha em Ponta Porã', 'd': '2025-07-08T15:00', 'uf': 'MS',
+      '_q': {'mac': 2000.0}}, False),
+    # O mesmo, em notícias antigas sem a cidade do fato identificada: lugares dos títulos.
+    ({'t': 'PRF apreende mais de 1,6 tonelada de maconha em caminhão em Arapongas', 'd': '2025-09-11T10:00', 'uf': 'PR',
+      '_q': {'mac': 1600.0}},
+     {'t': 'Polícia apreende mais de 1,6 tonelada de maconha em chácara em Nova Santa Rosa', 'd': '2025-09-11T15:00', 'uf': 'PR',
+      '_q': {'mac': 1600.0}}, False),
+    ({'t': 'PRF apreende 1,4 tonelada de maconha em Guia Lopes da Laguna (MS)', 'd': '2026-06-21T10:00', 'uf': 'MS', '_q': {'mac': 1400.0}},
+     {'t': 'Polícia apreende 1,4 tonelada de maconha escondida em galões metálicos', 'd': '2026-06-21T15:00', 'uf': 'MS', '_q': {'mac': 1400.0}}, True),
     # Mesmo fato em veículos diferentes com nomes próprios raros em comum (caso real, 18/11/2026).
     ({'t': 'PF deflagra nova fase da operação sobre o desvio de emendas no filme Dark Horse', 'd': '2026-11-18'},
      {'t': 'Operação da PF mira desvio de emendas para filme “Dark Horse”', 'd': '2026-11-18'}, True),
