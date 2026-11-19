@@ -1,83 +1,117 @@
 name: Juiz de duplicatas (IA própria)
-# Um modelo de IA aberto (Qwen2.5 7B, roda aqui mesmo, sem chave paga) lê os pares que o
-# auditor deixou em dúvida (duplicatas_suspeitas.json) e decide se são o mesmo fato.
-# Antes de decidir, passa pela calibração com pares conferidos à mão (testes/juiz_casos.json):
-# se juntar algum par diferente, nada é gravado. Quatro juízes trabalham em paralelo, cada um
-# com a sua fatia dos pares e o seu arquivo (juiz_decisoes_<n>.json); as decisões valem na
-# próxima geração do site (coleta rápida, a cada 10 minutos). Pares recentes são julgados primeiro.
+# Um modelo de IA aberto (Qwen2.5, roda aqui mesmo, sem chave paga) lê os pares que o auditor
+# deixou em dúvida (duplicatas_suspeitas.json) e decide se são o mesmo fato.
+# 1. Calibração (uma vez por dia e sempre que o juiz muda): os casos conferidos à mão
+#    (testes/juiz_casos.json) são julgados em 4 partes paralelas; se o juiz juntar algum par
+#    diferente, a versão é reprovada e nada é julgado (juiz_calibracao.json).
+# 2. Julgamento: quatro juízes em paralelo, cada um com a sua fatia dos pares e o seu arquivo
+#    (juiz_decisoes_<n>.json). Pares novos primeiro (os recentes na frente); depois os que uma
+#    versão anterior deixou em dúvida. As decisões valem na próxima geração do site (10 minutos).
 on:
   schedule:
     - cron: '35 * * * *'
   workflow_dispatch:
     inputs:
       so_calibrar:
-        description: 'Só rodar a calibração (não grava decisões)'
+        description: 'Só rodar a calibração (não julga)'
         type: boolean
         default: false
+      modelo:
+        description: 'Modelo: 14b (mais preciso) ou 7b (mais rápido)'
+        type: choice
+        options: ['14b', '7b']
+        default: '14b'
 permissions:
   contents: write
   actions: write  # chamar a próxima rodada
 concurrency:
   group: juiz-duplicatas
   cancel-in-progress: false
+env:
+  MODELO_REPO: ${{ (inputs.modelo || '14b') == '7b' && 'bartowski/Qwen2.5-7B-Instruct-GGUF' || 'bartowski/Qwen2.5-14B-Instruct-GGUF' }}
+  MODELO_ARQ: ${{ (inputs.modelo || '14b') == '7b' && 'Qwen2.5-7B-Instruct-Q4_K_M.gguf' || 'Qwen2.5-14B-Instruct-Q4_K_M.gguf' }}
+  GH_TOKEN: ${{ github.token }}
 jobs:
-  juiz:
+  situacao:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
-    strategy:
-      fail-fast: false
-      matrix:
-        fatia: ${{ fromJSON(inputs.so_calibrar && '[0]' || '[0, 1, 2, 3]') }}
-    env:
-      GH_TOKEN: ${{ github.token }}
-      MODELO_REPO: bartowski/Qwen2.5-7B-Instruct-GGUF
-      MODELO_ARQ: Qwen2.5-7B-Instruct-Q4_K_M.gguf
+    timeout-minutes: 10
+    outputs:
+      calibrar: ${{ steps.s.outputs.calibrar }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: Motor compilado em cache
-        uses: actions/cache@v4
+      - id: s
+        run: |
+          r=$(python juiz_duplicatas.py --situacao-calibracao --modelo "$MODELO_ARQ")
+          echo "$r"
+          if [ "${{ inputs.so_calibrar }}" = "true" ] || [ "$r" != "CALIBRACAO=ok" ]; then echo calibrar=sim >> "$GITHUB_OUTPUT"; else echo calibrar=nao >> "$GITHUB_OUTPUT"; fi
+
+  calibrar:
+    needs: situacao
+    if: needs.situacao.outputs.calibrar == 'sim'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        parte: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/acoes/modelo-juiz
+      - name: Calibração (parte ${{ matrix.parte }} de 4)
+        run: python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --so-calibrar --shard ${{ matrix.parte }} --shards 4 --saida cal_${{ matrix.parte }}.json
+      - uses: actions/upload-artifact@v4
         with:
-          path: ~/.cache/pip
-          key: pip-llama-cpp-0.3.2-generico
-      - name: Instalar o motor do modelo (CPU; compilado aqui na primeira vez)
-        env:
-          CMAKE_ARGS: '-DGGML_NATIVE=OFF -DGGML_AVX2=ON -DGGML_FMA=ON -DGGML_F16C=ON'
-        run: |
-          python -m pip install --quiet huggingface_hub==0.26.2
-          python -m pip install "llama-cpp-python==0.3.2" --no-binary llama-cpp-python
-      - name: Modelo em cache
-        uses: actions/cache@v4
+          name: calibracao-${{ matrix.parte }}
+          path: cal_${{ matrix.parte }}.json
+
+  aprovar:
+    needs: calibrar
+    if: ${{ !cancelled() && needs.calibrar.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
-          path: ~/modelo
-          key: modelo-${{ env.MODELO_ARQ }}
-      - name: Baixar o modelo (primeira vez)
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: calibracao-*
+          merge-multiple: true
+      - name: Aprovar ou reprovar a versão do juiz
         run: |
-          if [ ! -f ~/modelo/"$MODELO_ARQ" ]; then
-            python -c "from huggingface_hub import hf_hub_download as h; import os; h(os.environ['MODELO_REPO'], os.environ['MODELO_ARQ'], local_dir=os.path.expanduser('~/modelo'))"
-          fi
-          ls -la ~/modelo
-      - name: Calibração (uma vez por dia) e julgamento dos pares em dúvida
-        run: |
-          if [ "${{ inputs.so_calibrar }}" = "true" ]; then
-            python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --calibrar testes/juiz_casos.json --so-calibrar
-          else
-            python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --calibrar testes/juiz_casos.json --tempo-max 2400 --shard ${{ matrix.fatia }} --shards 4
-          fi
+          python juiz_duplicatas.py --modelo "$MODELO_ARQ" --aprovar cal_0.json cal_1.json cal_2.json cal_3.json
+          python acervo.py salvar --sem-dados 'Calibração do juiz de duplicatas (IA)' juiz_calibracao.json
+
+  juiz:
+    needs: [situacao, aprovar]
+    if: ${{ !cancelled() && !inputs.so_calibrar && needs.situacao.result == 'success' && needs.aprovar.result != 'failure' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        fatia: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main  # pega a calibração gravada agora
+      - uses: ./.github/acoes/modelo-juiz
+      - name: Julgar os pares em dúvida (fatia ${{ matrix.fatia }})
+        run: python juiz_duplicatas.py --modelo ~/modelo/"$MODELO_ARQ" --tempo-max 3000 --shard ${{ matrix.fatia }} --shards 4
       - name: Gravar as decisões
-        if: ${{ !inputs.so_calibrar }}
         run: python acervo.py salvar --sem-dados "Juiz de duplicatas (IA, fatia ${{ matrix.fatia }})" juiz_decisoes_${{ matrix.fatia }}.json
+
   # O agendamento do GitHub falha com frequência: o juiz chama a próxima rodada sozinho
-  # (a concorrência impede duas ao mesmo tempo). Sem pares novos, espera 20 min antes.
+  # (a concorrência impede duas ao mesmo tempo). Sem pares, espera 20 min antes.
   proxima:
     needs: juiz
     if: ${{ needs.juiz.result == 'success' && !inputs.so_calibrar }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -86,5 +120,5 @@ jobs:
       - name: Próxima rodada
         run: |
           git pull -q origin main || true
-          if python juiz_duplicatas.py --so-contar | grep -q '^PENDENTES=0$'; then sleep 1200; fi
-          gh workflow run juiz_duplicatas.yml --ref main
+          if python juiz_duplicatas.py --so-contar --modelo "$MODELO_ARQ" | grep -q '^PENDENTES=0$'; then sleep 1200; fi
+          gh workflow run juiz_duplicatas.yml --ref main -f modelo="${{ inputs.modelo || '14b' }}"

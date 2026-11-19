@@ -1,0 +1,32 @@
+name: Modelo do juiz de duplicatas
+description: Python, motor llama.cpp (compilado uma vez e guardado em cache) e o modelo (MODELO_REPO/MODELO_ARQ).
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v6
+      with:
+        python-version: '3.12'
+    - name: Motor compilado em cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: pip-llama-cpp-0.3.2-generico
+    - name: Instalar o motor do modelo (CPU; compilado na primeira vez)
+      shell: bash
+      env:
+        CMAKE_ARGS: '-DGGML_NATIVE=OFF -DGGML_AVX2=ON -DGGML_FMA=ON -DGGML_F16C=ON'
+      run: |
+        python -m pip install --quiet huggingface_hub==0.26.2
+        python -m pip install "llama-cpp-python==0.3.2" --no-binary llama-cpp-python
+    - name: Modelo em cache
+      uses: actions/cache@v4
+      with:
+        path: ~/modelo
+        key: modelo-${{ env.MODELO_ARQ }}
+    - name: Baixar o modelo (primeira vez)
+      shell: bash
+      run: |
+        if [ ! -f ~/modelo/"$MODELO_ARQ" ]; then
+          python -c "from huggingface_hub import hf_hub_download as h; import os; h(os.environ['MODELO_REPO'], os.environ['MODELO_ARQ'], local_dir=os.path.expanduser('~/modelo'))"
+        fi
+        ls -la ~/modelo

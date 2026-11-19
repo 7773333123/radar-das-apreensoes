@@ -306,8 +306,11 @@ def decisoes_juiz():
             from pathlib import Path as _P
             JUIZ = {}
             # juiz_decisoes.json e um arquivo por juiz em paralelo (juiz_decisoes_<n>.json).
+            # Para o mesmo par vale a decisão mais recente (o juiz revê as dúvidas a cada versão).
             for arq in sorted(_P(__file__).resolve().parent.glob('juiz_decisoes*.json')):
-                JUIZ.update(_json.loads(arq.read_text(encoding='utf-8')).get('decisoes', {}))
+                for k, v in _json.loads(arq.read_text(encoding='utf-8')).get('decisoes', {}).items():
+                    if k not in JUIZ or v.get('em', '') >= JUIZ[k].get('em', ''):
+                        JUIZ[k] = v
         except Exception:
             JUIZ = {}
     return JUIZ
@@ -609,9 +612,9 @@ def auditar(itens, dia, inf, qt, sh, hs, unir, raiz, dias=None):
             elif juiz.get('v') != 'diferente':
                 SUSPEITAS.append({'nota': round(nota, 2), 'motivos': motivos,
                                   'a': [itens[a]['i'], itens[a].get('f', ''), itens[a]['t'], itens[a].get('d', ''),
-                                        itens[a].get('uf', ''), str(itens[a].get('_lead', ''))[:400]],
+                                        itens[a].get('uf', ''), str(itens[a].get('_lead', ''))[:700], itens[a].get('_cid') or ''],
                                   'b': [itens[b]['i'], itens[b].get('f', ''), itens[b]['t'], itens[b].get('d', ''),
-                                        itens[b].get('uf', ''), str(itens[b].get('_lead', ''))[:400]]})
+                                        itens[b].get('uf', ''), str(itens[b].get('_lead', ''))[:700], itens[b].get('_cid') or '']})
     # Os mais recentes primeiro (o que está na página inicial), depois a nota: o juiz de IA
     # julga nessa ordem.
     recente = (max(validos) - 3) if validos else 0
