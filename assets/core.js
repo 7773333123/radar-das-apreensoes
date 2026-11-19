@@ -1,4 +1,5 @@
 import { BRASOES } from './brasoes.js';
+import './medir.js';
 /* Radar das Apreensões — núcleo compartilhado (dados, utilidades, mapa e gráficos). */
 export const $ = (id) => document.getElementById(id);
 export const ESTADOS = [
