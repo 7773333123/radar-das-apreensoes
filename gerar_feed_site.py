@@ -270,7 +270,7 @@ def limitar_trecho(trecho, n):
     return corte[:fim + 1].strip() if fim > 0 else ''
 
 
-from duplicatas import agrupar as _agrupar, mesma_materia, normal as _normal  # noqa: E402,F401
+from duplicatas import agrupar as _agrupar, fatos_auditor, mesma_materia, normal as _normal  # noqa: E402,F401
 
 
 from datetime import datetime as _dt, timedelta as _td, timezone as _tz  # noqa: E402
@@ -615,6 +615,9 @@ def main():
                 item['_cid'] = cid_aud
             if (fatos or {}).get('orgaos'):
                 item['_ag'] = list(fatos['orgaos'])
+            fx = fatos_auditor({**(do_titulo or {}), **(fatos or {})})
+            if fx:
+                item['_fx'] = fx
         # O que diz a fonte: 70% da reportagem (com crédito e link), ou o limite
         # do veículo em trecho_por_veiculo.json, se ele tiver pedido.
         trecho = limitar_trecho(limpar_rede_social(str(n.get('trecho') or '').strip()), n)
@@ -672,7 +675,7 @@ def main():
         antes -= len(vazias)
     print(f'Sem foto e sem conteúdo (aguardando leitura): {len(vazias)} fora do site')
     for item in saida:
-        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend'):
+        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx'):
             item.pop(k, None)
     for lote in list(detalhes):
         for chave in [c for c in detalhes[lote] if int(c) in removidas]:
