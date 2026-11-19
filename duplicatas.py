@@ -730,6 +730,30 @@ def _pontos(item):
             - (100 if item.get('_bloq') else 0))
 
 
+# Partes de cidade que não distinguem um fato (Zona Norte, Centro, Região Metropolitana...).
+AREAS_GENERICAS = {radical(w) for w in 'zona norte sul leste oeste centro central regiao metropolitana interior litoral capital estado'.split()}
+# Nomes dos estados (pelo radical): também não distinguem um fato.
+AREAS_GENERICAS |= {radical(w) for w in '''acre alagoas amapa amazonas bahia ceara distrito federal espirito santo goias
+    maranhao mato grosso minas gerais para paraiba parana pernambuco piaui rio janeiro grande norte rondonia roraima
+    santa catarina sao paulo sergipe tocantins brasil'''.split()}
+
+
+def link_da_materia(u):
+    """Endereço normalizado de uma matéria; vazio para endereços genéricos (página inicial,
+    seções, buscas, agregadores), que não identificam uma notícia."""
+    m = re.match(r'(?i)^(?:https?://)?(?:www\d?\.)?([^/?#]+)(/[^?#]*)?', str(u or '').strip())
+    if not m:
+        return ''
+    host, caminho = m.group(1).lower(), (m.group(2) or '').rstrip('/')
+    if host.startswith('news.google.') or len(caminho) < 20 or caminho.count('/') < 1:
+        return ''
+    if re.search(r'(?i)/(tag|tags|categoria|category|busca|search|page|author|autor|feed)(/|$)', caminho):
+        return ''
+    if not re.search(r'[a-z0-9]-[a-z0-9]|\d{4,}', caminho.lower()):
+        return ''  # sem slug nem identificador numérico: provavelmente uma seção
+    return host + caminho.lower()
+
+
 def agrupar(itens, motivos=None):
     """Retorna (itens sem duplicatas, ids removidos). Campos temporários lidos:
     _h (dHash int), _lead (abertura/resumo), _q ({material: quantidade}).
@@ -745,11 +769,11 @@ def agrupar(itens, motivos=None):
             k = pai[k]
         return k
 
-    def unir(a, b, regra):
+    def unir(a, b, regra, forcar=False):
         ra, rb = raiz(a), raiz(b)
         if ra == rb:
             return
-        if len(ufs[ra] | ufs[rb]) > 1:  # veto: o grupo juntaria estados diferentes
+        if len(ufs[ra] | ufs[rb]) > 1 and not forcar:  # veto: o grupo juntaria estados diferentes
             return
         pai[rb] = ra
         ufs[ra] |= ufs[rb]
@@ -774,6 +798,21 @@ def agrupar(itens, motivos=None):
                 unir(por_titulo[t], k, 'titulo-igual')
             else:
                 por_titulo[t] = k
+
+    # Regra 1b: o mesmo endereço da matéria (sem http/www, parâmetros e barra final) é a mesma
+    # notícia, ainda que o título tenha mudado (o veículo editou ou o feed cortou a cidade).
+    por_link = {}
+    for k, it in enumerate(itens):
+        lk = link_da_materia(it.get('u'))
+        if lk:
+            if lk in por_link:
+                o = por_link[lk]
+                perto = dia[o] is not None and dia[k] is not None and abs(dia[o] - dia[k]) <= 7
+                parecidos = len(pal[o] & pal[k]) >= 0.8 * max(1, len(pal[o] | pal[k]))
+                if perto or parecidos:  # link repetido em fato antigo e diferente: feed errou o link
+                    unir(o, k, 'mesmo-link', forcar=True)  # o estado de um deles pode ter sido mal lido
+            else:
+                por_link[lk] = k
 
     # Candidatos: pares a até 7 dias que dividem palavra informativa, trecho de
     # abertura ou foto parecida (índices invertidos; evita comparar todos com todos).
@@ -864,8 +903,25 @@ def agrupar(itens, motivos=None):
     _esp = {}
 
     def mesma_cid(a, b):
+        # Cidade do fato lida nos dois; se faltar num deles, o mesmo município citado nos dois títulos.
         ca, cb = itens[a].get('_cid'), itens[b].get('_cid')
-        return bool(ca) and ca == cb
+        if ca and cb:
+            return ca == cb
+        return mesma_cidade(itens[a], itens[b])
+
+    def marca_comum(a, b):
+        # Algo que distingue o fato nos dois títulos além da cidade: nome próprio (bairro,
+        # operação, pessoa) ou número forte. Títulos genéricos ("Homem é preso por tráfico
+        # em X") dias depois costumam ser fatos diferentes.
+        if nf[a] & nf[b]:
+            return True
+        comuns = nomes_proprios(itens[a]['t']) & nomes_proprios(itens[b]['t'])
+        cidade = set(AREAS_GENERICAS)
+        for k in (a, b):
+            cidade |= radicais_titulo(itens[k].get('_cid') or '')
+        if not (itens[a].get('_cid') or itens[b].get('_cid')):
+            cidade |= comuns & lugares()  # cidade só citada no título: o nome dela não distingue
+        return bool(comuns - cidade)
 
     def _jac_titulo(a, b):
         return len(pal[a] & pal[b]) / max(1, len(pal[a] | pal[b]))
@@ -906,7 +962,7 @@ def agrupar(itens, motivos=None):
         proprias = {w for w in inf[a] & inf[b] if not w[0].isdigit() and w not in MATERIAIS}
         numero_forte = bool(nf[a] and nf[b] and compativeis(nf[a], nf[b]))
         titulo = len(pal[a]) >= 3 and mesma_materia(pal[a], pal[b], inf[a], inf[b], qt[a], qt[b], mesmo_uf)
-        if titulo and delta <= 3 and mesma_cid(a, b) and _jac_titulo(a, b) >= 0.8:
+        if titulo and delta <= 3 and mesma_cid(a, b) and _jac_titulo(a, b) >= 0.8 and (delta <= 1 or marca_comum(a, b)):
             # Título quase idêntico, mesma cidade do fato, até 3 dias (republicação tardia).
             unir(a, b, 'titulo-cidade')
         elif titulo and delta <= 1:

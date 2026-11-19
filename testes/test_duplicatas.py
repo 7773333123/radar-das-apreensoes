@@ -119,6 +119,42 @@ AVANCADOS = [
       'uf': 'RJ', '_cid': 'Volta Redonda'},
      {'t': 'Adolescente suspeito de participar de invasão à Vila Brasília é apreendido', 'd': '2026-11-17T20:37',
       'uf': 'RJ', '_cid': 'Volta Redonda'}, True),
+    # Idem, com a cidade lida só num lado (citada nos dois títulos).
+    ({'t': 'Adolescente suspeito de participar de invasão ao Complexo Vila Brasília é apreendido em Volta Redonda',
+      'd': '2026-11-19T09:52', 'uf': 'RJ', '_cid': 'Volta Redonda'},
+     {'t': 'Adolescente suspeito de participar de invasão à Vila Brasília é apreendido em Volta Redonda',
+      'd': '2026-11-17T20:37', 'uf': 'RJ'}, True),
+    # Título genérico na mesma cidade dias depois: fatos diferentes (caso real, 14 e 17/11/2026).
+    ({'t': 'Homem é preso por tráfico de drogas em Passo Fundo', 'd': '2026-11-17', 'uf': 'RS', '_cid': 'Passo Fundo'},
+     {'t': 'Homem é preso por tráfico de drogas no Centro de Passo Fundo', 'd': '2026-11-14', 'uf': 'RS', '_cid': 'Passo Fundo'}, False),
+    ({'t': 'Guarda Municipal apreende drogas e mais de R$ 7 mil em Nova Serrana', 'd': '2026-11-01', 'uf': 'MG', '_cid': 'Nova Serrana'},
+     {'t': 'Nova Serrana: Guarda Municipal apreende adolescente com drogas', 'd': '2026-10-30', 'uf': 'MG', '_cid': 'Nova Serrana'}, False),
+    ({'t': 'POLÍCIA CIVIL PRENDE HOMEM CONDENADO POR TRÁFICO DE DROGAS EM SÃO LUÍS', 'd': '2026-11-09', 'uf': 'MA', '_cid': 'São Luís'},
+     {'t': 'POLÍCIA CIVIL PRENDE HOMEM POR TRÁFICO DE DROGAS EM SÃO LUÍS', 'd': '2026-11-06', 'uf': 'MA', '_cid': 'São Luís'}, False),
+    ({'t': 'Polícia Militar prende homem e apreende drogas na Zona Norte de Aracaju', 'd': '2026-09-24', 'uf': 'SE'},
+     {'t': 'Polícia Militar prende homem por tráfico de drogas na Zona Norte de Aracaju', 'd': '2026-09-21', 'uf': 'SE'}, False),
+    ({'t': 'PM apreende drogas e rádios comunicadores em comunidades de Campos', 'd': '2026-11-16', 'uf': 'RJ'},
+     {'t': 'PM apreende drogas, loló e rádios comunicadores em comunidades de Campos', 'd': '2026-11-14', 'uf': 'RJ'}, False),
+    ({'t': 'Polícia Civil deflagra operação contra tráfico de drogas e lavagem de dinheiro em Pernambuco e São Paulo', 'd': '2026-11-12', 'uf': 'PE'},
+     {'t': 'Polícia Civil realiza operação contra tráfico de drogas e lavagem de dinheiro em Pernambuco e São Paulo', 'd': '2026-11-10', 'uf': 'PE', '_cid': 'Recife'}, False),
+    # O mesmo link da matéria com títulos diferentes (o feed cortou a cidade; caso real, 18/11/2026).
+    ({'t': 'Jovem é preso com mais de 1 kg de maconha em Nova Andradina', 'd': '2026-11-18T13:55', 'uf': 'MS',
+      'u': 'https://www.radiojotafm.com.br/ivinhema/2026/11/18/jovem-e-preso-com-mais-de-1-kg-de-maconha.html'},
+     {'t': 'Jovem é preso com mais de 1 kg de maconha', 'd': '2026-11-18T13:39', 'uf': 'MS',
+      'u': 'https://radiojotafm.com.br/ivinhema/2026/11/18/jovem-e-preso-com-mais-de-1-kg-de-maconha.html?utm_source=rss'}, True),
+    # O mesmo link com o estado mal lido num deles ("Rua Paraná" em São Carlos-SP).
+    ({'t': 'Guarda Municipal localiza mandado de prisão em abordagem no Jardim Pacaembu', 'd': '2026-11-18', 'uf': 'SP',
+      'u': 'https://regiaoemdestake.com.br/guarda-municipal-mandado-prisao-jardim-pacaembu-sao-carlos/'},
+     {'t': 'Guarda Municipal encontra mandado de prisão em abordagem na Rua Paraná, em São Carlos', 'd': '2026-11-18', 'uf': 'PR',
+      'u': 'https://regiaoemdestake.com.br/guarda-municipal-mandado-prisao-jardim-pacaembu-sao-carlos/'}, True),
+    # O mesmo link em fatos diferentes, anos depois (o feed repetiu o link): não junta.
+    ({'t': 'Duas mulheres são presas por tráfico de drogas em Pato Branco', 'd': '2026-11-16', 'uf': 'PR',
+      'u': 'https://rbj.com.br/duas-mulheres-sao-presas-por-trafico-de-drogas-em-pato-branco-2/'},
+     {'t': 'Três pessoas são presas por tráfico de drogas em Pato Branco', 'd': '2023-05-04', 'uf': 'PR',
+      'u': 'https://rbj.com.br/duas-mulheres-sao-presas-por-trafico-de-drogas-em-pato-branco-2/'}, False),
+    # Página genérica do veículo (seção) não é a mesma notícia.
+    ({'t': 'PM prende homem por tráfico no Centro', 'd': '2026-11-18', 'uf': 'SP', 'u': 'https://site.com.br/policia/'},
+     {'t': 'Mulher é presa com cocaína em ônibus', 'd': '2026-11-18', 'uf': 'SP', 'u': 'https://site.com.br/policia/'}, False),
     # Mesmo fato em veículos diferentes com nomes próprios raros em comum (caso real, 18/11/2026).
     ({'t': 'PF deflagra nova fase da operação sobre o desvio de emendas no filme Dark Horse', 'd': '2026-11-18'},
      {'t': 'Operação da PF mira desvio de emendas para filme “Dark Horse”', 'd': '2026-11-18'}, True),
