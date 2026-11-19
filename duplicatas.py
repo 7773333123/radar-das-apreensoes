@@ -401,8 +401,19 @@ def lugares():
             for w in normal(str(nome)).split():
                 if len(w) > 2:
                     _LUGARES.add(radical(w))
+        global _MUNICIPIOS
+        _MUNICIPIOS = frozenset(_LUGARES)
         _LUGARES |= {radical(w) for w in NOMES_COMUNS}
     return _LUGARES
+
+
+_MUNICIPIOS = None
+
+
+def municipios():
+    """Radicais das palavras dos nomes de municípios e estados (sem os nomes comuns)."""
+    lugares()
+    return _MUNICIPIOS
 
 
 LOCAL_ANTES = set('''no na nos nas em bairro conjunto residencial complexo beco comunidade morro favela vila jardim
@@ -640,6 +651,42 @@ def _mesmas_quantidades(qa, qb):
 GRANDE = {'coc': 300, 'mac': 300, 'skh': 300, 'cra': 100, 'dro': 300, 'arm': 20, 'fuz': 5, 'mun': 1000}
 
 
+def cidades_conversam(a, b):
+    """Mesma cidade, cidade não identificada em uma das duas, ou a cidade de uma aparece no
+    título/abertura da outra (fato que envolve duas cidades vizinhas)."""
+    ta = normal(f"{a.get('t', '')} {a.get('_lead', '')}")
+    tb = normal(f"{b.get('t', '')} {b.get('_lead', '')}")
+    ca, cb = a.get('_cid'), b.get('_cid')
+    if ca and cb:
+        return ca == cb or normal(ca) in tb or normal(cb) in ta
+    # Sem a cidade do fato (notícias antigas): lugares/nomes dos títulos.
+    lug = municipios()
+    na, nb = nomes_proprios(a.get('t', '')) & lug, nomes_proprios(b.get('t', '')) & lug
+    if na and nb and not (na & nb):
+        ra = {radical(w) for w in ta.split()}
+        rb = {radical(w) for w in tb.split()}
+        return na <= rb or nb <= ra
+    return True
+
+
+def _valor_redondo(qa, qb):
+    """Quantidades grandes e redondas (2 t, 3 t, 1,5 t, 20 fuzis) se repetem em fatos diferentes."""
+    for m in set(qa) & set(qb):
+        passo = 10 if m in ('arm', 'fuz', 'mun') else 500
+        if qa[m] % passo == 0 or qb[m] % passo == 0:
+            return True
+    return False
+
+
+def mesma_cidade(a, b):
+    """A mesma cidade do fato (ou o mesmo município nos dois títulos)."""
+    ca, cb = a.get('_cid'), b.get('_cid')
+    if ca and cb:
+        return ca == cb
+    lug = municipios()
+    return bool(nomes_proprios(a.get('t', '')) & nomes_proprios(b.get('t', '')) & lug)
+
+
 def _mesma_grande(qa, qb, tolerancia=0.2, escala=1):
     for m in set(qa) & set(qb):
         a, b = qa[m], qb[m]
@@ -856,6 +903,13 @@ def agrupar(itens, motivos=None):
             # Grande apreensão do mesmo material com valor quase igual (arredondamento), mesmo
             # estado e uma palavra própria em comum (540 kg de cocaína != 600 kg de maconha).
             unir(a, b, 'grande-apreensao')
+        elif delta <= 1 and mesmo_uf and _mesma_grande(qs[a], qs[b], 0.05, 4) and (
+                mesma_cidade(itens[a], itens[b]) if _valor_redondo(qs[a], qs[b]) else cidades_conversam(itens[a], itens[b])):
+            # Apreensão muito grande (>= 4x o mínimo: 1,2 t de droga, 80 armas, 20 fuzis...) do mesmo
+            # material, com o mesmo valor (5%), no mesmo estado e no mesmo dia: o mesmo fato, mesmo
+            # que cada veículo cite uma cidade (perseguição de Sidrolândia a Campo Grande) — desde
+            # que o texto de uma cite a cidade da outra (Arapongas x Nova Santa Rosa: fatos diferentes).
+            unir(a, b, 'grande-apreensao-uf')
         elif delta <= 2 and proprias and _numero_raro(inf[a] & inf[b]):
             # Mesmo número incomum no título ("R$ 581 milhões", "7.603 kg") + palavra própria.
             unir(a, b, 'numero-raro')
