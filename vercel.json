@@ -152,5 +152,10 @@
     }
   ],
   "buildCommand": "node --max-old-space-size=6144 scripts/baixar-dados.js",
-  "outputDirectory": "public"
+  "outputDirectory": "public",
+  "git": {
+    "deploymentEnabled": {
+      "claude/**": false
+    }
+  }
 }
