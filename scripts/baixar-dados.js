@@ -103,6 +103,13 @@ function enxugarParaNavegador(feed, recente) {
     anos: contAno, meses: contMes, arquivos: Object.keys(porAno).sort() });
   saida['anos/ids.json'] = JSON.stringify(ids);
   if (recente) saida['feed-recente.json'] = JSON.stringify({ ...recente, noticias: recente.noticias.map(enxuto) });
+  // agora.json: só as 40 mais novas (poucos KB). A página confere a cada minuto e, se chegou
+  // notícia, busca o feed-recente.json (pesado) para atualizar tudo.
+  if (recente) {
+    const novas = [...recente.noticias].sort((a, b) => String(b.d || '').localeCompare(String(a.d || ''))).slice(0, 40)
+      .map((n) => ({ i: n.i, t: n.t, d: n.d }));
+    saida['agora.json'] = JSON.stringify({ atualizado_em: recente.atualizado_em || feed.atualizado_em, noticias: novas });
+  }
   console.log(`Feed para o navegador: ${(saida['feed.json'].length / 1e6).toFixed(1)} MB, ${recentes.length} notícias desde ${corte}; ` +
     `anos à parte: ${Object.keys(porAno).sort().join(', ')}`);
   return { saida, extras };

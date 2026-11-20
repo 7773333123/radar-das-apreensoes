@@ -61,33 +61,51 @@ async function buscarTudo(botao) {
   render();
 }
 
-// ---------- faixa "Agora": as mais recentes, rolando sem parar ----------
-// A faixa anda sozinha (para quando o leitor passa o mouse ou toca nela) e a página busca
-// notícias novas no servidor a cada 5 minutos, sem precisar recarregar.
+// ---------- faixa "Agora": as mais recentes, em duas linhas rolando sem parar ----------
+// As linhas andam sozinhas (param quando o leitor passa o mouse ou toca nelas). A página confere
+// agora.json (poucos KB) a cada minuto; se chegou notícia, busca o feed e atualiza na hora.
 let agoraAssinatura = '';
 function renderAgora(ns, agora) {
-  // Só o que é de agora: as das últimas 3 horas (no mínimo 6 notícias; se faltar, amplia até 6 e 12 horas).
+  // Só o que é de agora: as das últimas 3 horas (no mínimo 10 notícias; se faltar, amplia até 6, 12 e 24 horas).
   const validas = ns.filter((n) => n.data && n.data.getTime() <= agora + 3600000);
   const ate = (h) => validas.filter((n) => agora - n.data.getTime() <= h * 3600000);
-  const itens = ([3, 6, 12].map(ate).find((l) => l.length >= 6) || validas.slice(0, 8)).slice(0, 15);
+  const itens = ([3, 6, 12, 24].map(ate).find((l) => l.length >= 10) || validas.slice(0, 12)).slice(0, 24);
   const assinatura = itens.map((n) => n.i).join(',');
-  if (assinatura === agoraAssinatura && $('agora').childElementCount) {
-    // Mesmas notícias: só atualiza as horas relativas.
-    return;
-  }
+  if (assinatura === agoraAssinatura && $('agora').childElementCount) return;  // mesmas notícias
   agoraAssinatura = assinatura;
   const li = (n, copia) => `<li${copia ? ' aria-hidden="true"' : ''}><a href="${urlNoticia(n)}" data-read="${n.i}"${copia ? ' tabindex="-1"' : ''}>` +
     `<time>${esc(agora - (n.data?.getTime() || 0) < DIA ? horaBR(n.data) : relativo(n.data))}</time>${esc(n.titulo)}</a></li>`;
-  const ol = $('agora');
-  // Duas cópias seguidas: a animação anda metade da largura e recomeça sem salto.
-  ol.innerHTML = itens.map((n) => li(n, false)).join('') + itens.map((n) => li(n, true)).join('');
-  ol.classList.remove('rolando');
-  requestAnimationFrame(() => {
-    const metade = ol.scrollWidth / 2;
-    ol.style.setProperty('--dur', `${Math.max(30, Math.round(metade / 55))}s`);  // ~55 px por segundo
-    ol.classList.add('rolando');
+  // Linha 1: 1ª, 3ª, 5ª... mais novas; linha 2: 2ª, 4ª, 6ª... (as duas começam pelas mais recentes).
+  const linhas = [itens.filter((_, k) => k % 2 === 0), itens.filter((_, k) => k % 2 === 1)];
+  ['agora', 'agora2'].forEach((id, k) => {
+    const ol = $(id);
+    if (!ol) return;
+    const lista = linhas[k].length ? linhas[k] : linhas[0];
+    // Duas cópias seguidas: a animação anda metade da largura e recomeça sem salto.
+    ol.innerHTML = lista.map((n) => li(n, false)).join('') + lista.map((n) => li(n, true)).join('');
+    ol.classList.remove('rolando');
+    requestAnimationFrame(() => {
+      const metade = ol.scrollWidth / 2;
+      // ~55 px por segundo; a 2ª linha um pouco mais lenta, para as duas não andarem coladas.
+      ol.style.setProperty('--dur', `${Math.max(30, Math.round(metade / (k ? 48 : 55)))}s`);
+      ol.classList.add('rolando');
+    });
   });
   $('agoraFaixa').hidden = temFiltro();
+}
+
+// Confere a cada minuto se chegou notícia nova (agora.json, poucos KB); só então baixa o feed.
+let agoraVistos = '';
+async function conferirAgora() {
+  if (document.hidden || !st.ctx) return;
+  let r;
+  try { r = await fetch(`agora.json?t=${Date.now()}`, { cache: 'no-store' }).then((x) => (x.ok ? x.json() : null)); } catch { return; }
+  const ids = (r?.noticias || []).map((n) => n.i);
+  if (!ids.length) return;
+  const assinatura = ids.join(',');
+  if (assinatura === agoraVistos) return renderAgora(st.ctx.noticias, Date.now());
+  agoraVistos = assinatura;
+  if (ids.some((i) => !st.ctx.porIndice.has(i))) await atualizarAoVivo();
 }
 
 async function atualizarAoVivo() {
@@ -380,6 +398,7 @@ async function iniciar() {
   if (st.filtro.ano) garantirAno().then(render);
   iniciarLeitor(st.ctx);
   setInterval(atualizarAoVivo, 5 * 60000);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) atualizarAoVivo(); });
+  setInterval(conferirAgora, 60000);  // notícia nova aparece na faixa Agora em até 1 minuto
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) conferirAgora(); });
 }
 iniciar();

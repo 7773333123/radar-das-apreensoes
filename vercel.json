@@ -32,6 +32,15 @@
       ]
     },
     {
+      "source": "/agora\\.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=30, must-revalidate"
+        }
+      ]
+    },
+    {
       "source": "/(feed|feed-recente|feed_links)\\.json",
       "headers": [
         {
