@@ -69,8 +69,9 @@ jobs:
               python hash_imagens.py --limite 300 --trabalhadores 16 --timeout 8 >/dev/null || true
               python fotos_orb.py --limite 400 --timeout 8 || true  # mesma foto com recorte/zoom
             fi
-            if [ "$(sha1sum noticias.json | cut -c1-40)" != "$antes" ] && python testes/test_duplicatas.py >/dev/null \
-               && python gerar_feed_site.py >/dev/null && python compactar_acervo.py >/dev/null; then
+            # O site é gerado UMA vez, dentro do salvar (depois de mesclar com o que outras coletas
+            # gravaram no meio-tempo); gerar antes também dobrava o tempo da rodada.
+            if [ "$(sha1sum noticias.json | cut -c1-40)" != "$antes" ] && python testes/test_duplicatas.py >/dev/null; then
               python acervo.py salvar "Coleta rápida (rodada $ciclo, notícias novas)" feeds_saude.json \
                 && antes=$(sha1sum noticias.json | cut -c1-40) || echo 'Falha ao salvar as novas; o fim da rodada tenta de novo.'
             fi
@@ -92,7 +93,7 @@ jobs:
             python fotos_orb.py --limite 1500 || true  # mesma foto com recorte/zoom, mesmo com título genérico
             if [ "$(sha1sum noticias.json | cut -c1-40)" = "$antes" ]; then
               echo 'Nada novo nesta rodada.'
-            elif python testes/test_duplicatas.py && python gerar_feed_site.py && python compactar_acervo.py; then
+            elif python testes/test_duplicatas.py; then
               python acervo.py salvar "Coleta rápida (rodada $ciclo)" buscadores_cursor.json feeds_saude.json duplicatas_suspeitas.json || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
             else
               echo 'Falha ao gerar o site; nada foi gravado nesta rodada.'
