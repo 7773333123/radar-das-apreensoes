@@ -20,8 +20,10 @@ jobs:
         env:
           HOSTS: ${{ inputs.hosts }}
         run: |
+          # Página de notícia: a mais nova da faixa Agora (um id que existe de verdade).
+          id=$(curl -sS https://www.radardasapreensoes.com.br/agora.json | python3 -c 'import json,sys; print(json.load(sys.stdin)["noticias"][0]["i"])' || echo 0)
           for host in ${HOSTS:-radardasapreensoes.com.br www.radardasapreensoes.com.br radar-das-apreensoes.vercel.app}; do
-            for caminho in / /google07199f6dab12c6a3.html /sitemap.xml /observatorio /noticia/79 /estado/MT /relatorios /sobre /feed.json /agora.json /det/7.json /assets/central.js; do
+            for caminho in / /google07199f6dab12c6a3.html /sitemap.xml /observatorio /noticia/$id /estado/MT /relatorios /sobre /feed.json /agora.json /det/7.json /assets/central.js; do
               echo "=== https://$host$caminho"
               curl -sS -o /tmp/corpo -D - -A 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' "https://$host$caminho" | grep -iE '^(HTTP|location|content-type|x-vercel-cache)' || true
               head -c 160 /tmp/corpo | tr '\n' ' '; echo
