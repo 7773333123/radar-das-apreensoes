@@ -36,6 +36,7 @@ Vetos (prevalecem sobre tudo)
 import re
 import unicodedata
 from datetime import date
+from functools import lru_cache
 
 JANELA = 7
 PALAVRAS_VAZIAS = set('''para pela pelo pelos pelas com sem sobre apos após entre durante contra como mais menos
@@ -59,7 +60,16 @@ SINONIMOS = {'motocicleta': 'moto', 'motocicletas': 'motos', 'automovel': 'carro
 
 
 def normal(texto):
-    texto = unicodedata.normalize('NFKD', texto or '')
+    texto = texto or ''
+    # Títulos e trechos curtos ficam em memória; textos longos (reportagem) são calculados na hora.
+    return _normal(texto) if len(texto) <= 400 else _normal.__wrapped__(texto)
+
+
+# Funções puras chamadas milhões de vezes por geração (as mesmas manchetes em cada par):
+# o resultado fica em memória; quem recebe um conjunto recebe uma cópia.
+@lru_cache(maxsize=300000)
+def _normal(texto):
+    texto = unicodedata.normalize('NFKD', texto)
     texto = ''.join(c for c in texto if not unicodedata.combining(c)).lower()
     return ' '.join(SINONIMOS.get(w, w) for w in re.sub(r'[^a-z0-9]+', ' ', texto).split())
 
@@ -92,7 +102,12 @@ MATERIAL_TITULO = [('maconha', r'maconha|skunk|supermaconha|haxixe|cannabis'), (
 
 
 def materiais_titulo(t):
-    return {nome for nome, padrao in MATERIAL_TITULO if re.search(r'\b(?:' + padrao + r')\b', t or '', re.I)}
+    return set(_materiais_titulo(t or ''))
+
+
+@lru_cache(maxsize=300000)
+def _materiais_titulo(t):
+    return frozenset(nome for nome, padrao in MATERIAL_TITULO if re.search(r'\b(?:' + padrao + r')\b', t, re.I))
 
 
 def numeros(texto):
@@ -123,6 +138,11 @@ def numeros(texto):
 
 def quantidades_titulo(texto):
     """Quantidades citadas no título (números e por extenso: "uma" -> 1)."""
+    return set(_quantidades_titulo(texto or ''))
+
+
+@lru_cache(maxsize=300000)
+def _quantidades_titulo(texto):
     saida = numeros(texto)
     for w in normal(texto).split():
         if w in EXTENSO:
