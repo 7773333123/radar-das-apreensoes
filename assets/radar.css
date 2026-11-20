@@ -81,9 +81,9 @@ button, input, select { font: inherit; color: inherit; }
 
 /* ---------- Faixa "Agora" ---------- */
 .agora { background: var(--surface); border-bottom: 1px solid var(--line); }
-.agora .wrap { display: flex; align-items: center; gap: 14px; height: 42px; overflow: hidden; }
+.agora .wrap { display: flex; align-items: center; gap: 14px; height: 62px; overflow: hidden; }
 .agora-tag { flex: none; background: var(--accent); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .12em; padding: 4px 8px; border-radius: 3px; }
-.agora-trilho { flex: 1; min-width: 0; overflow: hidden; }
+.agora-trilho { flex: 1; min-width: 0; overflow: hidden; display: flex; flex-direction: column; gap: 6px; }
 .agora ol { display: flex; gap: 0; margin: 0; padding: 0; list-style: none; overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
 .agora ol::-webkit-scrollbar { display: none; }
 .agora li { flex: none; padding-right: 28px; }
