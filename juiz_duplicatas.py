@@ -398,7 +398,9 @@ def main():
             x = pai[x]
         return x
     for k, d in ja_julgados.items():
-        if d.get('v') == 'mesmo':
+        # Só decisões desta versão (ou da revisão à mão) unem: um "mesmo" antigo não pode se
+        # declarar "já unido" e escapar de ser relido pela versão atual.
+        if d.get('v') == 'mesmo' and (d.get('ver') == versao or str(d.get('m', '')).startswith('Revisão')):
             a, b = k.split('-', 1)
             pai[raiz(a)] = raiz(b)
     ja_unidos = [s for s in pendentes if raiz(str(s['a'][0])) == raiz(str(s['b'][0]))]
