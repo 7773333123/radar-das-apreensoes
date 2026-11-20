@@ -1183,6 +1183,13 @@ def agrupar(itens, motivos=None):
     # Coleta rápida: só os últimos dias (RADAR_AUDITOR_DIAS); as demais coletas, o acervo inteiro.
     import os
     auditar(itens, dia, inf, qt, sh, hs, unir, raiz, int(os.environ.get('RADAR_AUDITOR_DIAS') or 0) or None)
+    # Motor de evidências (motor_evidencias.py): placar com texto completo, foto e fatos nos
+    # pares que as regras deixaram separados; une os certos e manda os duvidosos ao juiz de IA.
+    try:
+        from motor_evidencias import aplicar as _motor
+        _motor(itens, dia, unir, raiz, int(os.environ.get('RADAR_AUDITOR_DIAS') or 0) or None, SUSPEITAS, decisoes_juiz())
+    except ImportError:
+        pass
 
     grupos = {}
     for k in range(n):

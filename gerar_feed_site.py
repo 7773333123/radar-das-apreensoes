@@ -23,6 +23,7 @@ feed_links.json: {i: link do Google Notícias} das que ainda não têm o link or
 Resumo, trecho, texto integral e galeria ficam em det/<i % 256>.json, baixados ao abrir a notícia.
 """
 import json
+import os
 import hashlib
 import re
 import shutil
@@ -501,7 +502,10 @@ def main():
         titulo = limpar_titulo(n.get('titulo'), fonte)
         if not titulo:
             continue
-        if re.match(r'(?i)resultados? (?:para|da busca|de pesquisa)', titulo) or not relevante(titulo):
+        # Páginas de busca, etiqueta e arquivo dos sites não são notícias ("Busca: ...", "Tag: ...",
+        # "Tudo sobre: ...", "Arquivos #Draco ...").
+        if re.match(r'(?i)(resultados? (?:para|da busca|de pesquisa)|busca:|tag:|categoria:|tudo sobre(?::|.*-\s*p[aá]gina\s+\d)|arquivos\s+[#\w])', titulo) \
+                or not relevante(titulo):
             ocultas += 1
             continue
         cats = categorias(n, titulo)
@@ -605,6 +609,7 @@ def main():
         if n.get('img_mesma') and fotos and fotos[0] == url_publica(n.get('imagem_url')):
             item['_mesma'] = [u for u, k in n['img_mesma'].items() if int(k) >= MIN_PONTOS_FOTO]
         item['_lead'] = str(n.get('trecho') or resumo)[:600]
+        item['_txt'] = str(n.get('trecho') or resumo or '')[:2500]  # texto para o motor de evidências
         if (n.get('imagem_url') and not n.get('img_dhash') and int(n.get('img_dhash_tentativas') or 0) < 2
                 and str(data or '')[:19] >= PENDENTE_DESDE):
             item['_pend'] = 1  # foto ainda não analisada (duas falhas de download liberam)
@@ -653,6 +658,8 @@ def main():
         saida.append(item)
     antes = len(saida)
     textos_por_i = {it['i']: (it.get('t', ''), it.get('r', ''), it.get('uf', '')) for it in saida}  # cidade de outras versões
+    if os.environ.get('RADAR_DUMP_ITENS'):  # diagnóstico: itens antes do agrupamento (motor de evidências)
+        Path(os.environ['RADAR_DUMP_ITENS']).write_text(json.dumps(saida, ensure_ascii=False, default=list), encoding='utf-8')
     saida, removidas = agrupar_duplicatas(saida)
     # Relatório do auditor: pares em dúvida (não juntados), para revisão periódica.
     from duplicatas import SUSPEITAS, JUNTADAS
@@ -686,7 +693,7 @@ def main():
         antes -= len(vazias)
     print(f'Sem foto e sem conteúdo (aguardando leitura): {len(vazias)} fora do site')
     for item in saida:
-        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx', '_mesma'):
+        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx', '_mesma', '_txt'):
             item.pop(k, None)
     for lote in list(detalhes):
         for chave in [c for c in detalhes[lote] if int(c) in removidas]:
