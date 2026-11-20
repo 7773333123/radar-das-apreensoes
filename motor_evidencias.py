@@ -43,9 +43,20 @@ VAZIAS = set(PALAVRAS_VAZIAS) | set(VAZIAS_AUDITOR) | set('''nesta neste nessa n
 ANO = re.compile(r'\b(19|20)\d\d\b')
 ESTRADA = re.compile(r'\b[A-Z]{2,3}-\d+|(?i:\bkm\s?\d+)')
 
-INDICIOS = ['cos_txt', 'cos_tit', 'copia', 'foto', 'link', 'cid_igual', 'cid_dif', 'qtd_igual', 'qtd_conflito',
+INDICIOS = ['cos_txt', 'cos_tit', 'copia', 'foto', 'link', 'cid_igual', 'cid_dif', 'qtd_igual', 'qtd_conflito', 'num_titulo_dif',
             'presos_igual', 'presos_conflito', 'idade_igual', 'idade_conflito', 'raros', 'mats_conflito',
             'num_comum', 'dias', 'mesmo_veiculo', 'sem_texto']
+
+
+_DINHEIRO = re.compile(r'R\$\s*[\d.,]+(?:\s*(?:mil|milh[õo]es|milh[ãa]o|bilh[õo]es|bilh[ãa]o|mi|bi)\b)?', re.I)
+
+
+def numeros_por_tipo(titulo):
+    """Quantidades do título separadas em dinheiro (R$ ...) e o resto."""
+    t = ESTRADA.sub(' ', titulo or '')
+    dinheiro = ' '.join(_DINHEIRO.findall(t))
+    resto = _DINHEIRO.sub(' ', t)
+    return {'dinheiro': quantidades_titulo(dinheiro), 'outros': quantidades_titulo(resto)}
 
 
 def tokens(texto):
@@ -150,9 +161,19 @@ def indicios(c, a, b, extra=None):
             f['qtd_igual'] = 1.0
         elif abs(x - y) > 0.15 * max(x, y):
             f['qtd_conflito'] = 1.0
+    # Números do título incompatíveis (sem saber a unidade: "5,86 m³" x "R$ 1,8 mil") pesam
+    # contra, mas não são contradição dura; contradição é a mesma unidade/material (_q).
+    # Números do título por tipo: dinheiro só se compara com dinheiro; o resto (peso, unidades,
+    # pessoas) com o resto. "5,86 m³ de madeira" x "multa de R$ 1,8 mil" não se contradizem;
+    # "cinco presos" x "dois presos" e "R$ 66,5 mil" x "R$ 1,9 milhão" sim.
+    for classe in ('dinheiro', 'outros'):
+        ta = numeros_por_tipo(ia.get('t', '')).get(classe)
+        tb = numeros_por_tipo(ib.get('t', '')).get(classe)
+        if ta and tb and not compativeis(ta, tb):
+            f['qtd_conflito'] = 1.0
     ta, tb = quantidades_titulo(ia.get('t', '')), quantidades_titulo(ib.get('t', ''))
     if ta and tb and not compativeis(ta, tb):
-        f['qtd_conflito'] = 1.0
+        f['num_titulo_dif'] = 1.0
     fa, fb = ia.get('_fx') or {}, ib.get('_fx') or {}
     if fa.get('p') and fb.get('p'):
         f['presos_igual' if fa['p'] == fb['p'] else 'presos_conflito'] = 1.0
@@ -183,7 +204,8 @@ def ancora(f):
     """Além do placar, uma prova concreta de que é o mesmo fato (não só palavras parecidas)."""
     return bool((f['foto'] and f['cos_txt'] >= 0.5) or f['copia'] >= 0.3 or f['link']
                 or (f['qtd_igual'] and f['num_comum'] >= 1) or f['presos_igual'] or f['raros'] >= 1
-                or (f['num_comum'] >= 2 and f['cos_txt'] >= 0.6))
+                or (f['num_comum'] >= 2 and f['cos_txt'] >= 0.6)
+                or (f['cid_igual'] and (f['idade_igual'] or f['presos_igual']) and f['cos_tit'] >= 0.4))
 
 
 def contradiz(f):
