@@ -34,6 +34,33 @@ RAIZ = Path(__file__).resolve().parent
 SUSPEITAS = RAIZ / 'duplicatas_suspeitas.json'
 DECISOES = RAIZ / 'juiz_decisoes.json'
 CALIBRACAO = RAIZ / 'juiz_calibracao.json'
+GASTO = RAIZ / 'juiz_gasto.json'  # gasto do mês com o juiz Claude (API paga)
+PRECO_CLAUDE = {'claude-haiku-5-5': (0.10, 0.50), 'claude-sonnet-5-5': (2.00, 10.00), 'claude-opus-5-5': (4.00, 20.00)}
+TETO_MENSAL_USD = 9.0  # ao chegar aqui, o juiz Claude para e o juiz próprio (Qwen) assume até o mês virar
+
+
+def e_claude(modelo):
+    return str(modelo or '').startswith('claude-')
+
+
+def arquivo_calibracao(modelo):
+    """Cada tipo de juiz tem a sua calibração (trocar de um para o outro não apaga a do outro)."""
+    return RAIZ / 'juiz_calibracao_claude.json' if e_claude(modelo) else CALIBRACAO
+
+
+def gasto_do_mes():
+    mes = datetime.now(timezone.utc).strftime('%Y-%m')
+    try:
+        g = json.loads(GASTO.read_text(encoding='utf-8'))
+    except (OSError, ValueError):
+        g = {}
+    return g if g.get('mes') == mes else {'mes': mes, 'usd': 0.0, 'pares': 0}
+
+
+def claude_disponivel():
+    """Chave da API presente e gasto do mês abaixo do teto."""
+    import os
+    return bool(os.environ.get('ANTHROPIC_API_KEY')) and gasto_do_mes()['usd'] < TETO_MENSAL_USD
 CONFIANCA_MIN = 80
 VALIDADE_CALIBRACAO = 7 * 86400  # segundos
 FILA_GRANDE = 150  # pares pendentes: acima disso, 6 juízes em vez de 4
@@ -135,6 +162,77 @@ class Juiz:
         return 'incerto', r1, r2
 
 
+class JuizClaude:
+    """Juiz pela API da Anthropic (Claude): uma pergunta por par, resposta em JSON garantido.
+    Soma o gasto do mês em juiz_gasto.json e para no teto (TETO_MENSAL_USD)."""
+    ESQUEMA = {'type': 'object', 'additionalProperties': False, 'required': ['comparacao', 'mesmo_fato', 'confianca'],
+               'properties': {'comparacao': {'type': 'string'}, 'mesmo_fato': {'type': 'boolean'},
+                              'confianca': {'type': 'integer'}}}
+
+    def __init__(self, modelo):
+        import threading
+        import anthropic
+        self.anthropic = anthropic
+        self.client = anthropic.Anthropic(max_retries=6)
+        self.modelo = str(modelo)
+        self.gasto = gasto_do_mes()
+        self.trava = threading.Lock()
+        self.falhas = 0
+
+    def sem_saldo(self):
+        return self.gasto['usd'] >= TETO_MENSAL_USD or self.falhas >= 5
+
+    def perguntar(self, a, b):
+        if self.sem_saldo():
+            return None
+        try:
+            r = self.client.messages.create(
+                model=self.modelo, max_tokens=4000,
+                system=[{'type': 'text', 'text': INSTRUCOES, 'cache_control': {'type': 'ephemeral'}}],
+                messages=[{'role': 'user', 'content': materia('A', a) + '\n\n' + materia('B', b)}],
+                output_config={'effort': 'low', 'format': {'type': 'json_schema', 'schema': self.ESQUEMA}})
+        except (self.anthropic.APIStatusError, self.anthropic.APIConnectionError) as erro:
+            with self.trava:
+                self.falhas += 1  # sem crédito, chave inválida, fora do ar: depois de 5, para
+            print(f'Juiz Claude com erro: {erro!r}'[:300], flush=True)
+            return None
+        u = r.usage
+        entrada = (u.input_tokens or 0) + (u.cache_creation_input_tokens or 0) * 1.25 + (u.cache_read_input_tokens or 0) * 0.1
+        pe, ps = PRECO_CLAUDE.get(self.modelo, (4.0, 20.0))
+        with self.trava:
+            self.gasto['usd'] = round(self.gasto['usd'] + (entrada * pe + (u.output_tokens or 0) * ps) / 1e6, 6)
+            self.gasto['pares'] += 1
+        if r.stop_reason == 'refusal':
+            return None
+        try:
+            d = json.loads(next((x.text for x in r.content if x.type == 'text'), '{}'))
+        except ValueError:
+            return None
+        d['motivo'] = d.get('comparacao', '')
+        return d
+
+    def julgar(self, a, b):
+        """Uma pergunta basta (o teste com os casos conferidos não mostrou troca de opinião pela ordem).
+        None: o juiz não respondeu (erro ou teto); o par fica para o próximo juiz."""
+        r = self.perguntar(a, b)
+        if r is None:
+            return None, {}, None
+        c = int(r.get('confianca', 0))
+        if r.get('mesmo_fato') and c >= CONFIANCA_MIN:
+            return 'mesmo', r, None
+        if not r.get('mesmo_fato') and c >= CONFIANCA_MIN:
+            return 'diferente', r, None
+        return 'incerto', r, None
+
+    def gravar_gasto(self):
+        GASTO.write_text(json.dumps(self.gasto, ensure_ascii=False) + '\n', encoding='utf-8')
+        print(f"Gasto do juiz Claude em {self.gasto['mes']}: US$ {self.gasto['usd']:.4f} ({self.gasto['pares']} pares)")
+
+
+def criar_juiz(modelo, threads=None):
+    return JuizClaude(modelo) if e_claude(modelo) else Juiz(modelo, threads)
+
+
 def assinatura_calibracao(modelo, casos):
     import hashlib
     return hashlib.sha1((versao_juiz(modelo) + Path(casos).read_text(encoding='utf-8')).encode()).hexdigest()[:12]
@@ -144,9 +242,10 @@ def calibracao_valida(modelo, casos):
     """A calibração aprovou esta versão do juiz (instruções + modelo + casos). O juiz é
     determinístico (temperatura 0): a mesma versão dá as mesmas respostas, então só se recalibra
     quando algo muda ou, por segurança, a cada 7 dias."""
-    if not CALIBRACAO.exists():
+    arq = arquivo_calibracao(modelo)
+    if not arq.exists():
         return False
-    c = json.loads(CALIBRACAO.read_text(encoding='utf-8'))
+    c = json.loads(arq.read_text(encoding='utf-8'))
     try:
         idade = time.time() - datetime.fromisoformat(c.get('em', '')).timestamp()
     except ValueError:
@@ -160,8 +259,8 @@ def situacao_calibracao(modelo, casos):
     precisa: nunca calibrada ou vencida."""
     if calibracao_valida(modelo, casos):
         return 'ok'
-    if CALIBRACAO.exists():
-        c = json.loads(CALIBRACAO.read_text(encoding='utf-8'))
+    if arquivo_calibracao(modelo).exists():
+        c = json.loads(arquivo_calibracao(modelo).read_text(encoding='utf-8'))
         try:
             idade = time.time() - datetime.fromisoformat(c.get('em', '')).timestamp()
         except ValueError:
@@ -179,6 +278,8 @@ def calibrar(juiz, arquivo, modelo, shard=None, shards=1, saida=None):
     juntou_errado, perdeu, acertos = [], [], 0
     for c in casos:
         v, r1, r2 = juiz.julgar(c['a'], c['b'])
+        if v is None:
+            raise SystemExit('Juiz sem resposta na calibração (API fora do ar ou sem crédito).')
         certo = (v == 'mesmo') == c['mesmo']
         acertos += certo
         conf = f"{r1.get('mesmo_fato')}/{r1.get('confianca')}" + (f" {r2.get('mesmo_fato')}/{r2.get('confianca')}" if r2 else '')
@@ -208,7 +309,7 @@ def aprovar(arquivos, modelo, casos):
     res = {'assinatura': assinatura, 'versao': versao_juiz(modelo), 'modelo': Path(modelo).name, 'ok': ok,
            'em': datetime.now(timezone.utc).isoformat(timespec='seconds'), 'acertos': sum(p['acertos'] for p in validas),
            'total': total, 'juntou_errado': errados, 'deixou_de_juntar': [e for p in validas for e in p['deixou_de_juntar']]}
-    CALIBRACAO.write_text(json.dumps(res, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    arquivo_calibracao(modelo).write_text(json.dumps(res, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     print(f"Calibração {'APROVADA' if ok else 'REPROVADA'}: {res['acertos']}/{total} certos (de {esperado}); "
           f"juntou errado: {len(errados)}; deixou de juntar: {len(res['deixou_de_juntar'])}")
 
@@ -227,8 +328,12 @@ def main():
     ap.add_argument('--saida', help='Calibração em partes: arquivo com o resultado desta parte')
     ap.add_argument('--aprovar', nargs='*', help='Junta os resultados das partes e grava juiz_calibracao.json')
     ap.add_argument('--situacao-calibracao', action='store_true', help='CALIBRACAO=ok se a de hoje vale')
+    ap.add_argument('--claude-ativo', action='store_true', help='CLAUDE=sim se o juiz Claude tem chave e saldo no mês')
     args = ap.parse_args()
     inicio = time.monotonic()
+    if args.claude_ativo:
+        print('CLAUDE=' + ('sim' if claude_disponivel() else 'nao'))
+        return
     if args.situacao_calibracao:
         print('CALIBRACAO=' + situacao_calibracao(args.modelo, args.calibrar))
         return
@@ -236,7 +341,7 @@ def main():
         aprovar(args.aprovar, args.modelo, args.calibrar)
         return
     if args.so_calibrar:
-        juiz = Juiz(args.modelo, args.threads)
+        juiz = criar_juiz(args.modelo, args.threads)
         calibrar(juiz, args.calibrar, args.modelo, args.shard, args.shards, args.saida)
         return
     # Com juízes em paralelo, cada um grava o seu arquivo (juiz_decisoes_<n>.json) e só julga a
@@ -250,9 +355,16 @@ def main():
     # separou (a versão atual relê; "mesmo" de versões anteriores fica, foi conferido na calibração).
     versao = versao_juiz(args.modelo)
     novos = [s for s in suspeitas if len(s['a']) >= 6 and chave_par(s['a'][0], s['b'][0]) not in ja_julgados]
+    versoes_claude = {versao_juiz(m) for m in PRECO_CLAUDE}
+
+    def rever_par(d):
+        if str(d.get('m', '')).startswith('Revisão') or d.get('ver') == versao:
+            return False  # correção feita à mão, ou já julgado por este juiz
+        if e_claude(args.modelo):
+            return d.get('ver') not in versoes_claude  # o Claude relê também os "mesmo" do juiz próprio
+        return d.get('v') != 'mesmo' and d.get('ver') not in versoes_claude  # o Qwen não refaz o Claude
     rever = [s for s in suspeitas if len(s['a']) >= 6 and chave_par(s['a'][0], s['b'][0]) in ja_julgados
-             and ja_julgados[chave_par(s['a'][0], s['b'][0])].get('v') != 'mesmo'
-             and ja_julgados[chave_par(s['a'][0], s['b'][0])].get('ver') != versao]
+             and rever_par(ja_julgados[chave_par(s['a'][0], s['b'][0])])]
     pendentes = novos + rever
     # Pares cujas duas notícias já estão unidas por outras decisões "mesmo" (A=B e B=C: A-C)
     # não precisam de juiz: o auditor já junta o grupo inteiro.
@@ -294,17 +406,26 @@ def main():
     if not pendentes and not args.so_calibrar:
         print('Nenhum par novo para julgar.')
         return
-    juiz = Juiz(args.modelo, args.threads)
+    juiz = criar_juiz(args.modelo, args.threads)
     print(f'Modelo carregado em {time.monotonic() - inicio:.0f}s', flush=True)
     if not calibracao_valida(args.modelo, args.calibrar):
         print('A calibração de hoje não aprovou esta versão do juiz (ou não rodou): nada é julgado.')
         sys.exit(1)
     contagem = {'mesmo': 0, 'diferente': 0, 'incerto': 0}
+    if isinstance(juiz, JuizClaude):  # API: vários pares ao mesmo tempo
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=4) as ex:
+            respostas = list(ex.map(lambda s: juiz.julgar(s['a'], s['b']), pendentes[:args.max]))
+        resultados = iter(respostas)
+    else:
+        resultados = None
     for s in pendentes[:args.max]:
-        if time.monotonic() - inicio > args.tempo_max:
+        if resultados is None and time.monotonic() - inicio > args.tempo_max:
             print('Tempo esgotado; o restante fica para a próxima execução.')
             break
-        v, r1, r2 = juiz.julgar(s['a'], s['b'])
+        v, r1, r2 = next(resultados) if resultados is not None else juiz.julgar(s['a'], s['b'])
+        if v is None:
+            continue
         contagem[v] += 1
         decisoes[chave_par(s['a'][0], s['b'][0])] = {
             'v': v, 'c': int(r1.get('confianca', 0)), 'm': str(r1.get('motivo', ''))[:200], 'ver': versao,
@@ -321,6 +442,8 @@ def main():
     proprio.write_text(json.dumps({'atualizado_em': datetime.now(timezone.utc).isoformat(timespec='seconds'),
                                     'decisoes': decisoes}, ensure_ascii=False, indent=0, sort_keys=True) + '\n',
                         encoding='utf-8')
+    if isinstance(juiz, JuizClaude):
+        juiz.gravar_gasto()
     print(f"Juiz: {contagem['mesmo']} mesmo fato, {contagem['diferente']} diferentes, {contagem['incerto']} incertos; "
           f'{len(decisoes)} decisões guardadas.')
 
