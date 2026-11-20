@@ -572,6 +572,77 @@ def nota_par(a, b, ra, rb, inf_a, inf_b, qa, qb, sha, shb, ha, hb, gen_a, gen_b)
     return nota, motivos, fortes
 
 
+def titulo_sem_veiculo(it):
+    """Título sem o nome do veículo acrescentado no fim (" - Fonte - slogan")."""
+    t, f = it.get('t') or '', (it.get('f') or '').strip()
+    if len(f) >= 4:
+        k = t.find(' - ' + f)
+        if k < 0:
+            k = t.find(' | ' + f)
+        if k > 20:
+            return t[:k]
+    return t
+
+
+@lru_cache(maxsize=200000)
+def _q_titulo(t):
+    from estatisticas import quantidades
+    from resumo_fatos import extrair
+    return tuple(sorted((k, v) for k, v in quantidades(extrair(t)).items() if k != 'val'))
+
+
+def q_titulo(t):
+    """Quantidade por material citada só no título ({'mac': 2000.0}); o resumo fica de fora."""
+    return dict(_q_titulo(t or ''))
+
+
+def quantidades_em_conflito(qa, qb):
+    """Quantidade do MESMO material muito diferente: 2 t x 6 t de maconha.
+    Tolera 25%, e até 1,5 vez quando o menor é número redondo ("mais de uma tonelada" x
+    1,4 tonelada; "mais de 100 armas" x 118 armas)."""
+    qa, qb = qa or {}, qb or {}
+    for m in set(qa) & set(qb):
+        menor, maior = sorted((qa[m], qb[m]))
+        if maior - menor <= 0.25 * maior:
+            continue
+        if menor > 0 and _redondo(menor) and maior <= 1.5 * menor:
+            continue
+        return True
+    return False
+
+
+def _redondo(v):
+    """1, 2, 10, 100, 1.000, 2.000 (um algarismo significativo): número arredondado."""
+    v = float(v)
+    if v <= 0 or v != int(v):
+        return False
+    v = int(v)
+    while v % 10 == 0:
+        v //= 10
+    return v < 10
+
+
+def _grupos_coerentes(itens, recentes, raiz, a, b):
+    """Juntar os grupos de a e b não deixa duas notícias contraditórias no mesmo grupo
+    (a decisão do juiz vale para o par, não para tudo o que já estava unido a cada um)."""
+    ra, rb = raiz(a), raiz(b)
+    ga = [itens[k] for k in recentes if raiz(k) == ra][:40]
+    gb = [itens[k] for k in recentes if raiz(k) == rb][:40]
+    # A cidade o juiz já confere (operações citam várias). Operação com nome (Cash Out, Rainha do
+    # Sul...): muitas pessoas, idades e números de presos conforme a matéria; aí só a quantidade conta.
+    pessoas = not any(it.get('_ops') for it in ga + gb)
+    for x in ga:
+        for y in gb:
+            if quantidades_em_conflito(x.get('_q'), y.get('_q')):
+                return False
+            fa, fb = x.get('_fx') or {}, y.get('_fx') or {}
+            if pessoas and fa.get('p') and fb.get('p') and fa['p'] != fb['p']:
+                return False
+            if pessoas and fa.get('i') and fb.get('i') and not set(fa['i']) & set(fb['i']):
+                return False
+    return True
+
+
 def auditar(itens, dia, inf, qt, sh, hs, unir, raiz, dias=None):
     """dias=None: o acervo inteiro (a coleta retroativa também passa pelo auditor)."""
     SUSPEITAS.clear()
@@ -625,7 +696,9 @@ def auditar(itens, dia, inf, qt, sh, hs, unir, raiz, dias=None):
             JUNTADAS.append((round(nota, 2), motivos, itens[a].get('f', ''), itens[a]['t'], itens[b].get('f', ''), itens[b]['t']))
         elif nota >= DUVIDA:
             juiz = decisoes_juiz().get(chave_par(itens[a].get('i'), itens[b].get('i')), {})
-            if juiz.get('v') == 'mesmo':  # o juiz de IA leu as duas e confirmou (nos dois sentidos)
+            if juiz.get('v') == 'mesmo' and _grupos_coerentes(itens, recentes, raiz, a, b):
+                # o juiz de IA leu as duas e confirmou (nos dois sentidos); e nenhuma notícia de um
+                # grupo contradiz uma do outro (outra idade, outra cidade, outra quantidade...)
                 unir(a, b, 'auditor')
                 JUNTADAS.append((round(nota, 2), motivos + ['juiz IA'], itens[a].get('f', ''), itens[a]['t'],
                                  itens[b].get('f', ''), itens[b]['t']))
@@ -869,10 +942,13 @@ def agrupar(itens, motivos=None):
         if motivos is not None:
             motivos.append((regra, a, b))
 
-    pal = [palavras(it['t']) for it in itens]
-    inf = [informativas(it['t']) for it in itens]
-    qt = [quantidades_titulo(it['t']) for it in itens]
-    nf = [numeros_fortes(it['t']) for it in itens]
+    # Título sem o nome do veículo no fim ("... - Ponta Porã Informa - Notícias de Ponta Porã/MS"):
+    # o sufixo igual não é palavra em comum entre duas notícias do mesmo site.
+    tt = [titulo_sem_veiculo(it) for it in itens]
+    pal = [palavras(t) for t in tt]
+    inf = [informativas(t) for t in tt]
+    qt = [quantidades_titulo(t) for t in tt]
+    nf = [numeros_fortes(t) for t in tt]
     nor = [normal(it['t']) for it in itens]
     dia = [_dia(it) for it in itens]
     sh = [trechos(it.get('_lead', '')) if len(it.get('_lead', '')) >= 150 else set() for it in itens]
@@ -1030,7 +1106,7 @@ def agrupar(itens, motivos=None):
                 _esp[k] = {w for w in palavras_proprias_foto(itens[k]['t']) if w not in REGULACAO}
         return _esp[a] & _esp[b]
 
-    mats = [materiais_titulo(it['t']) for it in itens]
+    mats = [materiais_titulo(t) for t in tt]
     for a, b in candidatos:
         if mats[a] and mats[b] and not (mats[a] & mats[b]):
             continue  # materiais diferentes nos títulos
@@ -1046,6 +1122,8 @@ def agrupar(itens, motivos=None):
             uf_fraco = False
         if qt[a] and qt[b] and not compativeis(qt[a], qt[b]):
             continue
+        if quantidades_em_conflito(q_titulo(tt[a]), q_titulo(tt[b])):
+            continue  # 2 t x 6 t de maconha ("duas cidades" não é quantidade de droga)
         if dia[a] is None or dia[b] is None:
             continue
         delta = abs(dia[a] - dia[b])

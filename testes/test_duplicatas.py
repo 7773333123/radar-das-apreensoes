@@ -233,6 +233,19 @@ AVANCADOS = [
      {'t': "PF faz nova operação sobre suspeita de desvio de emendas para filme 'Dark Horse'", 'd': '2026-11-18'}, True),
     ({'t': 'PF faz nova operação sobre suspeita de desvio de emendas ligada ao filme Dark Horse', 'd': '2026-11-18'},
      {'t': "Operação da Polícia Federal investiga desvio de emendas para o filme 'Dark Horse'", 'd': '2026-11-18'}, True),
+    # Caso real (17/11/2026, MS): 2 t x 6 t de maconha; "duas cidades" não é quantidade de droga.
+    ({'t': 'Polícia Militar Ambiental e Polícia Rodoviária Federal apreende mais de duas toneladas de maconha em caminhão carregado com carga de carvão',
+      'd': '2026-11-17', 'uf': 'MS', '_q': {'mac': 2000.0}},
+     {'t': 'PRF apreende mais de 6 toneladas de maconha em duas cidades de MS', 'd': '2026-11-17', 'uf': 'MS',
+      '_q': {'mac': 6000.0}}, False),
+    # "Mais de uma tonelada" é o mesmo fato que 1,4 tonelada (caso real, 22/10/2026).
+    ({'t': 'Polícia Rodoviária encontra mais de 1,4 tonelada de maconha em carga de fraldas em Assis', 'd': '2026-10-22', 'uf': 'SP'},
+     {'t': 'Polícia apreende mais de uma tonelada de maconha escondida em carga de fraldas em Assis', 'd': '2026-10-22', 'uf': 'SP'}, True),
+    # O nome do veículo no fim do título não é palavra em comum (Ponta Porã Informa, 17/11/2026).
+    ({'t': 'PM apreende maconha da rodoviária de Ponta Porã - Ponta Porã Informa - Notícias de Ponta Porã/MS e Pedro',
+      'f': 'Ponta Porã Informa', 'd': '2026-11-17', 'uf': 'MS'},
+     {'t': 'DOF apreende quase 150 quilos de maconha em duas motos em Itahum - Ponta Porã Informa - Notícias de Ponta',
+      'f': 'Ponta Porã Informa', 'd': '2026-11-16', 'uf': 'MS'}, False),
     # Nomes de lugar ou facção em comum não bastam.
     ({'t': 'PRF apreende cocaína em carro na BR-277 em Foz do Iguaçu', 'd': '2026-11-18', 'uf': 'PR'},
      {'t': 'Receita apreende cocaína em ônibus na Ponte da Amizade em Foz do Iguaçu', 'd': '2026-11-18', 'uf': 'PR'}, False),
@@ -240,7 +253,7 @@ AVANCADOS = [
 
 
 def agrupa_itens(a, b):
-    itens = [dict(a, i=1, f='Fonte A'), dict(b, i=2, f='Fonte B')]
+    itens = [dict(a, i=1, f=a.get('f', 'Fonte A')), dict(b, i=2, f=b.get('f', 'Fonte B'))]
     saida, _ = agrupar_duplicatas(itens)
     return len(saida) == 1
 
@@ -251,9 +264,21 @@ def main():
         if agrupa_itens(a, b) != esperado:
             erros.append(f'{"deveria" if esperado else "não deveria"} agrupar: {a["t"]!r} / {b["t"]!r}')
     erros += [f'não deveria agrupar: {a!r} / {b!r}' for a, b, ua, ub in DIFERENTES if agrupa(a, b, ua, ub)]
+    # Decisão "mesmo" do juiz vale para o par, não para os grupos: caso real de Sobral (20/11/2026),
+    # prisão de homem de 27 anos com 1 kg (17/11) unida ao casal de 18 e 30 anos com 35 kg (14/11).
+    from duplicatas import _grupos_coerentes
+    sob = [{'t': 'PM apreende 35 kg de drogas e prende casal em Sobral', '_cid': 'Sobral', '_fx': {'i': [18, 30]},
+            '_q': {'dro': 35.0}},
+           {'t': 'PMCE prende suspeito de tráfico de drogas e apreende drogas em Sobral', '_cid': 'Sobral'},
+           {'t': 'PMCE prende suspeito de tráfico durante ação em Sobral', '_cid': 'Sobral', '_fx': {'i': [27]}}]
+    pai = {0: 0, 1: 1, 2: 1}  # 1 e 2 já unidas (mesma prisão de 17/11)
+    if _grupos_coerentes(sob, [0, 1, 2], lambda k: pai[k], 0, 1):
+        erros.append('juiz não deveria unir grupos contraditórios (Sobral: idades 18/30 x 27)')
+    if not _grupos_coerentes(sob, [0, 1], lambda k: k, 0, 1):
+        erros.append('par sem contradição deveria poder ser unido pelo juiz')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS)
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 2
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 
