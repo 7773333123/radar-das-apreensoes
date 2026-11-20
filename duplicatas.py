@@ -668,6 +668,56 @@ def veto_do_juiz(ga, gb):
 _PLURAL = re.compile(r'(?i)\b(casal|dupla|trio|irm[aã]os|pai e filho|m[aã]e e filho|dois|duas|tr[eê]s|quatro|cinco)\b')
 
 
+# Palavras que não identificam o fato (órgãos, números, ações genéricas) na busca por mesma cidade.
+_GENERICAS_CIDADE = set('''pcpr pmpr pcsc pmsc pcdf pmdf pmce pcce pcrs pcmg pmmg rotam bpfron gaeco draco denarc
+    deflagra deflagram investiga investigacao ilegal ilegais cidades cidade vale homens mulheres dupla casal suspeitos
+    presos jovem jovens adolescentes adolescente faccionados faccao acao acoes operacao operacoes forca forcas
+    seguranca integrada conjunta internacional interestadual crime crimes grupo mira esquema venda foragido
+    investigados judiciais roubos furtos mandado mandados aberto anos prisao prisoes'''.split())
+
+
+def _mesma_cidade(itens, dia, unir, raiz, dias=3, max_por_cidade=40):
+    """Pares da mesma cidade do fato, até 1 dia de diferença, de veículos diferentes, com palavra
+    específica do título em comum: vão ao juiz de IA; o "mesmo" do juiz une (grupo coerente)."""
+    validos = [x for x in dia if x is not None]
+    if not validos:
+        return
+    limite = max(validos) - dias
+    juiz = decisoes_juiz()
+    ja = {chave_par(p['a'][0], p['b'][0]) for p in SUSPEITAS}
+    porcid = {}
+    for k, it in enumerate(itens):
+        if dia[k] is not None and dia[k] >= limite and it.get('_cid'):
+            porcid.setdefault((it.get('uf'), it['_cid']), []).append(k)
+    recentes = [k for k in range(len(itens)) if dia[k] is not None and dia[k] >= limite]
+    genericas = set(AREAS_GENERICAS) | MATERIAIS | set(EXTENSO) | VAZIAS_AUDITOR | _GENERICAS_CIDADE
+    for (uf, cid), ks in porcid.items():
+        if len(ks) > max_por_cidade:
+            continue  # cidade grande: muitas notícias diferentes no mesmo dia
+        da_cidade = palavras(cid)
+        for x in range(len(ks)):
+            for y in range(x + 1, len(ks)):
+                a, b = ks[x], ks[y]
+                ia, ib = itens[a], itens[b]
+                if raiz(a) == raiz(b) or ia.get('f') == ib.get('f') or abs(dia[a] - dia[b]) > 1:
+                    continue
+                comuns = {w for w in (informativas(ia['t']) & informativas(ib['t'])) - da_cidade - genericas if not w[0].isdigit()}
+                if not comuns:
+                    continue
+                chave = chave_par(ia.get('i'), ib.get('i'))
+                decisao = juiz.get(chave, {}).get('v')
+                if decisao == 'mesmo':
+                    if _grupos_coerentes(itens, recentes, raiz, a, b):
+                        unir(a, b, 'mesma-cidade+juiz')
+                elif decisao is None and chave not in ja:
+                    ja.add(chave)
+                    SUSPEITAS.append({'nota': 1.0, 'motivos': ['mesma cidade: ' + ', '.join(sorted(comuns)[:4])],
+                                      'a': [ia['i'], ia.get('f', ''), ia['t'], ia.get('d', ''), ia.get('uf', ''),
+                                            str(ia.get('_txt') or ia.get('_lead', ''))[:700], ia.get('_cid') or ''],
+                                      'b': [ib['i'], ib.get('f', ''), ib['t'], ib.get('d', ''), ib.get('uf', ''),
+                                            str(ib.get('_txt') or ib.get('_lead', ''))[:700], ib.get('_cid') or '']})
+
+
 def _grupos_coerentes(itens, recentes, raiz, a, b):
     """Juntar os grupos de a e b não deixa duas notícias contraditórias no mesmo grupo
     (a decisão do juiz vale para o par, não para tudo o que já estava unido a cada um)."""
@@ -1398,6 +1448,12 @@ def agrupar(itens, motivos=None):
         _revisor(itens, dia, unir, raiz, 3)
     except Exception as erro:
         print(f'Revisor da página inicial com erro (site gerado sem ele): {erro!r}')
+    # Mesma cidade, até 1 dia, palavra específica em comum: o juiz de IA lê o par (notícias
+    # curtas de cidade pequena não somam pontos para as regras nem para o motor).
+    try:
+        _mesma_cidade(itens, dia, unir, raiz)
+    except Exception as erro:
+        print(f'Busca por mesma cidade com erro (site gerado sem ela): {erro!r}')
 
     grupos = {}
     for k in range(n):

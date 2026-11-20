@@ -725,7 +725,7 @@ def main():
     SUSPEITAS.sort(key=_prioridade_juiz)
     (PASTA / 'duplicatas_suspeitas.json').write_text(json.dumps({
         'gerado_em': _dt.now(_tz.utc).isoformat(timespec='seconds'),
-        'juntadas_pelo_auditor': len(JUNTADAS), 'suspeitas': SUSPEITAS[:600]}, ensure_ascii=False, indent=1), encoding='utf-8')
+        'juntadas_pelo_auditor': len(JUNTADAS), 'suspeitas': SUSPEITAS[:1200]}, ensure_ascii=False, indent=1), encoding='utf-8')
     print(f'Auditor de duplicatas: {len(JUNTADAS)} pares juntados; {len(SUSPEITAS)} em dúvida (duplicatas_suspeitas.json)')
     from motor_evidencias import REVISOR_LOG
     (PASTA / 'revisor_vitrine.json').write_text(json.dumps({'gerado_em': _dt.now(_tz.utc).isoformat(timespec='seconds'),
