@@ -1109,6 +1109,32 @@ def agrupar(itens, motivos=None):
                     continue
                 unir(a, b, 'foto-recortada')
 
+    # FOTO IDÊNTICA (impressão digital a até 4 bits): o mesmo fato com qualquer título (caso
+    # real de 19/11/2026: "PRF apreende quase 3,4 toneladas de maconha em duas cidades de MS" x
+    # "PRF apreende mais de 3 toneladas de maconha em Dourados e na Capital", a mesma foto).
+    # Mesmo estado, até 1 dia, veículos diferentes, foto não genérica e nada contraditório.
+    for (a, b), d in pares_foto.items():
+        if d > 4 or a in generica or b in generica or raiz(a) == raiz(b):
+            continue
+        ia, ib = itens[a], itens[b]
+        if dia[a] is None or dia[b] is None or abs(dia[a] - dia[b]) > 1:
+            continue
+        if not (ia.get('uf') and ia.get('uf') == ib.get('uf')):
+            continue
+        if ia.get('f') and ia.get('f') == ib.get('f'):
+            continue
+        if mats[a] and mats[b] and not (mats[a] & mats[b]):
+            continue
+        if qt[a] and qt[b] and not compativeis(qt[a], qt[b]):
+            continue
+        fa, fb = ia.get('_fx') or {}, ib.get('_fx') or {}
+        if (fa.get('p') and fb.get('p') and fa['p'] != fb['p']) or \
+                (fa.get('i') and fb.get('i') and not set(fa['i']) & set(fb['i'])):
+            continue
+        if ia.get('_cid') and ib.get('_cid') and ia['_cid'] != ib['_cid']:
+            continue
+        unir(a, b, 'foto-identica')
+
     # A MESMA FOTO com recorte, zoom ou outro tamanho (fotos_orb.py: pontos característicos em
     # comum). Caso real de 19/11/2026: veículos republicam o comunicado da polícia com a foto
     # dela e títulos genéricos ("Polícia Civil apreende revólver durante operação"). Vale com:
@@ -1190,6 +1216,12 @@ def agrupar(itens, motivos=None):
         _motor(itens, dia, unir, raiz, int(os.environ.get('RADAR_AUDITOR_DIAS') or 0) or None, SUSPEITAS, decisoes_juiz())
     except Exception as erro:  # o motor nunca derruba a geração do site
         print(f'Motor de evidências com erro (site gerado sem ele): {erro!r}')
+    # Revisor da página inicial: passada exaustiva nos últimos 3 dias (todos os pares do estado).
+    try:
+        from motor_evidencias import revisar_vitrine as _revisor
+        _revisor(itens, dia, unir, raiz, 3)
+    except Exception as erro:
+        print(f'Revisor da página inicial com erro (site gerado sem ele): {erro!r}')
 
     grupos = {}
     for k in range(n):

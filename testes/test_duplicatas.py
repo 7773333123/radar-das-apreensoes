@@ -196,6 +196,16 @@ AVANCADOS = [
     ({'t': 'Polícia prende suspeito', 'd': '2026-11-19', 'uf': 'PR', 'img': 'https://x/viatura.jpg',
       '_mesma': ['https://y/v1.jpg', 'https://y/v2.jpg', 'https://y/v3.jpg', 'https://y/v4.jpg']},
      {'t': 'Homem é detido após denúncia', 'd': '2026-11-19', 'uf': 'PR', 'img': 'https://y/v1.jpg', '_mesma': ['https://x/viatura.jpg']}, False),
+    # Foto idêntica, títulos diferentes (caso mostrado pelo usuário na página inicial, 19/11/2026).
+    ({'t': 'PRF apreende quase 3,4 toneladas de maconha em duas cidades de MS', 'd': '2026-11-19T22:11', 'uf': 'MS',
+      '_cid': 'Dourados', '_h': 0x1234567890abcdef, 'img': 'https://jd1/x.jpg', '_q': {'maconha': 3400.0}},
+     {'t': 'PRF apreende mais de 3 toneladas de maconha em Dourados e na Capital', 'd': '2026-11-19T20:00', 'uf': 'MS',
+      '_h': 0x1234567890abcdef, 'img': 'https://enfoque/y.jpg', '_q': {'maconha': 3000.0}}, True),
+    # Foto idêntica em cidades do fato diferentes (foto de arquivo): não junta.
+    ({'t': 'PM apreende drogas no Centro', 'd': '2026-11-19', 'uf': 'MS', '_cid': 'Dourados', '_h': 0x0f0f0f0f0f0f0f0f,
+      'img': 'https://a/1.jpg'},
+     {'t': 'PM prende suspeito com drogas', 'd': '2026-11-19', 'uf': 'MS', '_cid': 'Corumbá', '_h': 0x0f0f0f0f0f0f0f0f,
+      'img': 'https://b/2.jpg'}, False),
     # O mesmo link da matéria com títulos diferentes (o feed cortou a cidade; caso real, 18/11/2026).
     ({'t': 'Jovem é preso com mais de 1 kg de maconha em Nova Andradina', 'd': '2026-11-18T13:55', 'uf': 'MS',
       'u': 'https://www.radiojotafm.com.br/ivinhema/2026/11/18/jovem-e-preso-com-mais-de-1-kg-de-maconha.html'},

@@ -667,6 +667,10 @@ def main():
         'gerado_em': _dt.now(_tz.utc).isoformat(timespec='seconds'),
         'juntadas_pelo_auditor': len(JUNTADAS), 'suspeitas': SUSPEITAS[:600]}, ensure_ascii=False, indent=1), encoding='utf-8')
     print(f'Auditor de duplicatas: {len(JUNTADAS)} pares juntados; {len(SUSPEITAS)} em dúvida (duplicatas_suspeitas.json)')
+    from motor_evidencias import REVISOR_LOG
+    (PASTA / 'revisor_vitrine.json').write_text(json.dumps({'gerado_em': _dt.now(_tz.utc).isoformat(timespec='seconds'),
+        'corrigidas': len(REVISOR_LOG), 'pares': REVISOR_LOG[:300]}, ensure_ascii=False, indent=1), encoding='utf-8')
+    print(f'Revisor da página inicial: {len(REVISOR_LOG)} duplicatas corrigidas (revisor_vitrine.json)')
     bloqueadas = [it for it in saida if it.get('_bloq')]
     saida = [it for it in saida if not it.get('_bloq')]
     removidas |= {it['i'] for it in bloqueadas}
