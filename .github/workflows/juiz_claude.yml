@@ -34,17 +34,17 @@ jobs:
       - name: Calibração (quando o juiz, o modelo ou os casos mudam; e a cada 7 dias)
         if: steps.c.outputs.ativo == 'sim'
         run: |
-          st=$(python juiz_duplicatas.py --situacao-calibracao --modelo "$MODELO")
+          st=$(python juiz_duplicatas.py --situacao-calibracao --modelo "$MODELO" --calibrar testes/juiz_casos_claude.json)
           echo "$st"
           if [ "$st" = "CALIBRACAO=precisa" ]; then
-            python juiz_duplicatas.py --modelo "$MODELO" --so-calibrar --saida cal_claude.json
-            python juiz_duplicatas.py --modelo "$MODELO" --aprovar cal_claude.json
+            python juiz_duplicatas.py --modelo "$MODELO" --so-calibrar --calibrar testes/juiz_casos_claude.json --saida cal_claude.json
+            python juiz_duplicatas.py --modelo "$MODELO" --aprovar cal_claude.json --calibrar testes/juiz_casos_claude.json
           fi
       - name: Julgar os pares em dúvida
         if: steps.c.outputs.ativo == 'sim'
         run: |
-          if [ "$(python juiz_duplicatas.py --situacao-calibracao --modelo "$MODELO")" = "CALIBRACAO=ok" ]; then
-            python juiz_duplicatas.py --modelo "$MODELO" --max 1500
+          if [ "$(python juiz_duplicatas.py --situacao-calibracao --modelo "$MODELO" --calibrar testes/juiz_casos_claude.json)" = "CALIBRACAO=ok" ]; then
+            python juiz_duplicatas.py --modelo "$MODELO" --calibrar testes/juiz_casos_claude.json --max 1500
           else
             echo 'Calibração reprovada: o juiz Claude não julga (o juiz próprio continua).'
           fi
