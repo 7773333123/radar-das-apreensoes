@@ -122,9 +122,10 @@ def indicios(c, a, b, extra=None):
     f['sem_texto'] = float(not (sa and sb))
     # Foto: impressão digital, mesma imagem (pontos em comum) ou o mesmo endereço.
     ha, hb = ia.get('_h'), ib.get('_h')
+    fotos_a = set(ia.get('_mesma') or ()) | set(ia.get('_iguais') or ())
+    fotos_b = set(ib.get('_mesma') or ()) | set(ib.get('_iguais') or ())
     mesma = (ia.get('img') and ia.get('img') == ib.get('img')) or \
-        (ib.get('img') and ib['img'] in (ia.get('_mesma') or ()) + tuple(ia.get('_iguais') or ())) or \
-        (ia.get('img') and ia['img'] in (ib.get('_mesma') or ()) + tuple(ib.get('_iguais') or ()))
+        (ib.get('img') and ib['img'] in fotos_a) or (ia.get('img') and ia['img'] in fotos_b)
     if mesma or (ha is not None and hb is not None and (ha ^ hb).bit_count() <= 8):
         f['foto'] = 0.0 if ext.get('foto_generica') else 1.0
     f['link'] = float(bool(ia.get('u')) and ia.get('u') == ib.get('u'))

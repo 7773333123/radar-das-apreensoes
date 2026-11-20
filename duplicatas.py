@@ -1188,8 +1188,8 @@ def agrupar(itens, motivos=None):
     try:
         from motor_evidencias import aplicar as _motor
         _motor(itens, dia, unir, raiz, int(os.environ.get('RADAR_AUDITOR_DIAS') or 0) or None, SUSPEITAS, decisoes_juiz())
-    except ImportError:
-        pass
+    except Exception as erro:  # o motor nunca derruba a geração do site
+        print(f'Motor de evidências com erro (site gerado sem ele): {erro!r}')
 
     grupos = {}
     for k in range(n):
