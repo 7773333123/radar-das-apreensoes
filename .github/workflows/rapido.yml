@@ -98,6 +98,9 @@ jobs:
             else
               echo 'Falha ao gerar o site; nada foi gravado nesta rodada.'
             fi
+            # Juiz Claude: o cron do GitHub atrasa ou não dispara; cada rodada o chama
+            # (concurrency do juiz: no máximo um rodando e um na espera).
+            gh workflow run juiz_claude.yml --ref main || true
             echo '::endgroup::'
             [ "$ciclo" -lt "$CICLOS" ] || break
             espera=$(( INTERVALO - ($(date +%s) - inicio) ))
