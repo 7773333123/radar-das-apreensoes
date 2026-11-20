@@ -279,11 +279,17 @@ def main():
     pai = {0: 0, 1: 1, 2: 1}  # 1 e 2 já unidas (mesma prisão de 17/11)
     if _grupos_coerentes(sob, [0, 1, 2], lambda k: pai[k], 0, 1):
         erros.append('juiz não deveria unir grupos contraditórios (Sobral: idades 18/30 x 27)')
+    # Skank é maconha: 1 kg de skank (17/11) x 15,2 kg de maconha (18/11), Sobral.
+    sk = [{'t': 'PM apreende 15,2 kg de maconha em tambor enterrado em Sobral', '_q': {'mac': 15.2}},
+          {'t': 'Polícia Militar prende suspeito de tráfico de drogas e apreende drogas em Sobral'},
+          {'t': 'PM prende suspeito de tráfico e apreende 1 kg de skank em Sobral', '_q': {'skh': 1.0}}]
+    if _grupos_coerentes(sk, [0, 1, 2], lambda k: {0: 0, 1: 1, 2: 1}[k], 0, 1):
+        erros.append('juiz não deveria unir 1 kg de skank a 15,2 kg de maconha (Sobral)')
     if not _grupos_coerentes(sob, [0, 1], lambda k: k, 0, 1):
         erros.append('par sem contradição deveria poder ser unido pelo juiz')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 2
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 3
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 

@@ -600,7 +600,7 @@ def quantidades_em_conflito(qa, qb):
     """Quantidade do MESMO material muito diferente: 2 t x 6 t de maconha.
     Tolera 25%, e até 1,5 vez quando o menor é número redondo ("mais de uma tonelada" x
     1,4 tonelada; "mais de 100 armas" x 118 armas)."""
-    qa, qb = qa or {}, qb or {}
+    qa, qb = _familia(qa), _familia(qb)
     for m in set(qa) & set(qb):
         menor, maior = sorted((qa[m], qb[m]))
         if maior - menor <= 0.25 * maior:
@@ -609,6 +609,18 @@ def quantidades_em_conflito(qa, qb):
             continue
         return True
     return False
+
+
+# Skunk/skank é maconha: 1 kg de skank x 15 kg de maconha é contradição (Sobral, 17 x 18/11/2026).
+FAMILIA_MATERIAL = {'skh': 'mac'}
+
+
+def _familia(q):
+    saida = {}
+    for k, v in (q or {}).items():
+        f = FAMILIA_MATERIAL.get(k, k)
+        saida[f] = max(saida.get(f, 0), v)
+    return saida
 
 
 def _redondo(v):
