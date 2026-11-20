@@ -36,7 +36,8 @@ DECISOES = RAIZ / 'juiz_decisoes.json'
 CALIBRACAO = RAIZ / 'juiz_calibracao.json'
 GASTO = RAIZ / 'juiz_gasto.json'  # gasto do mês com o juiz Claude (API paga)
 PRECO_CLAUDE = {'claude-haiku-5-5': (0.10, 0.50), 'claude-sonnet-5-5': (2.00, 10.00), 'claude-opus-5-5': (4.00, 20.00)}
-TETO_MENSAL_USD = 9.0  # ao chegar aqui, o juiz Claude para e o juiz próprio (Qwen) assume até o mês virar
+TETO_MENSAL_USD = 9.0
+ESCALONAR = 'claude-sonnet-5-5'  # o juiz Claude pergunta a este modelo quando fica incerto  # ao chegar aqui, o juiz Claude para e o juiz próprio (Qwen) assume até o mês virar
 
 
 def e_claude(modelo):
@@ -118,7 +119,7 @@ LICOES = """Erros já conferidos à mão neste site (aprenda com eles):
 def versao_juiz(modelo=''):
     """Assinatura das instruções e do modelo: decisões de outra versão podem ser revistas."""
     import hashlib
-    extra = LICOES if e_claude(modelo) else ''
+    extra = (LICOES + ESCALONAR) if e_claude(modelo) else ''  # a calibração vale para Haiku + Sonnet nos incertos
     return hashlib.sha1((INSTRUCOES + GRAMATICA + extra + Path(str(modelo or '')).name).encode()).hexdigest()[:10]
 
 
@@ -203,12 +204,13 @@ class JuizClaude:
     def sem_saldo(self):
         return self.gasto['usd'] >= TETO_MENSAL_USD or self.falhas >= 5
 
-    def perguntar(self, a, b):
+    def perguntar(self, a, b, modelo=None):
+        modelo = modelo or self.modelo
         if self.sem_saldo():
             return None
         try:
             r = self.client.messages.create(
-                model=self.modelo, max_tokens=4000,
+                model=modelo, max_tokens=4000,
                 system=[{'type': 'text', 'text': INSTRUCOES + '\n\n' + LICOES, 'cache_control': {'type': 'ephemeral'}}],
                 messages=[{'role': 'user', 'content': materia('A', a) + '\n\n' + materia('B', b)}],
                 output_config={'effort': 'low', 'format': {'type': 'json_schema', 'schema': self.ESQUEMA}})
@@ -219,7 +221,7 @@ class JuizClaude:
             return None
         u = r.usage
         entrada = (u.input_tokens or 0) + (u.cache_creation_input_tokens or 0) * 1.25 + (u.cache_read_input_tokens or 0) * 0.1
-        pe, ps = PRECO_CLAUDE.get(self.modelo, (4.0, 20.0))
+        pe, ps = PRECO_CLAUDE.get(modelo, (4.0, 20.0))
         with self.trava:
             self.gasto['usd'] = round(self.gasto['usd'] + (entrada * pe + (u.output_tokens or 0) * ps) / 1e6, 6)
             self.gasto['pares'] += 1
@@ -238,12 +240,23 @@ class JuizClaude:
         r = self.perguntar(a, b)
         if r is None:
             return None, {}, None
+        v = self._decisao(r)
+        if v == 'incerto' and self.modelo != ESCALONAR:
+            # Incerto (~10% dos pares): pergunta ao Sonnet, mais preciso (custo extra pequeno).
+            r2 = self.perguntar(a, b, ESCALONAR)
+            if r2 is not None:
+                r2['escalonado'] = ESCALONAR
+                return self._decisao(r2), r2, r
+        return v, r, None
+
+    @staticmethod
+    def _decisao(r):
         c = int(r.get('confianca', 0))
         if r.get('mesmo_fato') and c >= CONFIANCA_MIN:
-            return 'mesmo', r, None
+            return 'mesmo'
         if not r.get('mesmo_fato') and c >= CONFIANCA_MIN:
-            return 'diferente', r, None
-        return 'incerto', r, None
+            return 'diferente'
+        return 'incerto'
 
     def gravar_gasto(self):
         GASTO.write_text(json.dumps(self.gasto, ensure_ascii=False) + '\n', encoding='utf-8')
@@ -376,13 +389,15 @@ def main():
     # separou (a versão atual relê; "mesmo" de versões anteriores fica, foi conferido na calibração).
     versao = versao_juiz(args.modelo)
     novos = [s for s in suspeitas if len(s['a']) >= 6 and chave_par(s['a'][0], s['b'][0]) not in ja_julgados]
-    versoes_claude = {versao_juiz(m) for m in PRECO_CLAUDE} | {'b030abb068'}  # + versões anteriores do Claude
+    versoes_claude = {versao_juiz(m) for m in PRECO_CLAUDE} | {'b030abb068', 'e2bb2887e8'}  # + versões anteriores do Claude
 
     def rever_par(d):
         if str(d.get('m', '')).startswith('Revisão'):
             return False  # correção feita à mão
         if d.get('ver') == versao and d.get('c') != -1:
-            return False  # já julgado por este juiz ("já unidos" automático é relido: a união pode ter mudado)
+            # já julgado por este juiz ("já unidos" automático é relido); o incerto do Claude ainda
+            # não levado ao modelo mais preciso também é relido
+            return e_claude(args.modelo) and d.get('v') == 'incerto' and not d.get('esc')
         claude = d.get('jz') == 'claude' or d.get('ver') in versoes_claude
         if e_claude(args.modelo):
             return True  # o Claude relê os "mesmo" do juiz próprio e as decisões de versões anteriores dele
@@ -457,6 +472,7 @@ def main():
             'v': v, 'c': int(r1.get('confianca', 0)), 'm': str(r1.get('motivo', ''))[:200], 'ver': versao,
             'c2': int((r2 or {}).get('confianca', -1)), 'm2': str((r2 or {}).get('motivo', ''))[:200],
             **({'jz': 'claude'} if e_claude(args.modelo) else {}),
+            **({'esc': r1['escalonado']} if r1.get('escalonado') else {}),
             'em': datetime.now(timezone.utc).isoformat(timespec='seconds'),
             't': [s['a'][2][:120], s['b'][2][:120]]}
         conf = f"{r1.get('mesmo_fato')}/{r1.get('confianca')}" + (f" {r2.get('mesmo_fato')}/{r2.get('confianca')}" if r2 else '')
