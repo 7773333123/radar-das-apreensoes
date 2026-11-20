@@ -285,11 +285,16 @@ def main():
           {'t': 'PM prende suspeito de tráfico e apreende 1 kg de skank em Sobral', '_q': {'skh': 1.0}}]
     if _grupos_coerentes(sk, [0, 1, 2], lambda k: {0: 0, 1: 1, 2: 1}[k], 0, 1):
         erros.append('juiz não deveria unir 1 kg de skank a 15,2 kg de maconha (Sobral)')
+    # Casal nos dois lados: cada jornal cita a idade de um dos dois (Dourados, 20/11/2026).
+    casal = [{'t': 'Com bebê de 1 ano no carro, casal é preso transportando maconha e cocaína em Dourados', '_fx': {'i': [25]}},
+             {'t': 'Casal é preso por tráfico de drogas com filho de 1 ano dentro do carro em Dourados', '_fx': {'i': [22]}}]
+    if not _grupos_coerentes(casal, [0, 1], lambda k: k, 0, 1):
+        erros.append('casal: idades diferentes de cada um não são contradição (Dourados)')
     if not _grupos_coerentes(sob, [0, 1], lambda k: k, 0, 1):
         erros.append('par sem contradição deveria poder ser unido pelo juiz')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 3
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 4
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 

@@ -665,6 +665,9 @@ def veto_do_juiz(ga, gb):
     return False
 
 
+_PLURAL = re.compile(r'(?i)\b(casal|dupla|trio|irm[aã]os|pai e filho|m[aã]e e filho|dois|duas|tr[eê]s|quatro|cinco)\b')
+
+
 def _grupos_coerentes(itens, recentes, raiz, a, b):
     """Juntar os grupos de a e b não deixa duas notícias contraditórias no mesmo grupo
     (a decisão do juiz vale para o par, não para tudo o que já estava unido a cada um)."""
@@ -676,6 +679,10 @@ def _grupos_coerentes(itens, recentes, raiz, a, b):
     if veto_do_juiz(ga, gb):
         return False
     pessoas = not any(it.get('_ops') for it in ga + gb)
+    # Casal/dupla/trio nos dois grupos: cada jornal cita a idade de um deles (22 x 25 anos não
+    # é contradição). Caso real: casal preso com bebê em Dourados (20/11/2026).
+    plural = lambda g: any(_PLURAL.search(it.get('t') or '') or (it.get('_fx') or {}).get('p', 0) >= 2 for it in g)
+    idades = pessoas and not (plural(ga) and plural(gb))
     for x in ga:
         for y in gb:
             if quantidades_em_conflito(x.get('_q'), y.get('_q')):
@@ -683,7 +690,7 @@ def _grupos_coerentes(itens, recentes, raiz, a, b):
             fa, fb = x.get('_fx') or {}, y.get('_fx') or {}
             if pessoas and fa.get('p') and fb.get('p') and fa['p'] != fb['p']:
                 return False
-            if pessoas and fa.get('i') and fb.get('i') and not set(fa['i']) & set(fb['i']):
+            if idades and fa.get('i') and fb.get('i') and not set(fa['i']) & set(fb['i']):
                 return False
     return True
 
