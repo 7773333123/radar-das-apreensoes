@@ -22,6 +22,7 @@ nova até a foto ser analisada.
 """
 import argparse
 import hashlib
+import re
 import io
 import json
 import time
@@ -136,7 +137,10 @@ def _dia(n):
 
 def foto_util(url):
     u = (url or '').lower()
-    return u.startswith('http') and not any(x in u for x in ('logo', 'placeholder', 'default-image', 'sem-imagem', 'favicon'))
+    if not u.startswith('http') or any(x in u for x in ('logo', 'placeholder', 'default-image', 'sem-imagem', 'favicon')):
+        return False
+    # Imagem padrão do site (compartilhamento, ícone, banner): a mesma em centenas de notícias.
+    return not re.search(r'/og/|og-image|opengra|share|compartilh|/_si/|icon|banner|cropped-|thumb-default|padrao', u)
 
 
 def limpar_cache(urls_vivas):
