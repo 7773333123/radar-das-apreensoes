@@ -10,6 +10,7 @@ Ordem das evidências (a primeira que der um único estado vence):
 A comparação de nomes é sensível a acentos e maiúsculas: "para" (preposição)
 não é "Pará", e "canoas" não é a cidade de Canoas.
 """
+import functools
 import json
 import re
 from functools import lru_cache
@@ -235,6 +236,11 @@ def municipios_no_texto(texto):
     """
     if not texto:
         return []
+    return list(_municipios_no_texto(texto))
+
+
+@functools.lru_cache(maxsize=200000)  # o mesmo título/resumo é lido várias vezes por geração
+def _municipios_no_texto(texto):
     texto = OPERACAO.sub(' ', texto)
     texto = re.sub(r"\b[Dd][’'´`]", "d'", texto)
     entradas, blocos = _indice()
@@ -257,7 +263,7 @@ def municipios_no_texto(texto):
         if nome not in vistos:
             vistos.add(nome)
             saida.append((nome, uf))
-    return saida
+    return tuple(saida)
 
 
 @lru_cache(maxsize=None)

@@ -27,6 +27,7 @@ import json
 import math
 import re
 from collections import Counter
+from functools import lru_cache
 from pathlib import Path
 
 from duplicatas import (PALAVRAS_VAZIAS, VAZIAS_AUDITOR, compativeis, materiais_titulo, normal,
@@ -53,10 +54,16 @@ _DINHEIRO = re.compile(r'R\$\s*[\d.,]+(?:\s*(?:mil|milh[õo]es|milh[ãa]o|bilh[�
 
 def numeros_por_tipo(titulo):
     """Quantidades do título separadas em dinheiro (R$ ...) e o resto."""
-    t = ESTRADA.sub(' ', titulo or '')
+    d, o = _numeros_por_tipo(titulo or '')
+    return {'dinheiro': set(d), 'outros': set(o)}
+
+
+@lru_cache(maxsize=300000)
+def _numeros_por_tipo(titulo):
+    t = ESTRADA.sub(' ', titulo)
     dinheiro = ' '.join(_DINHEIRO.findall(t))
     resto = _DINHEIRO.sub(' ', t)
-    return {'dinheiro': quantidades_titulo(dinheiro), 'outros': quantidades_titulo(resto)}
+    return frozenset(quantidades_titulo(dinheiro)), frozenset(quantidades_titulo(resto))
 
 
 def tokens(texto):
