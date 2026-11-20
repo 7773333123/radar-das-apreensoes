@@ -37,6 +37,7 @@ CALIBRACAO = RAIZ / 'juiz_calibracao.json'
 CONFIANCA_MIN = 80
 VALIDADE_CALIBRACAO = 7 * 86400  # segundos
 FILA_GRANDE = 150  # pares pendentes: acima disso, 6 juízes em vez de 4
+FILA_MUITO_GRANDE = 300  # acima disso, 8 juízes (a fila crescia mais que 6 juízes julgam)
 
 INSTRUCOES = """Você confere duplicatas num site que reúne notícias de apreensões policiais publicadas por vários veículos de imprensa.
 Receberá duas matérias de veículos diferentes. Decida se as duas noticiam o MESMO FATO: a mesma ação policial
@@ -284,7 +285,7 @@ def main():
           + (f'; {len(pendentes)} nesta fatia ({args.shard}/{args.shards}).' if args.shard is not None else '.'), flush=True)
     if args.so_contar:
         print(f'PENDENTES={total_pendentes}')
-        n = 6 if total_pendentes > FILA_GRANDE else 4
+        n = 8 if total_pendentes > FILA_MUITO_GRANDE else 6 if total_pendentes > FILA_GRANDE else 4
         print(f'JUIZES={n}')
         print('FATIAS=' + json.dumps(list(range(n))))
         return
