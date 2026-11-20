@@ -301,6 +301,21 @@ def agrupar_duplicatas(itens, motivos=None):
     return _agrupar(itens, motivos)
 
 
+_PAGINA_SITE = re.compile(r'(?i)^(resultados? (?:para|da busca|de pesquisa)|busca:|tag:|categoria:'
+                          r'|tudo sobre(?::|.*-\s*p[aá]gina\s+\d)|arquivos\s*#)')
+_VERBO = re.compile(r'(?i)\b(é|são|foi|foram|apreend\w*|prend\w*|pres[oa]s?|encontrad\w*|achad\w*|recolhid\w*)\b')
+
+
+def nao_e_noticia(titulo):
+    """Página de busca, etiqueta ou arquivo do site ("Tag: ...", "Arquivos #Draco",
+    "Arquivos tráfico de drogas em X"), e não uma notícia. "Arquivos de abuso sexual são
+    apreendidos..." é notícia (tem verbo)."""
+    t = (titulo or '').strip()
+    if _PAGINA_SITE.match(t):
+        return True
+    return bool(re.match(r'(?i)^arquivos\s', t)) and not _VERBO.search(t)
+
+
 def url_publica(valor):
     valor = str(valor or '').strip()
     return valor if re.match(r'https?://', valor) else ''
@@ -504,8 +519,7 @@ def main():
             continue
         # Páginas de busca, etiqueta e arquivo dos sites não são notícias ("Busca: ...", "Tag: ...",
         # "Tudo sobre: ...", "Arquivos #Draco ...").
-        if re.match(r'(?i)(resultados? (?:para|da busca|de pesquisa)|busca:|tag:|categoria:|tudo sobre(?::|.*-\s*p[aá]gina\s+\d)|arquivos\s+[#\w])', titulo) \
-                or not relevante(titulo):
+        if nao_e_noticia(titulo) or not relevante(titulo):
             ocultas += 1
             continue
         cats = categorias(n, titulo)
