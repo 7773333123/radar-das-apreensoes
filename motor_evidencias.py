@@ -75,6 +75,17 @@ class Corpus:
         self.vt = [self._vet(t, 1.0) for t in self.tok_t]
         self.vx = [self._vet(tt * 2 + tx, 1.0) for tt, tx in zip(self.tok_t, self.tok_x)]
         self.sh = [shingles(str(it.get('_txt') or '')[:2500]) for it in itens]
+        # Blocos fixos dos sites ("leia também", rodapé, chamadas de outras matérias): trechos que
+        # aparecem em 3+ matérias do MESMO veículo, ou em 8+ matérias de qualquer veículo, não são
+        # texto da reportagem e não contam como cópia.
+        por_veiculo, geral = {}, Counter()
+        for it, sh in zip(itens, self.sh):
+            por_veiculo.setdefault(str(it.get('f', '')).strip().lower(), Counter()).update(sh)
+            geral.update(sh)
+        fixos = {x for x, n in geral.items() if n >= 8}
+        for v, cont in por_veiculo.items():
+            fixos |= {x for x, n in cont.items() if n >= 3}
+        self.sh = [sh - fixos for sh in self.sh]
         self.nums = [self._nums(it) for it in itens]
 
     def _vet(self, toks, _):
@@ -153,7 +164,7 @@ def indicios(c, a, b, extra=None):
     f['num_comum'] = float(min(3, len(c.nums[a] & c.nums[b])))
     da, db = _dia(ia), _dia(ib)
     f['dias'] = float(abs(da - db)) if da is not None and db is not None else 3.0
-    f['mesmo_veiculo'] = float(bool(ia.get('f')) and ia.get('f') == ib.get('f'))
+    f['mesmo_veiculo'] = float(bool(ia.get('f')) and str(ia.get('f')).strip().lower() == str(ib.get('f')).strip().lower())
     return f
 
 
@@ -299,3 +310,75 @@ def aplicar(itens, dia, unir, raiz, dias=None, suspeitas=None, motivos_juiz=None
                               'b': [ib['i'], ib.get('f', ''), ib['t'], ib.get('d', ''), ib.get('uf', ''),
                                     str(ib.get('_txt') or ib.get('_lead', ''))[:700], ib.get('_cid') or '']})
     return unidos
+
+
+# Revisor da página inicial: a última passada, EXAUSTIVA, sobre as notícias recentes.
+REVISOR_LOG = []
+
+
+def revisar_vitrine(itens, dia, unir, raiz, dias=3):
+    """Compara TODOS os pares do mesmo estado (até 1 dia) entre as notícias dos últimos dias,
+    sem depender da seleção de candidatos: une quando há prova concreta e nada contraditório.
+    Grava em REVISOR_LOG o que corrigiu (auditoria de hora em hora)."""
+    REVISOR_LOG.clear()
+    validos = [d for d in dia if d is not None]
+    if not validos:
+        return 0
+    limite = max(validos) - dias
+    sel = [k for k in range(len(itens)) if dia[k] is not None and dia[k] >= limite]
+    if len(sel) < 2:
+        return 0
+    c = Corpus([itens[k] for k in sel])
+    pesos = carregar_pesos() or {'w': {}, 'vies': 0, 'unir': 99}
+    # Foto genérica (logotipo, arte padrão): a mesma impressão digital em 4+ notícias.
+    conta_h = Counter(itens[k].get('_h') for k in sel if itens[k].get('_h') is not None)
+    por_uf = {}
+    for j, k in enumerate(sel):
+        por_uf.setdefault(itens[k].get('uf') or '?', []).append(j)
+    unidos = 0
+    for uf, js in por_uf.items():
+        if uf == '?':
+            continue
+        js.sort(key=lambda j: dia[sel[j]])
+        for x in range(len(js)):
+            a = js[x]
+            ka = sel[a]
+            for y in range(x + 1, len(js)):
+                b = js[y]
+                kb = sel[b]
+                if dia[kb] - dia[ka] > 1:
+                    break
+                if raiz(ka) == raiz(kb):
+                    continue
+                ia, ib = itens[ka], itens[kb]
+                gen = conta_h.get(ia.get('_h'), 0) > 3 or conta_h.get(ib.get('_h'), 0) > 3
+                f = indicios(c, a, b, {'foto_generica': gen})
+                if contradiz(f):
+                    continue
+                if f['mesmo_veiculo']:
+                    continue  # o mesmo site: blocos fixos e fotos de arquivo enganam (regras de link/título cuidam)
+                motivo = None
+                if f['foto'] and (f['cos_tit'] >= 0.25 or f['qtd_igual'] or f['cos_txt'] >= 0.5):
+                    motivo = 'foto'
+                elif f['copia'] >= 0.5 and not f['sem_texto']:
+                    motivo = 'texto copiado'
+                elif f['cos_txt'] >= 0.75 and f['num_comum'] >= 1:
+                    motivo = 'texto e números'
+                elif placar(f, pesos) >= pesos.get('unir', 99) and ancora(f):
+                    motivo = 'placar'
+                if not motivo:
+                    continue
+                if any(_conflito(itens[p], itens[q]) for p in _membros(itens, raiz, ka, sel)[:40]
+                       for q in _membros(itens, raiz, kb, sel)[:40]):
+                    continue
+                unir(ka, kb, 'revisor')
+                unidos += 1
+                REVISOR_LOG.append({'motivo': motivo, 'a': [ia.get('f', ''), ia['t'], ia.get('d', '')],
+                                    'b': [ib.get('f', ''), ib['t'], ib.get('d', '')],
+                                    'indicios': {k: round(v, 2) for k, v in f.items() if v}})
+    return unidos
+
+
+def _membros(itens, raiz, k, sel):
+    r = raiz(k)
+    return [j for j in sel if raiz(j) == r]
