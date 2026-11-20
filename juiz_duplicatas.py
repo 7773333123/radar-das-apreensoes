@@ -252,6 +252,28 @@ def main():
              and ja_julgados[chave_par(s['a'][0], s['b'][0])].get('v') != 'mesmo'
              and ja_julgados[chave_par(s['a'][0], s['b'][0])].get('ver') != versao]
     pendentes = novos + rever
+    # Pares cujas duas notícias já estão unidas por outras decisões "mesmo" (A=B e B=C: A-C)
+    # não precisam de juiz: o auditor já junta o grupo inteiro.
+    pai = {}
+
+    def raiz(x):
+        while pai.get(x, x) != x:
+            pai[x] = pai.get(pai[x], pai[x])
+            x = pai[x]
+        return x
+    for k, d in ja_julgados.items():
+        if d.get('v') == 'mesmo':
+            a, b = k.split('-', 1)
+            pai[raiz(a)] = raiz(b)
+    ja_unidos = [s for s in pendentes if raiz(str(s['a'][0])) == raiz(str(s['b'][0]))]
+    if ja_unidos:
+        agora = datetime.now(timezone.utc).isoformat(timespec='seconds')
+        for s in ja_unidos:
+            decisoes[chave_par(s['a'][0], s['b'][0])] = {'v': 'mesmo', 'c': -1, 'm': 'já unidos por outras decisões do juiz',
+                                                        'ver': versao, 'em': agora, 't': [s['a'][2][:120], s['b'][2][:120]]}
+        ids = {id(s) for s in ja_unidos}
+        pendentes = [s for s in pendentes if id(s) not in ids]
+    print(f'{len(ja_unidos)} pares já unidos por outras decisões (sem juiz).', flush=True)
     total_pendentes = len(pendentes)
     if args.shard is not None:
         import hashlib
