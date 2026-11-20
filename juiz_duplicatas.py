@@ -37,7 +37,8 @@ CALIBRACAO = RAIZ / 'juiz_calibracao.json'
 GASTO = RAIZ / 'juiz_gasto.json'  # gasto do mês com o juiz Claude (API paga)
 PRECO_CLAUDE = {'claude-haiku-5-5': (0.10, 0.50), 'claude-sonnet-5-5': (2.00, 10.00), 'claude-opus-5-5': (4.00, 20.00)}
 TETO_MENSAL_USD = 9.0
-ESCALONAR = 'claude-sonnet-5-5'  # o juiz Claude pergunta a este modelo quando fica incerto  # ao chegar aqui, o juiz Claude para e o juiz próprio (Qwen) assume até o mês virar
+ESCALONAR = 'claude-sonnet-5-5'  # o juiz Claude pergunta a este modelo quando fica incerto
+TETO_ESCALONAR_USD = 6.0  # acima deste gasto no mês, só o Haiku (o Sonnet custa ~17x mais)  # ao chegar aqui, o juiz Claude para e o juiz próprio (Qwen) assume até o mês virar
 
 
 def e_claude(modelo):
@@ -241,7 +242,7 @@ class JuizClaude:
         if r is None:
             return None, {}, None
         v = self._decisao(r)
-        if v == 'incerto' and self.modelo != ESCALONAR:
+        if v == 'incerto' and self.modelo != ESCALONAR and self.gasto['usd'] < TETO_ESCALONAR_USD:
             # Incerto (~10% dos pares): pergunta ao Sonnet, mais preciso (custo extra pequeno).
             r2 = self.perguntar(a, b, ESCALONAR)
             if r2 is not None:
