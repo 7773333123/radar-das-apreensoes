@@ -95,10 +95,31 @@ ws ::= [ ]?
 '''
 
 
+# Lições dos erros conferidos à mão (juiz_decisoes_revisao.json): vão ao juiz Claude junto das
+# instruções, como exemplos. Toda lição nova muda a versão e o juiz relê a fila.
+LICOES = """Erros já conferidos à mão neste site (aprenda com eles):
+- "Brasileiros são presos na Tailândia com R$ 3,3 milhões em cocaína" x "MAIS DOIS brasileiros são presos na
+  Tailândia com cocaína": DIFERENTES. "Mais dois", "outro", "novamente", "segundo caso" indicam outro fato.
+- "PF apreende 153 kg de cocaína em navio no Porto de Santos" (domingo) x "PF faz operação com 17 mandados contra
+  tráfico pelo Porto de Santos" (terça): DIFERENTES. Uma apreensão e uma operação de mandados em datas
+  diferentes são fatos diferentes, mesmo no mesmo lugar e sobre o mesmo crime.
+- "PF faz operação no Aeroporto de Guarulhos" x "Operação Fuselo contra aviões de pequeno porte em 8 estados"
+  (mesmo dia): DIFERENTES. Duas operações da PF no mesmo dia não são a mesma sem nome ou detalhe em comum.
+- "Adolescente apreendido por ordem judicial no bairro Nossa Senhora das Dores" x "Adolescente apreendido com
+  drogas após abordagem no Jardim Bartolomeu Grotta" (mesma cidade e dia): DIFERENTES. Bairro e circunstância
+  diferentes = fatos diferentes.
+- "PM apreende 15,2 kg de maconha em tambor enterrado" x "PM prende suspeito com 1 kg de skank" (mesma cidade):
+  DIFERENTES. Quantidades muito diferentes do mesmo material (skank é maconha).
+- "Homem é preso com revólver e confessa homicídio em oficina" x "Três suspeitos presos e adolescente apreendido
+  pela morte do jovem na oficina" (mesma cidade e dia, mesma arma): MESMO FATO. Prisões do mesmo crime, no mesmo
+  dia e na mesma ação, contadas por veículos diferentes, são a mesma notícia."""
+
+
 def versao_juiz(modelo=''):
     """Assinatura das instruções e do modelo: decisões de outra versão podem ser revistas."""
     import hashlib
-    return hashlib.sha1((INSTRUCOES + GRAMATICA + Path(str(modelo or '')).name).encode()).hexdigest()[:10]
+    extra = LICOES if e_claude(modelo) else ''
+    return hashlib.sha1((INSTRUCOES + GRAMATICA + extra + Path(str(modelo or '')).name).encode()).hexdigest()[:10]
 
 
 def todas_decisoes():
@@ -188,7 +209,7 @@ class JuizClaude:
         try:
             r = self.client.messages.create(
                 model=self.modelo, max_tokens=4000,
-                system=[{'type': 'text', 'text': INSTRUCOES, 'cache_control': {'type': 'ephemeral'}}],
+                system=[{'type': 'text', 'text': INSTRUCOES + '\n\n' + LICOES, 'cache_control': {'type': 'ephemeral'}}],
                 messages=[{'role': 'user', 'content': materia('A', a) + '\n\n' + materia('B', b)}],
                 output_config={'effort': 'low', 'format': {'type': 'json_schema', 'schema': self.ESQUEMA}})
         except (self.anthropic.APIStatusError, self.anthropic.APIConnectionError) as erro:
@@ -355,14 +376,15 @@ def main():
     # separou (a versão atual relê; "mesmo" de versões anteriores fica, foi conferido na calibração).
     versao = versao_juiz(args.modelo)
     novos = [s for s in suspeitas if len(s['a']) >= 6 and chave_par(s['a'][0], s['b'][0]) not in ja_julgados]
-    versoes_claude = {versao_juiz(m) for m in PRECO_CLAUDE}
+    versoes_claude = {versao_juiz(m) for m in PRECO_CLAUDE} | {'b030abb068'}  # + versões anteriores do Claude
 
     def rever_par(d):
         if str(d.get('m', '')).startswith('Revisão') or d.get('ver') == versao:
             return False  # correção feita à mão, ou já julgado por este juiz
+        claude = d.get('jz') == 'claude' or d.get('ver') in versoes_claude
         if e_claude(args.modelo):
-            return d.get('ver') not in versoes_claude  # o Claude relê também os "mesmo" do juiz próprio
-        return d.get('v') != 'mesmo' and d.get('ver') not in versoes_claude  # o Qwen não refaz o Claude
+            return True  # o Claude relê os "mesmo" do juiz próprio e as decisões de versões anteriores dele
+        return d.get('v') != 'mesmo' and not claude  # o Qwen não refaz o Claude
     rever = [s for s in suspeitas if len(s['a']) >= 6 and chave_par(s['a'][0], s['b'][0]) in ja_julgados
              and rever_par(ja_julgados[chave_par(s['a'][0], s['b'][0])])]
     pendentes = novos + rever
@@ -430,6 +452,7 @@ def main():
         decisoes[chave_par(s['a'][0], s['b'][0])] = {
             'v': v, 'c': int(r1.get('confianca', 0)), 'm': str(r1.get('motivo', ''))[:200], 'ver': versao,
             'c2': int((r2 or {}).get('confianca', -1)), 'm2': str((r2 or {}).get('motivo', ''))[:200],
+            **({'jz': 'claude'} if e_claude(args.modelo) else {}),
             'em': datetime.now(timezone.utc).isoformat(timespec='seconds'),
             't': [s['a'][2][:120], s['b'][2][:120]]}
         conf = f"{r1.get('mesmo_fato')}/{r1.get('confianca')}" + (f" {r2.get('mesmo_fato')}/{r2.get('confianca')}" if r2 else '')
