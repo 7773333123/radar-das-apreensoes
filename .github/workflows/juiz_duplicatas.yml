@@ -4,7 +4,7 @@ name: Juiz de duplicatas (IA própria)
 # 1. Calibração (sempre que o juiz, o modelo ou os casos mudam; e a cada 7 dias): os casos conferidos à mão
 #    (testes/juiz_casos.json) são julgados em 4 partes paralelas; se o juiz juntar algum par
 #    diferente, a versão é reprovada e nada é julgado (juiz_calibracao.json).
-# 2. Julgamento: 4 juízes em paralelo (6 com mais de 150 pares na fila; 8 com mais de 300), cada um com a sua fatia dos pares e o seu arquivo
+# 2. Julgamento: 4 juízes em paralelo (6 com mais de 150 pares na fila; 8 com mais de 300; 12 com mais de 600), cada um com a sua fatia dos pares e o seu arquivo
 #    (juiz_decisoes_<n>.json). Pares novos primeiro (os recentes na frente); depois os que uma
 #    versão anterior deixou em dúvida. As decisões valem na próxima geração do site (10 minutos).
 on:
@@ -52,7 +52,7 @@ jobs:
           echo "estado=${r#CALIBRACAO=}" >> "$GITHUB_OUTPUT"
           # Reprovada nesta mesma versão: não recalibra nem julga (aguarda correção do juiz).
           if [ "${{ inputs.so_calibrar }}" = "true" ] || [ "$r" = "CALIBRACAO=precisa" ]; then echo calibrar=sim >> "$GITHUB_OUTPUT"; else echo calibrar=nao >> "$GITHUB_OUTPUT"; fi
-      # Fila grande: 6 juízes (mais de 150 pares) ou 8 (mais de 300); senão, 4 (sobra vaga para a coleta).
+      # Fila grande: 6 juízes (mais de 150 pares), 8 (mais de 300) ou 12 (mais de 600); senão, 4 (sobra vaga para a coleta).
       - id: f
         run: |
           python juiz_duplicatas.py --so-contar --modelo "$MODELO_ARQ" | tee contagem.txt
