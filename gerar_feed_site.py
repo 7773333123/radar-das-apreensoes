@@ -67,7 +67,26 @@ def limpar_titulo(titulo, fonte):
             titulo = titulo[:-len(sufixo)].rstrip()
     # Páginas gov.br: "Título — Polícia Federal", "Título — Receita Federal".
     titulo = re.sub(r'\s+—\s+[^—]{3,40}$', '', titulo)
+    if fonte.lower() in ('facebook', 'instagram'):
+        titulo = titulo_de_post(titulo)
     return titulo
+
+
+_EMOJI = re.compile('[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F]+')
+
+
+def titulo_de_post(titulo):
+    """Post de rede social: o título vem com o nome da página e a música do vídeo na frente
+    ("G7News. . Um homem foi preso...", "2ª Cia de Paraty. The808Labb · Metal. 🚨 **TRÁFICO**...")
+    e com emojis e marcações. Fica só o texto do post, cortado na primeira frase."""
+    t = re.sub(r'^[^.]{1,60}\.\s[^.·]{1,40}\s·\s[^.]{1,30}\.\s', '', titulo)  # "Página. Música · Gênero. "
+    t = re.sub(r'^[^.]{1,60}\.\s\.\s', '', t)  # "Página. . "
+    t = _EMOJI.sub(' ', t).replace('**', ' ')
+    t = re.sub(r'^\s*[#|\-–:]+\s*', '', re.sub(r'\s+', ' ', t)).strip()
+    if len(t) > 140:  # o post inteiro: fica a primeira frase
+        frase = re.match(r'(.{40,140}?[.!?])\s', t)
+        t = frase.group(1) if frase else t[:140].rsplit(' ', 1)[0] + '…'
+    return t or titulo
 
 
 def categorias(n, titulo):
