@@ -2,7 +2,8 @@ name: Revisão completa das fotos (mesma foto com recorte/zoom)
 # Passa o acervo inteiro de uma parte (quente = últimos 45 dias, ou um ano) pela comparação de
 # fotos por pontos característicos (fotos_orb.py --revisar): acha a mesma foto recortada, com
 # zoom ou em outro tamanho, mesmo com títulos genéricos, e regenera o site da parte. Retoma de
-# onde parou e chama a si mesma até terminar; depois segue para a parte seguinte da fila.
+# onde parou e chama a si mesma até terminar; depois segue para a parte seguinte da fila e,
+# no fim da fila, para o ano anterior, até 2006 (o acervo inteiro).
 on:
   workflow_dispatch:
     inputs:
@@ -52,5 +53,15 @@ jobs:
           elif [ -n "${{ steps.p.outputs.resto }}" ]; then
             gh workflow run revisao_fotos.yml --ref main -f partes="${{ steps.p.outputs.resto }}"
           else
-            echo 'Revisão das fotos concluída em todas as partes pedidas.'
+            # Fim da lista: segue sozinho para o ano anterior, até 2006 (acervo inteiro).
+            parte="${{ steps.p.outputs.parte }}"
+            case "$parte" in
+              quente) proxima=2026 ;;
+              *) proxima=$(( parte - 1 )) ;;
+            esac
+            if [ "$proxima" -ge 2006 ]; then
+              gh workflow run revisao_fotos.yml --ref main -f partes="$proxima"
+            else
+              echo 'Revisão das fotos concluída no acervo inteiro (2006 a hoje).'
+            fi
           fi
