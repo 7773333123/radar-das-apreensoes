@@ -663,6 +663,14 @@ def main():
     saida, removidas = agrupar_duplicatas(saida)
     # Relatório do auditor: pares em dúvida (não juntados), para revisão periódica.
     from duplicatas import SUSPEITAS, JUNTADAS
+    # Fila do juiz: primeiro os pares com notícia em espera (até 6 h), depois os dos últimos 3
+    # dias (página inicial), depois o placar (regras e motor juntos).
+    tres_dias = (_dt.now(_tz.utc) - _td(days=3)).isoformat()[:19]
+
+    def _prioridade_juiz(par):
+        nova = max(str(par['a'][3])[:19], str(par['b'][3])[:19])
+        return (0 if nova >= PENDENTE_DESDE else 1 if nova >= tres_dias else 2, -float(par.get('nota') or 0))
+    SUSPEITAS.sort(key=_prioridade_juiz)
     (PASTA / 'duplicatas_suspeitas.json').write_text(json.dumps({
         'gerado_em': _dt.now(_tz.utc).isoformat(timespec='seconds'),
         'juntadas_pelo_auditor': len(JUNTADAS), 'suspeitas': SUSPEITAS[:600]}, ensure_ascii=False, indent=1), encoding='utf-8')
@@ -684,6 +692,29 @@ def main():
         removidas |= {it['i'] for it in pendentes}
         antes -= len(pendentes)
     print(f'Aguardando a análise da foto (duplicatas por imagem): {len(pendentes)} fora do site até a próxima rodada')
+    # Espera pelo juiz de IA (pedido do usuário, 20/11/2026): notícia NOVA em dúvida com outra
+    # (par em duplicatas_suspeitas.json que o juiz ainda não leu) só entra no site depois da
+    # decisão: se for o mesmo fato, entra já unida; se diferente, entra sozinha. Limite de 6 h
+    # (PENDENTE_DESDE): depois disso é publicada mesmo sem decisão. Retém só a mais nova do par
+    # e só se ela ainda estiver sozinha (sem outras versões já unidas).
+    from duplicatas import chave_par as _chave, decisoes_juiz as _decisoes
+    _juiz = _decisoes()
+    sozinhas = {it['i'] for it in saida if not it.get('o')}
+    em_espera = set()
+    for par in SUSPEITAS:
+        a, b = par['a'], par['b']
+        if (_juiz.get(_chave(a[0], b[0])) or {}).get('v'):
+            continue  # o juiz já leu (incerto: publica; mesmo/diferente já aplicados)
+        nova = a if str(a[3]) >= str(b[3]) else b
+        if str(nova[3])[:19] >= PENDENTE_DESDE and nova[0] in sozinhas:
+            em_espera.add(nova[0])
+    if em_espera:
+        saida = [it for it in saida if it['i'] not in em_espera]
+        removidas |= em_espera
+        antes -= len(em_espera)
+    (PASTA / 'espera_juiz.json').write_text(json.dumps({'gerado_em': _dt.now(_tz.utc).isoformat(timespec='seconds'),
+        'em_espera': len(em_espera)}, ensure_ascii=False), encoding='utf-8')
+    print(f'Em espera pelo juiz de IA (dúvida com outra notícia, até 6 h): {len(em_espera)} fora do site por enquanto')
     # Padrão do site: nenhuma notícia sem foto E sem conteúdo (trecho da reportagem ou texto
     # integral). Fica no acervo e entra no site assim que a leitura trouxer foto ou trecho
     # (de qualquer versão da mesma notícia: o agrupamento já copiou a foto de outra fonte).
