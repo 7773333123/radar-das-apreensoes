@@ -13,6 +13,9 @@ on:
       - contexto.py
       - classificar.py
       - duplicatas.py
+      - motor_evidencias.py
+      - motor_pesos.json
+      - fotos_orb.py
       - estatisticas.py
       - testes/**
 permissions:
@@ -23,7 +26,7 @@ concurrency:
 jobs:
   publicar:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 330
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
