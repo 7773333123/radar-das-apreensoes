@@ -37,6 +37,7 @@ jobs:
     timeout-minutes: 10
     outputs:
       calibrar: ${{ steps.s.outputs.calibrar }}
+      claude: ${{ steps.cl.outputs.claude }}
       estado: ${{ steps.s.outputs.estado }}
       juizes: ${{ steps.f.outputs.juizes }}
       fatias: ${{ steps.f.outputs.fatias }}
@@ -45,6 +46,11 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
+      # Juiz Claude (juiz_claude.yml) com chave e saldo no mês: este juiz próprio fica de reserva.
+      - id: cl
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python juiz_duplicatas.py --claude-ativo | sed 's/CLAUDE=/claude=/' | tee -a "$GITHUB_OUTPUT"
       - id: s
         run: |
           r=$(python juiz_duplicatas.py --situacao-calibracao --modelo "$MODELO_ARQ")
@@ -61,7 +67,7 @@ jobs:
 
   calibrar:
     needs: situacao
-    if: needs.situacao.outputs.calibrar == 'sim'
+    if: needs.situacao.outputs.calibrar == 'sim' && needs.situacao.outputs.claude != 'sim'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     strategy:
@@ -99,7 +105,7 @@ jobs:
 
   juiz:
     needs: [situacao, aprovar]
-    if: ${{ !cancelled() && !inputs.so_calibrar && needs.situacao.result == 'success' && needs.aprovar.result != 'failure' && needs.situacao.outputs.estado != 'reprovada' }}
+    if: ${{ !cancelled() && !inputs.so_calibrar && needs.situacao.result == 'success' && needs.aprovar.result != 'failure' && needs.situacao.outputs.estado != 'reprovada' && needs.situacao.outputs.claude != 'sim' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     strategy:

@@ -1,0 +1,53 @@
+name: Juiz de duplicatas (Claude, API paga)
+# Julga os pares em dúvida com o Claude Haiku pela API da Anthropic (secret ANTHROPIC_API_KEY):
+# no teste com os casos conferidos à mão, nenhuma união errada (o juiz próprio, Qwen, juntou 5).
+# Gasto somado em juiz_gasto.json; ao chegar a US$ 9 no mês (teto do Console: US$ 10) ele para e o
+# juiz próprio (juiz_duplicatas.yml) volta sozinho até o mês virar. Calibração própria
+# (juiz_calibracao_claude.json): se juntar algum par diferente dos casos conferidos, não julga.
+on:
+  schedule:
+    - cron: '*/20 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: juiz-claude
+  cancel-in-progress: false
+env:
+  MODELO: claude-haiku-5-5
+  GH_TOKEN: ${{ github.token }}
+jobs:
+  julgar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet anthropic
+      - id: c
+        name: Chave e saldo do mês
+        run: python juiz_duplicatas.py --claude-ativo | tee /dev/stderr | sed 's/CLAUDE=/ativo=/' >> "$GITHUB_OUTPUT"
+      - name: Calibração (quando o juiz, o modelo ou os casos mudam; e a cada 7 dias)
+        if: steps.c.outputs.ativo == 'sim'
+        run: |
+          st=$(python juiz_duplicatas.py --situacao-calibracao --modelo "$MODELO")
+          echo "$st"
+          if [ "$st" = "CALIBRACAO=precisa" ]; then
+            python juiz_duplicatas.py --modelo "$MODELO" --so-calibrar --saida cal_claude.json
+            python juiz_duplicatas.py --modelo "$MODELO" --aprovar cal_claude.json
+          fi
+      - name: Julgar os pares em dúvida
+        if: steps.c.outputs.ativo == 'sim'
+        run: |
+          if [ "$(python juiz_duplicatas.py --situacao-calibracao --modelo "$MODELO")" = "CALIBRACAO=ok" ]; then
+            python juiz_duplicatas.py --modelo "$MODELO" --max 1500
+          else
+            echo 'Calibração reprovada: o juiz Claude não julga (o juiz próprio continua).'
+          fi
+      - name: Gravar decisões, gasto e calibração
+        if: steps.c.outputs.ativo == 'sim' && !cancelled()
+        run: python acervo.py salvar --sem-dados 'Juiz de duplicatas (Claude)' juiz_decisoes.json juiz_gasto.json juiz_calibracao_claude.json
