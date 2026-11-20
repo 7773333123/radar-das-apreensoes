@@ -58,6 +58,22 @@ from coletar_feeds_estaduais import agregador
 from classificar import CATEGORIAS, REGRAS, relevante, categorias as classificar_categorias
 
 
+# Veículos portugueses com domínio .com e marcas do noticiário de Portugal (polícias e cidades).
+SITES_PORTUGAL = ('noticiasaominuto.com', 'cmjornal', 'observador.pt', 'sapo.', 'rtp.', 'sicnoticias', 'tvi24',
+                  'jn.pt', 'dn.pt', 'expresso.pt', 'publico.pt', 'iol.pt', 'record.pt', 'nit.pt')
+_MARCA_PORTUGAL = re.compile(r'\b(PJ|Pol[ií]cia Judici[aá]ria|GNR|Guarda Nacional Republicana|PSP|Lisboa|Set[uú]bal|Coimbra'
+                             r'|Algarve|Amadora|Sintra|Loures|Odivelas|Vila Nova de Gaia|Matosinhos|Guimar[aã]es)\b')
+
+
+def de_portugal(n):
+    """Notícia de Portugal (o Google Notícias em português mistura os dois países): domínio .pt,
+    veículo português conhecido, ou título com polícia/cidade portuguesa e sem estado do Brasil."""
+    dominio = str(n.get('dominio_fonte') or n.get('url_original') or '').lower()
+    if dominio.endswith('.pt') or '.pt/' in dominio or any(x in dominio for x in SITES_PORTUGAL):
+        return True
+    return not n.get('uf') and bool(_MARCA_PORTUGAL.search(str(n.get('titulo') or '')))
+
+
 def limpar_titulo(titulo, fonte):
     titulo = re.sub(r'\s+', ' ', str(titulo or '')).strip()
     fonte = str(fonte or '').strip()
@@ -526,7 +542,7 @@ def main():
         origem_por_i[i] = ('google' if 'news.google.com' in str(n.get('url') or '') else
                            str(n.get('origem_coleta') or 'outra'), fonte)
         # Notícias de Portugal (o Google Notícias em português mistura os dois países).
-        if str(n.get('dominio_fonte') or '').lower().endswith('.pt'):
+        if de_portugal(n):
             portugal += 1
             continue
         # Veículos com conteúdo pago (assinatura) ficam fora do site: pagos.py.
