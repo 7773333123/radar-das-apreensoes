@@ -103,23 +103,50 @@ def baixar_arquivo(nome, destino, tentativas=5):
                 shutil.copyfileobj(r, f)
             return
         except OSError as exc:
-            if k == tentativas - 1:
-                raise
+            if k == tentativas - 1 or getattr(exc, 'code', None) == 404:
+                raise  # 404: a versão foi trocada por outra coleta (quem chamou relê o ponteiro)
             print(f'Download de {nome} falhou ({exc}); tentando de novo...', flush=True)
             time.sleep(5 * (k + 1))
 
 
+def atualizar_ponteiro():
+    """Outra coleta gravou uma versão nova (e apagou a antiga): relê dados_versao.json da main."""
+    try:
+        sh('git', 'fetch', '-q', 'origin', 'main', check=False)
+        sh('git', 'checkout', 'origin/main', '--', PONTEIRO.name, check=False)
+    except Exception:
+        pass
+
+
+def baixar_versao(parte, campo, destino_dir=None):
+    """Baixa o arquivo `campo` (acervo/site) da parte; se a versão sumiu (404, trocada por outra
+    coleta no meio do caminho), relê o ponteiro e tenta a versão nova (até 4 vezes)."""
+    for tentativa in range(4):
+        nome = info_parte(ponteiro(), parte).get(campo)
+        if not nome:
+            return None, None
+        alvo = (destino_dir or TMP) / nome
+        try:
+            baixar_arquivo(nome, alvo)
+            return nome, alvo
+        except OSError as exc:
+            if getattr(exc, 'code', None) != 404 or tentativa == 3:
+                raise
+            print(f'{nome} foi trocado por outra coleta; relendo o ponteiro...', flush=True)
+            time.sleep(10)
+            atualizar_ponteiro()
+    return None, None
+
+
 def baixar_acervo_parte(parte, destino):
     """Acervo de uma parte em `destino` (vazio se a parte ainda não existe). Devolve o nome da versão."""
-    info = info_parte(ponteiro(), parte)
-    if not info.get('acervo'):
+    nome, gz = baixar_versao(parte, 'acervo')
+    if not nome:
         destino.write_text(json.dumps({'noticias': []}), encoding='utf-8')
         return ''
-    gz = TMP / info['acervo']
-    baixar_arquivo(info['acervo'], gz)
     with gzip.open(gz, 'rb') as f, open(destino, 'wb') as out:
         shutil.copyfileobj(f, out)
-    return info['acervo']
+    return nome
 
 
 def baixar(site=False, parte='quente'):
@@ -146,11 +173,9 @@ def montar_site():
     shutil.rmtree(pasta, ignore_errors=True)
     pasta.mkdir(parents=True)
     for parte in partes:
-        nome = info_parte(p, parte).get('site')
+        nome, tgz = baixar_versao(parte, 'site')
         if not nome:
             continue
-        tgz = TMP / nome
-        baixar_arquivo(nome, tgz)
         with tarfile.open(tgz) as t:
             t.extractall(pasta, filter='data')
     # Pacote antigo (antes das partes): os arquivos vêm na raiz do pacote.
