@@ -1,0 +1,29 @@
+name: Testar juiz Claude (manual)
+# Compara modelos Claude como juiz de duplicatas nos casos de calibração e nos erros reais
+# conferidos à mão. Precisa do secret ANTHROPIC_API_KEY (Settings > Secrets and variables >
+# Actions). Custo estimado: cerca de US$ 1 por execução com os três modelos.
+on:
+  workflow_dispatch:
+    inputs:
+      modelos:
+        description: 'Modelos (separados por vírgula)'
+        default: 'claude-haiku-5-5,claude-sonnet-5-5,claude-opus-5-5'
+permissions:
+  contents: read
+jobs:
+  testar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet anthropic
+      - name: Comparar
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then echo '::error::Falta o secret ANTHROPIC_API_KEY'; exit 1; fi
+          python testes/comparar_juizes_claude.py --modelos "${{ inputs.modelos }}" | tee resultado.txt
+          { echo '```'; cat resultado.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
