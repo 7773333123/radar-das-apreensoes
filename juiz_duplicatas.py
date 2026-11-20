@@ -379,8 +379,10 @@ def main():
     versoes_claude = {versao_juiz(m) for m in PRECO_CLAUDE} | {'b030abb068'}  # + versões anteriores do Claude
 
     def rever_par(d):
-        if str(d.get('m', '')).startswith('Revisão') or d.get('ver') == versao:
-            return False  # correção feita à mão, ou já julgado por este juiz
+        if str(d.get('m', '')).startswith('Revisão'):
+            return False  # correção feita à mão
+        if d.get('ver') == versao and d.get('c') != -1:
+            return False  # já julgado por este juiz ("já unidos" automático é relido: a união pode ter mudado)
         claude = d.get('jz') == 'claude' or d.get('ver') in versoes_claude
         if e_claude(args.modelo):
             return True  # o Claude relê os "mesmo" do juiz próprio e as decisões de versões anteriores dele
@@ -400,7 +402,7 @@ def main():
     for k, d in ja_julgados.items():
         # Só decisões desta versão (ou da revisão à mão) unem: um "mesmo" antigo não pode se
         # declarar "já unido" e escapar de ser relido pela versão atual.
-        if d.get('v') == 'mesmo' and (d.get('ver') == versao or str(d.get('m', '')).startswith('Revisão')):
+        if d.get('v') == 'mesmo' and d.get('c') != -1 and (d.get('ver') == versao or str(d.get('m', '')).startswith('Revisão')):
             a, b = k.split('-', 1)
             pai[raiz(a)] = raiz(b)
     ja_unidos = [s for s in pendentes if raiz(str(s['a'][0])) == raiz(str(s['b'][0]))]
