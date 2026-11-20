@@ -34,8 +34,9 @@ from urllib.request import Request, urlopen
 RAIZ = Path(__file__).resolve().parent
 dias_por_url = {}
 ARQUIVO = RAIZ / 'noticias.json'
-CACHE = RAIZ / 'orb_cache'
+CACHE = RAIZ / 'orb_cache2'  # versão 2 (com cobertura); a 1 casava marca d'água/brasão
 MIN_PONTOS = 15        # pontos em comum (RANSAC) para dizer que é a mesma foto
+MIN_COBERTURA = 0.15   # e espalhados por 15%+ da foto (não só na marca d'água ou no brasão)
 LADO = 640             # a foto é reduzida para este lado maior antes de extrair os pontos
 PONTOS = 800           # pontos característicos por foto
 JANELA = 2             # dias entre as duas notícias
@@ -76,26 +77,44 @@ def pontos(dados):
 
 
 def pontos_em_comum(a, b):
-    """Quantos pontos coincidem numa mesma transformação (escala + deslocamento + giro)."""
+    """(pontos, cobertura): quantos pontos coincidem numa mesma transformação (escala +
+    deslocamento + giro) e quanto da foto eles cobrem (área do contorno dos pontos / área dos
+    pontos da foto, o menor dos dois lados). Marca d'água, logotipo do site ou brasão da polícia
+    coincidem num cantinho (cobertura < 5%); a mesma foto recortada, na imagem toda (> 30%)."""
     import numpy as np
     cv2 = _cv()
     (xa, da), (xb, db) = a, b
     pares = cv2.BFMatcher(cv2.NORM_HAMMING).knnMatch(da, db, k=2)
     bons = [p[0] for p in pares if len(p) == 2 and p[0].distance < 0.75 * p[1].distance]
     if len(bons) < 6:
-        return 0
+        return 0, 0.0
     pa = np.float32([xa[m.queryIdx] for m in bons])
     pb = np.float32([xb[m.trainIdx] for m in bons])
     _, mask = cv2.estimateAffinePartial2D(pa, pb, method=cv2.RANSAC, ransacReprojThreshold=4)
-    return int(mask.sum()) if mask is not None else 0
+    if mask is None:
+        return 0, 0.0
+    sel = mask.ravel() == 1
+    k = int(sel.sum())
+    if k < 3:
+        return k, 0.0
+
+    def cobre(pts, todos):
+        area = cv2.contourArea(cv2.convexHull(pts.reshape(-1, 1, 2)))
+        (x0, y0), (x1, y1) = todos.min(0), todos.max(0)
+        return float(area / max(1.0, (x1 - x0) * (y1 - y0)))
+    return k, min(cobre(pa[sel], xa), cobre(pb[sel], xb))
 
 
 def mesma_foto(a, b):
-    """Pontos em comum, com triagem: primeiro só os 200 pontos mais fortes da foto a (4x mais
-    rápido); só os pares promissores vão para a comparação completa."""
-    if pontos_em_comum((a[0][:TRIAGEM], a[1][:TRIAGEM]), b) < 6:
-        return 0
+    """(pontos, cobertura), com triagem: primeiro só os 200 pontos mais fortes da foto a (4x
+    mais rápido); só os pares promissores vão para a comparação completa."""
+    if pontos_em_comum((a[0][:TRIAGEM], a[1][:TRIAGEM]), b)[0] < 6:
+        return 0, 0.0
     return pontos_em_comum(a, b)
+
+
+def e_mesma(k, cob):
+    return k >= MIN_PONTOS and cob >= MIN_COBERTURA
 
 
 def _arq(url):
@@ -172,7 +191,7 @@ def revisar(noticias, desde, ate, trabalhadores, timeout, tempo_max, inicio):
         for n in ns:
             dias_por_url.setdefault(n['imagem_url'], []).append(n)
     ordem = sorted(dias)
-    feitos = [d for d in ordem if all(n.get('img_orb') or int(n.get('img_orb_falhas') or 0) >= 2 for n in dias[d])]
+    feitos = [d for d in ordem if all(n.get('img_orb2') or int(n.get('img_orb_falhas') or 0) >= 2 for n in dias[d])]
     pendentes = [d for d in ordem if d not in set(feitos)]
     if not pendentes:
         print('Revisão: período já revisado.')
@@ -199,7 +218,7 @@ def revisar(noticias, desde, ate, trabalhadores, timeout, tempo_max, inicio):
                     if pts is None:
                         n['img_orb_falhas'] = int(n.get('img_orb_falhas') or 0) + 1
                     else:
-                        n['img_orb'] = 1
+                        n['img_orb2'] = 1
                 if pts is not None:
                     novos[u] = (pts, urls[u][0]['uf'])
         for u, (pts, uf) in novos.items():
@@ -208,12 +227,12 @@ def revisar(noticias, desde, ate, trabalhadores, timeout, tempo_max, inicio):
                     if ufv != uf or v == u:
                         continue
                     total += 1
-                    k = mesma_foto(pts, pv)
-                    if k >= MIN_PONTOS:
+                    k, cob = mesma_foto(pts, pv)
+                    if e_mesma(k, cob):
                         pares += 1
                         for x, y in ((u, v), (v, u)):
                             for n in (urls.get(x) or dias_por_url.get(x, ())):
-                                n.setdefault('img_mesma', {})[y] = k
+                                n.setdefault('img_mesma', {})[y] = [k, round(cob, 3)]
             janela.setdefault(d, {})[u] = (pts, uf)
         for dd in [x for x in janela if x < d - JANELA]:
             del janela[dd]
@@ -277,7 +296,7 @@ def main():
     # Analisadas: com pontos no cache (agora ou antes).
     for n in recentes:
         if _arq(n['imagem_url']).exists():
-            n['img_orb'] = 1
+            n['img_orb2'] = 1
     # Compara cada foto nova com as do mesmo estado em até JANELA dias.
     indice = {}
     for url, ns in por_url.items():
@@ -309,12 +328,12 @@ def main():
             if b is None:
                 continue
             comparadas += 1
-            k = mesma_foto(a, b)
-            if k >= MIN_PONTOS:
+            k, cob = mesma_foto(a, b)
+            if e_mesma(k, cob):
                 pares += 1
                 for x, y in ((url, outra), (outra, url)):
                     for n in por_url.get(x, ()):
-                        n.setdefault('img_mesma', {})[y] = max(k, int((n.get('img_mesma') or {}).get(y, 0)))
+                        n.setdefault('img_mesma', {})[y] = [k, round(cob, 3)]
     apagados = limpar_cache(por_url)
     if lote or pares:
         tmp = ARQUIVO.with_suffix('.json.tmp')

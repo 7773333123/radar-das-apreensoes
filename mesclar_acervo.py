@@ -40,7 +40,11 @@ def juntar(base, outro):
             except (TypeError, ValueError):
                 pass
         elif campo == 'img_mesma' and isinstance(valor, dict) and isinstance(atual, dict):
-            base[campo] = {**valor, **atual}  # pares de fotos achados pelas duas coletas
+            junto = {**valor, **atual}  # pares de fotos achados pelas duas coletas
+            for u, k in valor.items():  # a versão 2 (lista: pontos e cobertura) vale mais que a 1
+                if isinstance(k, list) and not isinstance(junto.get(u), list):
+                    junto[u] = k
+            base[campo] = junto
         elif isinstance(valor, list) and isinstance(atual, list) and len(valor) > len(atual):
             base[campo] = valor
         elif campo == 'url_original' and 'news.google.com' in str(atual) and 'news.google.com' not in str(valor):

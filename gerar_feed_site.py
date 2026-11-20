@@ -279,7 +279,7 @@ RECENTE_AUDITORIA = (_dt.now(_tz.utc) - _td(days=5)).isoformat()[:10]
 # Análise antes da publicação: notícia das últimas 6 h com foto ainda não analisada (dHash e
 # recorte, hash_imagens.py) espera a análise para não entrar no site como duplicata.
 PENDENTE_DESDE = (_dt.now(_tz.utc) - _td(hours=6)).isoformat()[:19]
-from fotos_orb import MIN_PONTOS as MIN_PONTOS_FOTO, foto_util  # noqa: E402
+from fotos_orb import MIN_COBERTURA as MIN_COBERTURA_FOTO, MIN_PONTOS as MIN_PONTOS_FOTO, foto_util  # noqa: E402
 BLOQUEIO_LEITURA = re.compile(r'^(?:erro_HTTPError|http_4\d\d|texto_insuficiente|nao_html|erro_nao_html|.*robots.*|.*bloque.*|.*paywall.*)$')
 
 
@@ -460,7 +460,7 @@ def main():
         print(f'Parte quente: {len(noticias)} notícias desde {corte} ({antes_corte - len(noticias)} antigas ficam com a parte do ano)')
     # Comparação de fotos por recorte/zoom ativa (fotos_orb.py já analisou fotos recentes): só
     # então a notícia nova espera a análise da foto (se o passo falhar, nada fica retido).
-    ORB_ATIVO = any(isinstance(n, dict) and n.get('img_orb') and str(n.get('data_iso') or '')[:19] >= PENDENTE_DESDE
+    ORB_ATIVO = any(isinstance(n, dict) and n.get('img_orb2') and str(n.get('data_iso') or '')[:19] >= PENDENTE_DESDE
                     for n in noticias)
     fontes = json.loads(FONTES_JSON.read_text(encoding='utf-8')).get('fontes', []) if FONTES_JSON.exists() else []
     saida, links, ocultas, portugal, pagas = [], {}, 0, 0, 0
@@ -623,13 +623,14 @@ def main():
         # Só pares da versão 2 (pontos espalhados pela foto, não só na marca d'água/brasão):
         # a versão 1 casava fotos diferentes com o mesmo logotipo do site ou brasão da polícia.
         if n.get('img_mesma') and fotos and fotos[0] == url_publica(n.get('imagem_url')):
-            item['_mesma'] = [u for u, k in n['img_mesma'].items() if isinstance(k, list) and k[0] >= MIN_PONTOS_FOTO]
+            item['_mesma'] = [u for u, k in n['img_mesma'].items()
+                              if isinstance(k, list) and len(k) > 1 and k[0] >= MIN_PONTOS_FOTO and k[1] >= MIN_COBERTURA_FOTO]
         item['_lead'] = str(n.get('trecho') or resumo)[:600]
         item['_txt'] = str(n.get('trecho') or resumo or '')[:2500]  # texto para o motor de evidências
         if (n.get('imagem_url') and not n.get('img_dhash') and int(n.get('img_dhash_tentativas') or 0) < 2
                 and str(data or '')[:19] >= PENDENTE_DESDE):
             item['_pend'] = 1  # foto ainda não analisada (duas falhas de download liberam)
-        elif (ORB_ATIVO and foto_util(n.get('imagem_url')) and n.get('uf') and not n.get('img_orb')
+        elif (ORB_ATIVO and foto_util(n.get('imagem_url')) and n.get('uf') and not n.get('img_orb2')
               and int(n.get('img_orb_falhas') or 0) < 2 and str(data or '')[:19] >= PENDENTE_DESDE):
             item['_pend'] = 1  # foto ainda não comparada por recorte/zoom (fotos_orb.py)
         if do_titulo:

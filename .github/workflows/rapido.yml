@@ -40,9 +40,9 @@ jobs:
       - name: Restaurar a análise das fotos recentes
         uses: actions/cache/restore@v4
         with:
-          path: orb_cache
-          key: orb-${{ github.run_id }}
-          restore-keys: orb-
+          path: orb_cache2
+          key: orb2-${{ github.run_id }}
+          restore-keys: orb2-
       - name: Disparar coleta completa e histórica
         continue-on-error: true
         run: |
@@ -106,8 +106,8 @@ jobs:
         if: always()
         uses: actions/cache/save@v4
         with:
-          path: orb_cache
-          key: orb-${{ github.run_id }}
+          path: orb_cache2
+          key: orb2-${{ github.run_id }}
       - name: Continuar o ciclo
         if: success() || failure()  # cancelado à mão = o ciclo para
         run: gh workflow run rapido.yml --ref main
