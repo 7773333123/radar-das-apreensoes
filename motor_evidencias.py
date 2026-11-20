@@ -30,7 +30,7 @@ from collections import Counter
 from functools import lru_cache
 from pathlib import Path
 
-from duplicatas import (PALAVRAS_VAZIAS, VAZIAS_AUDITOR, compativeis, materiais_titulo, normal,
+from duplicatas import (veto_do_juiz, PALAVRAS_VAZIAS, VAZIAS_AUDITOR, compativeis, materiais_titulo, normal,
                         numeros_fortes, quantidades_titulo, radical)
 
 RAIZ = Path(__file__).resolve().parent
@@ -326,6 +326,8 @@ def aplicar(itens, dia, unir, raiz, dias=None, suspeitas=None, motivos_juiz=None
         ga, gb = membros.get(ra, [ka]), membros.get(rb, [kb])
         if any(_conflito(itens[x], itens[y]) for x in ga[:40] for y in gb[:40]):
             continue  # o grupo ficaria incoerente (outra cidade, outro número de presos...)
+        if juiz and veto_do_juiz([itens[x] for x in ga[:40]], [itens[y] for y in gb[:40]]):
+            continue  # o juiz já disse que uma notícia de cada grupo são fatos diferentes
         if (s >= pesos['unir'] and ancora(fs[(ka, kb)])) or decisao == 'mesmo':
             unir(ka, kb, 'motor' if s >= pesos['unir'] else 'motor+juiz')
             nova = raiz(ka)

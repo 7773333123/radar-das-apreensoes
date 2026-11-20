@@ -634,6 +634,37 @@ def _redondo(v):
     return v < 10
 
 
+_REVISAO = None
+
+
+def revisao_manual():
+    """Correções da revisão à mão (juiz_decisoes_revisao.json): par -> decisão."""
+    global _REVISAO
+    if _REVISAO is None:
+        try:
+            import json as _json
+            from pathlib import Path as _P
+            arq = _P(__file__).resolve().parent / 'juiz_decisoes_revisao.json'
+            _REVISAO = _json.loads(arq.read_text(encoding='utf-8')).get('decisoes', {}) if arq.exists() else {}
+        except Exception:
+            _REVISAO = {}
+    return _REVISAO
+
+
+def veto_do_juiz(ga, gb):
+    """A revisão à mão já decidiu que uma notícia de um grupo e uma do outro são fatos
+    DIFERENTES: os grupos não se juntam por nenhum outro par (caso real: a apreensão de 153 kg
+    num navio voltava a entrar no grupo da operação por outra matéria)."""
+    juiz = revisao_manual()
+    if not juiz:
+        return False
+    for x in ga:
+        for y in gb:
+            if juiz.get(chave_par(x.get('i'), y.get('i')), {}).get('v') == 'diferente':
+                return True
+    return False
+
+
 def _grupos_coerentes(itens, recentes, raiz, a, b):
     """Juntar os grupos de a e b não deixa duas notícias contraditórias no mesmo grupo
     (a decisão do juiz vale para o par, não para tudo o que já estava unido a cada um)."""
@@ -642,6 +673,8 @@ def _grupos_coerentes(itens, recentes, raiz, a, b):
     gb = [itens[k] for k in recentes if raiz(k) == rb][:40]
     # A cidade o juiz já confere (operações citam várias). Operação com nome (Cash Out, Rainha do
     # Sul...): muitas pessoas, idades e números de presos conforme a matéria; aí só a quantidade conta.
+    if veto_do_juiz(ga, gb):
+        return False
     pessoas = not any(it.get('_ops') for it in ga + gb)
     for x in ga:
         for y in gb:
@@ -943,14 +976,28 @@ def agrupar(itens, motivos=None):
             k = pai[k]
         return k
 
+    # Veto da revisão à mão: notícias conferidas como fatos DIFERENTES nunca ficam no mesmo grupo,
+    # por nenhuma regra nem cadeia de uniões. (O "diferente" do juiz de IA não entra: em
+    # operações grandes ele separa ângulos da mesma notícia e dividiria grupos certos.)
+    diferentes = {}
+    for chave_d, dec in revisao_manual().items():
+        if dec.get('v') == 'diferente' and '-' in chave_d:
+            x, y = chave_d.split('-', 1)
+            diferentes.setdefault(x, set()).add(y)
+            diferentes.setdefault(y, set()).add(x)
+    vetados = [{str(it.get('i'))} if str(it.get('i')) in diferentes else set() for it in itens]
+
     def unir(a, b, regra, forcar=False):
         ra, rb = raiz(a), raiz(b)
         if ra == rb:
             return
         if len(ufs[ra] | ufs[rb]) > 1 and not forcar:  # veto: o grupo juntaria estados diferentes
             return
+        if vetados[ra] and vetados[rb] and any(diferentes[x] & vetados[rb] for x in vetados[ra]):
+            return  # veto do juiz
         pai[rb] = ra
         ufs[ra] |= ufs[rb]
+        vetados[ra] |= vetados[rb]
         if motivos is not None:
             motivos.append((regra, a, b))
 
