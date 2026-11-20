@@ -620,8 +620,10 @@ def main():
             if n.get('img_iguais') and fotos and fotos[0] == url_publica(n.get('imagem_url')):  # não vale logotipo
                 item['_iguais'] = list(n['img_iguais'])
         # A mesma foto com recorte/zoom/outro tamanho (fotos_orb.py): pares com pontos em comum.
+        # Só pares da versão 2 (pontos espalhados pela foto, não só na marca d'água/brasão):
+        # a versão 1 casava fotos diferentes com o mesmo logotipo do site ou brasão da polícia.
         if n.get('img_mesma') and fotos and fotos[0] == url_publica(n.get('imagem_url')):
-            item['_mesma'] = [u for u, k in n['img_mesma'].items() if int(k) >= MIN_PONTOS_FOTO]
+            item['_mesma'] = [u for u, k in n['img_mesma'].items() if isinstance(k, list) and k[0] >= MIN_PONTOS_FOTO]
         item['_lead'] = str(n.get('trecho') or resumo)[:600]
         item['_txt'] = str(n.get('trecho') or resumo or '')[:2500]  # texto para o motor de evidências
         if (n.get('imagem_url') and not n.get('img_dhash') and int(n.get('img_dhash_tentativas') or 0) < 2
