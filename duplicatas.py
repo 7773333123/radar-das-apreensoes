@@ -1141,11 +1141,21 @@ def agrupar(itens, motivos=None):
     # mesmo estado nos dois, até 2 dias, veículos diferentes, nada contraditório (materiais,
     # quantidades, presos, idades) e foto que não seja de banco de imagens (casada com no
     # máximo 3 outras fotos).
+    # Foto genérica: casada com 4+ notícias no total (contando todos os lados) não vale.
+    parceiros = {}  # foto -> outras fotos casadas com ela (distintas, nos dois sentidos)
+    for it in itens:
+        for u in it.get('_mesma') or ():
+            if it.get('img') and u != it['img']:
+                parceiros.setdefault(u, set()).add(it['img'])
+                parceiros.setdefault(it['img'], set()).add(u)
+    casadas = {u: len(v) for u, v in parceiros.items()}
     for a, it in enumerate(itens):
         mesmas = it.get('_mesma') or ()
-        if not mesmas or len(mesmas) > 3:
+        if not mesmas or len(mesmas) > 3 or casadas.get(it.get('img'), 0) > 3:
             continue
         for url in mesmas:
+            if casadas.get(url, 0) > 3:
+                continue
             for b in por_foto.get(url, ()):
                 if a == b or raiz(a) == raiz(b) or dia[a] is None or dia[b] is None or abs(dia[a] - dia[b]) > 2:
                     continue
