@@ -241,6 +241,11 @@ AVANCADOS = [
     # "Mais de uma tonelada" é o mesmo fato que 1,4 tonelada (caso real, 22/10/2026).
     ({'t': 'Polícia Rodoviária encontra mais de 1,4 tonelada de maconha em carga de fraldas em Assis', 'd': '2026-10-22', 'uf': 'SP'},
      {'t': 'Polícia apreende mais de uma tonelada de maconha escondida em carga de fraldas em Assis', 'd': '2026-10-22', 'uf': 'SP'}, True),
+    # Número por extenso em comum ("duas toneladas") não identifica o fato (MS, 17 x 19/11/2026).
+    ({'t': 'PRF intercepta caminhonete furtada e apreende mais de duas toneladas de maconha', 'd': '2026-11-19',
+      'uf': 'MS', '_q': {'mac': 2000.0}},
+     {'t': 'Polícia Militar Ambiental e Polícia Rodoviária Federal apreende mais de duas toneladas de maconha em caminhão carregado com carga de carvão',
+      'd': '2026-11-17', 'uf': 'MS', '_q': {'mac': 2000.0}}, False),
     # O nome do veículo no fim do título não é palavra em comum (Ponta Porã Informa, 17/11/2026).
     ({'t': 'PM apreende maconha da rodoviária de Ponta Porã - Ponta Porã Informa - Notícias de Ponta Porã/MS e Pedro',
       'f': 'Ponta Porã Informa', 'd': '2026-11-17', 'uf': 'MS'},
