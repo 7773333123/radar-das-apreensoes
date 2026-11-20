@@ -1148,7 +1148,9 @@ def agrupar(itens, motivos=None):
             unir(a, b, 'abertura')
         elif foto and (proprias or _mesmas_quantidades(qs[a], qs[b])):
             unir(a, b, 'foto')
-        elif delta <= 3 and mesmo_uf and _mesmas_quantidades(qs[a], qs[b]) and proprias:
+        elif (delta <= 3 and mesmo_uf and _mesmas_quantidades(qs[a], qs[b])
+              and (proprias if delta <= 1 else proprias - set(EXTENSO))):
+            # Dias diferentes: número por extenso em comum ("duas" toneladas) não identifica o fato.
             unir(a, b, 'fatos')
         elif (delta <= 1 and not mesmo_veiculo and itens[a].get('_cid') and itens[a].get('_cid') == itens[b].get('_cid')
               and qt[a] and qt[b] and _numero_do_fato(itens[a]['t'], itens[b]['t'], qs[a], qs[b],
