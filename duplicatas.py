@@ -692,8 +692,9 @@ def _mesma_cidade(itens, dia, unir, raiz, dias=3, max_por_cidade=40):
     recentes = [k for k in range(len(itens)) if dia[k] is not None and dia[k] >= limite]
     genericas = set(AREAS_GENERICAS) | MATERIAIS | set(EXTENSO) | VAZIAS_AUDITOR | _GENERICAS_CIDADE
     for (uf, cid), ks in porcid.items():
-        if len(ks) > max_por_cidade:
-            continue  # cidade grande: muitas notícias diferentes no mesmo dia
+        # Cidade grande (Foz, Fortaleza, Manaus): muitas notícias diferentes no mesmo dia; só vão
+        # ao juiz pares com 2+ palavras do título em comum (antes ficavam todas de fora).
+        grande = len(ks) > max_por_cidade
         da_cidade = palavras(cid)
         for x in range(len(ks)):
             for y in range(x + 1, len(ks)):
@@ -701,9 +702,14 @@ def _mesma_cidade(itens, dia, unir, raiz, dias=3, max_por_cidade=40):
                 ia, ib = itens[a], itens[b]
                 if raiz(a) == raiz(b) or ia.get('f') == ib.get('f') or abs(dia[a] - dia[b]) > 1:
                     continue
-                comuns = {w for w in (informativas(ia['t']) & informativas(ib['t'])) - da_cidade - genericas if not w[0].isdigit()}
-                if not comuns:
+                inf = (informativas(ia['t']) & informativas(ib['t'])) - da_cidade
+                comuns = {w for w in inf - genericas if not w[0].isdigit()}
+                # Material e palavras comuns também contam quando são 2+ ("5 mil maços de cigarros"
+                # PF e PM em Foz; "Força Tática apreende drogas, armas" em Manaus, 20/11/2026).
+                todas = {w for w in inf - set(EXTENSO) if not w[0].isdigit()}
+                if not ((comuns and not grande) or len(todas) >= 2):
                     continue
+                comuns = comuns or todas
                 chave = chave_par(ia.get('i'), ib.get('i'))
                 decisao = juiz.get(chave, {}).get('v')
                 if decisao == 'mesmo':
