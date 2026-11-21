@@ -1,7 +1,8 @@
-// Primeira visita (pedido do dono do site, 21/11/2026): registra UMA vez país, estado e cidade
-// aproximados do primeiro visitante (dados de localização que a Vercel deduz do endereço de internet).
-// Não guarda IP nem nada que identifique a pessoa. Envia ao GitHub (repository_dispatch) e o
-// workflow visita.yml grava primeira_visita.json, que o Claude lê e informa ao dono.
+// Visitantes (pedido do dono do site, 21/11/2026): país, estado e cidade aproximados de cada visitante
+// (uma vez por dia por navegador; dados de localização que a Vercel deduz do endereço de internet).
+// Não guarda IP nem nada que identifique a pessoa. Envia ao GitHub (repository_dispatch) e o workflow
+// visita.yml acrescenta ao ramo "visitas" (fora do site: a Vercel só publica o ramo main); o Claude
+// lê e manda ao dono um resumo por dia.
 // Precisa da variável GH_VISITA_TOKEN na Vercel (token do GitHub só deste repositório, Contents: write).
 const REPO = '7773333123/radar-das-apreensoes';
 const ROBO = /bot|crawl|spider|slurp|facebookexternalhit|whatsapp|preview|headless|lighthouse|monitor/i;
@@ -33,11 +34,6 @@ module.exports = async (req, res) => {
   }
   // Teste (?teste=1): confere a chave sem registrar a primeira visita.
   const teste = /[?&]teste=1\b/.test(req.url || '');
-  // Já registrada? (o arquivo fica no repositório, não no site)
-  if (!teste) try {
-    const r = await fetch(`https://raw.githubusercontent.com/${REPO}/main/primeira_visita.json`, { method: 'HEAD', signal: AbortSignal.timeout(3000) });
-    if (r.ok) { res.statusCode = 204; return res.end(); }
-  } catch { /* segue */ }
   const h = (k) => { try { return decodeURIComponent(req.headers[k] || ''); } catch { return req.headers[k] || ''; } };
   const codigo = h('x-vercel-ip-country');
   let pais = codigo;
@@ -48,7 +44,7 @@ module.exports = async (req, res) => {
     await fetch(`https://api.github.com/repos/${REPO}/dispatches`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'User-Agent': 'radar-visita' },
-      body: JSON.stringify({ event_type: teste ? 'teste-visita' : 'primeira-visita', client_payload: visita }),
+      body: JSON.stringify({ event_type: teste ? 'teste-visita' : 'visita', client_payload: visita }),
       signal: AbortSignal.timeout(5000),
     });
   } catch { /* sem registro */ }
