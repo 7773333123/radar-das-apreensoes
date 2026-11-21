@@ -193,11 +193,11 @@ function renderInicio() {
   const diaBR = (d) => d.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
   const hoje = diaBR(new Date(agora));
   const ontem = diaBR(new Date(agora - DIA));
-  const doDia = comFoto.filter((n) => diaBR(n.data) === hoje);
-  const pool = doDia.length >= 5 ? doDia
-    : comFoto.filter((n) => [hoje, ontem].includes(diaBR(n.data))).length >= 5
-      ? comFoto.filter((n) => [hoje, ontem].includes(diaBR(n.data)))
-      : comFoto.slice(0, 20);
+  // PADRÃO (dono do site, 21/11/2026): a página inicial mostra SÓ notícias com a data do dia.
+  // A véspera entra apenas enquanto o dia ainda não tem nenhuma notícia (logo após a meia-noite).
+  const ehHoje = (n) => n.data && diaBR(n.data) === hoje;
+  const doDia = comFoto.filter(ehHoje);
+  const pool = doDia.length ? doDia : comFoto.filter((n) => [hoje, ontem].includes(diaBR(n.data))).slice(0, 20);
   // Ordem dos destaques: por TIPO (drogas, armas, contrabando, veículos,
   // dinheiro, ambientais, medicamentos, patrimoniais, outras) e, dentro de cada
   // tipo, da maior apreensão para a menor. Desdobramentos (soltura, condenação,
@@ -214,8 +214,8 @@ function renderInicio() {
   // Ordem pedida pelo responsável: Foz do Iguaçu, Guaíra, Toledo, Santa Helena, Medianeira, São Miguel
   // do Iguaçu, Itaipulândia, demais lindeiras de Itaipu e, por fim, as outras fronteiras. A região de
   // Foz e do Lago de Itaipu entra sempre que tiver notícia nas últimas 48 h.
-  const janelaFr = [24, 48, 7 * 24].map(daFronteira).find((l) => l.length >= 4) || daFronteira(7 * 24);
-  const itaipu48 = daFronteira(48).filter((n) => n.prioridadeFr <= 8 && !janelaFr.includes(n));
+  const janelaFr = daFronteira(24).filter(ehHoje);
+  const itaipu48 = [];
   // Primeiro o dia (hoje antes de ontem); dentro do dia, a ordem regional (Foz primeiro) e a relevância.
   const ordemFr = [...janelaFr, ...itaipu48].sort((a, b) => diaBR(b.data).localeCompare(diaBR(a.data)) ||
     (soPessoa(a) - soPessoa(b)) || a.prioridadeFr - b.prioridadeFr || nota(b) - nota(a) || b.data - a.data);
@@ -239,7 +239,7 @@ function renderInicio() {
 
   // Em alta: publicadas por mais veículos nas últimas 24 h (ou 48 h, se houver poucas).
   const repercutidas = (h) => recentes(h / 24).filter((n) => n.outras.length && !usados.has(n));
-  const alta = (repercutidas(24).length >= 3 ? repercutidas(24) : repercutidas(48))
+  const alta = repercutidas(24).filter(ehHoje)
     .sort((a, b) => nota(b) - nota(a) || b.data - a.data).slice(0, 5);
 
   // Panorama de 30 dias (apreensões noticiadas).
@@ -252,7 +252,7 @@ function renderInicio() {
   const porCat = new Map();
   r30.forEach((n) => n.cats.forEach((c) => { if (c !== 8) porCat.set(c, (porCat.get(c) || []).concat(n)); }));
   // Editorias na mesma ordem dos tipos (drogas primeiro), as 4 primeiras com notícias.
-  const editorias = [...porCat].sort((a, b) => a[0] - b[0]).slice(0, 4);
+  const editorias = [...porCat].filter(([, l]) => l.some(ehHoje)).sort((a, b) => a[0] - b[0]).slice(0, 4);
 
   $('inicio').innerHTML =
     `<section class="lead" aria-label="Destaques">` +
@@ -264,7 +264,7 @@ function renderInicio() {
     `<section class="band">` +
       `<div class="panel"><h3>Em alta</h3>${alta.length ? `<ol class="trend">${alta.map((n) =>
         `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><h4 class="headline">${esc(n.titulo)}</h4><div class="meta"><span class="sources">${n.outras.length + 1} veículos</span> · ${esc(relativo(n.data))}</div></a></li>`).join('')}</ol>`
-        : '<p class="note">Sem matérias repercutidas nas últimas 48 horas.</p>'}<p class="note">Matérias publicadas por mais veículos nas últimas 24 horas.</p></div>` +
+        : '<p class="note">Ainda sem matérias repercutidas hoje.</p>'}<p class="note">Matérias de hoje publicadas por mais veículos.</p></div>` +
       `<div class="panel"><h3>Últimos 30 dias</h3><dl class="kpis">` +
         `<div class="kpi"><dt>Notícias</dt><dd>${num(r30.length)}</dd></div>` +
         `<div class="kpi"><dt>Cocaína</dt><dd>≈ ${qtd(soma('coc'), 'kg')}</dd></div>` +
@@ -281,13 +281,12 @@ function renderInicio() {
       // A lista ao lado vem por data.
       const porTamanho = (a, b) => (desdobramento(a) - desdobramento(b)) || (tamanhoNo(b, c) - tamanhoNo(a, c)) || (b.data - a.data);
       const porData = (a, b) => (desdobramento(a) - desdobramento(b)) || (b.data - a.data);
-      const livresTodos = itens.filter((n) => !usados.has(n) && n.data && n.data.getTime() <= agora + 3600000);
-      const janela = [24, 48, 72, 7 * 24].map((h) => livresTodos.filter((n) => horas(n) <= h)).find((l) => l.length >= 4)
-        || [...livresTodos].sort((a, b) => b.data - a.data).slice(0, 8);
+      const janela = itens.filter((n) => !usados.has(n) && ehHoje(n) && n.data.getTime() <= agora + 3600000);
+      if (!janela.length) return '';
       // Notícia de HOJE (horário de Brasília) sempre antes da de ontem; dentro do dia, a maior
       // apreensão (antes, a janela de 24 h deixava a maior de ontem abrir a editoria pela manhã).
       const livres = [...janela].sort((a, b) => diaBR(b.data).localeCompare(diaBR(a.data)) || porTamanho(a, b));
-      const primeira = livres.find((n) => n.img) || livres[0] || itens[0];
+      const primeira = livres.find((n) => n.img) || livres[0];
       usados.add(primeira);
       const resto = janela.filter((n) => n !== primeira && !usados.has(n)).sort(porData).slice(0, 3);
       resto.forEach((n) => usados.add(n));
