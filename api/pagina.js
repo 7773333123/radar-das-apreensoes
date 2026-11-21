@@ -182,7 +182,7 @@ ${indexar ? '' : '<meta name="robots" content="noindex">'}
 <meta name="theme-color" content="#ffffff"><link rel="icon" href="/favicon.ico?v=2" sizes="48x48"><link rel="icon" href="/img/favicon.svg?v=2" type="image/svg+xml"><link rel="icon" href="/img/favicon-32.png?v=2" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png?v=2"><link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/assets/fonts/source-serif-4.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/assets/radar.css">
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, '\\u003c')}</script>` : ''}
-<script type="module" src="/assets/pagina.js"></script><script src="/assets/dono.js"></script><script defer src="/_vercel/insights/script.js"></script></head>
+<script type="module" src="/assets/pagina.js"></script><script src="/assets/dono.js"></script><script defer src="/assets/visita.js"></script><script defer src="/_vercel/insights/script.js"></script></head>
 <body data-pagina="estatica">${cabecalho(atual)}<main id="conteudo" class="wrap" tabindex="-1">${corpo}</main>${RODAPE}</body></html>`;
 }
 
@@ -519,7 +519,7 @@ const INSTITUCIONAIS = {
 <h2>7. Contato</h2><p class="reader-text"><a href="mailto:${CONTATO}">${CONTATO}</a></p>`],
   privacidade: ['Política de privacidade', 'Como o Radar das Apreensões trata dados pessoais, conforme a LGPD.', `
 <p class="reader-note">Última atualização: novembro de 2026. Lei Geral de Proteção de Dados (Lei 13.709/2018).</p>
-<h2>Dados de quem visita o site</h2><p class="reader-text">O site não tem cadastro, não usa cookies de publicidade nem ferramentas de rastreamento. A preferência de tema (claro ou escuro) fica guardada só no seu navegador. A hospedagem (Vercel) registra dados técnicos de acesso, como endereço IP e navegador, por segurança e prevenção de abusos, pelo prazo definido pelo provedor.</p>
+<h2>Dados de quem visita o site</h2><p class="reader-text">O site não tem cadastro, não usa cookies de publicidade nem ferramentas de rastreamento. A preferência de tema (claro ou escuro) fica guardada só no seu navegador. A hospedagem (Vercel) registra dados técnicos de acesso, como endereço IP e navegador, por segurança e prevenção de abusos, pelo prazo definido pelo provedor.</p><p class="reader-text">Para estatística de audiência, o site usa a medição da própria hospedagem (Vercel Web Analytics), sem cookies e sem identificar quem visita, e pode registrar a localização aproximada de uma visita (país, estado e cidade, deduzidos pela hospedagem), sem guardar o endereço IP nem qualquer dado que identifique a pessoa.</p>
 <h2>Dados pessoais nas notícias</h2><p class="reader-text">As notícias podem citar nomes de pessoas presas, suspeitas ou investigadas, tal como publicados pela imprensa e por órgãos públicos. Esses dados são tratados com base no interesse público e na liberdade de informação jornalística (art. 4º, II, "a", da LGPD), e o Radar não os enriquece, cruza nem os usa para outra finalidade.</p>
 <h2>Seus direitos</h2><p class="reader-text">Se você é citado em uma notícia, pode pedir correção, atualização (por exemplo, absolvição ou arquivamento) ou a desindexação do seu nome. Veja a página de <a href="/remocao">correções e pedidos de remoção</a>.</p>
 <h2>Contato do controlador</h2><p class="reader-text"><a href="mailto:${CONTATO}">${CONTATO}</a></p>`],
