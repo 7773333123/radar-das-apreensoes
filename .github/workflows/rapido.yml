@@ -1,4 +1,4 @@
-name: Coleta rápida (a cada 10 minutos)
+name: Coleta complementar (Google, Bing, links, leitura e fotos)
 # O agendamento do GitHub (cron) atrasa ou pula execuções em repositórios
 # pouco movimentados. Por isso esta coleta roda em ciclo contínuo: uma mesma
 # execução coleta a cada 10 minutos por cerca de 5 horas e meia e, ao terminar,
@@ -60,21 +60,8 @@ jobs:
             git fetch -q origin main && git reset -q --hard origin/main
             if ! python acervo.py baixar; then echo 'Acervo indisponível; rodada pulada.'; echo '::endgroup::'; sleep 60; continue; fi
             antes=$(sha1sum noticias.json | cut -c1-40)
-            python coletar_feeds_estaduais.py || echo 'Feeds com falha; seguindo.'
-            # Notícias novas dos feeds vão ao ar já (em poucos minutos), sem esperar as etapas
-            # lentas (busca no Google, links, leitura das matérias), que salvam de novo no fim.
-            # Antes de publicar, a foto de cada notícia nova passa pela comparação de imagens
-            # (duplicatas por foto e por recorte); a que não foi analisada espera (gerar_feed_site.py).
-            if [ "$(sha1sum noticias.json | cut -c1-40)" != "$antes" ]; then
-              python hash_imagens.py --limite 300 --trabalhadores 16 --timeout 8 >/dev/null || true
-              python fotos_orb.py --limite 400 --timeout 8 || true  # mesma foto com recorte/zoom
-            fi
-            # O site é gerado UMA vez, dentro do salvar (depois de mesclar com o que outras coletas
-            # gravaram no meio-tempo); gerar antes também dobrava o tempo da rodada.
-            if [ "$(sha1sum noticias.json | cut -c1-40)" != "$antes" ] && python testes/test_duplicatas.py >/dev/null; then
-              python acervo.py salvar "Coleta rápida (rodada $ciclo, notícias novas)" feeds_saude.json \
-                && antes=$(sha1sum noticias.json | cut -c1-40) || echo 'Falha ao salvar as novas; o fim da rodada tenta de novo.'
-            fi
+            # Os feeds dos veículos (notícias novas) ficam na coleta expressa (expressa.yml), que publica
+            # a cada ~8 minutos; esta coleta complementa: Google, Bing, links, leitura e fotos.
             # 15 sites por rodada: as 1.100+ fontes giram em ~1 dia.
             python coletor.py --limite-fontes 15 --limite-estados 4 --limite-fronteira 10 --limite-sites-fronteira 10 || echo 'Busca com falha; seguindo.'
             # Buscador alternativo (Bing Notícias): não depender só do Google. (GDELT recusa os servidores do GitHub: erro 429.)
@@ -94,7 +81,7 @@ jobs:
             if [ "$(sha1sum noticias.json | cut -c1-40)" = "$antes" ]; then
               echo 'Nada novo nesta rodada.'
             elif python testes/test_duplicatas.py; then
-              python acervo.py salvar "Coleta rápida (rodada $ciclo)" buscadores_cursor.json feeds_saude.json duplicatas_suspeitas.json || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
+              python acervo.py salvar "Coleta rápida (rodada $ciclo)" buscadores_cursor.json duplicatas_suspeitas.json || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
             else
               echo 'Falha ao gerar o site; nada foi gravado nesta rodada.'
             fi

@@ -398,7 +398,7 @@ async function iniciar() {
   if (st.filtro.ano) garantirAno().then(render);
   iniciarLeitor(st.ctx);
   setInterval(atualizarAoVivo, 5 * 60000);
-  setInterval(conferirAgora, 60000);  // notícia nova aparece na faixa Agora em até 1 minuto
+  setInterval(conferirAgora, 30000);  // notícia nova aparece na faixa Agora em até 30 s depois de publicada
   document.addEventListener('visibilitychange', () => { if (!document.hidden) conferirAgora(); });
 }
 iniciar();
