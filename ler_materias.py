@@ -48,6 +48,7 @@ RUIDO = re.compile(r'^(?:Leia (?:tamb[ée]m|mais)|Veja (?:tamb[ée]m|mais|o v[í
 # Trecho da reportagem com crédito e link (decisão do responsável pelo site):
 # 70% do texto original, sempre terminando numa frase; o restante fica só no site de origem.
 TRECHO_MIN, TRECHO_MAX, TRECHO_FRACAO = 600, 15000, 0.7
+TRECHO_FRACAO_ALVO, TRECHO_FRACAO_MAX = 0.65, 0.72  # alvo 65%; nunca acima de 72% (salvo frase única)
 # Sites de órgãos públicos (polícias, secretarias, gov.br, Justiça, MP): notas
 # oficiais feitas para divulgação, reproduzidas na íntegra com crédito.
 OFICIAL = re.compile(r'\.(?:gov|jus|mp|leg|def)\.br$', re.I)
@@ -156,43 +157,42 @@ def corpo_limpo(paragrafos):
 def trecho_de_abertura(paragrafos):
     """Trecho da reportagem, do início, para exibir com crédito e link.
 
-    TRECHO_FRACAO (70%) do texto da reportagem, sempre no fim de uma frase;
-    o restante fica só no site de origem.
+    Alvo: 65% do texto da reportagem (faixa 60-70%), sempre terminando numa frase. Entre todos os
+    pontos de corte possíveis (fim de cada frase), escolhe o mais perto de 65%; o restante fica só
+    no site de origem. (Antes: juntava parágrafos até 70% e, com frase longa no limite, parava em
+    50-60% ou passava de 80%; 21% das notícias ficavam fora da faixa, 21/11/2026.)
     """
     limpos = corpo_limpo(paragrafos) or [p.strip() for p in paragrafos]
-    corpo = sum(len(p) for p in limpos)
-    TRECHO_MAX = min(globals()['TRECHO_MAX'], int(corpo * TRECHO_FRACAO))
-    TRECHO_MIN = min(globals()['TRECHO_MIN'], TRECHO_MAX)
-    partes, total = [], 0
+    blocos = []
     for p in limpos[:80]:
         if len(p) < 40 or RUIDO.match(p) or CONTATO.match(p) or p.count('|') > 1:
             continue
         if not re.search(r'[.!?…:;)"”»]$', p) and len(p) < 160:
             continue  # intertítulo
-        if total + len(p) > TRECHO_MAX:
-            # Corta o parágrafo por frases até o limite. Se assim ficar curto
-            # demais (frase longa), aceita mais uma frase desde que não passe de 85%.
-            frases = re.split(r'(?<=[.!?…])\s+(?=[^\s])', p)
-            corte = ''
-            for f in frases:
-                novo = (corte + ' ' + f).strip()
-                if total + len(novo) <= TRECHO_MAX:
-                    corte = novo
-                    continue
-                # Nunca menos de 50% da reportagem: frase longa no limite entra (até 90%).
-                if total + len(corte) < 0.5 * corpo and total + len(novo) <= 0.9 * corpo:
-                    corte = novo
-                    continue
-                break
-            if corte:
-                partes.append(corte)
-            break
-        partes.append(p)
+        blocos.append(p)
+    # Mesma base do tamanho_texto gravado (todos os parágrafos do corpo): a porcentagem mostrada
+    # no site ("cerca de X% do texto original") bate com o trecho.
+    corpo = sum(len(p) for p in limpos)
+    if not blocos or not corpo:
+        return ''
+    alvo = min(TRECHO_FRACAO_ALVO * corpo, TRECHO_MAX)
+    # Pontos de corte: (tamanho acumulado, índice do parágrafo, frases do parágrafo até ali).
+    cortes, total = [], 0
+    for k, p in enumerate(blocos):
+        frases = re.split(r'(?<=[.!?…])\s+(?=[^\s])', p)
+        acum = ''
+        for j, f in enumerate(frases):
+            acum = (acum + ' ' + f).strip()
+            if re.search(r'[.!?…"”»)]$', acum) or j == len(frases) - 1:
+                cortes.append((total + len(acum), k, acum))
         total += len(p) + 2
-        if total >= TRECHO_MAX:
-            break
-    texto = '\n\n'.join(partes)
-    return texto if len(texto) >= min(200, TRECHO_MAX // 2) else ''
+    if not cortes:
+        return ''
+    limite = TRECHO_FRACAO_MAX * corpo
+    validos = [c for c in cortes if c[0] <= limite] or cortes[:1]
+    tam, k, ultimo = min(validos, key=lambda c: abs(c[0] - alvo))
+    texto = '\n\n'.join(blocos[:k] + [ultimo])
+    return texto if len(texto) >= min(200, max(80, int(alvo) // 2)) else ''
 
 
 def melhor_do_srcset(srcset):
@@ -462,8 +462,8 @@ def main():
         # Notas oficiais lidas antes da versão estruturada são relidas (texto como o órgão editou).
         oficial_antigo = n.get('licenca_texto') == 'oficial' and int(n.get('texto_v') or 0) < 2
         # Trecho abaixo de 50% da reportagem (regra antiga de corte): relê uma vez.
-        curto = (n.get('trecho') and n.get('tamanho_texto') and int(n.get('trecho_v') or 0) < 2
-                 and len(str(n['trecho'])) < 0.5 * float(n['tamanho_texto']))
+        curto = (n.get('trecho') and n.get('tamanho_texto') and int(n.get('trecho_v') or 0) < 3
+                 and not 0.58 <= len(str(n['trecho'])) / float(n['tamanho_texto']) <= 0.75)  # fora da faixa: relê uma vez
         if int(n.get('materia_lida_v') or 0) >= VERSAO and not oficial_antigo and not curto:
             continue
         if args.periodo and not str(n.get('data_iso') or '').startswith(args.periodo):
@@ -502,7 +502,7 @@ def main():
                 continue
             n['materia_lida'] = time.strftime('%Y-%m-%d')
             n['materia_lida_v'] = VERSAO
-            n['trecho_v'] = 2
+            n['trecho_v'] = 3
             if r.get('publicada'):
                 # A data da página prevalece sobre a da busca (o Google às vezes
                 # informa a data de atualização ou de indexação).
