@@ -15,6 +15,8 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   estado do fato, 5) a mais completa (`duplicatas._pontos`). A página
   lista todas as fontes com data e hora ("Fontes desta notícia"). Pequenas diferenças entre fontes (número
   arredondado, detalhe a mais) são ajuste da mesma informação: publica-se UMA notícia, nunca duas.
+- **Trecho da reportagem (imprensa sem licença livre): alvo 65% do texto (faixa 60-70%)**, sempre no fim
+  de uma frase (`ler_materias.trecho_de_abertura`); matéria livre/oficial: texto integral.
 - Presos identificados só por iniciais e idade.
 - Duplicatas: não tolerar. Correções à mão vão em `juiz_decisoes_revisao.json` (valem como veto do grupo);
   padrões viram regra + teste em `testes/test_duplicatas.py`.
