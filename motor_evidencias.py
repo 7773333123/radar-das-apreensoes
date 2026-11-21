@@ -331,6 +331,11 @@ def aplicar(itens, dia, unir, raiz, dias=None, suspeitas=None, motivos_juiz=None
         if (s >= pesos['unir'] and ancora(fs[(ka, kb)])) or decisao == 'mesmo':
             unir(ka, kb, 'motor' if s >= pesos['unir'] else 'motor+juiz')
             nova = raiz(ka)
+            if nova != raiz(kb):
+                continue  # a união foi vetada (estados diferentes, revisão à mão): os grupos seguem separados
+            # Sem isso, uma união vetada copiava os membros de novo a cada par (memória dobrando).
+            membros.pop(ra, None)
+            membros.pop(rb, None)
             membros[nova] = ga + gb
             unidos += 1
         elif suspeitas is not None:
