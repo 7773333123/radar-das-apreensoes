@@ -292,9 +292,24 @@ def main():
         erros.append('casal: idades diferentes de cada um não são contradição (Dourados)')
     if not _grupos_coerentes(sob, [0, 1], lambda k: k, 0, 1):
         erros.append('par sem contradição deveria poder ser unido pelo juiz')
+    # Cidade grande (mais de 40 notícias em 3 dias): par com material e 2+ palavras em comum vai ao
+    # juiz (Foz do Iguaçu, 20/11/2026: "5 mil maços de cigarros", PF e PM, dois veículos).
+    import duplicatas as dup
+    foz = [{'i': 900 + k, 't': f'Notícia {k} diferente em Foz do Iguaçu', 'f': f'V{k}', '_cid': 'Foz do Iguaçu', 'uf': 'PR'}
+           for k in range(45)]
+    foz += [{'i': 1, 't': 'PF e PM apreendem 5 mil maços de cigarros contrabandeados em Foz do Iguaçu', 'f': 'Portal 24 Horas',
+             '_cid': 'Foz do Iguaçu', 'uf': 'PR'},
+            {'i': 2, 't': 'Ação integrada entre PF e PM apreende cinco mil maços de cigarros em Foz do Iguaçu/PR', 'f': 'GOV.BR',
+             '_cid': 'Foz do Iguaçu', 'uf': 'PR'}]
+    antes = len(dup.SUSPEITAS)
+    dup._mesma_cidade(foz, [100] * len(foz), lambda a, b, r: None, lambda k: k)
+    novos = dup.SUSPEITAS[antes:]
+    del dup.SUSPEITAS[antes:]
+    if not any({p['a'][0], p['b'][0]} == {1, 2} for p in novos):
+        erros.append('cidade grande: par dos 5 mil maços de cigarros em Foz deveria ir ao juiz')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 4
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 5
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 
