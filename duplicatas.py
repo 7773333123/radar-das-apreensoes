@@ -1115,6 +1115,18 @@ def agrupar(itens, motivos=None):
             else:
                 por_link[lk] = k
 
+    # Regra 1c: a revisão à mão leu as duas notícias e decidiu "mesmo" (juiz_decisoes_revisao.json):
+    # une sempre, sem depender de o par ter virado candidato de outra regra (São Gonçalo/RJ, 21/11/2026:
+    # mesma operação com fuzil, corrigida à mão, seguia duplicada). O veto "diferente" continua valendo.
+    por_id = {}
+    for k, it in enumerate(itens):
+        por_id.setdefault(str(it.get('i')), k)
+    for chave_r, dec in revisao_manual().items():
+        if dec.get('v') == 'mesmo' and '-' in chave_r:
+            x, y = chave_r.split('-', 1)
+            if x in por_id and y in por_id:
+                unir(por_id[x], por_id[y], 'revisao-manual')
+
     # Candidatos: pares a até 7 dias que dividem palavra informativa, trecho de
     # abertura ou foto parecida (índices invertidos; evita comparar todos com todos).
     candidatos = set()
