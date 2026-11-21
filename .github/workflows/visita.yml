@@ -3,7 +3,7 @@ name: Primeira visita ao site
 # visitante e grava primeira_visita.json uma única vez; o Claude lê e informa o dono do site.
 on:
   repository_dispatch:
-    types: [primeira-visita]
+    types: [primeira-visita, teste-visita]
 permissions:
   contents: write
 concurrency:
@@ -15,7 +15,11 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v5
+      - name: Teste da chave (não grava nada)
+        if: github.event.action == 'teste-visita'
+        run: echo 'Chave da Vercel funcionando. País no teste:' '${{ github.event.client_payload.pais }}'
       - name: Gravar só a primeira
+        if: github.event.action == 'primeira-visita'
         env:
           VISITA: ${{ toJson(github.event.client_payload) }}
         run: |
