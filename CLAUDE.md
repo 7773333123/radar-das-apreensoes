@@ -8,6 +8,8 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   (usado por `classificar.relevante`); casos de teste em `python classificar.py`.
 - Termos de apreensão casam só a palavra inteira: "comunica/comunicado/comunicação" não é "munição"
   (avisos de falecimento e comunicados entravam como armas, 21/11/2026).
+- **Busca sem apreensão não entra** ("nenhum entorpecente foi localizado", "nada foi encontrado"), 21/11/2026:
+  `classificar.sem_apreensao`.
 - **Avisos fúnebres nunca entram** (funerária comunica falecimento, nota de pesar, velório, missa de
   sétimo dia), 21/11/2026: `classificar.aviso_funebre`. Ação policial ligada a isso continua entrando.
 - **Versão exibida de uma notícia com várias fontes** (21/11/2026): 1) fonte primária (órgão público),

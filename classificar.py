@@ -115,8 +115,22 @@ def aviso_funebre(titulo):
     return bool(_FUNEBRE.search(titulo) and not _ACAO_POLICIAL.search(titulo))
 
 
+# Busca sem apreensão ("nenhum entorpecente foi localizado", "nada foi encontrado"): não é apreensão.
+# Caso real (21/11/2026): virou manchete porque o texto citava 176 kg de uma apreensão ANTERIOR.
+_SEM_APREENSAO = re.compile(
+    r"\b(?:nenhum|nenhuma)\s+(?:\w+\s+){0,2}?(?:droga|entorpecente|arma|material|il[ií]cito|objeto|subst[âa]ncia|muni[çc][ãa]o)s?\b"
+    r"[^.]{0,40}?(?:localizad|encontrad|apreendid|achad)\w*"
+    r"|\bnada\s+(?:de\s+il[ií]cito\s+)?(?:foi|é)\s+(?:localizad|encontrad|apreendid|achad)\w*"
+    r"|\bsem\s+(?:encontrar|localizar|apreender)\s+(?:nada|drogas?|armas?)\b"
+    r"|\bn[ãa]o\s+(?:foi|foram)\s+(?:localizad|encontrad|apreendid)\w*\s+(?:nenhum|nenhuma|nada|drogas?|armas?|entorpecentes?)", re.I)
+
+
+def sem_apreensao(titulo):
+    return bool(_SEM_APREENSAO.search(titulo))
+
+
 def relevante(titulo):
-    if apreensao_sentimento(titulo) or aviso_funebre(titulo):
+    if apreensao_sentimento(titulo) or aviso_funebre(titulo) or sem_apreensao(titulo):
         return False
     if FORTE.search(titulo):
         return True
@@ -175,6 +189,10 @@ if __name__ == '__main__':
         ('Nota de pesar: morre ex-delegado que comandou apreensão histórica de cocaína', None),
         ('Operação Luctus mira esquema ilegal de venda de dados de óbitos para funerárias', 8),
         ('Polícia Civil prende mulher durante velório por envolvimento em tortura de ex-companheira de traficante', 0),
+        # Busca sem apreensão não entra (21/11/2026).
+        ('Policiais realizaram buscas em vegetação e oficina mecânica na região de Pitangueiras, mas nenhum entorpecente foi localizado durante a varredura.', None),
+        ('Polícia faz buscas mas não foram encontradas drogas', None),
+        ('PM apreende drogas e nenhum suspeito foi localizado', 0),
     ]
     erros = 0
     for t, esperado in casos:
