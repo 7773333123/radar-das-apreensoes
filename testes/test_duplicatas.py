@@ -340,9 +340,22 @@ def main():
     # Matéria livre com texto integral vence quem publicou primeiro (íntegra exibida como antes).
     if not _pontos({'x': 1, 'u': 'https://agenciabrasil/x'}) > _pontos({'u': 'https://a/x', 'img': 'a.jpg', '_tr': 1, '_uff': 'PR', 'uf': 'PR'}, primeiro=True):
         erros.append('matéria livre com texto integral deveria vencer quem publicou primeiro')
+    # Cidade grande, mesma quantidade do mesmo material no título: vai ao juiz (Foz, 115 kg de maconha).
+    fz = [{'i': 950 + k, 't': f'Notícia {k} diferente em Foz do Iguaçu', 'f': f'W{k}', '_cid': 'Foz do Iguaçu', 'uf': 'PR'}
+          for k in range(45)]
+    fz += [{'i': 21, 't': 'Analistas-Tributários atuam na apreensão de 115 kg de maconha no Paraná', 'f': 'Sindireceita',
+            '_cid': 'Foz do Iguaçu', 'uf': 'PR'},
+           {'i': 22, 't': 'Receita Federal apreende 115 quilos de maconha em veículo na Ponte da Amizade', 'f': 'Portal 24 Horas',
+            '_cid': 'Foz do Iguaçu', 'uf': 'PR'}]
+    antes = len(dup.SUSPEITAS)
+    dup._mesma_cidade(fz, [100] * (len(fz) - 1) + [101], lambda a, b, r: None, lambda k: k)
+    novos = dup.SUSPEITAS[antes:]
+    del dup.SUSPEITAS[antes:]
+    if not any({p['a'][0], p['b'][0]} == {21, 22} for p in novos):
+        erros.append('mesma quantidade do mesmo material na mesma cidade deveria ir ao juiz (115 kg, Foz)')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 12
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 13
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 
