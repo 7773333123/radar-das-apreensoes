@@ -101,8 +101,22 @@ def apreensao_sentimento(titulo):
     return not FORTE.search(_APREENSAO_SENTIMENTO.sub(' ', titulo))
 
 
+# Aviso fúnebre (funerária comunica falecimento, nota de pesar, velório, missa de sétimo dia) nunca
+# entra no site, mesmo com palavra parecida com apreensão. Pedido do dono do site, 21/11/2026.
+# Ação policial ligada a isso (Operação Luctus: venda de dados de óbitos a funerárias; prisão
+# durante velório) continua entrando.
+_FUNEBRE = re.compile(r'funer[áa]rias?|falecimento|nota de pesar|com (?:profundo )?pesar|vel[óo]rio|sepultamento|'
+                      r'missa de (?:s[ée]timo|7º?) dia|obitu[áa]rio|in memoriam|descanse em paz', re.I)
+_ACAO_POLICIAL = re.compile(r'opera[çc][ãa]o|\bpren(?:de|dem|deu)|\bpres[oa]s?\b|pris[ãa]o|pol[íi]cia|investig|esquema|'
+                            r'tr[aá]fico|apreend|\bPF\b|\bPM\b|\bPRF\b|Gaeco|mandados?', re.I)
+
+
+def aviso_funebre(titulo):
+    return bool(_FUNEBRE.search(titulo) and not _ACAO_POLICIAL.search(titulo))
+
+
 def relevante(titulo):
-    if apreensao_sentimento(titulo):
+    if apreensao_sentimento(titulo) or aviso_funebre(titulo):
         return False
     if FORTE.search(titulo):
         return True
@@ -156,6 +170,11 @@ if __name__ == '__main__':
         ('Funerária Santa Cruz comunica com pesar o falecimento de Deomira Seghetto Ceriolli', None),
         ('Escolas sem casos de sarna em Campo Grande preparam comunicado de alerta', None),
         ('Militares apreenderam rádios comunicadores, munições e outros pertences', 1),
+        # Aviso fúnebre nunca entra; operação policial ligada a funerárias/velório entra.
+        ('A Funerária Alta Floresta comunica o falecimento do Senhor Justimiano Ferreira', None),
+        ('Nota de pesar: morre ex-delegado que comandou apreensão histórica de cocaína', None),
+        ('Operação Luctus mira esquema ilegal de venda de dados de óbitos para funerárias', 8),
+        ('Polícia Civil prende mulher durante velório por envolvimento em tortura de ex-companheira de traficante', 0),
     ]
     erros = 0
     for t, esperado in casos:
