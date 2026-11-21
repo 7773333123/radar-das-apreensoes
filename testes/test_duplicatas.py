@@ -292,9 +292,17 @@ def main():
         erros.append('casal: idades diferentes de cada um não são contradição (Dourados)')
     if not _grupos_coerentes(sob, [0, 1], lambda k: k, 0, 1):
         erros.append('par sem contradição deveria poder ser unido pelo juiz')
+    # Mesmo número incomum, estados diferentes (um só pelo veículo): Operação Panóptico (PR) x
+    # Operação Tentáculos (MS), 127 mandados cada, 19/11/2026.
+    pan = [{'i': 1, 't': 'Gaeco cumpre 127 mandados na 2ª fase da Operação Panóptico', 'f': 'Diário do Sudoeste',
+            'd': '2026-11-19T05:59', 'uf': 'PR', '_ufx': False},
+           {'i': 2, 't': 'Operação contra o PCC cumpre 127 mandados em Mato Grosso do Sul', 'f': 'g1',
+            'd': '2026-11-19T03:35', 'uf': 'MS'}]
+    if len(agrupar_duplicatas(pan)[0]) == 1:
+        erros.append('número raro não une estados diferentes (Panóptico PR x Tentáculos MS)')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 4
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 5
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 
