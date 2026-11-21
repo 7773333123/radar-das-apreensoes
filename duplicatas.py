@@ -711,9 +711,13 @@ def _mesma_cidade(itens, dia, unir, raiz, dias=3, max_por_cidade=40):
                 # Material e palavras comuns também contam quando são 2+ ("5 mil maços de cigarros"
                 # PF e PM em Foz; "Força Tática apreende drogas, armas" em Manaus, 20/11/2026).
                 todas = {w for w in inf - set(EXTENSO) if not w[0].isdigit()}
-                if not ((comuns and not grande) or len(todas) >= 2 or pequena):
+                # Mesma quantidade do mesmo material no título ("115 kg de maconha" x "115 quilos de
+                # maconha", Ponte da Amizade, Foz, 20-21/11/2026): vai ao juiz mesmo em cidade grande.
+                qa, qb = q_titulo(ia['t']), q_titulo(ib['t'])
+                mesma_qtd = bool(qa) and qa == qb
+                if not ((comuns and not grande) or len(todas) >= 2 or pequena or mesma_qtd):
                     continue
-                comuns = comuns or todas or {'mesma cidade pequena'}
+                comuns = comuns or todas or {'mesma quantidade' if mesma_qtd else 'mesma cidade pequena'}
                 chave = chave_par(ia.get('i'), ib.get('i'))
                 decisao = juiz.get(chave, {}).get('v')
                 if decisao == 'mesmo':
