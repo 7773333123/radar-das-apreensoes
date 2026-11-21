@@ -61,6 +61,8 @@ RETRO_EXTRA = [
     'apreensão eletrônicos descaminho', 'apreensão medicamentos anabolizantes', 'apreensão dinheiro operação polícia',
     'apreensão embarcação droga', 'apreensão aeronave droga', 'apreensão madeira ilegal Ibama', 'apreensão ouro garimpo',
 ]
+# Terceira passada (2006-2014, poucas notícias): cada estado x cada tipo de apreensão, mês a mês.
+RETRO_TERCEIRA_TIPOS = ['apreende drogas', 'apreende arma', 'apreensão contrabando', 'polícia apreende', 'apreensão maconha cocaína']
 FONTES_EXTRAS = Path('fontes.json')
 META_FONTES = 10000
 # Cadastro de domínios é distinto de consultas por execução.
@@ -424,6 +426,7 @@ def executar():
                         help='Busca retroativa ampla de um mês: semana a semana, por tema, estado e polo de fronteira')
     parser.add_argument('--pular', type=int, default=0, help='Retroativo: consultas já feitas em execução anterior')
     parser.add_argument('--extra', action='store_true', help='Retroativo, segunda passada: termos específicos por semana')
+    parser.add_argument('--terceira', action='store_true', help='Retroativo, terceira passada (anos com poucas notícias): estado x tipo, mês inteiro')
     parser.add_argument('--limite-fontes', type=int, default=24, help='Fontes extras consultadas por execução (padrão: 24)')
     parser.add_argument('--limite-estados', type=int, default=9, help='Estados consultados por execução (padrão: 9)')
     parser.add_argument('--limite-fronteira', type=int, default=5, help='Polos de fronteira consultados por execução (padrão: 5)')
@@ -463,6 +466,15 @@ def executar():
             prox = min(dia + timedelta(days=7), fim_mes)
             janelas.append((dia.isoformat(), prox.isoformat()))
             dia = prox
+        if args.terceira:
+            # Mês inteiro por consulta: em 2006-2014 há poucas notícias por semana.
+            inicio, seguinte = date(a, m, 1).isoformat(), fim_mes.isoformat()
+            for uf in ESTADOS:
+                for tipo in RETRO_TERCEIRA_TIPOS:
+                    consultas.append((f'{tipo} "{NOMES_ESTADOS.get(uf, uf)}" after:{inicio} before:{seguinte}', None))
+            for termos in RETRO_EXTRA:
+                consultas.append((f'{termos} after:{inicio} before:{seguinte}', None))
+            janelas = []
         for inicio, seguinte in janelas:
             if args.extra:
                 # Segunda passada (mês abaixo da meta): o que a busca geral perde.

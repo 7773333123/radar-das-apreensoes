@@ -8,13 +8,14 @@ name: Coleta retroativa (mês a mês até 2006)
 # Ao terminar, dispara a si mesma (o cron fica de reserva).
 # Quatro frentes em paralelo (input faixa), cada uma com o próprio cursor e o próprio período:
 # a = 2025-2022 (retroativo_cursor.json), f = 2021, b = 2020-2016, c = 2015-2011, d = 2010-2006,
-# e = nov e out/2026 (o começo da coleta diária, com menos notícias que os outros meses de 2026)
+# e = nov e out/2026 (o começo da coleta diária, com menos notícias que os outros meses de 2026),
+# g = terceira passada de 2014 a 2006 (poucas notícias): cada estado x cada tipo, mês inteiro (21/11/2026)
 # (retroativo_cursor_<faixa>.json). Cada ano tem a sua parte do acervo: as frentes não se atrapalham.
 on:
   workflow_dispatch:
     inputs:
       faixa:
-        description: 'Frente: a (2025-2022), f (2021), b (2020-2016), c (2015-2011), d (2010-2006), e (nov-out/2026: completa o início da coleta diária)'
+        description: 'Frente: a (2025-2022), f (2021), b (2020-2016), c (2015-2011), d (2010-2006), e (nov-out/2026), g (terceira passada 2014-2006)'
         required: false
         default: 'a'
   schedule:
@@ -46,7 +47,8 @@ jobs:
           import json, os
           c = json.load(open(os.environ['CURSOR']))
           # Limite de cada frente (o mês mais antigo que ela coleta).
-          c['ate'] = {'a': '2022-01', 'f': '2021-01', 'b': '2016-01', 'c': '2011-01', 'd': '2006-01', 'e': '2026-10'}[os.environ['FAIXA']]
+          c['ate'] = {'a': '2022-01', 'f': '2021-01', 'b': '2016-01', 'c': '2011-01', 'd': '2006-01', 'e': '2026-10', 'g': '2006-01'}[os.environ['FAIXA']]
+          print(f"terceira={'sim' if os.environ['FAIXA'] == 'g' else 'nao'}")
           print(f"mes={c['mes']}")
           print(f"ano={c['mes'][:4]}")
           print(f"wp={'sim' if c.get('arquivo_sites_feito') else 'nao'}")
@@ -61,13 +63,13 @@ jobs:
         if: steps.c.outputs.fim == 'nao'
         run: python acervo.py baixar --parte "$(python acervo.py parte-de ${{ steps.c.outputs.mes }})"
       - name: Arquivo dos sites dos veículos (WordPress)
-        if: steps.c.outputs.fim == 'nao' && steps.c.outputs.wp == 'nao'
+        if: steps.c.outputs.fim == 'nao' && steps.c.outputs.wp == 'nao' && steps.c.outputs.terceira == 'nao'
         continue-on-error: true
         run: python arquivo_sites.py --mes ${{ steps.c.outputs.mes }} --tempo-max 2700 ${{ steps.c.outputs.extra == 'sim' && '--extra' || '' }}
       - name: Google Notícias semana a semana
         if: steps.c.outputs.fim == 'nao'
         continue-on-error: true
-        run: python coletor.py --retroativo ${{ steps.c.outputs.mes }} --pular ${{ steps.c.outputs.pular }} ${{ steps.c.outputs.extra == 'sim' && '--extra' || '' }}
+        run: python coletor.py --retroativo ${{ steps.c.outputs.mes }} --pular ${{ steps.c.outputs.pular }} ${{ steps.c.outputs.extra == 'sim' && '--extra' || '' }} ${{ steps.c.outputs.terceira == 'sim' && '--terceira' || '' }}
       - name: Arquivos oficiais do ano (PF, PRF, Receita; uma vez por ano)
         if: steps.c.outputs.fim == 'nao' && steps.c.outputs.oficiais == 'sim' && steps.c.outputs.ano >= 2015
         continue-on-error: true
@@ -108,7 +110,7 @@ jobs:
               meta = meta_mes(c['mes'][:4])
               print(f"{c['mes']}: {feito} notícias publicadas (meta {meta}); passada {c.get('passada', 1)}")
               c.setdefault('resultado', {})[c['mes']] = {'publicadas': feito, 'meta': meta, 'passada': c.get('passada', 1)}
-              if feito < meta and c.get('passada', 1) == 1:
+              if feito < meta and c.get('passada', 1) == 1 and os.environ['FAIXA'] != 'g':
                   # Abaixo da meta: segunda passada com termos específicos.
                   c.update(passada=2, arquivo_sites_feito=False, google_feitas=0, google_tentativas=0)
               else:
