@@ -13,8 +13,10 @@ module.exports = async (req, res) => {
     res.statusCode = 204;
     return res.end();
   }
+  // Teste (?teste=1): confere a chave sem registrar a primeira visita.
+  const teste = /[?&]teste=1\b/.test(req.url || '');
   // Já registrada? (o arquivo fica no repositório, não no site)
-  try {
+  if (!teste) try {
     const r = await fetch(`https://raw.githubusercontent.com/${REPO}/main/primeira_visita.json`, { method: 'HEAD', signal: AbortSignal.timeout(3000) });
     if (r.ok) { res.statusCode = 204; return res.end(); }
   } catch { /* segue */ }
@@ -28,7 +30,7 @@ module.exports = async (req, res) => {
     await fetch(`https://api.github.com/repos/${REPO}/dispatches`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'User-Agent': 'radar-visita' },
-      body: JSON.stringify({ event_type: 'primeira-visita', client_payload: visita }),
+      body: JSON.stringify({ event_type: teste ? 'teste-visita' : 'primeira-visita', client_payload: visita }),
       signal: AbortSignal.timeout(5000),
     });
   } catch { /* sem registro */ }

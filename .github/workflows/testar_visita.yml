@@ -1,0 +1,13 @@
+name: Testar registro de visita (manual)
+# Chama /api/visita?teste=1 no site publicado: se a chave GH_VISITA_TOKEN da Vercel funciona,
+# aparece uma execução "Primeira visita ao site" do tipo teste (sem gravar nada).
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  testar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - run: curl -sS -o /dev/null -w '%{http_code}\n' -X POST -A 'Mozilla/5.0 (teste do dono)' 'https://www.radardasapreensoes.com.br/api/visita?teste=1'
