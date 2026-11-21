@@ -23,7 +23,8 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   Fronteira, Em alta e editorias (editoria sem notícia hoje não aparece). A véspera só entra enquanto o dia
   ainda não tem nenhuma notícia (logo após a meia-noite). `assets/central.js` (`ehHoje`).
 - Anos antigos (2006-2016): coleta pelo Wayback Machine (`wayback.py`, `wayback.yml`), com o link da cópia
-  arquivada no archive.org; portais oficiais antigos (PF, PRF, Receita, secretarias) primeiro. 21/11/2026.
+  arquivada no archive.org; portais oficiais antigos (PF, PRF, Receita, secretarias) primeiro; um servidor por
+  ano em paralelo, 250 sites por ano, cursor `wayback_cursor_AAAA.json`. 21/11/2026.
 - **Quantidade é só do fato noticiado** (21/11/2026): frases do resumo/texto sobre OUTRO fato ("após a apreensão
   de…", "anteriormente", "em março", "semana passada") não contam (`resumo_fatos.sem_outros_fatos`).
 - **Manchete**: a notícia mais relevante do dia, partindo das instituições policiais (fonte oficial +3,

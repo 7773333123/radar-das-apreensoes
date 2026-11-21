@@ -26,7 +26,7 @@ from coletar_feeds_estaduais import incorporar
 
 RAIZ = Path(__file__).resolve().parent
 ARQUIVO = RAIZ / 'noticias.json'
-CURSOR = RAIZ / 'wayback_cursor.json'
+CURSOR_ANTIGO = RAIZ / 'wayback_cursor.json'  # antes de 21/11/2026: um cursor para todos os anos
 FONTES = RAIZ / 'fontes.json'
 HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; RadarApreensoes/1.0; acervo historico publico)'}
 # Endereço (slug) com assunto de apreensão: filtro feito pelo próprio archive.org.
@@ -136,9 +136,16 @@ def main():
     ap.add_argument('--ano', type=int, required=True)
     ap.add_argument('--tempo-max', type=int, default=6000, help='segundos de coleta nesta execução')
     ap.add_argument('--por-dominio', type=int, default=150, help='endereços arquivados por site e ano')
+    ap.add_argument('--max-sites', type=int, default=250, help='sites por ano: oficiais e os veículos que mais publicam')
     args = ap.parse_args()
-    cursor = json.loads(CURSOR.read_text(encoding='utf-8')) if CURSOR.exists() else {}
-    sites = lista_sites()
+    # Um cursor por ano (os anos rodam em paralelo, cada um num servidor): wayback_cursor_AAAA.json.
+    CURSOR = RAIZ / f'wayback_cursor_{args.ano}.json'
+    if CURSOR.exists():
+        cursor = json.loads(CURSOR.read_text(encoding='utf-8'))
+    else:
+        antigo = json.loads(CURSOR_ANTIGO.read_text(encoding='utf-8')) if CURSOR_ANTIGO.exists() else {}
+        cursor = {k: v for k, v in antigo.items() if k.startswith(str(args.ano))}
+    sites = lista_sites()[:args.max_sites]
     por_dominio = {d: (n, d, u) for n, d, u in sites}
     ano = str(args.ano)
     k = int(cursor.get(ano, 0))
