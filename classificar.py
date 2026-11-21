@@ -81,7 +81,29 @@ ALHEIO = re.compile(
     re.I)
 
 
+# "Apreensão" no sentido de preocupação ("agenda econômica gera apreensão no mercado", "clima de
+# apreensão", "apreensivos"): não é apreensão policial. Pedido do dono do site, 21/11/2026: não entra.
+_APREENSAO_SENTIMENTO = re.compile(
+    r'(?:\b(?:gera|geram|gerou|gerando|causa|causam|causou|causando|provoca|provocam|provocou|desperta|despertam|'
+    r'despertou|traz|trazem|trouxe|aumenta|aumentou|eleva|elevou|cria|criou|há|houve|clima|momentos?|dias?|horas?|'
+    r'noite|madrugada|tens[ãa]o|medo|expectativa|misto|sensa[çc][ãa]o|onda|ar|preocupa[çc][ãa]o|ansiedade|'
+    r'sob|em meio [àa]|entre)\s+(?:de\s+|e\s+|a\s+|muita\s+|grande\s+|forte\s+)?apreens[ãa]o\b(?!\s+(?:de|da|do|das|dos|recorde)\b))'
+    r'|\bapreens[ãa]o\s+(?:no|na|nos|nas|do|da|dos|das|entre|em)\s+(?:o\s+|a\s+)?(?:mercados?(?!\s+municipal)|bolsas?|investidores|'
+    r'setor|agro|produtores|empres[aá]rios|moradores|pais|torcedores|torcida|familiares|fam[ií]lias|comunidade|popula[çc][ãa]o|'
+    r'servidores|eleitores|governo|planalto|congresso|câmara|oposi[çc][ãa]o|aliados)\b'
+    r'|(?<!busca e )\bapreens[ãa]o\s+(?:sobre|quanto|diante)\b|\bapreensiv[oa]s?\b', re.I)
+
+
+def apreensao_sentimento(titulo):
+    """Título em que "apreensão" é preocupação, sem outro termo forte de apreensão policial."""
+    if not _APREENSAO_SENTIMENTO.search(titulo):
+        return False
+    return not FORTE.search(_APREENSAO_SENTIMENTO.sub(' ', titulo))
+
+
 def relevante(titulo):
+    if apreensao_sentimento(titulo):
+        return False
     if FORTE.search(titulo):
         return True
     return bool(MEDIO.search(titulo) and ACAO.search(titulo) and not ALHEIO.search(titulo))
@@ -121,6 +143,15 @@ if __name__ == '__main__':
         ('BPRv apreende 300 garrafas de vinho estrangeiro na PR-323', 2),
         ('Homem morre em confronto com a PM após apreensão de drogas', 0),
         ('PF deflagra operação contra lavagem de dinheiro do tráfico e bloqueia R$ 20 milhões', 7),
+        # "Apreensão" = preocupação: fora do site (21/11/2026).
+        ('A agenda econômica de Lula gera apreensão no mercado financeiro', None),
+        ('Clima de apreensão toma conta de moradores após ataques', None),
+        ('Investidores apreensivos com juros', None),
+        ('PMSE apreende drogas e dinheiro durante ação policial no Mercado Municipal de Lagarto', 0),
+        ('Apreensão de drogas no mercado municipal leva dois à prisão', 0),
+        ('Bolsas da Ásia fecham em baixa com apreensão sobre IA', None),
+        ('Receita realiza quatro abordagens com apreensão na Ponte da Amizade', 8),
+        ('Polícia Federal cumpre mandados de busca e apreensão sobre concessão de CACs em Ipatinga', 8),
     ]
     erros = 0
     for t, esperado in casos:
