@@ -75,6 +75,12 @@ function radarHTML(secoes, veiculos) {
     '</section>';
 }
 
+// Data e hora curtas de cada fonte ("20/11 23:45"), no horário de Brasília.
+function quandoCurto(s) {
+  const d = new Date(String(s).length === 16 ? s + 'Z' : s);
+  return Number.isNaN(d.getTime()) ? '' : d.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+}
+
 export function kickerHTML(n, ctx, preferida = null) {
   const c = preferida != null && n.cats.includes(Number(preferida)) ? Number(preferida) : n.cats[0];
   const cat = c != null ? ctx.categorias[c] : 'Apreensões';
@@ -180,7 +186,7 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
       compartilharHTML(n) + `<footer class="reader-foot"><span>Fonte: ${esc(n.fonte)}${n.uf ? ' · ' + esc(NOME_UF[n.uf]) : ''} · ${esc(cats)}</span>` +
       `<span class="links"><a class="link-sm" id="leitorLink" href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer"${n.url ? '' : ' aria-disabled="true"'}>ver original ↗</a>` +
       `<button type="button" class="link-sm" id="compartilhar">compartilhar</button></span>` +
-      (n.outras.length ? `<span class="also">também em: ${n.outras.map(([f, url, k]) => `<a class="link-sm" href="${esc(urlSegura(url || '') || '#')}" target="_blank" rel="noopener noreferrer" data-outra="${Number(k)}">${esc(f)}</a>`).join(', ')}</span>` : '') +
+      (n.outras.length ? `<span class="also">também em: ${n.outras.map(([f, url, k, dd]) => `<a class="link-sm" href="${esc(urlSegura(url || '') || '#')}" target="_blank" rel="noopener noreferrer" data-outra="${Number(k)}">${esc(f)}</a>${dd ? ` <span class="fonte-quando">(${esc(quandoCurto(dd))})</span>` : ''}`).join(', ')}</span>` : '') +
       '</footer>';
     c.dataset.i = String(n.i);
     montarGaleria(n, n.img ? [n.img] : []);

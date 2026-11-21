@@ -596,6 +596,10 @@ def main():
         # Imprensa: nome completo de preso vira iniciais no que o Radar exibe (resumo
         # e trecho da fonte). Notas oficiais ficam como o órgão publicou.
         oficial = n.get('licenca_texto') == 'oficial' or bool(re.search(r'\.(?:gov|jus|mp|leg|def)\.br$', str(n.get('dominio_fonte') or '')))
+        if oficial:
+            item['_ofi'] = 1  # fonte primária (órgão público): preferida como versão exibida
+        if n.get('uf_fonte'):
+            item['_uff'] = n['uf_fonte']  # estado do veículo (veículo local do fato é preferido)
         nomes_presos = [] if oficial else nomes_dos_presos(resumo + '. ' + str(n.get('trecho') or ''))
         if nomes_presos:
             resumo = anonimizar(resumo, nomes_presos)
@@ -780,7 +784,7 @@ def main():
         antes -= len(vazias)
     print(f'Sem foto e sem conteúdo (aguardando leitura): {len(vazias)} fora do site')
     for item in saida:
-        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx', '_mesma', '_txt'):
+        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx', '_mesma', '_txt', '_ofi', '_uff'):
             item.pop(k, None)
     for lote in list(detalhes):
         for chave in [c for c in detalhes[lote] if int(c) in removidas]:
