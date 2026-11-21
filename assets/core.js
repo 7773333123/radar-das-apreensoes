@@ -101,7 +101,7 @@ function preparar(raw, ctx) {
     url: urlSegura(raw.u || ''), temLink: Boolean(raw.u || raw.uh), img: urlSegura(raw.img || ''), uf, cats, data,
     texto: raw.x === 1, nFotos: raw.g || (raw.img ? 1 : 0),
     outras: Array.isArray(raw.o) ? raw.o.filter((o) => Array.isArray(o) && o[0]) : [],
-    q: raw.q || null, ag: raw.ag || [], orgao: (raw.ag || []).map((a) => ctx.orgaos?.[a]).find(Boolean) || '', rd: raw.rd || '', vq: raw.vq || 0, cidade: uf ? raw.cid || '' : '', polo: raw.fr || '', prioridadeFr: raw.frp || 9,
+    q: raw.q || null, ag: raw.ag || [], orgao: (raw.ag || []).map((a) => ctx.orgaos?.[a]).find(Boolean) || '', rd: raw.rd || '', vq: raw.vq || 0, cidade: uf ? raw.cid || '' : '', polo: raw.fr || '', prioridadeFr: raw.frp || 9, oficial: Boolean(raw.fp),
     ano: data ? data.getUTCFullYear() : null,
   };
   // Texto de busca em palavras separadas por espaço (" foz do iguacu "): a busca casa

@@ -188,9 +188,28 @@ def droga_pelo_nome(texto):
     return ANALOGA.sub(lambda m: m.group(1), texto or '')
 
 
+# Frase do resumo/texto que fala de OUTRO fato (apreensão anterior, balanço, outro ano): suas quantidades
+# não são desta notícia. Caso real (21/11/2026): "A ação ocorreu após informações relacionadas a uma
+# apreensão de 176 quilos de maconha realizada durante a madrugada" virou "apreenderam 176 kg" e manchete.
+OUTRO_FATO = re.compile(
+    r'\b(?:ap[óo]s|depois d[aeo]s?|relacionad[ao]s? (?:a|à|com)|referentes? (?:a|à)|em decorr[êe]ncia d[aeo]|'
+    r'desdobramento d[aeo]|a partir d[aeo]|com base (?:em|n[ao]s?))\s+(?:informa[çc][õo]es\s+(?:\w+\s+){0,3})?'
+    r'(?:uma|a|da|outra|na|numa)?\s*apreens'
+    r'|\banterior(?:mente|es)?\b|\boutra apreens|\b(?:semana|m[êe]s|ano) passad|\bdias antes\b|\bh[áa] (?:\w+ )?(?:dias|semanas|meses|anos)\b'
+    r'|\bem (?:janeiro|fevereiro|mar[çc]o|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro|19\d\d|20\d\d)\b'
+    r'|\bdesde (?:o in[íi]cio|janeiro)\b|\bno total,? (?:em|neste|este) ano\b', re.I)
+
+
+def sem_outros_fatos(texto):
+    """Tira do resumo/texto as frases sobre outros fatos (as quantidades delas não são desta notícia)."""
+    frases = re.split(r'(?<=[.!?…])\s+', texto or '')
+    return ' '.join(f for f in frases if not OUTRO_FATO.search(f))
+
+
 def extrair(titulo, resumo='', texto=''):
     """Fatos objetivos da notícia. Campos vazios ficam de fora."""
-    fontes = [droga_pelo_nome(titulo), droga_pelo_nome(resumo), droga_pelo_nome((texto or '')[:6000])]
+    fontes = [droga_pelo_nome(titulo), droga_pelo_nome(sem_outros_fatos(resumo)),
+              droga_pelo_nome(sem_outros_fatos((texto or '')[:6000]))]
     tudo = '. '.join(f for f in fontes if f)
     fatos = {}
     itens, tipos = [], set()
