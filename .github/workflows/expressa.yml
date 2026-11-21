@@ -56,7 +56,7 @@ jobs:
                 python hash_imagens.py --limite 300 --trabalhadores 16 --timeout 8 >/dev/null || true
                 python fotos_orb.py --limite 400 --timeout 8 || true
                 if python testes/test_duplicatas.py >/dev/null; then
-                  python acervo.py salvar "Coleta expressa (rodada $ciclo)" feeds_saude.json \
+                  python acervo.py salvar "Coleta expressa (rodada $ciclo)" feeds_saude.json duplicatas_suspeitas.json \
                     && gh workflow run juiz_claude.yml --ref main || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
                 else
                   echo 'Testes de duplicatas falharam: nada gravado nesta rodada.'
