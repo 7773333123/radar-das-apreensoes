@@ -958,14 +958,15 @@ def _numero_raro(comuns):
 def _pontos(item, primeiro=False):
     """Qual versão mostrar (o link "Ler a reportagem completa"), 21/11/2026, pedido do dono do site:
     1) fonte primária: órgão público que produziu a informação (PF, PRF, PM, Receita, MP...);
-    2) quem publicou primeiro; 3) veículo do próprio estado do fato; 4) só então a versão mais
-    completa (texto integral, fotos, link original, estado, resumo)."""
+    2) matéria livre (licença aberta) com o texto integral, exibido na íntegra como antes;
+    3) quem publicou primeiro; 4) veículo do próprio estado do fato; 5) só então a versão mais
+    completa (trecho, fotos, link original, estado, resumo)."""
     # Versão de veículo que bloqueia a leitura nunca é a exibida se houver outra.
-    return (40 * item.get('_ofi', 0) + (12 if primeiro else 0) +
+    return (100 * item.get('_ofi', 0) + (12 if primeiro else 0) +
             (6 if item.get('_uff') and item.get('_uff') == item.get('uf') else 0) +
-            item.get('x', 0) * 8 + item.get('_tr', 0) * 6 + min(item.get('g', 1 if item.get('img') else 0), 5) * 2 +
+            item.get('x', 0) * 40 + item.get('_tr', 0) * 6 + min(item.get('g', 1 if item.get('img') else 0), 5) * 2 +
             (3 if item.get('u') else 0) + (1 if item.get('uf') else 0) + (1 if item.get('r') else 0)
-            - (100 if item.get('_bloq') else 0))
+            - (300 if item.get('_bloq') else 0))
 
 
 # Partes de cidade que não distinguem um fato (Zona Norte, Centro, Região Metropolitana...).

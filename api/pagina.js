@@ -222,8 +222,8 @@ function fontesHTML(n) {
     return `<li>${nome}${dd ? ` <span class="fonte-quando">${esc(fmtData(quando(dd), true))}</span>` : ''}${marcas.length ? ` <em>· ${marcas.join(' · ')}</em>` : ''}</li>`;
   }).join('');
   return `<section class="bloco fontes-lista"><header class="bloco-cab"><h2>Fontes desta notícia</h2><p>${lista.length} ${lista.length === 1 ? 'fonte' : 'fontes'}, ` +
-    `da primeira à última publicação. A versão exibida segue a ordem: fonte primária (órgão público), quem publicou primeiro, ` +
-    `veículo do estado do fato e, por fim, a reportagem mais completa.</p></header><ul>${itens}</ul></section>`;
+    `da primeira à última publicação. A versão exibida segue a ordem: fonte primária (órgão público), matéria de licença livre ` +
+    `(exibida na íntegra), quem publicou primeiro, veículo do estado do fato e, por fim, a reportagem mais completa.</p></header><ul>${itens}</ul></section>`;
 }
 
 function radarHTML(secoes, veiculos) {
@@ -499,7 +499,7 @@ const INSTITUCIONAIS = {
 <p class="reader-text">A coleta é automática e roda o dia todo: as notícias novas entram em poucos minutos. Cada notícia passa por regras próprias que decidem se ela trata de uma apreensão e de qual tipo, identificam o estado, agrupam as versões da mesma notícia publicadas por veículos diferentes e extraem os fatos principais (o que foi apreendido, quanto, onde, quem atuou).</p>
 <h2>Fontes e duplicatas</h2>
 <p class="reader-text">Quando vários veículos noticiam o mesmo fato, o Radar publica uma única notícia. Comparamos cidade, local, pessoas, quantidades e o que foi apreendido; pequenas diferenças entre as reportagens (um número arredondado, um detalhe a mais) são ajustes da mesma informação, não fatos diferentes. A união é feita por regras automáticas e por um juiz de inteligência artificial, com conferência humana diária por amostragem.</p>
-<p class="reader-text">A versão exibida segue esta ordem: a fonte primária (o órgão público que produziu a informação, como PF, PRF, polícias, Receita e Ministério Público); depois, o veículo que publicou primeiro; depois, o veículo do estado onde o fato aconteceu; e, por fim, a reportagem mais completa. Na página de cada notícia, a seção “Fontes desta notícia” lista todos os veículos que a publicaram, com data e hora, e indica a primeira publicação.</p>
+<p class="reader-text">A versão exibida segue esta ordem: a fonte primária (o órgão público que produziu a informação, como PF, PRF, polícias, Receita e Ministério Público); depois, a matéria de licença livre, que exibimos na íntegra com crédito; depois, o veículo que publicou primeiro; depois, o veículo do estado onde o fato aconteceu; e, por fim, a reportagem mais completa. Na página de cada notícia, a seção “Fontes desta notícia” lista todos os veículos que a publicaram, com data e hora, e indica a primeira publicação.</p>
 <h2>O que publicamos</h2>
 <p class="reader-text">Para cada notícia: título, data, fonte, foto com crédito, um resumo redigido pelo Radar a partir dos fatos, a ficha de informações e um trecho de abertura da reportagem, sempre com link para a íntegra no site de origem. Comunicados oficiais de órgãos públicos e textos com licença aberta são reproduzidos na íntegra, com crédito. O conteúdo das reportagens pertence aos veículos que as publicaram.</p>
 <h2>O que não somos</h2>
