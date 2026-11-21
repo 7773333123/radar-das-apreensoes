@@ -1292,9 +1292,7 @@ def agrupar(itens, motivos=None):
             # que cada veículo cite uma cidade (perseguição de Sidrolândia a Campo Grande) — desde
             # que o texto de uma cite a cidade da outra (Arapongas x Nova Santa Rosa: fatos diferentes).
             unir(a, b, 'grande-apreensao-uf')
-        elif delta <= 2 and proprias and not uf_fraco and _numero_raro(inf[a] & inf[b]):
-            # (Não vale entre estados diferentes: "127 mandados" da Operação Panóptico, PR, x
-            # Operação Tentáculos, MS, no mesmo dia, 19/11/2026.)
+        elif delta <= 2 and proprias and _numero_raro(inf[a] & inf[b]):
             # Mesmo número incomum no título ("R$ 581 milhões", "7.603 kg") + palavra própria.
             unir(a, b, 'numero-raro')
         elif uf_fraco and delta <= 1 and len(especificas(a, b)) >= 3 and len(proprias) >= 0.5 * min(len(inf[a]), len(inf[b])):
