@@ -525,7 +525,17 @@ module.exports = async (req, res) => {
   let r = null;
   try {
     await carregar(req);
-    if (tipo === 'noticia') r = await paginaNoticia(Number((id.match(/^\d+/) || [''])[0]));
+    if (tipo === 'noticia') {
+      const i = Number((id.match(/^\d+/) || [''])[0]);
+      r = await paginaNoticia(i);
+      // Notícia nova (já na faixa Agora) que o feed guardado nesta instância ainda não tem:
+      // relê o feed.json uma vez antes de responder "não encontrada".
+      if (!r && cache && Date.now() - cache.t > 30e3) {
+        cache.t = 0;
+        await carregar(req);
+        r = await paginaNoticia(i);
+      }
+    }
     else if (tipo === 'estado') r = paginaEstado(id.toUpperCase());
     else if (tipo === 'cidade') r = paginaCidade(id.toUpperCase(), (u.searchParams.get('cidade') || '').toLowerCase());
     else if (tipo === 'categoria') r = paginaCategoria(id.toLowerCase());
@@ -539,7 +549,8 @@ module.exports = async (req, res) => {
     return res.end('Erro ao montar a página.');
   }
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  if (!r) { res.statusCode = 404; res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=300'); return res.end(naoEncontrada()); }
+  // 404 de notícia fica pouco no cache: a página de uma notícia recém-publicada aparece em seguida.
+  if (!r) { res.statusCode = 404; res.setHeader('Cache-Control', `public, max-age=0, s-maxage=${tipo === 'noticia' ? 30 : 300}`); return res.end(naoEncontrada()); }
   // Endereço sem o título (ou com título antigo): redireciona para o canônico.
   if (tipo === 'noticia' && u.searchParams.get('caminho') !== r.canonico.slice('/noticia/'.length)) {
     res.statusCode = 301; res.setHeader('Location', r.canonico); return res.end();
