@@ -317,9 +317,19 @@ def main():
     if inferir_uf({'titulo': 'Operação prende cinco pessoas em Paraíso', 'fonte': 'Jornal Opção | Tocantins',
                    'dominio_fonte': 'jornalopcao.com.br', 'uf_fonte': 'TO'}, cad) != 'TO':
         erros.append('edição estadual com o estado no nome deveria manter o estado (Jornal Opção | Tocantins)')
+    # Cidade pequena: par só com o material em comum vai ao juiz (Vereda/BA, 20/11/2026).
+    ver = [{'i': 11, 't': 'PM apreende 11 porções de cocaína em Vereda', 'f': 'informebaiano.com.br', '_cid': 'Vereda', 'uf': 'BA'},
+           {'i': 12, 't': 'PMBA apreende 82 gramas de cocaína durante abordagem em Vereda', 'f': 'Itamaraju Notícias',
+            '_cid': 'Vereda', 'uf': 'BA'}]
+    antes = len(dup.SUSPEITAS)
+    dup._mesma_cidade(ver, [100, 100], lambda a, b, r: None, lambda k: k)
+    novos = dup.SUSPEITAS[antes:]
+    del dup.SUSPEITAS[antes:]
+    if not any({p['a'][0], p['b'][0]} == {11, 12} for p in novos):
+        erros.append('cidade pequena: par de Vereda (11 porções x 82 gramas de cocaína) deveria ir ao juiz')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 7
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 8
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 

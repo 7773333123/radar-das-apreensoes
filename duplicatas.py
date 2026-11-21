@@ -695,6 +695,10 @@ def _mesma_cidade(itens, dia, unir, raiz, dias=3, max_por_cidade=40):
         # Cidade grande (Foz, Fortaleza, Manaus): muitas notícias diferentes no mesmo dia; só vão
         # ao juiz pares com 2+ palavras do título em comum (antes ficavam todas de fora).
         grande = len(ks) > max_por_cidade
+        # Cidade pequena (até 8 notícias em 3 dias): todo par de veículos diferentes, até 1 dia, vai ao
+        # juiz, mesmo sem palavra em comum além do material ("11 porções de cocaína" x "82 gramas de
+        # cocaína", Vereda/BA, 20/11/2026: o mesmo flagrante).
+        pequena = len(ks) <= 8
         da_cidade = palavras(cid)
         for x in range(len(ks)):
             for y in range(x + 1, len(ks)):
@@ -707,9 +711,9 @@ def _mesma_cidade(itens, dia, unir, raiz, dias=3, max_por_cidade=40):
                 # Material e palavras comuns também contam quando são 2+ ("5 mil maços de cigarros"
                 # PF e PM em Foz; "Força Tática apreende drogas, armas" em Manaus, 20/11/2026).
                 todas = {w for w in inf - set(EXTENSO) if not w[0].isdigit()}
-                if not ((comuns and not grande) or len(todas) >= 2):
+                if not ((comuns and not grande) or len(todas) >= 2 or pequena):
                     continue
-                comuns = comuns or todas
+                comuns = comuns or todas or {'mesma cidade pequena'}
                 chave = chave_par(ia.get('i'), ib.get('i'))
                 decisao = juiz.get(chave, {}).get('v')
                 if decisao == 'mesmo':
