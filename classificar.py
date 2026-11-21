@@ -25,7 +25,7 @@ REGRAS = [re.compile(r, re.I) for r in [
     r'coca[ií]na|maconha|entorpecent|\bcrack\b|haxixe|skunk|cannabis|ecstasy|\blsd\b|pasta base|'
     r'\bpinos?\b|papelotes?|tabletes?|lança-perfume|\bk9\b|metanfetamina|\bmdma\b|sint[ée]tic[oa]s?\b',
     # 1 armas
-    r'\barmas?\b|armamentos?|fuzil|fuzis|pistolas?|rev[oó]lver|rev[oó]lveres|muni[çc][ãaõo]|cartuchos?|'
+    r'\barmas?\b|armamentos?|fuzil|fuzis|pistolas?|rev[oó]lver|rev[oó]lveres|\bmuni[çc][ãaõo]|cartuchos?|'
     r'explosiv|espingardas?|carabinas?|metralhadoras?|submetralhadora|granadas?|simulacros?',
     # 2 contrabando
     r'contraband|descaminho|cigarros?(?! eletr)|cigarros? eletr[ôo]nicos?|vapes?\b|aduan|'
@@ -53,7 +53,7 @@ REGRAS = [re.compile(r, re.I) for r in [
 
 FORTE = re.compile(
     r'apreen|apreend|confisc|coca[ií]n|maconha|\bcrack\b|haxixe|skunk|entorpecent|pasta base|ecstasy|'
-    r'fuzil|fuzis|muni[çc][ãaõo]|pistolas?\b|rev[oó]lver|armas? de fogo|arsenal|contraband|descaminho|'
+    r'fuzil|fuzis|\bmuni[çc][ãaõo]|pistolas?\b|rev[oó]lver|armas? de fogo|arsenal|contraband|descaminho|'
     r'tr[aá]fico de drogas|lavagem de dinheiro|bloqueio de bens|sequestro de bens|garimpo ilegal|'
     r'desmanche|ponto de (?:venda de drogas|tr[aá]fico)|boca de fumo|estufa de maconha|p[ée]s de maconha|'
     r'tabletes|papelotes|pinos de|(?:encontr|localiz|achad|flagr)\w* (?:\w+ )?(?:armas?|drogas?|fuzil|fuzis|muni[çc])|'
@@ -152,6 +152,10 @@ if __name__ == '__main__':
         ('Bolsas da Ásia fecham em baixa com apreensão sobre IA', None),
         ('Receita realiza quatro abordagens com apreensão na Ponte da Amizade', 8),
         ('Polícia Federal cumpre mandados de busca e apreensão sobre concessão de CACs em Ipatinga', 8),
+        # "comunica" não é "munição" (aviso de falecimento entrava como armas, 21/11/2026).
+        ('Funerária Santa Cruz comunica com pesar o falecimento de Deomira Seghetto Ceriolli', None),
+        ('Escolas sem casos de sarna em Campo Grande preparam comunicado de alerta', None),
+        ('Militares apreenderam rádios comunicadores, munições e outros pertences', 1),
     ]
     erros = 0
     for t, esperado in casos:

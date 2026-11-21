@@ -236,7 +236,7 @@ MINIATURA = re.compile(r'[-_](?:\d{2,3})x(?:\d{2,3})\.(?:jpe?g|png|webp)|/thumbs
 ASSUNTO_ALHEIO = re.compile(r'futebol|jogador|campeonato|partida|gol\b|t[ée]cnico do|torcida|est[áa]dio|novela|cantor|'
                             r'cantora|show\b|reality|bbb\b|receita de|hor[óo]scopo|loteria|mega-?sena|cupom|oferta|promo[çc][ãa]o',
                             re.I)
-POLICIAL = re.compile(r'pol[íi]cia|apreen|droga|maconha|coca[íi]na|arma|muni[çc]|presos?|pris[ãa]o|opera[çc][ãa]o|'
+POLICIAL = re.compile(r'pol[íi]cia|apreen|droga|maconha|coca[íi]na|arma|\bmuni[çc]|presos?|pris[ãa]o|opera[çc][ãa]o|'
                       r've[íi]culo|carga|contrabando|PRF|PF|PM|PC|delegacia|fronteira|rodovia|BR-|viatura|suspeit', re.I)
 
 
