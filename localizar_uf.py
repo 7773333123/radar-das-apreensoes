@@ -203,6 +203,15 @@ def inferir_uf(noticia, fontes_cadastradas=None):
     # um jornal gaúcho que noticia apreensão em SC não faz dela uma notícia do RS.
     if len(estados) == 1:
         return next(iter(estados))
+    # Cadastro do veículo (fontes.json, conferido à mão) vence o estado gravado na coleta: notícias
+    # coletadas antes de uma correção do cadastro guardam o estado antigo (O Hoje = GO, não DF;
+    # Paranaíba Mais = MG, não MS; RO Acontece = SE, não RO).
+    dominio = str(noticia.get('dominio_fonte') or '').lower().removeprefix('www.')
+    # Edição estadual com o estado no nome ("Jornal Opção | Tocantins") fica com o estado da coleta.
+    for item in ([] if _ufs_no_texto(fonte)[0] else fontes_cadastradas or []):
+        d = item.get('dominio', '').lower()
+        if item.get('uf') in ESTADOS and d and (dominio == d or dominio.endswith('.' + d)):
+            return item['uf']
     if noticia.get('uf_fonte') in ESTADOS:
         return noticia['uf_fonte']
     uf = uf_da_fonte(noticia, fontes_cadastradas)

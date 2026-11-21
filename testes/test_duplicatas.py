@@ -307,9 +307,19 @@ def main():
     del dup.SUSPEITAS[antes:]
     if not any({p['a'][0], p['b'][0]} == {1, 2} for p in novos):
         erros.append('cidade grande: par dos 5 mil maços de cigarros em Foz deveria ir ao juiz')
+    # Estado gravado na coleta antes da correção do cadastro: o cadastro do veículo vence
+    # (O Hoje = GO; edição com estado no nome fica com o da coleta).
+    from localizar_uf import inferir_uf
+    cad = [{'dominio': 'ohoje.com', 'uf': 'GO'}, {'dominio': 'jornalopcao.com.br', 'uf': 'GO'}]
+    if inferir_uf({'titulo': 'Caminhonete leva polícia a 165 kg de maconha em Anápolis', 'fonte': 'O Hoje',
+                   'dominio_fonte': 'ohoje.com', 'uf_fonte': 'DF'}, cad) != 'GO':
+        erros.append('cadastro do veículo deveria vencer o estado antigo da coleta (O Hoje = GO)')
+    if inferir_uf({'titulo': 'Operação prende cinco pessoas em Paraíso', 'fonte': 'Jornal Opção | Tocantins',
+                   'dominio_fonte': 'jornalopcao.com.br', 'uf_fonte': 'TO'}, cad) != 'TO':
+        erros.append('edição estadual com o estado no nome deveria manter o estado (Jornal Opção | Tocantins)')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 5
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 7
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 
