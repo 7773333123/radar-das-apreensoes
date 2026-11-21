@@ -139,23 +139,47 @@ def main():
     args = ap.parse_args()
     cursor = json.loads(CURSOR.read_text(encoding='utf-8')) if CURSOR.exists() else {}
     sites = lista_sites()
-    k = int(cursor.get(str(args.ano), 0))
+    por_dominio = {d: (n, d, u) for n, d, u in sites}
+    ano = str(args.ano)
+    k = int(cursor.get(ano, 0))
+    adiados = cursor.setdefault(f'{ano}_adiados', [])  # índice indisponível na primeira tentativa
+    segunda = cursor.get(f'{ano}_segunda')  # depois da lista inteira, os adiados de novo (uma vez)
     inicio = time.time()
     resultados, consultados = [], 0
-    while k < len(sites) and time.time() - inicio < args.tempo_max:
-        nome, dominio, uf = sites[k]
-        k += 1
+    while time.time() - inicio < args.tempo_max:
+        if k < len(sites):
+            site, fase = sites[k], 'principal'
+            k += 1
+        else:
+            if segunda is None:
+                segunda, adiados[:] = list(adiados), []
+            if not segunda:
+                break
+            site, fase = por_dominio.get(segunda.pop(0)), 'segunda'
+            if not site:
+                continue
+        nome, dominio, uf = site
         consultados += 1
-        try:
-            lista = capturas(dominio, args.ano, args.por_dominio)
-        except Exception as erro:
-            print(f'{dominio}: índice indisponível ({type(erro).__name__})', flush=True)
-            time.sleep(5)
+        # O índice do archive.org limita a velocidade (erro 429/503 ou conexão recusada): tenta de novo
+        # com espera crescente; se ainda falhar, o site vai para o fim da fila do ano (não se perde).
+        lista, erro = None, None
+        for espera in (0, 20, 60, 180):
+            time.sleep(espera)
+            try:
+                lista = capturas(dominio, args.ano, args.por_dominio)
+                break
+            except Exception as e:
+                erro = e
+        if lista is None:
+            print(f'{dominio}: índice indisponível ({type(erro).__name__}: {str(erro)[:60]})'
+                  f'{"; volta no fim do ano" if fase == "principal" else "; desistiu"}', flush=True)
+            if fase == 'principal' and dominio not in adiados:
+                adiados.append(dominio)
             continue
-        itens = []
+        itens, cortado = [], False
         for ts, original in lista:
             if time.time() - inicio > args.tempo_max:
-                k -= 1  # site não terminou: a próxima execução recomeça nele
+                cortado = True
                 break
             try:
                 item = ler_captura(nome, dominio, uf, ts, original, args.ano)
@@ -164,12 +188,19 @@ def main():
             if item:
                 itens.append(item)
             time.sleep(1)
+        if cortado:  # site não terminou: a próxima execução recomeça nele
+            if fase == 'principal':
+                k -= 1
+            else:
+                segunda.insert(0, dominio)
         if lista:
             print(f'{dominio}: {len(lista)} endereços arquivados, {len(itens)} notícias de apreensão de {args.ano}', flush=True)
         resultados.append(({'nome': f'Wayback {dominio}'}, itens, None))
-        time.sleep(1)
-    cursor[str(args.ano)] = k
-    cursor[f'{args.ano}_fim'] = k >= len(sites)
+        time.sleep(4)  # respeita o limite do índice do archive.org
+    cursor[ano] = k
+    if segunda is not None:
+        cursor[f'{ano}_segunda'] = segunda
+    cursor[f'{ano}_fim'] = k >= len(sites) and segunda is not None and not segunda
     CURSOR.write_text(json.dumps(cursor, ensure_ascii=False, indent=1), encoding='utf-8')
     dados = json.loads(ARQUIVO.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
