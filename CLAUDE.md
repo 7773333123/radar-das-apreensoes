@@ -6,6 +6,8 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   Lula gera apreensão no mercado financeiro", "clima de apreensão", "investidores apreensivos". Só entra
   apreensão policial/fiscal (drogas, armas, contrabando, bens etc.). Filtro: `classificar.apreensao_sentimento`
   (usado por `classificar.relevante`); casos de teste em `python classificar.py`.
+- Termos de apreensão casam só a palavra inteira: "comunica/comunicado/comunicação" não é "munição"
+  (avisos de falecimento e comunicados entravam como armas, 21/11/2026).
 - Presos identificados só por iniciais e idade.
 - Duplicatas: não tolerar. Correções à mão vão em `juiz_decisoes_revisao.json` (valem como veto do grupo);
   padrões viram regra + teste em `testes/test_duplicatas.py`.

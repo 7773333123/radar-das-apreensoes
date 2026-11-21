@@ -101,7 +101,7 @@ def _limpa_material(mat):
 
 SEM_QTD = [  # itens citados sem quantidade: ainda informam o que foi apreendido
     ('fuzil', r'\bfuzil\b|\bfuzis\b'), ('armas de fogo', r'\barmas? de fogo\b|\barmas?\b'),
-    ('munições', r'muni[çc][ãõa]o|muni[çc][õo]es'), ('cocaína', r'coca[ií]na'), ('maconha', r'maconha|skunk|sk[ua]nk'),
+    ('munições', r'\bmuni[çc][ãõa]o|\bmuni[çc][õo]es'), ('cocaína', r'coca[ií]na'), ('maconha', r'maconha|skunk|sk[ua]nk'),
     ('crack', r'\bcrack\b'), ('drogas', r'\bdrogas?\b|entorpecentes?'), ('cigarros contrabandeados', r'cigarros?'),
     ('dinheiro', r'\bdinheiro\b|em esp[ée]cie'),
     ('celulares', r'celulares?'), ('medicamentos', r'medicamentos?|rem[ée]dios?|anabolizantes?|canetas? emagrecedoras?'),
