@@ -337,9 +337,12 @@ def main():
         erros.append('quem publicou primeiro deveria vencer a versão um pouco mais completa')
     if not _pontos({'_ofi': 1, '_bloq': True}) < _pontos({'u': 'https://b/x'}):
         erros.append('versão bloqueada (sem conteúdo) nunca deveria ser a exibida')
+    # Matéria livre com texto integral vence quem publicou primeiro (íntegra exibida como antes).
+    if not _pontos({'x': 1, 'u': 'https://agenciabrasil/x'}) > _pontos({'u': 'https://a/x', 'img': 'a.jpg', '_tr': 1, '_uff': 'PR', 'uf': 'PR'}, primeiro=True):
+        erros.append('matéria livre com texto integral deveria vencer quem publicou primeiro')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 11
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 12
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 

@@ -11,7 +11,8 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
 - **Avisos fúnebres nunca entram** (funerária comunica falecimento, nota de pesar, velório, missa de
   sétimo dia), 21/11/2026: `classificar.aviso_funebre`. Ação policial ligada a isso continua entrando.
 - **Versão exibida de uma notícia com várias fontes** (21/11/2026): 1) fonte primária (órgão público),
-  2) quem publicou primeiro, 3) veículo do estado do fato, 4) a mais completa (`duplicatas._pontos`). A página
+  2) matéria de licença livre com texto integral (exibida na íntegra), 3) quem publicou primeiro, 4) veículo do
+  estado do fato, 5) a mais completa (`duplicatas._pontos`). A página
   lista todas as fontes com data e hora ("Fontes desta notícia"). Pequenas diferenças entre fontes (número
   arredondado, detalhe a mais) são ajuste da mesma informação: publica-se UMA notícia, nunca duas.
 - Presos identificados só por iniciais e idade.
