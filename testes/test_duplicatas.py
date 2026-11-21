@@ -353,9 +353,16 @@ def main():
     del dup.SUSPEITAS[antes:]
     if not any({p['a'][0], p['b'][0]} == {21, 22} for p in novos):
         erros.append('mesma quantidade do mesmo material na mesma cidade deveria ir ao juiz (115 kg, Foz)')
+    # Revisão à mão "mesmo" une sempre (São Gonçalo/RJ, 21/11/2026: seguia duplicada).
+    sg = [{'i': 123092859823200, 't': 'Homem é preso e fuzil é apreendido durante operação em São Gonçalo',
+           'f': 'O Dia', 'd': '2026-11-21T21:22', 'uf': 'RJ'},
+          {'i': 384017253153659, 't': 'PM prende suspeito com fuzil durante operação para capturar criminosos que atacaram viatura em São Gonçalo',
+           'f': 'Povo na Rua', 'd': '2026-11-21T16:06', 'uf': 'RJ'}]
+    if len(agrupar_duplicatas(sg)[0]) != 1:
+        erros.append('par marcado "mesmo" na revisão à mão deveria ficar numa notícia só (São Gonçalo)')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 13
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 14
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 
