@@ -1,0 +1,34 @@
+name: Primeira visita ao site
+# Recebe de api/visita.js (repository_dispatch) país, estado e cidade aproximados do primeiro
+# visitante e grava primeira_visita.json uma única vez; o Claude lê e informa o dono do site.
+on:
+  repository_dispatch:
+    types: [primeira-visita]
+permissions:
+  contents: write
+concurrency:
+  group: primeira-visita
+  cancel-in-progress: false
+jobs:
+  gravar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - name: Gravar só a primeira
+        env:
+          VISITA: ${{ toJson(github.event.client_payload) }}
+        run: |
+          if [ -f primeira_visita.json ]; then echo 'Já registrada.'; exit 0; fi
+          python3 - <<'PY'
+          import json, os
+          v = json.loads(os.environ['VISITA'])
+          campos = ('pais', 'codigo_pais', 'estado', 'cidade', 'quando')
+          json.dump({k: str(v.get(k, ''))[:120] for k in campos}, open('primeira_visita.json', 'w'), ensure_ascii=False, indent=1)
+          PY
+          cat primeira_visita.json
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add primeira_visita.json
+          git commit -m 'Primeira visita registrada (país e cidade aproximados)'
+          for t in 1 2 3 4; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
