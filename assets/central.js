@@ -277,13 +277,16 @@ function renderInicio() {
       // Cada matéria aparece em uma só editoria da página inicial.
       // Na editoria: sempre o mais recente. Janela = últimas 24 h (amplia para
       // 48 h, 72 h ou 7 dias só se o tipo tiver menos de 4 matérias). Abre com a
-      // maior apreensão da janela (com foto); a lista ao lado vem por data.
+      // maior apreensão DO DIA (com foto); só sem notícia de hoje vale a de ontem.
+      // A lista ao lado vem por data.
       const porTamanho = (a, b) => (desdobramento(a) - desdobramento(b)) || (tamanhoNo(b, c) - tamanhoNo(a, c)) || (b.data - a.data);
       const porData = (a, b) => (desdobramento(a) - desdobramento(b)) || (b.data - a.data);
       const livresTodos = itens.filter((n) => !usados.has(n) && n.data && n.data.getTime() <= agora + 3600000);
       const janela = [24, 48, 72, 7 * 24].map((h) => livresTodos.filter((n) => horas(n) <= h)).find((l) => l.length >= 4)
         || [...livresTodos].sort((a, b) => b.data - a.data).slice(0, 8);
-      const livres = [...janela].sort(porTamanho);
+      // Notícia de HOJE (horário de Brasília) sempre antes da de ontem; dentro do dia, a maior
+      // apreensão (antes, a janela de 24 h deixava a maior de ontem abrir a editoria pela manhã).
+      const livres = [...janela].sort((a, b) => diaBR(b.data).localeCompare(diaBR(a.data)) || porTamanho(a, b));
       const primeira = livres.find((n) => n.img) || livres[0] || itens[0];
       usados.add(primeira);
       const resto = janela.filter((n) => n !== primeira && !usados.has(n)).sort(porData).slice(0, 3);
