@@ -1,0 +1,86 @@
+name: Coleta pelo Wayback Machine (2016 a 2006)
+# Notícias de apreensão que sumiram dos sites e do Google: cópias guardadas no archive.org.
+# Um ano por vez, do mais recente (2016) para 2006; cada execução consulta os sites em rodízio
+# (portais oficiais antigos primeiro, depois os veículos cadastrados) por ~100 minutos e grava.
+# Quando todos os sites do ano foram consultados, passa ao ano anterior. Ao terminar, dispara a
+# si mesma (o cron fica de reserva). Mesmos padrões das outras coletas: leitura das matérias,
+# fotos, duplicatas, regras do site (wayback.py, 21/11/2026).
+on:
+  workflow_dispatch:
+    inputs:
+      ano:
+        description: 'Ano (vazio = o do cursor)'
+        required: false
+        default: ''
+  schedule:
+    - cron: '47 */3 * * *'
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: coleta-wayback
+  cancel-in-progress: false
+jobs:
+  wayback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 170
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet googlenewsdecoder pillow numpy
+      - name: Ano da vez
+        id: c
+        env:
+          ANO: ${{ inputs.ano }}
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          c = json.load(open('wayback_cursor.json')) if os.path.exists('wayback_cursor.json') else {}
+          ano = int(os.environ.get('ANO') or c.get('ano', 2016))
+          while ano >= 2006 and c.get(f'{ano}_fim'):
+              ano -= 1
+          print(f'ano={ano}')
+          print(f"fim={'sim' if ano < 2006 else 'nao'}")
+          PY
+      - name: Baixar a parte do acervo do ano (release "dados")
+        if: steps.c.outputs.fim == 'nao'
+        run: python acervo.py baixar --parte "$(python acervo.py parte-de ${{ steps.c.outputs.ano }}-06)"
+      - name: Wayback Machine
+        if: steps.c.outputs.fim == 'nao'
+        continue-on-error: true
+        run: python wayback.py --ano ${{ steps.c.outputs.ano }} --tempo-max 6000
+      - name: Ler as matérias do ano (foto, trecho, fatos)
+        if: steps.c.outputs.fim == 'nao'
+        continue-on-error: true
+        run: python ler_materias.py --periodo ${{ steps.c.outputs.ano }} --limite 2000 --trabalhadores 8
+      - name: Fotos (impressão digital, recortes)
+        if: steps.c.outputs.fim == 'nao'
+        continue-on-error: true
+        run: python hash_imagens.py --periodo ${{ steps.c.outputs.ano }} --limite 3000 --trabalhadores 16
+      - name: Gerar o site
+        if: steps.c.outputs.fim == 'nao'
+        run: |
+          python testes/test_duplicatas.py
+          python gerar_feed_site.py
+          python compactar_acervo.py
+      - name: Avançar o ano no cursor
+        if: steps.c.outputs.fim == 'nao'
+        run: |
+          python - <<'PY'
+          import json
+          c = json.load(open('wayback_cursor.json'))
+          ano = ${{ steps.c.outputs.ano }}
+          c['ano'] = ano - 1 if c.get(f'{ano}_fim') else ano
+          json.dump(c, open('wayback_cursor.json', 'w'), ensure_ascii=False, indent=1)
+          print('Próximo ano:', c['ano'])
+          PY
+      - name: Salvar (mescla se outra coleta gravou antes)
+        if: steps.c.outputs.fim == 'nao'
+        run: python acervo.py salvar "Coleta Wayback Machine - ${{ steps.c.outputs.ano }}" wayback_cursor.json
+      - name: Continuar (o agendamento do GitHub falha às vezes)
+        if: (success() || failure()) && steps.c.outputs.fim == 'nao'
+        run: gh workflow run wayback.yml --ref main
