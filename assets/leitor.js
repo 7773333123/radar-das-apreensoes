@@ -76,6 +76,14 @@ function radarHTML(secoes, veiculos) {
 }
 
 // Data e hora curtas de cada fonte ("20/11 23:45"), no horário de Brasília.
+// Texto sem frase cortada: se não termina em pontuação, volta até o fim da última frase completa.
+function fimDeFrase(t) {
+  const x = String(t || '').trim().replace(/…$/, '').trim();
+  if (!x || /[.!?…"”»)]$/.test(x)) return x;
+  const m = x.match(/^[\s\S]*[.!?](?=\s|$)/);
+  return m && m[0].length >= 80 ? m[0] : x + '…';
+}
+
 function quandoCurto(s) {
   const d = new Date(String(s).length === 16 ? s + 'Z' : s);
   return Number.isNaN(d.getTime()) ? '' : d.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
@@ -168,7 +176,11 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
         `<footer class="fonte-pe"><span>${t.l === 'oficial' ? `Comunicado oficial de ${esc(n.fonte)}, reproduzido na íntegra com crédito.`
           : `Reproduzido de ${esc(n.fonte)} sob a licença ${esc(t.l)}, que permite a reprodução com crédito.`}</span>${link}</footer></section>`;
     }
-    const trecho = t?.tr && t.tr.length > (n.resumo || '').length ? t.tr : n.resumo;
+    // Resumo COMPLETO (det/, t.r): o da listagem vem encurtado para os cartões e terminava no meio
+    // da frase ("escondidas em um", 21/11/2026). E nunca termina no meio de uma frase.
+    const resumo = t?.r || n.resumo || '';
+    const bruto = t?.tr && t.tr.length > resumo.length ? t.tr : resumo;
+    const trecho = fimDeFrase(bruto);
     if (!trecho) return n.url ? `<section class="bloco fonte-card">${cab('O que diz a fonte')}<footer class="fonte-pe"><span>O trecho da reportagem ainda está sendo preparado. O texto completo e as fotos estão no site de origem.</span>${link}</footer></section>` : '';
     const pct = t?.tr && t?.tt ? Math.min(100, Math.max(1, Math.round((t.tr.length / t.tt) * 100))) : 0;
     return `<section class="bloco fonte-card">${cab('O que diz a fonte')}<blockquote class="reader-quote">${paragrafos(trecho)}</blockquote>` +
