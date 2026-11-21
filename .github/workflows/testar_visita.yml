@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - run: curl -sS -o /dev/null -w '%{http_code}\n' -X POST -A 'Mozilla/5.0 (teste do dono)' 'https://www.radardasapreensoes.com.br/api/visita?teste=1'
+      - run: curl -sS -w ' HTTP %{http_code}\n' -X POST -A 'Mozilla/5.0 (teste do dono)' 'https://www.radardasapreensoes.com.br/api/visita?teste=1'
