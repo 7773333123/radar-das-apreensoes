@@ -169,7 +169,8 @@
   "ignoreCommand": "[ \"$VERCEL_GIT_COMMIT_REF\" != \"main\" ]",
   "git": {
     "deploymentEnabled": {
-      "claude/**": false
+      "claude/**": false,
+      "visitas": false
     }
   }
 }
