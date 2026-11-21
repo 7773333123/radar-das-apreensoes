@@ -1,6 +1,6 @@
 name: Testar registro de visita (manual)
 # Chama /api/visita?teste=1 no site publicado: se a chave GH_VISITA_TOKEN da Vercel funciona,
-# aparece uma execução "Primeira visita ao site" do tipo teste (sem gravar nada).
+# a resposta mostra "gravacao_privada": 200 ou 201 (grava teste/ok.txt no repositório privado radar-visitas).
 on:
   workflow_dispatch:
 permissions:
