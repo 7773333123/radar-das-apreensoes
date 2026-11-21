@@ -203,7 +203,15 @@ function renderInicio() {
   // tipo, da maior apreensão para a menor. Desdobramentos (soltura, condenação,
   // incineração) vão para o fim.
   const destaques = [...pool].sort(ordemPorTipo);
-  const manchete = destaques[0] || ns[0];
+  // Manchete (dono do site, 21/11/2026): a notícia MAIS RELEVANTE do dia, partindo das instituições
+  // policiais: fonte oficial (PF, PRF, polícias, Receita) pesa mais; depois o tamanho da apreensão e a
+  // repercussão (importância). Desdobramentos (soltura, condenação) e apreensão só de pessoa ficam de fora.
+  const INSTITUICAO = /\b(PF|PRF|Pol[ií]cia (?:Federal|Rodovi[áa]ria|Civil|Militar|Penal)|PM|PC|Receita Federal|Gaeco|FICCO|BOPE|DOF|Gefron|BPFron|Rotam|Denarc|Ibama|Marinha|Ex[ée]rcito|For[çc]a Nacional)\b/i;
+  const pontosManchete = (n) => importancia(n) + (n.oficial ? 3 : 0) + (INSTITUICAO.test(n.titulo) ? 1 : 0)
+    - (desdobramento(n) || soPessoa(n) ? 5 : 0);
+  const manchete = [...pool].sort((a, b) => pontosManchete(b) - pontosManchete(a) || b.data - a.data)[0] || ns[0];
+  destaques.splice(destaques.indexOf(manchete), destaques.includes(manchete) ? 1 : 0);
+  destaques.unshift(manchete);
   const usados = new Set([manchete]);
   const lado = destaques.slice(1, 5);
   lado.forEach((n) => usados.add(n));

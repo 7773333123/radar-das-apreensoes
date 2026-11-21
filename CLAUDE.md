@@ -24,6 +24,10 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   ainda não tem nenhuma notícia (logo após a meia-noite). `assets/central.js` (`ehHoje`).
 - Anos antigos (2006-2016): coleta pelo Wayback Machine (`wayback.py`, `wayback.yml`), com o link da cópia
   arquivada no archive.org; portais oficiais antigos (PF, PRF, Receita, secretarias) primeiro. 21/11/2026.
+- **Quantidade é só do fato noticiado** (21/11/2026): frases do resumo/texto sobre OUTRO fato ("após a apreensão
+  de…", "anteriormente", "em março", "semana passada") não contam (`resumo_fatos.sem_outros_fatos`).
+- **Manchete**: a notícia mais relevante do dia, partindo das instituições policiais (fonte oficial +3,
+  instituição no título +1, depois tamanho e repercussão; desdobramentos fora). `assets/central.js`.
 - Presos identificados só por iniciais e idade.
 - Duplicatas: não tolerar. Correções à mão vão em `juiz_decisoes_revisao.json` (valem como veto do grupo);
   padrões viram regra + teste em `testes/test_duplicatas.py`.
