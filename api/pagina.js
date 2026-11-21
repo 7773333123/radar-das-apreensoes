@@ -47,9 +47,12 @@ async function carregar(req) {
       if (!r.ok) throw new Error(`feed.json: HTTP ${r.status}`);
       const feed = await r.json();
       const porI = new Map(feed.noticias.map((n) => [n.i, n]));
+      // Versões unidas a outra (duplicatas): o endereço antigo leva à notícia exibida.
+      const alias = new Map();
+      for (const n of feed.noticias) for (const o of n.o || []) if (o[2] && !porI.has(o[2])) alias.set(o[2], n.i);
       let indice = null;
       try { const ri = await buscarJSON(`${b}/anos/indice.json`); if (ri.ok) indice = await ri.json(); } catch { /* sem índice */ }
-      cache = { t: Date.now(), etag: r.headers.get('etag'), base: b, feed, porI, links: null, det: new Map(), indice, anos: new Map(), ids: null };
+      cache = { t: Date.now(), etag: r.headers.get('etag'), base: b, feed, porI, alias, links: null, det: new Map(), indice, anos: new Map(), ids: null };
       return cache;
     } catch (e) {
       if (cache) { cache.t = Date.now() - VALIDADE + 60e3; return cache; }  // usa o que tem; tenta em 1 min
@@ -103,7 +106,7 @@ async function anoDaNoticia(i) {
   return (await c.ids).get(i);
 }
 async function buscarNoticia(i) {
-  const n = dados().porI.get(i);
+  const n = dados().porI.get(i) || (dados().alias && dados().porI.get(dados().alias.get(i)));
   if (n) return n;
   const a = await anoDaNoticia(i);
   return a ? ((await anoArquivo(a))._porI || new Map()).get(i) || null : null;
@@ -204,6 +207,25 @@ const ICONE_SECAO = {
   'Envolvidos e próximos passos': '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
   'Quem atuou': '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',
 };
+// Transparência (21/11/2026): todas as fontes da notícia, com data e hora de cada publicação,
+// a primeira publicação marcada e a fonte primária (órgão público) identificada.
+function fontesHTML(n) {
+  const lista = [[n.f, n.u, n.d, true], ...(n.o || []).map((o) => [o[0], o[1], o[3] || '', false])].filter((x) => x[0]);
+  if (lista.length < 2 && !n.fp) return '';
+  const quando = (s) => (s ? data({ d: s }) : null);
+  const primeira = lista.map((x) => x[2]).filter(Boolean).sort()[0];
+  lista.sort((a, b) => String(a[2] || '9').localeCompare(String(b[2] || '9')));
+  const itens = lista.map(([f, u, dd, principal]) => {
+    const nome = urlOk(u) ? `<a href="${esc(urlOk(u))}" target="_blank" rel="noopener noreferrer">${esc(f)}</a>` : esc(f);
+    const marcas = [principal && n.fp ? 'fonte primária (órgão público)' : '', lista.length > 1 && dd && dd === primeira ? 'primeira publicação' : '',
+      principal ? 'versão exibida aqui' : ''].filter(Boolean);
+    return `<li>${nome}${dd ? ` <span class="fonte-quando">${esc(fmtData(quando(dd), true))}</span>` : ''}${marcas.length ? ` <em>· ${marcas.join(' · ')}</em>` : ''}</li>`;
+  }).join('');
+  return `<section class="bloco fontes-lista"><header class="bloco-cab"><h2>Fontes desta notícia</h2><p>${lista.length} ${lista.length === 1 ? 'fonte' : 'fontes'}, ` +
+    `da primeira à última publicação. A versão exibida segue a ordem: fonte primária (órgão público), quem publicou primeiro, ` +
+    `veículo do estado do fato e, por fim, a reportagem mais completa.</p></header><ul>${itens}</ul></section>`;
+}
+
 function radarHTML(secoes, veiculos) {
   if (!secoes.length) return '';
   const icone = (t) => (ICONE_SECAO[t] ? `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONE_SECAO[t]}</svg>` : '');
@@ -213,7 +235,7 @@ function radarHTML(secoes, veiculos) {
   const entenda = secoes.find(([t]) => t === 'Entenda');
   // "Skunk: variedade... Fuzil: arma..." -> pares termo/explicação.
   const termos = entenda ? entenda[1].split(/\s(?=[A-ZÀ-Ý][\wÀ-ÿ -]{1,40}: )/).map((x) => x.split(/: (.+)/s)).filter((x) => x[1]) : [];
-  return `<section class="bloco radar"><header class="bloco-cab"><h2>Resumo do Radar</h2><p>Redigido pelo Radar a partir dos fatos publicados</p></header>` +
+  return `<section class="bloco radar"><header class="bloco-cab"><h2>Resumo do Radar</h2><p>Redigido pelo Radar a partir dos fatos publicados${veiculos && veiculos.length > 1 ? ` por ${veiculos.length} fontes` : ''}</p></header>` +
     (lead ? `<p class="rs-lead">${esc(lead[1])}</p>` : '') +
     (importa ? `<div class="rs-importa"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.9L22 9.3l-5.4 4.8 1.6 7.2L12 17.6 5.8 21.3l1.6-7.2L2 9.3l7.1-.4z"/></svg>Por que importa</h3><p>${esc(importa[1])}</p></div>` : '') +
     (cartoes.length ? `<div class="rs-cards">${cartoes.map(([t, x]) => `<section class="rs-card"><h3>${icone(t)}${esc(t)}</h3><p>${esc(x)}</p></section>`).join('')}</div>` : '') +
@@ -326,14 +348,14 @@ async function paginaNoticia(i) {
     .sort((a, b) => Math.abs(data(a) - d) - Math.abs(data(b) - d)).slice(0, 6);
   const descricao = corta((t.s || n.r || n.t).split('\n')[0], 160);
   const corpo = `<article class="artigo">${kicker(n, cats)}<h1 class="art-titulo">${esc(n.t)}</h1>
-<div class="meta">${esc(fmtData(d, true))} · ${esc(n.f || '')}${url ? ` · <a href="${esc(url)}" target="_blank" rel="noopener noreferrer">ver original ↗</a>` : ''}</div>
+<div class="meta">${esc(fmtData(d, true))} · ${n.fp ? 'Fonte primária: ' : ''}${esc(n.f || '')}${url ? ` · <a href="${esc(url)}" target="_blank" rel="noopener noreferrer">ver original ↗</a>` : ''}</div>
 ${compartilharHTML(n)}
 ${fotos.length ? `<div class="art-fotos">${fotos.map((src, k) => `<img src="${esc(src)}" alt="${k ? '' : esc(n.t)}" ${k ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async" referrerpolicy="no-referrer">`).join('')}</div>
 ${fotos.length > 1 ? `<p class="reader-note">${fotos.length} fotos · deslize para ver todas. Imagens: ${esc(n.f)}.</p>` : `<p class="reader-note">Imagem: ${esc(n.f)}.</p>`}` : ''}
 ${ficha.length ? `<section class="em-resumo" aria-label="Em resumo"><h2>Em resumo</h2><dl>${ficha.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` : ''}
 ${radar}
 ${fonte}
-${n.o && n.o.length ? `<p class="reader-note tambem">Também noticiado por: ${n.o.map(([fo, u]) => (urlOk(u) ? `<a href="${esc(urlOk(u))}" target="_blank" rel="noopener noreferrer">${esc(fo)}</a>` : esc(fo))).join(', ')}.</p>` : ''}
+${fontesHTML(n)}
 </article>
 ${relacionadas.length ? `<div class="section-head"><h2>Mais de ${esc(cats[(n.c || [8])[0]])} ${n.uf ? `${PREP[n.uf]} ${esc(ESTADOS[n.uf])}` : ''}</h2><a href="/estado/${n.uf}">Ver o estado →</a></div>${lista(relacionadas, cats)}` : ''}`;
   const jsonld = {
@@ -474,7 +496,10 @@ const INSTITUCIONAIS = {
   sobre: ['Sobre o Radar e expediente', 'O que é o Radar das Apreensões, como funciona, quem responde pelo site e como entrar em contato.', `
 <p class="reader-text">O <strong>Radar das Apreensões</strong> é uma central de notícias e um observatório de dados sobre apreensões no Brasil: drogas, armas e munições, contrabando, veículos, dinheiro, crimes ambientais, medicamentos e bloqueios de bens. Reunimos o que é publicado por mais de mil veículos de imprensa e órgãos públicos, sem duplicatas, organizado por estado, tipo e período.</p>
 <h2>Como funciona</h2>
-<p class="reader-text">A coleta é automática e roda o dia todo, a cada 10 minutos. Cada notícia passa por regras próprias que decidem se ela trata de uma apreensão e de qual tipo, identificam o estado, agrupam as versões da mesma notícia publicadas por veículos diferentes e extraem os fatos principais (o que foi apreendido, quanto, onde, quem atuou).</p>
+<p class="reader-text">A coleta é automática e roda o dia todo: as notícias novas entram em poucos minutos. Cada notícia passa por regras próprias que decidem se ela trata de uma apreensão e de qual tipo, identificam o estado, agrupam as versões da mesma notícia publicadas por veículos diferentes e extraem os fatos principais (o que foi apreendido, quanto, onde, quem atuou).</p>
+<h2>Fontes e duplicatas</h2>
+<p class="reader-text">Quando vários veículos noticiam o mesmo fato, o Radar publica uma única notícia. Comparamos cidade, local, pessoas, quantidades e o que foi apreendido; pequenas diferenças entre as reportagens (um número arredondado, um detalhe a mais) são ajustes da mesma informação, não fatos diferentes. A união é feita por regras automáticas e por um juiz de inteligência artificial, com conferência humana diária por amostragem.</p>
+<p class="reader-text">A versão exibida segue esta ordem: a fonte primária (o órgão público que produziu a informação, como PF, PRF, polícias, Receita e Ministério Público); depois, o veículo que publicou primeiro; depois, o veículo do estado onde o fato aconteceu; e, por fim, a reportagem mais completa. Na página de cada notícia, a seção “Fontes desta notícia” lista todos os veículos que a publicaram, com data e hora, e indica a primeira publicação.</p>
 <h2>O que publicamos</h2>
 <p class="reader-text">Para cada notícia: título, data, fonte, foto com crédito, um resumo redigido pelo Radar a partir dos fatos, a ficha de informações e um trecho de abertura da reportagem, sempre com link para a íntegra no site de origem. Comunicados oficiais de órgãos públicos e textos com licença aberta são reproduzidos na íntegra, com crédito. O conteúdo das reportagens pertence aos veículos que as publicaram.</p>
 <h2>O que não somos</h2>

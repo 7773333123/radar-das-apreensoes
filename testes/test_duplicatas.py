@@ -327,9 +327,19 @@ def main():
     del dup.SUSPEITAS[antes:]
     if not any({p['a'][0], p['b'][0]} == {11, 12} for p in novos):
         erros.append('cidade pequena: par de Vereda (11 porções x 82 gramas de cocaína) deveria ir ao juiz')
+    # Versão exibida: fonte primária (órgão público) vence a reportagem mais completa; sem fonte
+    # oficial, quem publicou primeiro vence (21/11/2026).
+    from duplicatas import _pontos
+    completa = {'x': 1, '_tr': 1, 'img': 'a.jpg', 'g': 5, 'u': 'https://jornal/x', 'uf': 'PR', 'r': 'resumo'}
+    if not _pontos({'_ofi': 1, 'u': 'https://www.gov.br/pf/x'}) > _pontos(completa):
+        erros.append('fonte primária (órgão público) deveria ser a versão exibida')
+    if not _pontos({'u': 'https://a/x', 'img': 'a.jpg'}, primeiro=True) > _pontos({'u': 'https://b/x', 'img': 'b.jpg', 'r': 'r', 'uf': 'PR'}):
+        erros.append('quem publicou primeiro deveria vencer a versão um pouco mais completa')
+    if not _pontos({'_ofi': 1, '_bloq': True}) < _pontos({'u': 'https://b/x'}):
+        erros.append('versão bloqueada (sem conteúdo) nunca deveria ser a exibida')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 8
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 11
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 

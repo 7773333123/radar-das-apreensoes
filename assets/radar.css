@@ -477,3 +477,9 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
 @media (max-width: 760px) {
   .fr-principais, .fr-menores { grid-template-columns: 1fr; }
 }
+
+/* Fontes desta notícia (transparência: data e hora de cada publicação) */
+.fontes-lista ul { list-style: none; padding: 0; margin: .25rem 0 0; }
+.fontes-lista li { padding: .55rem 0; border-top: 1px solid var(--line); line-height: 1.45; }
+.fontes-lista li em { color: var(--muted); font-style: normal; font-size: .92em; }
+.fonte-quando { color: var(--muted); font-size: .9em; white-space: nowrap; }
