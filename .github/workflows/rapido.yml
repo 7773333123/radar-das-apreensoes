@@ -10,7 +10,7 @@ name: Coleta rápida (a cada 10 minutos)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '7 */2 * * *'
+    - cron: '7 * * * *'  # de hora em hora: se o ciclo cair (cancelado pelo GitHub), volta em até 1 h
 permissions:
   contents: write
   actions: write
