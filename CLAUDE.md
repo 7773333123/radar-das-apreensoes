@@ -20,6 +20,8 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
 - **PADRÃO da página inicial: só notícias com a data do dia** (horário de Brasília), 21/11/2026: destaques,
   Fronteira, Em alta e editorias (editoria sem notícia hoje não aparece). A véspera só entra enquanto o dia
   ainda não tem nenhuma notícia (logo após a meia-noite). `assets/central.js` (`ehHoje`).
+- Anos antigos (2006-2016): coleta pelo Wayback Machine (`wayback.py`, `wayback.yml`), com o link da cópia
+  arquivada no archive.org; portais oficiais antigos (PF, PRF, Receita, secretarias) primeiro. 21/11/2026.
 - Presos identificados só por iniciais e idade.
 - Duplicatas: não tolerar. Correções à mão vão em `juiz_decisoes_revisao.json` (valem como veto do grupo);
   padrões viram regra + teste em `testes/test_duplicatas.py`.
