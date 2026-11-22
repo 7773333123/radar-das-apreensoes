@@ -452,9 +452,15 @@ def main():
     ap.add_argument('--trabalhadores', type=int, default=8)
     ap.add_argument('--max-tentativas', type=int, default=3)
     ap.add_argument('--periodo', default='', help='Só notícias deste período (AAAA ou AAAA-MM): coleta retroativa')
+    ap.add_argument('--recentes', type=float, default=0,
+                    help='Só notícias publicadas nas últimas N horas (coleta expressa: foto e trecho na mesma rodada)')
     args = ap.parse_args()
     dados = json.loads(ARQUIVO.read_text(encoding='utf-8'))
     noticias = dados['noticias'] if isinstance(dados, dict) else dados
+    from datetime import datetime as _dt2, timedelta as _td2, timezone as _tz2
+    agora_utc = _dt2.now(_tz2.utc)
+    corte_recentes = (agora_utc - _td2(hours=args.recentes or 0)).strftime('%Y-%m-%dT%H:%M:%S')
+    corte_48h = (agora_utc - _td2(hours=48)).strftime('%Y-%m-%dT%H:%M:%S')
     pendentes = []
     for n in noticias:
         if not isinstance(n, dict):
@@ -467,6 +473,8 @@ def main():
         if int(n.get('materia_lida_v') or 0) >= VERSAO and not oficial_antigo and not curto:
             continue
         if args.periodo and not str(n.get('data_iso') or '').startswith(args.periodo):
+            continue
+        if args.recentes and str(n.get('data_iso') or '')[:19] < corte_recentes:
             continue
         url = n.get('url_original') if valida(n.get('url_original')) else (n.get('url') if valida(n.get('url')) else '')
         if url and int(n.get('tentativas_leitura') or 0) < args.max_tentativas:
@@ -483,7 +491,10 @@ def main():
         if not de_fronteira(n):
             return 0
         return 11 - prioridade_regional('', str(n.get('titulo') or ''), str(n.get('uf') or ''))
-    pendentes.sort(key=lambda p: (not p[0].get('materia_lida_v'), regional(p[0]), oficial(*p), p[0].get('data_iso') or ''), reverse=True)
+    # Notícias das últimas 48 h passam à frente de tudo (22/11/2026: a fila de notícias antigas de
+    # fronteira e órgãos oficiais deixava as de hoje sem foto fora do site por horas).
+    pendentes.sort(key=lambda p: (str(p[0].get('data_iso') or '')[:19] >= corte_48h, not p[0].get('materia_lida_v'),
+                                  regional(p[0]), oficial(*p), p[0].get('data_iso') or ''), reverse=True)
     lote = pendentes[:max(0, args.limite)]
     print(f'Notícias com link original ainda não lidas: {len(pendentes)}; lendo agora: {len(lote)}', flush=True)
     fotos = textos = resumos = falhas = galerias = datas = 0
