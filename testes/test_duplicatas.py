@@ -360,9 +360,20 @@ def main():
            'f': 'Povo na Rua', 'd': '2026-11-21T16:06', 'uf': 'RJ'}]
     if len(agrupar_duplicatas(sg)[0]) != 1:
         erros.append('par marcado "mesmo" na revisão à mão deveria ficar numa notícia só (São Gonçalo)')
+    # Post de Facebook com manchete e texto colados: fica só a manchete (21/11/2026).
+    from gerar_feed_site import titulo_de_post
+    for post, manchete in [
+            ('BRIGADA MILITAR PRENDE DOIS HOMENS POR TRÁFICO DE DROGAS EM SANTO ANTÔNIO DA PATRULHA A Brigada Militar de Santo',
+             'BRIGADA MILITAR PRENDE DOIS HOMENS POR TRÁFICO DE DROGAS EM SANTO ANTÔNIO DA PATRULHA'),
+            ('PM FLAGRA SUSPEITOS PREPARANDO MACONHA PARA VENDA EM SALINAS | Foi pro meio de denúncia que a Polícia',
+             'PM FLAGRA SUSPEITOS PREPARANDO MACONHA PARA VENDA EM SALINAS'),
+            ('Operação contra o tráfico prende suspeito em Itajaí e revela esquema que movimentou mais de R$ 65 milhões Uma operação interestadual de…',
+             'Operação contra o tráfico prende suspeito em Itajaí e revela esquema que movimentou mais de R$ 65 milhões')]:
+        if titulo_de_post(post) != manchete:
+            erros.append(f'post de rede social deveria ficar só com a manchete: {titulo_de_post(post)!r}')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 14
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 17
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 
