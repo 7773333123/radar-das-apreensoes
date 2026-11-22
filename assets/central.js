@@ -247,8 +247,11 @@ function renderInicio() {
 
   // Em alta: publicadas por mais veículos nas últimas 24 h (ou 48 h, se houver poucas).
   const repercutidas = (h) => recentes(h / 24).filter((n) => n.outras.length && !usados.has(n));
-  const alta = repercutidas(24).filter(ehHoje)
-    .sort((a, b) => nota(b) - nota(a) || b.data - a.data).slice(0, 5);
+  // Sem repercutida livre hoje, valem as que já estão nos destaques; sem nenhuma, o quadro não
+  // aparece (nunca um quadro vazio na página inicial, 22/11/2026).
+  const porNota = (a, b) => nota(b) - nota(a) || b.data - a.data;
+  let alta = repercutidas(24).filter(ehHoje).sort(porNota).slice(0, 5);
+  if (!alta.length) alta = recentes(1).filter((n) => n.outras.length && ehHoje(n)).sort(porNota).slice(0, 5);
 
   // Panorama de 30 dias (apreensões noticiadas).
   const r30 = recentes(30);
@@ -268,11 +271,11 @@ function renderInicio() {
       `<div class="lead-side">${lado.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx)}<h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a>`).join('')}</div>` +
     `</section>` +
     blocoFronteira +
-    `<div class="section-head"><h2>Em alta e em números</h2><a href="observatorio">Abrir o Observatório →</a></div>` +
-    `<section class="band">` +
-      `<div class="panel"><h3>Em alta</h3>${alta.length ? `<ol class="trend">${alta.map((n) =>
-        `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><h4 class="headline">${esc(n.titulo)}</h4><div class="meta"><span class="sources">${n.outras.length + 1} veículos</span> · ${esc(relativo(n.data))}</div></a></li>`).join('')}</ol>`
-        : '<p class="note">Ainda sem matérias repercutidas hoje.</p>'}<p class="note">Matérias de hoje publicadas por mais veículos.</p></div>` +
+    `<div class="section-head"><h2>${alta.length ? 'Em alta e em números' : 'Em números'}</h2><a href="observatorio">Abrir o Observatório →</a></div>` +
+    `<section class="band${alta.length ? '' : ' sem-alta'}">` +
+      (alta.length ? `<div class="panel"><h3>Em alta</h3><ol class="trend">${alta.map((n) =>
+        `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><h4 class="headline">${esc(n.titulo)}</h4><div class="meta"><span class="sources">${n.outras.length + 1} veículos</span> · ${esc(relativo(n.data))}</div></a></li>`).join('')}</ol>` +
+        `<p class="note">Matérias de hoje publicadas por mais veículos.</p></div>` : '') +
       `<div class="panel"><h3>Últimos 30 dias</h3><dl class="kpis">` +
         `<div class="kpi"><dt>Notícias</dt><dd>${num(r30.length)}</dd></div>` +
         `<div class="kpi"><dt>Cocaína</dt><dd>≈ ${qtd(soma('coc'), 'kg')}</dd></div>` +
