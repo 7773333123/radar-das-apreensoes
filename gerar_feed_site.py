@@ -111,13 +111,16 @@ def titulo_de_post(titulo):
 # denúncia…", "... movimentou mais de R$ 65 milhões Uma operação interestadual de…".
 _MANCHETE_CAIXA_ALTA = re.compile(r"^([A-ZÀ-Ý0-9][A-ZÀ-Ý0-9 ,;:'\"!?$%º°ª()/–\-]{24,}[A-ZÀ-Ý0-9!?)])\s+(?=[A-ZÀ-Ý][a-zà-ÿ])")
 _MANCHETE_BARRA = re.compile(r'^(.{25,160}?)\s+\|\s+\S')
-_INICIO_DE_TEXTO = re.compile(r'^(.{40,160}?[a-zà-ÿ0-9%])\s+(?=(?:Uma?|Os?|As?|Na|No|Nesta|Neste|Nessa|Nesse|Durante|Segundo|Conforme|'
-                              r'De acordo|Policiais|Equipes|Agentes|Militares|Foi|Foram)\s)')
+_INICIO_DE_TEXTO = re.compile(r'^(.{40,160}?[a-zà-ÿ0-9%)])\s+(?=(?:Uma?|Os?|As?|Na|No|Nesta|Neste|Nessa|Nesse|Durante|Segundo|Conforme|'
+                              r'De acordo|Policiais|Equipes|Agentes|Militares|Foi|Foram|Ação|A ação|Após)\s)')
+# Rótulo curto antes da barra ("APREENSÃO | Nesta quarta…", "polícia | A apreensão…"): o rótulo sai.
+_ROTULO_BARRA = re.compile(r'^[^|]{2,24}\s\|\s+(?=\S)')
 
 
 def _so_manchete(t):
     """Fica só a manchete quando o post traz manchete e texto colados (sem ponto final entre eles)."""
     t = re.sub(r'\s+(?:Acompanhe|Confira|Assista|Veja(?: o v[íi]deo)?|Saiba mais)\s*:?\s*\.?$', '', t, flags=re.I)
+    t = _ROTULO_BARRA.sub('', t)
     for rx in (_MANCHETE_CAIXA_ALTA, _MANCHETE_BARRA, _INICIO_DE_TEXTO):
         m = rx.match(t)
         if m:
