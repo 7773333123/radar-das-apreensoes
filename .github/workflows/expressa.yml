@@ -52,6 +52,9 @@ jobs:
               antes=$(sha1sum noticias.json | cut -c1-40)
               python coletar_feeds_estaduais.py || echo 'Feeds com falha; seguindo.'
               if [ "$(sha1sum noticias.json | cut -c1-40)" != "$antes" ]; then
+                # Notícia nova sem foto ou trecho só entra no site depois de lida: lê as das últimas
+                # 6 h nesta mesma rodada (antes esperavam a coleta complementar, às vezes horas).
+                timeout 240 python ler_materias.py --recentes 6 --limite 80 --trabalhadores 10 --timeout 8 || true
                 # A foto de cada notícia nova passa pela comparação de imagens antes de publicar.
                 python hash_imagens.py --limite 300 --trabalhadores 16 --timeout 8 >/dev/null || true
                 python fotos_orb.py --limite 400 --timeout 8 || true
