@@ -732,6 +732,59 @@ def _mesma_cidade(itens, dia, unir, raiz, dias=3, max_por_cidade=40):
                                             str(ib.get('_txt') or ib.get('_lead', ''))[:700], ib.get('_cid') or '']})
 
 
+# Valor distintivo no título: "R$ 197 mil", "R$ 2,4 milhões", "27,76 m³", "37 toneladas".
+_VALOR = re.compile(r'(?i)(?:r\$\s*[\d.,]+\s*(?:milh[õo]es|milh[ãa]o|bilh[õo]es|bilh[ãa]o|mil)?)|(?:\b\d+(?:[.,]\d+)?\s*(?:m³|m3|metros c[úu]bicos|toneladas|kg|quilos)\b)')
+
+
+def _valores(t):
+    out = set()
+    for m in _VALOR.finditer(t or ''):
+        v = re.sub(r'\s+', ' ', m.group(0).lower()).replace('milhão', 'milhões').replace('milhao', 'milhões').replace('milhoes', 'milhões')
+        if re.search(r'[1-9]\d', v) or re.search(r'[1-9][.,]\d', v):  # "R$ 1 mil", "2 kg": comuns demais
+            out.add(v)
+    return out
+
+
+def _mesmo_valor(itens, dia, unir, raiz, dias=7):
+    """Republicação atrasada de um comunicado (O Antagonista reescreve releases do Ibama, PRF e
+    Receita dias depois, 22/11/2026): mesmo valor distintivo no título (R$ 197 mil, 37 toneladas),
+    até 7 dias, sem estados diferentes. O par vai ao juiz de IA; o "mesmo" do juiz une."""
+    validos = [x for x in dia if x is not None]
+    if not validos:
+        return
+    limite = max(validos) - 10
+    juiz = decisoes_juiz()
+    ja = {chave_par(p['a'][0], p['b'][0]) for p in SUSPEITAS}
+    recentes = [k for k in range(len(itens)) if dia[k] is not None and dia[k] >= limite]
+    por_valor = {}
+    for k in recentes:
+        for v in _valores(itens[k].get('t')):
+            por_valor.setdefault(v, []).append(k)
+    for v, ks in por_valor.items():
+        if len(ks) > 12:  # valor comum demais (ex.: "R$ 10 mil")
+            continue
+        for x in range(len(ks)):
+            for y in range(x + 1, len(ks)):
+                a, b = ks[x], ks[y]
+                ia, ib = itens[a], itens[b]
+                if raiz(a) == raiz(b) or abs(dia[a] - dia[b]) > dias:
+                    continue
+                if ia.get('uf') and ib.get('uf') and ia['uf'] != ib['uf']:
+                    continue
+                chave = chave_par(ia.get('i'), ib.get('i'))
+                decisao = juiz.get(chave, {}).get('v')
+                if decisao == 'mesmo':
+                    if _grupos_coerentes(itens, recentes, raiz, a, b):
+                        unir(a, b, 'mesmo-valor+juiz')
+                elif decisao is None and chave not in ja:
+                    ja.add(chave)
+                    SUSPEITAS.append({'nota': 1.0, 'motivos': ['mesmo valor no título: ' + v],
+                                      'a': [ia['i'], ia.get('f', ''), ia['t'], ia.get('d', ''), ia.get('uf', ''),
+                                            str(ia.get('_txt') or ia.get('_lead', ''))[:700], ia.get('_cid') or ''],
+                                      'b': [ib['i'], ib.get('f', ''), ib['t'], ib.get('d', ''), ib.get('uf', ''),
+                                            str(ib.get('_txt') or ib.get('_lead', ''))[:700], ib.get('_cid') or '']})
+
+
 def _grupos_coerentes(itens, recentes, raiz, a, b):
     """Juntar os grupos de a e b não deixa duas notícias contraditórias no mesmo grupo
     (a decisão do juiz vale para o par, não para tudo o que já estava unido a cada um)."""
@@ -1486,6 +1539,10 @@ def agrupar(itens, motivos=None):
         _mesma_cidade(itens, dia, unir, raiz)
     except Exception as erro:
         print(f'Busca por mesma cidade com erro (site gerado sem ela): {erro!r}')
+    try:
+        _mesmo_valor(itens, dia, unir, raiz)
+    except Exception as erro:
+        print(f'Busca por mesmo valor com erro (site gerado sem ela): {erro!r}')
 
     grupos = {}
     for k in range(n):
