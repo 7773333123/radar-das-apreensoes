@@ -36,3 +36,9 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
 - Coletas: `expressa.yml` (feeds → site a cada ~8 min, faixa AGORA atualizada em seguida) e `rapido.yml`
   (complementar: Google, Bing, links, leitura, fotos), em paralelo, 21/11/2026. A faixa AGORA confere
   `agora.json` a cada 30 s.
+- **Faixa AGORA sempre em dia** (22/11/2026): notícia nova não pode ficar retida. Na fila de leitura
+  (`ler_materias.py`) as das últimas 48 h passam à frente de tudo; a coleta expressa lê as das últimas 6 h na
+  mesma rodada (`--recentes 6`). `verificar_site.yml` mede o atraso (meta: até ~30 min).
+- **Republicação atrasada é duplicata** (22/11/2026): o mesmo fato reescrito dias depois (ex.: O Antagonista
+  "Lado OA") vai ao juiz quando repete o valor do título (`duplicatas._mesmo_valor`, até 7 dias).
+- **Página inicial sem quadro vazio** (22/11/2026): "Em alta" sem matéria repercutida hoje não aparece.
