@@ -396,9 +396,23 @@ def main():
         erros.append('valor comum ("30 kg"), mesmo dia e mesmo material deveria ir ao juiz (Campos)')
     if {41, 43} in pares or {42, 43} in pares:
         erros.append('valor comum com materiais diferentes (maconha x cocaína) não deveria ir ao juiz')
+    # A MESMA FOTO com marca d'água (CAMPOS24HORAS) x limpa (Folha1), dHash a 26 bits, estado vazio:
+    # as miniaturas desfocadas juntam (Campos/RJ, 22/11/2026). Miniaturas reais das duas fotos.
+    mc = [{'i': 51, 't': 'PM apreende 30 Kg de maconha em Campos; prejuízo de R$ 60 mil ao tráfico', 'f': 'Campos 24Horas', 'd': '2026-11-22T12:30',
+           'img': 'https://campos24horas.com.br/x.jpg', '_mini': ('v24:sqymqKqhlpigmpSRlaKppK2mn6Smnpebop2Xk5WiqqimoJmeoJuYnKKemZSVn6mqoJyZm5yamZyenJeSk5ykqJ6em5iYmZmZl5WOio+Wm56eoZ6Yk5WWk5CLg4OMj4+Rn6GdlI2OjoyLhXx/iYmFhJuel4+HhoiIiYR7fYSAfHuUlo2GgYGEhoiFfHp7dHJzjY2DfYCBg4WFhX12c2pqbomJfnyCg4ODgYF7dXBpam2KioOAhoeBfnt2dnd2cXFxj4+LhIWJgHdya3B9fXh5eJKSjoSBiH1waWVxgX55gIGPjo2CfIB4bGlreYV6doWHiIaHf3NxcG9zeISJeXmJh4B/f3loYGh2goeMinx/h3t7enZuXFZleoyPioN+gXxpd3ZtYlZWZHiNjX10eHdqWnNyaF1XW2RxgoJsZGtnXFdwcGlfXWBkZ3J1Y1xhXFlfbW9taGRkZWFlb2liYF1ia2twc3BraGZfXXB3bWhobnNqcXd2b2poX1t0gndwcnZ3', 'h43:tLOzsa2opKOmq6+vq6ehnZiSj5GaoaamoJqWlJORj42OkZeepKmqqqaioKmopqKdl5OUmaClpKGdmpeVlJWZoKWopqKenJybmZaTkZKVmqGora+uq6mcnJycmpmXl5iam5ubmpuampmanJ2dnp2en5+enJiVkpKSlJicoaWpq6urnZ6goqOjoZ+cmJSTlJeam5uampqXlJKPjo+OiYJ9fICHjZCRkJCQkJKUlp+ipKalo6GempWPiYeIjI+PjIiHiImKioeDfnh0c3iAiI2PjoqGg4GAgIGTmJyenZmTj4yKhoF8e32BgoOCgoWIio2MiYR+enh7f4SFgn13dXV3d3d1g4eNj4yEenJvcnh8fX59f4GEiImHhIGBhImLh352cXFxcGpiXFtgZmpra4aHiIiFgHt4eHyCiIyMioR+fH6Bg4F/fX5+f3x5dnR0c3Nyb21sbW9vb26SkpKTk5SUko2GgYCFjI+LgndycnZ2dG5lXVtfZ3J+hYiHhIB+fn9+fXp3lJSUk5GRko+Ge3N0fIiPjod6bmZjYmFgXV1haXN/iYyGe3BqbXaDi42JhYWFhYJ/gIWMjIZ9dW9ta2tra2tsb3F0eHp8foOLkpSOf3FpanOBkJeXj4h5e3x7eXd5fHt1a11RSkpPWGFseISMkZSTkZCRlJaUjIN+gIePkpCHemthdXh6e3hya2VgW1dSUFFVW2JnbXN+h5CZnJePhHlwa2xyeX+BfHNoXVVPS29wcnNxbWdhXFlYWVtdYGJkZWRkZmpyfIF9cWFTTExTXGNjXFNNTFFXXF9rbG5wcXFwbmxqaWhnZmVlZWZkYVtXV1xmb3JwamVjY2FfXFpaXWNpbnFyaWptcHR2eHh4dnRxbWtpaWlpaGRdVlFTYHWIj4uCe3Zyb29xdXd5eXh4dw==')},
+          {'i': 52, 't': 'PM apreende 30 kg de maconha em residência na Baixada Campista', 'f': 'Folha1', 'd': '2026-11-22T05:43',
+           'img': 'http://www.folha1.com.br/y.jpg', '_mini': ('v34:t7awq6mqp6amnpaWo7G4ure0raupp6OipJyUkp6ttLW0r6eoqKOdn6Oak5CYpq+vrqefo6SdmJyim5WRlKGrrKafmZ2fmpaboJuXkpKdqaufm5aYmpiYmpyZlZCQmaOom5uYlpWXmJeUkoyIjJKYnpydmpWRk5OQjYiBgIiMjJCcnZmSioqKiIaBeHqEhoKCmJmTjIOBgYGEf3V4gH15eJGRiYN9e31/goB3dXdxbm+JiH56e3t8gIGBeXFuZ2ZqhIJ5d35+fH9+fHdva2RlaYSCfHyCgnp7eHJvcXBramyJh4SAg4R4cm5kaXV1cXJzjImIgX+EdWljXml5dXB6fYqHhoB7fHBkYWJxfW9sf4V/fH17bWVjaHF4g4FucIOBeHV1cV9UXG+Bh4eAdHl8b3Nxa2NTTltziYyBd3V5bVpwbmRZT1BdcIaHcmdubVtObWxiV1NXXmh5emNZYl5SUWtrZl5bXV9ham9fWFxXVl5pbGxoZGJhXV5pZ2FfXGFpaG5ycWtmY11aZm1saWdrb2hwd3hxamdhW2JtcnJwcG9pc3x+dm5qZmBfaHN3c29saXaBg3x0b2xmYWVyd3NsaGt4hYiBenVwbGdocXRvaWVseYiMhoB6dXJubHBwa2ZibXmIj4uFfnl2c3BvbWdjX214iJGPiIJ9endyb2pkX1tsd4iSkYuEfnt5dG9oYVxZbHaHkpKMhX97eXVvZ19aVw==', 'h30:tra0sq6rqqmpqKelo6SlpqSgmpaUlJifp6+ztre3r62qpaKho6WkoZ6bmp2go6KemZWTkZKWnKSqra2toaCdmpiYmZqbmZiXmJmbnJuZl5ORj46QlJmfo6Wnm5ycm5qXlJGQkJGRkZCOjoyKhoJ/gISIioyMjY+QlZaXlZGMiYWCgYGBgYKCg4SCfnh1d3p9fHp3dnZ2iImIhH98fH1+fX18fX9/gIB/fHh0cnBua2hmZ2lqh4eGhIJ/f4CDg4B8eHZ2dXFta2tvcnNyb21ub3BwiomIhoeEgHx7fHp1bWlnZmRiZWx1enlybnB3foCAfnx7enp5dW1lYF9hZGluc3d7foGDgXpzcXV8fnt2cXFwbWlkXldRT1FYYW12f4eJhHx1cG9xc3FrY1pUa2xsamZhXVpZWVteYGNma3J1cWhgXF5gYF1ZWFhaaGpsb3Fwb2xpZmVjYl9cW15kaWtqaWhoZmVnaWxtZ2txd3x+fnp2cW5samdkYl9gY2htcnV1dHJwbm1saW52foWIiIWBfXl3dHJwb2xpZ2hscHN0cm5raGZka3B3f4eNj46Lh4SAfXt5eHZ1c3Fwb25taWZjYV9da250fYaOkpKQjImGgn98fHp5eHVyb2xpZGBcWllX')}]
+    if len(agrupar_duplicatas(mc)[0]) != 1:
+        erros.append("a mesma foto com marca d'água deveria juntar as notícias (30 kg de maconha em Campos)")
+    # Foto diferente com o mesmo título-padrão não junta.
+    md = [dict(mc[0]), dict(mc[1], _mini=(mc[0]['_mini'][0][::-1], ''))]
+    md[1]['t'] = 'PM apreende 30 kg de maconha em Itaperuna'
+    md[1]['i'] = 53
+    if len(agrupar_duplicatas(md)[0]) != 2:
+        erros.append('foto diferente e cidade diferente não deveriam juntar')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 20
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 22
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 

@@ -1416,6 +1416,46 @@ def agrupar(itens, motivos=None):
                     continue
                 unir(a, b, 'foto-recortada')
 
+    # MESMA FOTO com marca d'água ou recorte diferente, comparada a cada geração (22/11/2026: "PM
+    # apreende 30 Kg de maconha em Campos" com a marca CAMPOS24HORAS x a mesma foto limpa na Folha1;
+    # o dHash ficou a 26 bits e hash_imagens.py só compara fotos recém-baixadas). Miniaturas
+    # desfocadas (_mini) das notícias dos últimos dias: mesmo dia ou vizinho, estados sem conflito
+    # (estado vazio não barra), uma palavra própria OU o mesmo valor no título ("30 kg"), e
+    # quantidades compatíveis.
+    com_mini = [k for k, it in enumerate(itens) if it.get('_mini') and dia[k] is not None]
+    if com_mini:
+        ult = max(dia[k] for k in com_mini)
+        indice_f = {}
+        for k in com_mini:
+            if dia[k] < ult - 4:
+                continue
+            chaves_k = palavras_proprias_foto(itens[k]['t']) | _valores(itens[k]['t'])
+            for c in chaves_k:
+                indice_f.setdefault((dia[k], c), []).append(k)
+        vistos_f = set()
+        for (d0, c), lista in list(indice_f.items()):
+            for a in lista:
+                for dd in (d0, d0 + 1):
+                    outros = indice_f.get((dd, c), ())
+                    if len(outros) > 40:
+                        continue  # palavra/valor comum demais no dia
+                    for b in outros:
+                        if a >= b and dd == d0 or a == b:
+                            continue
+                        par = (min(a, b), max(a, b))
+                        if par in vistos_f or raiz(a) == raiz(b):
+                            continue
+                        vistos_f.add(par)
+                        ia, ib = itens[a], itens[b]
+                        if ia.get('uf') and ib.get('uf') and ia['uf'] != ib['uf']:
+                            continue
+                        if qt[a] and qt[b] and not compativeis(qt[a], qt[b]):
+                            continue
+                        if ia.get('img') == ib.get('img'):
+                            continue  # a mesma URL é foto padrão do site, não do fato
+                        if mesma_foto_recortada(ia['_mini'], ib['_mini']):
+                            unir(a, b, 'foto-mesma-marca-dagua')
+
     # FOTO IDÊNTICA (impressão digital a até 4 bits): o mesmo fato com qualquer título (caso
     # real de 19/11/2026: "PRF apreende quase 3,4 toneladas de maconha em duas cidades de MS" x
     # "PRF apreende mais de 3 toneladas de maconha em Dourados e na Capital", a mesma foto).
