@@ -99,10 +99,31 @@ def titulo_de_post(titulo):
     t = re.sub(r'^[^.]{1,60}\.\s\.\s', '', t)  # "Página. . "
     t = _EMOJI.sub(' ', t).replace('**', ' ')
     t = re.sub(r'^\s*[#|\-–:]+\s*', '', re.sub(r'\s+', ' ', t)).strip()
+    t = _so_manchete(t)
     if len(t) > 140:  # o post inteiro: fica a primeira frase
         frase = re.match(r'(.{40,140}?[.!?])\s', t)
         t = frase.group(1) if frase else t[:140].rsplit(' ', 1)[0] + '…'
     return t or titulo
+
+
+# Post com manchete e texto colados, sem ponto entre eles (21/11/2026):
+# "ARMA ARTESANAL ... EM PARANAGUÁ Uma ação da Ronda Osten…", "PM FLAGRA ... EM SALINAS | Foi pro meio de
+# denúncia…", "... movimentou mais de R$ 65 milhões Uma operação interestadual de…".
+_MANCHETE_CAIXA_ALTA = re.compile(r"^([A-ZÀ-Ý0-9][A-ZÀ-Ý0-9 ,;:'\"!?$%º°ª()/–\-]{24,}[A-ZÀ-Ý0-9!?)])\s+(?=[A-ZÀ-Ý][a-zà-ÿ])")
+_MANCHETE_BARRA = re.compile(r'^(.{25,160}?)\s+\|\s+\S')
+_INICIO_DE_TEXTO = re.compile(r'^(.{40,160}?[a-zà-ÿ0-9%])\s+(?=(?:Uma?|Os?|As?|Na|No|Nesta|Neste|Nessa|Nesse|Durante|Segundo|Conforme|'
+                              r'De acordo|Policiais|Equipes|Agentes|Militares|Foi|Foram)\s)')
+
+
+def _so_manchete(t):
+    """Fica só a manchete quando o post traz manchete e texto colados (sem ponto final entre eles)."""
+    t = re.sub(r'\s+(?:Acompanhe|Confira|Assista|Veja(?: o v[íi]deo)?|Saiba mais)\s*:?\s*\.?$', '', t, flags=re.I)
+    for rx in (_MANCHETE_CAIXA_ALTA, _MANCHETE_BARRA, _INICIO_DE_TEXTO):
+        m = rx.match(t)
+        if m:
+            # "…DA PATRULHA A Brigada Militar…": o artigo maiúsculo é do texto, não da manchete.
+            return re.sub(r'\s+[AO]$', '', m.group(1)).rstrip(' ,;:–-')
+    return t
 
 
 def categorias(n, titulo):
