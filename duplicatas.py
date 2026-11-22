@@ -1453,6 +1453,8 @@ def agrupar(itens, motivos=None):
                             continue
                         if ia.get('img') == ib.get('img'):
                             continue  # a mesma URL é foto padrão do site, não do fato
+                        if ia.get('f') and ia.get('f') == ib.get('f'):
+                            continue  # o mesmo veículo reaproveita foto de arquivo em fatos diferentes
                         if mesma_foto_recortada(ia['_mini'], ib['_mini']):
                             unir(a, b, 'foto-mesma-marca-dagua')
 
