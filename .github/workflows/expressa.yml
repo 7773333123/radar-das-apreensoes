@@ -72,7 +72,7 @@ jobs:
             fi
             echo '::endgroup::'
             espera=$(( INTERVALO - ($(date +%s) - inicio) ))
-            [ "$espera" -gt 0 ] && sleep "$espera"
+            if [ "$espera" -gt 0 ]; then sleep "$espera"; fi
           done
       - name: Guardar a análise das fotos recentes
         if: always()
