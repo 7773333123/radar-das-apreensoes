@@ -38,6 +38,8 @@ CAPITAIS = {
 # Apelidos e regiões que identificam o estado sem ambiguidade.
 APELIDOS = {
     'Grande Vitória': 'ES', 'Baixada Fluminense': 'RJ', 'Baixada Santista': 'SP',
+    'Baixada Campista': 'RJ', 'Norte Fluminense': 'RJ', 'Noroeste Fluminense': 'RJ', 'Sul Fluminense': 'RJ',
+    'Região dos Lagos': 'RJ', 'Campos dos Goytacazes': 'RJ',
     'Região Metropolitana de Belém': 'PA', 'Grande Florianópolis': 'SC', 'Grande BH': 'MG',
     'Zona da Mata Mineira': 'MG', 'Triângulo Mineiro': 'MG', 'Recôncavo Baiano': 'BA',
     'Sertão Pernambucano': 'PE', 'Agreste Pernambucano': 'PE', 'Vale do Itajaí': 'SC',
@@ -167,6 +169,46 @@ def _ufs_no_texto(texto, detalhado=False):
     return (estados, cidades, local) if detalhado else (estados, cidades)
 
 
+def _abertura(noticia):
+    partes = [str(noticia.get('trecho') or '')]
+    partes += [str(p) for p in (noticia.get('texto_integral') or [])[:3]]
+    return ' '.join(partes)[:1500]
+
+
+def ufs_aprendidas(noticias, fontes_cadastradas=None, minimo=5, fatia=0.85):
+    """Estado de cada veículo SEM estado cadastrado, aprendido das próprias notícias (22/11/2026):
+    quando o lugar escrito nas notícias dele (estado ou município sem homônimo, no título, resumo
+    ou abertura) cai em um só estado em pelo menos 85% de 5+ notícias, o veículo é desse estado.
+    Veículos nacionais espalham-se por vários estados e não passam no corte."""
+    cadastrados = {str(f.get('dominio') or '').lower() for f in (fontes_cadastradas or []) if f.get('uf') in ESTADOS}
+    contagem = {}
+    for n in noticias:
+        if not isinstance(n, dict):
+            continue
+        dominio = str(n.get('dominio_fonte') or '').lower().removeprefix('www.')
+        if not dominio or dominio in cadastrados or DOMINIO_ESTADUAL.search(dominio) or dominio.endswith('globo.com'):
+            continue
+        achado = ''
+        for texto in (str(n.get('titulo') or ''), str(n.get('descricao') or n.get('resumo') or ''), _abertura(n)):
+            estados, cidades = _ufs_no_texto(texto)
+            if len(estados) == 1:
+                achado = next(iter(estados))
+            elif not estados and len(cidades) == 1:
+                achado = next(iter(cidades))
+            if achado or estados or cidades:
+                break
+        if achado:
+            c = contagem.setdefault(dominio, {})
+            c[achado] = c.get(achado, 0) + 1
+    saida = []
+    for dominio, c in contagem.items():
+        total = sum(c.values())
+        uf, qt = max(c.items(), key=lambda x: x[1])
+        if total >= minimo and qt / total >= fatia:
+            saida.append({'dominio': dominio, 'uf': uf, 'aprendida': True, 'notícias': total})
+    return saida
+
+
 def uf_da_fonte(noticia, fontes_cadastradas=None):
     dominio = str(noticia.get('dominio_fonte') or '').lower().removeprefix('www.')
     m = DOMINIO_ESTADUAL.search(dominio)
@@ -219,6 +261,10 @@ def inferir_uf(noticia, fontes_cadastradas=None):
         return uf
     if not estados and not cidades:
         estados, cidades, local = _ufs_no_texto(str(noticia.get('descricao') or noticia.get('resumo') or ''), detalhado=True)
+    if not estados and not cidades:
+        # Abertura da própria matéria (22/11/2026: fonte sem estado cadastrado e título/resumo sem
+        # lugar ficava sem estado, e as regras de duplicata por estado/cidade não funcionavam).
+        estados, cidades, local = _ufs_no_texto(_abertura(noticia), detalhado=True)
     if len(estados) == 1:
         return next(iter(estados))  # estado explícito vence município
     if not estados and len(cidades) == 1:

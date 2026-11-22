@@ -22,6 +22,7 @@ No detalhe: s = resumo do Radar (frases próprias), f = ficha de fatos (resumo_f
 feed_links.json: {i: link do Google Notícias} das que ainda não têm o link original.
 Resumo, trecho, texto integral e galeria ficam em det/<i % 256>.json, baixados ao abrir a notícia.
 """
+import datetime as _dt
 import json
 import os
 import hashlib
@@ -32,7 +33,7 @@ from pathlib import Path
 
 from pagos import pago
 from fronteira import polo_do_item, prioridade_regional
-from localizar_uf import _ufs_no_texto, cidade_do_fato, inferir_uf
+from localizar_uf import _ufs_no_texto, cidade_do_fato, inferir_uf, ufs_aprendidas
 from resumo_fatos import LUGAR, droga_pelo_nome
 from resumo_fatos import anonimizar, extrair, nomes_dos_presos
 from contexto import resumo_secoes
@@ -43,6 +44,7 @@ ORIGEM = PASTA / 'noticias.json'
 DESTINO = PASTA / 'feed.json'
 LINKS = PASTA / 'feed_links.json'
 FONTES_JSON = PASTA / 'fontes.json'
+CORTE_MINI = (_dt.datetime.now(_dt.timezone.utc) - _dt.timedelta(days=5)).isoformat()[:10]  # miniaturas de foto no agrupamento
 DETALHES = PASTA / 'det'  # lotes de 100 notícias (antes: detalhes/, lotes de 1000)
 LOTES = 256  # det/<i % LOTES>.json
 
@@ -522,6 +524,10 @@ def main():
     ORB_ATIVO = any(isinstance(n, dict) and n.get('img_orb2') and str(n.get('data_iso') or '')[:19] >= PENDENTE_DESDE
                     for n in noticias)
     fontes = json.loads(FONTES_JSON.read_text(encoding='utf-8')).get('fontes', []) if FONTES_JSON.exists() else []
+    # Veículo sem estado cadastrado: estado aprendido das próprias notícias (localizar_uf.ufs_aprendidas).
+    aprendidas = ufs_aprendidas(noticias, fontes)
+    fontes = fontes + aprendidas
+    print(f'Estado aprendido das notícias: {len(aprendidas)} veículos sem estado cadastrado')
     saida, links, ocultas, portugal, pagas = [], {}, 0, 0, 0
     usados = set()
     origem_por_i = {}
@@ -682,6 +688,11 @@ def main():
             item['_h'] = int(n['img_dhash'], 16)
             if n.get('img_iguais') and fotos and fotos[0] == url_publica(n.get('imagem_url')):  # não vale logotipo
                 item['_iguais'] = list(n['img_iguais'])
+        # Miniaturas desfocadas da foto (hash_imagens.py) das notícias dos últimos 5 dias: o
+        # agrupamento compara a mesma foto com marca d'água/recorte diferente a cada geração.
+        if (n.get('img_mini') and n.get('img_dhash_url') == n.get('imagem_url') and fotos
+                and fotos[0] == url_publica(n.get('imagem_url')) and str(n.get('data_iso') or '') >= CORTE_MINI):
+            item['_mini'] = (n['img_mini'], n.get('img_minih') or '')
         # A mesma foto com recorte/zoom/outro tamanho (fotos_orb.py): pares com pontos em comum.
         # Só pares da versão 2 (pontos espalhados pela foto, não só na marca d'água/brasão):
         # a versão 1 casava fotos diferentes com o mesmo logotipo do site ou brasão da polícia.
@@ -808,7 +819,7 @@ def main():
         antes -= len(vazias)
     print(f'Sem foto e sem conteúdo (aguardando leitura): {len(vazias)} fora do site')
     for item in saida:
-        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx', '_mesma', '_txt', '_ofi', '_uff'):
+        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx', '_mesma', '_txt', '_ofi', '_uff', '_mini'):
             item.pop(k, None)
     for lote in list(detalhes):
         for chave in [c for c in detalhes[lote] if int(c) in removidas]:
