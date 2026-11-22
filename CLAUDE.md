@@ -20,7 +20,8 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
 - **Trecho da reportagem (imprensa sem licença livre): alvo 65% do texto (faixa 60-70%)**, sempre no fim
   de uma frase (`ler_materias.trecho_de_abertura`); matéria livre/oficial: texto integral.
 - **PADRÃO da página inicial: só notícias com a data do dia** (horário de Brasília), 21/11/2026: destaques,
-  Fronteira, Em alta e editorias (editoria sem notícia hoje não aparece). A véspera só entra enquanto o dia
+  Fronteira, Em alta e editorias (editoria sem notícia hoje não aparece). Exceção (22/11/2026): a Fronteira com
+  menos de 3 notícias do dia completa com as dos dias anteriores (as de hoje primeiro), para não ficar vazia. A véspera só entra enquanto o dia
   ainda não tem nenhuma notícia (logo após a meia-noite). `assets/central.js` (`ehHoje`).
 - Anos antigos (2006-2016): coleta pelo Wayback Machine (`wayback.py`, `wayback.yml`), com o link da cópia
   arquivada no archive.org; portais oficiais antigos (PF, PRF, Receita, secretarias) primeiro; um servidor por

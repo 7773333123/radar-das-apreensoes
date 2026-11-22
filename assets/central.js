@@ -223,7 +223,15 @@ function renderInicio() {
   // do Iguaçu, Itaipulândia, demais lindeiras de Itaipu e, por fim, as outras fronteiras. A região de
   // Foz e do Lago de Itaipu entra sempre que tiver notícia nas últimas 48 h.
   const janelaFr = daFronteira(24).filter(ehHoje);
+  // Dia com pouca notícia de fronteira (fim de semana): completa com as dos dias anteriores, as mais
+  // recentes primeiro, para a seção não ficar vazia (dono do site, 22/11/2026). As de hoje vêm antes.
   const itaipu48 = [];
+  if (janelaFr.length < 3) {
+    for (const h of [48, 72, 168]) {
+      for (const n of daFronteira(h)) if (!janelaFr.includes(n) && !itaipu48.includes(n)) itaipu48.push(n);
+      if (janelaFr.length + itaipu48.length >= 8) break;
+    }
+  }
   // Primeiro o dia (hoje antes de ontem); dentro do dia, a ordem regional (Foz primeiro) e a relevância.
   const ordemFr = [...janelaFr, ...itaipu48].sort((a, b) => diaBR(b.data).localeCompare(diaBR(a.data)) ||
     (soPessoa(a) - soPessoa(b)) || a.prioridadeFr - b.prioridadeFr || nota(b) - nota(a) || b.data - a.data);
