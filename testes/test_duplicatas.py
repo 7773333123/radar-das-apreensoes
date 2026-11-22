@@ -371,9 +371,19 @@ def main():
              'Operação contra o tráfico prende suspeito em Itajaí e revela esquema que movimentou mais de R$ 65 milhões')]:
         if titulo_de_post(post) != manchete:
             erros.append(f'post de rede social deveria ficar só com a manchete: {titulo_de_post(post)!r}')
+    # Republicação atrasada com o mesmo valor no título (O Antagonista, 3 dias depois do release
+    # do Ibama, 22/11/2026): o par vai ao juiz.
+    rp = [{'i': 31, 't': 'Ibama aplica R$ 226,8 mil em multas e apreende drone de R$ 197 mil no estado do Rio', 'f': 'temporealrj'},
+          {'i': 32, 't': 'Ibama fiscaliza propriedades rurais, apreende drone de R$ 197 mil e aplica R$ 226 mil em multas', 'f': 'O Antagonista'}]
+    antes = len(dup.SUSPEITAS)
+    dup._mesmo_valor(rp, [100, 103], lambda a, b, r: None, lambda k: k)
+    novos = dup.SUSPEITAS[antes:]
+    del dup.SUSPEITAS[antes:]
+    if not any({p['a'][0], p['b'][0]} == {31, 32} for p in novos):
+        erros.append('mesmo valor no título até 7 dias deveria ir ao juiz (drone de R$ 197 mil, Ibama)')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 17
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 18
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 
