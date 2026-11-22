@@ -29,3 +29,13 @@ jobs:
               head -c 160 /tmp/corpo | tr '\n' ' '; echo
             done
           done
+      - name: Atraso da faixa Agora (coleta x site no ar)
+        run: |
+          curl -sS "https://www.radardasapreensoes.com.br/agora.json?t=$(date +%s)" | python3 -c '
+          import json,sys,datetime as dt
+          d=json.load(sys.stdin); agora=dt.datetime.now(dt.timezone.utc)
+          at=dt.datetime.fromisoformat(d["atualizado_em"])
+          print("agora.json no ar foi gerado ha", round((agora-at).total_seconds()/60), "min (", d["atualizado_em"], ")")
+          for n in d["noticias"][:5]: print(" ", n["d"], n["t"][:80])'
+          git_ultimo=$(curl -sS "https://api.github.com/repos/${{ github.repository }}/commits?per_page=1&sha=main" | python3 -c 'import json,sys; c=json.load(sys.stdin)[0]; print(c["commit"]["committer"]["date"], c["commit"]["message"].splitlines()[0])')
+          echo "Ultimo commit no main: $git_ultimo"
