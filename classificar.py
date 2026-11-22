@@ -136,7 +136,11 @@ _EXTERIOR = re.compile(
     r"|\b(?:nos|nas)\s+(?:Estados Unidos|EUA)\b"
     r"|\b(?:na|em)\s+(?:Col[ôo]mbia|Venezuela|Argentina|Bol[ií]via|Espanha|It[áa]lia|Holanda|B[ée]lgica|França|Alemanha|China|Europa"
     r"|Austr[áa]lia|Inglaterra|Rússia|Ucr[âa]nia|Israel|Gaza|[ÁA]frica)\b"
-    r"|\b(?:no|em)\s+(?:Equador|Peru|Chile|Uruguai|Jap[ãa]o|Reino Unido|Haiti|Panam[áa])\b", re.I)
+    r"|\b(?:no|em)\s+(?:Equador|Peru|Chile|Uruguai|Jap[ãa]o|Reino Unido|Haiti|Panam[áa])\b"
+    # país estrangeiro como sujeito da frase ("Por que a China arrisca...", "O Irã está..."), 22/11/2026;
+    # "com a Bolívia" / "a Europa" como destino não contam.
+    r"|(?:^|\bque\s+|:\s*)(?:a|o)\s+(?:China|R[úu]ssia|Coreia do Norte|Ucr[âa]nia|Venezuela|Col[ôo]mbia|Argentina"
+    r"|Bol[ií]via|EUA|Estados Unidos|Europa|Israel|Ir[ãa])\b", re.I)
 _BRASIL = re.compile(
     r"\b(?:Brasil|brasileir\w*|PF|PRF|PM\w*|PC\w*|Pol[ií]cia (?:Federal|Rodovi[áa]ria|Civil|Militar|Penal)|Receita Federal|RFB"
     r"|Brigada Militar|Gaeco|FICCO|BPFron|DOF|Gefron|Ibama|Marinha do Brasil|Ex[ée]rcito Brasileiro|BR-\d+|aeroporto de"
@@ -226,6 +230,9 @@ if __name__ == '__main__':
         ('Carga de cocaína vinda da Bolívia é apreendida em Mato Grosso', 0),
         ('Polícia encontra drogas escondidas em churrasqueira e prende dois por tráfico em Franca, SP', 0),
         ('Mexicano é preso com 20 kg de cocaína em BH', 0),
+        ('Por que a China arrisca tudo no contrabando de chips de inteligência artificial', None),
+        ('Fiscalização apreende drogas e fetos de lhama na fronteira de MS com a Bolívia', 0),
+        ('Empresário ligado a envio de cocaína a Europa é preso em Balneário Camboriú', 0),
     ]
     erros = 0
     for t, esperado in casos:
