@@ -761,13 +761,19 @@ def _mesmo_valor(itens, dia, unir, raiz, dias=7):
         for v in _valores(itens[k].get('t')):
             por_valor.setdefault(v, []).append(k)
     for v, ks in por_valor.items():
-        if len(ks) > 12:  # valor comum demais (ex.: "R$ 10 mil")
+        # Valor comum ("30 kg", "R$ 10 mil"): conta fatos distintos (grupos), não notícias repetidas,
+        # e mesmo assim compara as do mesmo dia com o mesmo material ("30 kg de maconha" em Campos,
+        # Campos 24Horas x Folha1, 22/11/2026: 16 notícias com "30 kg" barravam o par).
+        comum = len({raiz(k) for k in ks}) > 12
+        if comum and len(ks) > 80:
             continue
         for x in range(len(ks)):
             for y in range(x + 1, len(ks)):
                 a, b = ks[x], ks[y]
                 ia, ib = itens[a], itens[b]
-                if raiz(a) == raiz(b) or abs(dia[a] - dia[b]) > dias:
+                if raiz(a) == raiz(b) or abs(dia[a] - dia[b]) > (1 if comum else dias):
+                    continue
+                if comum and not (materiais_titulo(ia.get('t')) & materiais_titulo(ib.get('t'))):
                     continue
                 if ia.get('uf') and ib.get('uf') and ia['uf'] != ib['uf']:
                     continue

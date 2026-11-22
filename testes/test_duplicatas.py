@@ -381,9 +381,24 @@ def main():
     del dup.SUSPEITAS[antes:]
     if not any({p['a'][0], p['b'][0]} == {31, 32} for p in novos):
         erros.append('mesmo valor no título até 7 dias deveria ir ao juiz (drone de R$ 197 mil, Ibama)')
+    # Valor comum ("30 kg" em 16 notícias): o par do mesmo dia com o mesmo material ainda vai ao
+    # juiz; outro material ou dias distantes, não (Campos 24Horas x Folha1, 22/11/2026).
+    cm = [{'i': 41, 't': 'PM apreende 30 Kg de maconha em Campos; prejuízo de R$ 60 mil ao tráfico', 'f': 'Campos 24Horas'},
+          {'i': 42, 't': 'PM apreende 30 kg de maconha em residência na Baixada Campista', 'f': 'Folha1'},
+          {'i': 43, 't': 'Polícia apreende 30 kg de cocaína em carreta', 'f': 'X'}]
+    cm += [{'i': 100 + k, 't': f'Polícia apreende 30 kg de drogas na cidade {k}', 'f': 'Y'} for k in range(14)]
+    antes = len(dup.SUSPEITAS)
+    dup._mesmo_valor(cm, [100, 100, 100] + [90] * 14, lambda a, b, r: None, lambda k: k)
+    novos = dup.SUSPEITAS[antes:]
+    del dup.SUSPEITAS[antes:]
+    pares = [{p['a'][0], p['b'][0]} for p in novos]
+    if {41, 42} not in pares:
+        erros.append('valor comum ("30 kg"), mesmo dia e mesmo material deveria ir ao juiz (Campos)')
+    if {41, 43} in pares or {42, 43} in pares:
+        erros.append('valor comum com materiais diferentes (maconha x cocaína) não deveria ir ao juiz')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 18
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 20
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 
