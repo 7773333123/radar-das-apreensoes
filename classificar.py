@@ -129,8 +129,30 @@ def sem_apreensao(titulo):
     return bool(_SEM_APREENSAO.search(titulo))
 
 
+# Fato no exterior (22/11/2026: prisão do "Chapo Isidro" no México entrava na faixa AGORA): fica fora do
+# site, a não ser que o título cite polícia, órgão ou lugar do Brasil ("PF prende mexicano em Guarulhos").
+_EXTERIOR = re.compile(
+    r"\bM[ée]xico\b|\bmexican[oa]s?\b|\bSinaloa\b|\bJalisco\b|\bEl Chapo\b|\bChapo Isidro\b|\bFBI\b|\bDEA\b"
+    r"|\b(?:nos|nas)\s+(?:Estados Unidos|EUA)\b"
+    r"|\b(?:na|em)\s+(?:Col[ôo]mbia|Venezuela|Argentina|Bol[ií]via|Espanha|It[áa]lia|Holanda|B[ée]lgica|França|Alemanha|China|Europa"
+    r"|Austr[áa]lia|Inglaterra|Rússia|Ucr[âa]nia|Israel|Gaza|[ÁA]frica)\b"
+    r"|\b(?:no|em)\s+(?:Equador|Peru|Chile|Uruguai|Jap[ãa]o|Reino Unido|Haiti|Panam[áa])\b", re.I)
+_BRASIL = re.compile(
+    r"\b(?:Brasil|brasileir\w*|PF|PRF|PM\w*|PC\w*|Pol[ií]cia (?:Federal|Rodovi[áa]ria|Civil|Militar|Penal)|Receita Federal|RFB"
+    r"|Brigada Militar|Gaeco|FICCO|BPFron|DOF|Gefron|Ibama|Marinha do Brasil|Ex[ée]rcito Brasileiro|BR-\d+|aeroporto de"
+    r"|Acre|Alagoas|Amap[áa]|Amazonas|Bahia|Cear[áa]|Distrito Federal|Esp[ií]rito Santo|Goi[áa]s|Maranh[ãa]o|Mato Grosso"
+    r"|Minas Gerais|Par[áa]|Para[ií]ba|Paran[áa]|Pernambuco|Piau[ií]|Rio de Janeiro|Rio Grande|Rond[ôo]nia|Roraima"
+    r"|Santa Catarina|S[ãa]o Paulo|Sergipe|Tocantins|Foz do Igua[çc]u|Guarulhos|Santos|Paranagu[áa]|Manaus|Bel[ée]m"
+    r"|Fortaleza|Recife|Salvador|Curitiba|Porto Alegre|Florian[óo]polis|Campo Grande|Cuiab[áa]|Goi[âa]nia|Bras[ií]lia"
+    r"|BH|Belo Horizonte|CV|PCC|Comando Vermelho|Amaz[ôo]nia)\b", re.I)
+
+
+def exterior(titulo):
+    return bool(_EXTERIOR.search(titulo)) and not _BRASIL.search(titulo)
+
+
 def relevante(titulo):
-    if apreensao_sentimento(titulo) or aviso_funebre(titulo) or sem_apreensao(titulo):
+    if apreensao_sentimento(titulo) or aviso_funebre(titulo) or sem_apreensao(titulo) or exterior(titulo):
         return False
     if FORTE.search(titulo):
         return True
@@ -193,6 +215,17 @@ if __name__ == '__main__':
         ('Policiais realizaram buscas em vegetação e oficina mecânica na região de Pitangueiras, mas nenhum entorpecente foi localizado durante a varredura.', None),
         ('Polícia faz buscas mas não foram encontradas drogas', None),
         ('PM apreende drogas e nenhum suspeito foi localizado', 0),
+        # Fato no exterior fica fora; com polícia ou lugar do Brasil, entra (22/11/2026).
+        ('Prisão de chefão do narcotráfico no México exigiu grampos e drones', None),
+        ('Forças armadas do México prendem Chapo Isidro em Sinaloa', None),
+        ('Autoridades Mexicanas Prendem 14 Membros do Cartel de Sinaloa em Grande Operação no Sul do País', None),
+        ('Polícia apreende 2 toneladas de cocaína em porto na Espanha', None),
+        ('PF prende mexicano com cocaína no aeroporto de Guarulhos', 0),
+        ('Polícia apreende cocaína que seria enviada à Europa em contêiner no Porto de Santos', 0),
+        ('PRF apreende maconha vinda do Paraguai na BR-277', 0),
+        ('Carga de cocaína vinda da Bolívia é apreendida em Mato Grosso', 0),
+        ('Polícia encontra drogas escondidas em churrasqueira e prende dois por tráfico em Franca, SP', 0),
+        ('Mexicano é preso com 20 kg de cocaína em BH', 0),
     ]
     erros = 0
     for t, esperado in casos:

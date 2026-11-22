@@ -34,6 +34,7 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
 - Duplicatas: não tolerar. Correções à mão vão em `juiz_decisoes_revisao.json` (valem como veto do grupo);
   padrões viram regra + teste em `testes/test_duplicatas.py`.
 - Notícias de Portugal/exterior, páginas que não são notícia e logotipo no lugar de foto ficam fora do site.
+  Fato no exterior (México, EUA, Europa...) sem polícia/lugar do Brasil no título: `classificar.exterior` (22/11/2026).
 - Coletas: `expressa.yml` (feeds → site a cada ~8 min, faixa AGORA atualizada em seguida) e `rapido.yml`
   (complementar: Google, Bing, links, leitura, fotos), em paralelo, 21/11/2026. A faixa AGORA confere
   `agora.json` a cada 30 s.
