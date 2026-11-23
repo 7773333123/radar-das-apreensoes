@@ -38,7 +38,10 @@ jobs:
           at=dt.datetime.fromisoformat(d["atualizado_em"])
           if d.get("gerado_em"):
               g=dt.datetime.fromisoformat(d["gerado_em"])
-              print("ATRASO DO SITE: o site no ar foi gerado ha", round((agora-g).total_seconds()/60), "min (", d["gerado_em"], ")")
+              # Sem notícia nova desde a última geração, o site está em dia (a coleta só gera quando há novidade).
+              atraso = 0 if g >= at else round((agora-at).total_seconds()/60)
+              print("ATRASO DO SITE:", atraso, "min", "(em dia: gerado depois da ultima noticia coletada)" if atraso == 0 else "(ha noticia coletada que ainda nao esta no site)",
+                    "- site gerado as", d["gerado_em"])
           else:
               print("ATRASO DO SITE: (versao sem gerado_em; publicada antes de 23/11/2026)")
           print("Ultima noticia nova coletada ha", round((agora-at).total_seconds()/60), "min (", d["atualizado_em"], ") - de madrugada e normal ser maior")
