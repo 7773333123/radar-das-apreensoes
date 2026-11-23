@@ -11,6 +11,7 @@ on:
         type: string
 permissions:
   contents: read
+  deployments: read
 jobs:
   verificar:
     runs-on: ubuntu-latest
@@ -39,3 +40,25 @@ jobs:
           for n in d["noticias"][:5]: print(" ", n["d"], n["t"][:80])'
           git_ultimo=$(curl -sS -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/commits?per_page=1&sha=main" | python3 -c 'import json,sys; c=json.load(sys.stdin)[0]; print(c["commit"]["committer"]["date"], c["commit"]["message"].splitlines()[0])' || echo "(API do GitHub indisponivel)")
           echo "Ultimo commit no main: $git_ultimo"
+      - name: Publicações da Vercel (tempo de cada uma)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # A Vercel registra cada publicação como "deployment" no GitHub: quando foi pedida e
+          # quando ficou pronta (ou foi pulada/cancelada). Mostra se há fila e quanto dura cada uma.
+          python3 - <<'PY' || echo "(sem dados de publicação)"
+          import json, os, urllib.request, datetime as dt
+          rep = os.environ["GITHUB_REPOSITORY"]
+          def get(url):
+              req = urllib.request.Request(url, headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"], "Accept": "application/vnd.github+json"})
+              return json.load(urllib.request.urlopen(req, timeout=20))
+          def t(s): return dt.datetime.fromisoformat(s.replace("Z", "+00:00"))
+          agora = dt.datetime.now(dt.timezone.utc)
+          for d in get(f"https://api.github.com/repos/{rep}/deployments?per_page=15"):
+              st = get(d["statuses_url"] + "?per_page=10")
+              ini = t(d["created_at"])
+              fim = next((s for s in st if s["state"] in ("success", "failure", "error", "inactive")), None)
+              estado = st[0]["state"] if st else "sem status"
+              dur = f'{round((t(fim["created_at"]) - ini).total_seconds() / 60)} min' if fim else f'ainda {estado} ha {round((agora - ini).total_seconds() / 60)} min'
+              print(f'{ini:%H:%M} {d["environment"][:12]:12} {d["sha"][:7]} {estado:10} {dur}')
+          PY
