@@ -108,7 +108,8 @@ function enxugarParaNavegador(feed, recente) {
   if (recente) {
     const novas = [...recente.noticias].sort((a, b) => String(b.d || '').localeCompare(String(a.d || ''))).slice(0, 40)
       .map((n) => ({ i: n.i, t: n.t, d: n.d }));
-    saida['agora.json'] = JSON.stringify({ atualizado_em: recente.atualizado_em || feed.atualizado_em, noticias: novas });
+    saida['agora.json'] = JSON.stringify({ atualizado_em: recente.atualizado_em || feed.atualizado_em,
+      gerado_em: recente.gerado_em || feed.gerado_em || null, noticias: novas });
   }
   console.log(`Feed para o navegador: ${(saida['feed.json'].length / 1e6).toFixed(1)} MB, ${recentes.length} notícias desde ${corte}; ` +
     `anos à parte: ${Object.keys(porAno).sort().join(', ')}`);

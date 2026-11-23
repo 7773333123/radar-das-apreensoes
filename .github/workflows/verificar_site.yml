@@ -36,7 +36,12 @@ jobs:
           import json,sys,datetime as dt
           d=json.load(sys.stdin); agora=dt.datetime.now(dt.timezone.utc)
           at=dt.datetime.fromisoformat(d["atualizado_em"])
-          print("agora.json no ar foi gerado ha", round((agora-at).total_seconds()/60), "min (", d["atualizado_em"], ")")
+          if d.get("gerado_em"):
+              g=dt.datetime.fromisoformat(d["gerado_em"])
+              print("ATRASO DO SITE: o site no ar foi gerado ha", round((agora-g).total_seconds()/60), "min (", d["gerado_em"], ")")
+          else:
+              print("ATRASO DO SITE: (versao sem gerado_em; publicada antes de 23/11/2026)")
+          print("Ultima noticia nova coletada ha", round((agora-at).total_seconds()/60), "min (", d["atualizado_em"], ") - de madrugada e normal ser maior")
           for n in d["noticias"][:5]: print(" ", n["d"], n["t"][:80])'
           git_ultimo=$(curl -sS -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/commits?per_page=1&sha=main" | python3 -c 'import json,sys; c=json.load(sys.stdin)[0]; print(c["commit"]["committer"]["date"], c["commit"]["message"].splitlines()[0])' || echo "(API do GitHub indisponivel)")
           echo "Ultimo commit no main: $git_ultimo"

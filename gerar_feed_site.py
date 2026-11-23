@@ -909,7 +909,8 @@ def main():
             del detalhes[lote]
     saida.sort(key=lambda x: x.get('d', ''), reverse=True)
     feed = {
-        'atualizado_em': dados.get('atualizado_em') if isinstance(dados, dict) else None,
+        'atualizado_em': dados.get('atualizado_em') if isinstance(dados, dict) else None,  # última notícia nova coletada
+        'gerado_em': _dt.datetime.now(_dt.timezone.utc).isoformat(timespec='seconds'),  # quando este site foi gerado
         'categorias': CATEGORIAS,
         'orgaos': ORGAOS_NOMES,
         'materiais': {k: list(v) for k, v in MATERIAIS.items()},
