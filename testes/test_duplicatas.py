@@ -410,9 +410,17 @@ def main():
     md[1]['i'] = 53
     if len(agrupar_duplicatas(md)[0]) != 2:
         erros.append('foto diferente e cidade diferente não deveriam juntar')
+    # Origem do transporte não é o local do fato (Teresina/PI, 23/11/2026).
+    from localizar_uf import inferir_uf
+    for titulo, uf in [('Dois homens são presos com 52 tabletes de maconha em ônibus que vinha de São Paulo para Teresina', 'PI'),
+                       ('PM apreende 42 armas de fogo escondidas em ônibus que vinha do Maranhão para Sorriso e prende três motoristas', 'MT'),
+                       ('Carga com 24 kg de skunk vinda de São Paulo é interceptada em Fortaleza', 'CE'),
+                       ('Polícia apreende drogas em São Paulo', 'SP')]:
+        if inferir_uf({'titulo': titulo}) != uf:
+            erros.append(f'estado do fato deveria ser {uf}: {titulo}')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 22
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 26
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 

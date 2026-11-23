@@ -145,6 +145,7 @@ def _ufs_no_texto(texto, detalhado=False):
     if not texto:
         return (set(), set(), set()) if detalhado else (set(), set())
     texto = OPERACAO.sub(' ', texto)  # "Operação Natal" não é Natal/RN
+    texto = ORIGEM.sub(' ', texto)  # "ônibus que vinha de São Paulo para Teresina": o fato é em Teresina
     texto = re.sub(r"\b[Dd][’'´`]", "d'", texto)  # "São Jorge D’Oeste" = "São Jorge d'Oeste"
     estados, cidades, local = set(), set(), set()
     for m in SIGLA_EXPLICITA.finditer(texto):
@@ -346,6 +347,12 @@ INDICA_CAPITAL = re.compile(r'capital (?:paulista|fluminense)|cidade d[eo] (?:S�
                             r'Baixada Fluminense|centro d[oe] (?:São Paulo|Rio)|\bna capital\b')
 # Município com nome de país ("Equador"/RN) e cidades citadas como origem, destino ou moradia.
 NAO_CIDADE = {'Equador', 'Bolívia', 'Paraguai', 'Peru', 'Chile', 'Colômbia', 'Argentina', 'Venezuela', 'Uruguai', 'México', 'Brasil'}
+# Origem do transporte não é o local do fato (23/11/2026: "Dois homens são presos com 52 tabletes de
+# maconha em ônibus que vinha de São Paulo para Teresina" ficava como SP e não juntava com a mesma
+# apreensão em Teresina/PI): o lugar depois de "vinha de", "saiu de", "proveniente de"... é ignorado.
+ORIGEM = re.compile(r"\b(?:vinha|vinham|veio|vieram|vind[oa]s?|sa[íi]u|sa[íi]ram|partiu|partiram|proveniente|procedentes?|"
+                    r"oriund[oa]s?|com origem)\s+(?:de|do|da|dos|das|em)\s+"
+                    r"(?:(?:[A-ZÀ-Ý][\wÀ-ÿ'’-]*|d[aeo]s?|de)\s*){1,5}?(?=\s*(?:para|rumo|com destino|at[ée]|,|;|\.|$)|\s+e\s|\s+[a-zà-ÿ])")
 ANTES_NAO_LOCAL = re.compile(r'\b(?:natural de|morador(?:a|es)? de|residente (?:em|de)|nascid[oa] em|vind[oa]s? de|saiu de|sa[íi]da de|'
                              r'proveniente de|oriund[oa]s? de|com destino a|destinad[oa]s? a|levad[oa]s? (?:para|a)|seguia (?:para|a)|'
                              r'rumo a|para|at[ée]|bairro|bairro d[aeo]s?|vila|jardim|rua|avenida|av\.|travessa|loteamento|'
