@@ -91,7 +91,11 @@ _APREENSAO_SENTIMENTO = re.compile(
     r'|\bapreens[ãa]o\s+(?:no|na|nos|nas|do|da|dos|das|entre|em)\s+(?:o\s+|a\s+)?(?:mercados?(?!\s+municipal)|bolsas?|investidores|'
     r'setor|agro|produtores|empres[aá]rios|moradores|pais|torcedores|torcida|familiares|fam[ií]lias|comunidade|popula[çc][ãa]o|'
     r'servidores|eleitores|governo|planalto|congresso|câmara|oposi[çc][ãa]o|aliados)\b'
-    r'|(?<!busca e )\bapreens[ãa]o\s+(?:sobre|quanto|diante)\b|\bapreensiv[oa]s?\b', re.I)
+    r'|(?<!busca e )\bapreens[ãa]o\s+(?:sobre|quanto|diante)\b|\bapreensiv[oa]s?\b'
+    # Preocupação dita por alguém (23/11/2026: "Comércio estima crescimento..., mas ressalta apreensão").
+    r'|\b(?:ressalta|ressaltam|ressaltou|demonstra|demonstram|demonstrou|manifesta|manifestam|manifestou|expressa|expressam|'
+    r'expressou|relata|relatam|relatou|admite|admitem|admitiu|vive|vivem|viveu|vê|veem|viu|acompanha|acompanham|'
+    r'acompanhou|observa|observam)\s+(?:com\s+)?(?:certa\s+|muita\s+|grande\s+)?apreens[ãa]o\b(?!\s+(?:de|da|do|das|dos|judicial|policial)\b)', re.I)
 
 
 def apreensao_sentimento(titulo):
@@ -215,6 +219,12 @@ if __name__ == '__main__':
         ('Nota de pesar: morre ex-delegado que comandou apreensão histórica de cocaína', None),
         ('Operação Luctus mira esquema ilegal de venda de dados de óbitos para funerárias', 8),
         ('Polícia Civil prende mulher durante velório por envolvimento em tortura de ex-companheira de traficante', 0),
+        # Apreensão no sentido de preocupação dita por alguém (23/11/2026).
+        ('AGUARDANDO DECISÕES - Comércio estima crescimento nas vendas em 10% para o final de ano, mas ressalta apreensão', None),
+        ('Moradores acompanham com apreensão a cheia do rio', None),
+        ('PM realiza grande apreensão de drogas em Campo Grande', 0),
+        ('POLÍCIA MILITAR ACOMPANHA APREENSÃO JUDICIAL DE CAMINHONETE EM SABÁUDIA', 3),
+        ('Polícia faz apreensão de armas com apreensão de munições em Goiás', 1),
         # Busca sem apreensão não entra (21/11/2026).
         ('Policiais realizaram buscas em vegetação e oficina mecânica na região de Pitangueiras, mas nenhum entorpecente foi localizado durante a varredura.', None),
         ('Polícia faz buscas mas não foram encontradas drogas', None),
