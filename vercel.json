@@ -166,7 +166,7 @@
   ],
   "buildCommand": "node --max-old-space-size=6144 scripts/baixar-dados.js",
   "outputDirectory": "public",
-  "ignoreCommand": "[ \"$VERCEL_GIT_COMMIT_REF\" != \"main\" ]",
+  "ignoreCommand": "node scripts/vercel-ignorar.js",
   "git": {
     "deploymentEnabled": {
       "claude/**": false
