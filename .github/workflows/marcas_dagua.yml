@@ -14,8 +14,10 @@ on:
         default: '500'
 permissions:
   contents: write
+# Grupo próprio: a regeneração de todos os anos (publicar-site) leva horas e travava esta rotina na fila.
+# acervo.py salvar já junta gravações simultâneas (como a coleta expressa faz).
 concurrency:
-  group: publicar-site
+  group: marcas-dagua
   cancel-in-progress: false
 jobs:
   marcas:
