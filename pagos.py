@@ -32,6 +32,8 @@ DOMINIOS = {
     'rdnews.com.br', 'setelagoas.com.br', 'studio.tv.br', 'sucessofm.com', 'surgiu.com.br', 'tasabendo.com.br',
     'topelegance.com.br', 'tribunadoplanalto.com.br', 'uniaometropolitana.com.br', 'unicanews.com.br',
     'viagora.com.br', 'wscom.com.br',
+    # Excluído a pedido do responsável (24/11/2026): carimba marca d'água em todas as fotos (notícias sem foto no site).
+    'lsmnoticias.com.br',
 }
 # Notícias do Google Notícias sem link do veículo: pelo nome da fonte (nome exato).
 NOMES = {
@@ -53,6 +55,7 @@ NOMES = {
     'sucesso fm', 'surgiu', 'topelegance', 'tribuna do planalto', 'tásabendo', 'união metropolitana',
     'união metropolitana curitiba', 'uol notícias', 'viagora', 'wscom', 'www.capitalnews.com.br',
     'www.midiajur.com.br', 'www.sucessofm.com', 'única news',
+    'lsm notícias', 'lsm noticias',
 }
 
 
