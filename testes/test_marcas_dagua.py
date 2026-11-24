@@ -74,5 +74,32 @@ confere('veículo sem marca: passa', not md.foto_com_marca({'url': 'https://limp
 confere('veículo que carimba às vezes: só a conferida sai',
         not md.foto_com_marca({'url': 'https://as-vezes.com.br/x'}, 'https://a/4.jpg', masc)
         and md.foto_com_marca({'url': 'https://as-vezes.com.br/x', 'img_marca': {'https://a/4.jpg': 1}}, 'https://a/4.jpg', masc))
+# Cantos (24/11/2026): fotos de formatos diferentes (retrato/paisagem) com a marca a distância fixa do canto.
+def canto(semente, marca, tam):
+    r = random.Random(semente)
+    w, h = tam
+    img = Image.new('RGB', tam, (120, 120, 120))
+    d = ImageDraw.Draw(img)
+    for _ in range(12):
+        x, y = r.randrange(w), r.randrange(h)
+        d.ellipse([x, y, x + r.randrange(30, 200), y + r.randrange(30, 200)], fill=tuple(r.randrange(256) for _ in range(3)))
+    if marca:
+        e = w / 256
+        d.rectangle([w - 60 * e, h - 35 * e, w - 10 * e, h - 12 * e], outline=(255, 255, 255), width=max(2, int(2 * e)))
+    b = io.BytesIO(); img.save(b, 'JPEG'); return b.getvalue()
+TAMS = [(800, 500), (400, 600), (1000, 560), (500, 500)]
+ass = [md.assinatura(canto(k, True, TAMS[k % 4])) for k in range(12)]
+zona = md.mascara([z['inf_dir'] for _, z in ass], md.ZW, md.ZH)
+confere('formatos variados: o canto inferior direito acha a marca',
+        zona != 0)
+info = {'z': {'inf_dir': format(zona, 'x')}}
+confere('foto nova carimbada (outro formato) reconhecida pelo canto',
+        md.nota_total(md.assinatura(canto(90, True, (640, 900))), info) >= md.MARCADA)
+confere('foto nova limpa passa pelo canto', md.nota_total(md.assinatura(canto(91, False, (640, 900))), info) < md.MARCADA)
+sem = [md.assinatura(canto(200 + k, False, TAMS[k % 4])) for k in range(12)]
+confere('veículo sem marca: nenhum canto aprende', all(md.mascara([z[c] for _, z in sem], md.ZW, md.ZH) == 0 for c in md.ZONAS))
+# Marcado à mão (fontes.json "marca_dagua": true): toda foto conta como carimbada.
+confere('veículo marcado à mão: foto conferida limpa também sai',
+        md.foto_com_marca({'url': 'https://manual.com.br/x', 'img_marca': {'u': 0}}, 'u', {'manual.com.br': {'manual': 1}}))
 print('falhas:', falhas)
 sys.exit(1 if falhas else 0)

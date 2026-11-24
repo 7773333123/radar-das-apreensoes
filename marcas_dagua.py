@@ -72,11 +72,11 @@ def _binario(px):
     return bits
 
 
-def mascara(mapas):
+def mascara(mapas, larg=LADO, alt=LADO):
     """Máscara da marca a partir dos mapas de bordas de fotos distintas do veículo (0 = sem marca)."""
     if len(mapas) < MIN_FOTOS:
         return 0
-    conta = [0] * (LADO * LADO)
+    conta = [0] * (larg * alt)
     for m in mapas:
         k = 0
         while m:
@@ -90,13 +90,13 @@ def mascara(mapas):
     for eixo in (0, 1):
         por = defaultdict(int)
         for k in pix:
-            por[divmod(k, LADO)[eixo]] += 1
-        cheias = {v for v, c in por.items() if c > LADO * 0.5}
-        pix = {k for k in pix if divmod(k, LADO)[eixo] not in cheias}
+            por[divmod(k, larg)[eixo]] += 1
+        cheias = {v for v, c in por.items() if c > (larg if eixo == 0 else alt) * 0.5}
+        pix = {k for k in pix if divmod(k, larg)[eixo] not in cheias}
     if len(pix) < MIN_PIXELS:
         return 0
-    linhas = {k // LADO for k in pix}
-    colunas = {k % LADO for k in pix}
+    linhas = {k // larg for k in pix}
+    colunas = {k % larg for k in pix}
     if len(linhas) < 3 or len(colunas) < 3:
         return 0
     bits = 0
@@ -111,20 +111,44 @@ def nota(mapa, masc):
     return bin(mapa & masc).count('1') / total if total else 0.0
 
 
+def tem_mascara(info):
+    return bool(info.get('m') or any((info.get('z') or {}).values()))
+
+
+def nota_total(mapa, info):
+    """Maior fração entre a grade da foto inteira e as zonas dos cantos (mapa = (grade, {zona: bits}))."""
+    grade, zonas = mapa
+    notas = [nota(grade, int(info['m'], 16))] if info.get('m') else []
+    notas += [nota(zonas.get(z, 0), int(h, 16)) for z, h in (info.get('z') or {}).items() if h]
+    return max(notas or [0.0])
+
+
 def carregar_mascaras():
+    """Máscaras aprendidas (marcas_dagua.json) + veículos marcados à mão em fontes.json ("marca_dagua": true:
+    a marca muda de lugar/tamanho e a detecção automática não pega; todas as fotos deles contam como carimbadas)."""
     try:
-        return json.loads(MASCARAS.read_text(encoding='utf-8')).get('fontes', {})
+        mascaras = json.loads(MASCARAS.read_text(encoding='utf-8')).get('fontes', {})
     except (OSError, ValueError):
-        return {}
+        mascaras = {}
+    try:
+        for f in json.loads((RAIZ / 'fontes.json').read_text(encoding='utf-8')).get('fontes', []):
+            if f.get('marca_dagua') and f.get('dominio'):
+                d = str(f['dominio']).lower().removeprefix('www.')
+                mascaras[d] = dict(mascaras.get(d) or {}, manual=1)
+    except (OSError, ValueError):
+        pass
+    return mascaras
 
 
 def foto_com_marca(n, url, mascaras):
     """A foto `url` da notícia `n` tem marca d'água/nome do jornal? (para gerar_feed_site.py)"""
+    info = mascaras.get(chave_fonte(n)) or {}
+    if info.get('manual'):
+        return True  # veículo marcado à mão pelo dono do site
     conferidas = n.get('img_marca') or {}
     if url in conferidas:
         return bool(conferidas[url])
-    info = mascaras.get(chave_fonte(n)) or {}
-    return bool(info.get('m')) and float(info.get('pct') or 0) >= FONTE_MARCA
+    return tem_mascara(info) and float(info.get('pct') or 0) >= FONTE_MARCA
 
 
 def _baixar_mapa(url, timeout):
@@ -134,7 +158,19 @@ def _baixar_mapa(url, timeout):
         dados = r.read(MAX_BYTES + 1)
     if len(dados) > MAX_BYTES:
         raise ValueError('imagem grande demais')
-    return bordas(dados)
+    return assinatura(dados)
+
+
+def assinatura(dados):
+    """(grade 64x64 da foto inteira, {zona do canto: bits}) para comparar com as máscaras."""
+    zonas = {}
+    for z, lista in zonas_de_bordas(dados).items():
+        b = 0
+        for k, v in enumerate(lista):
+            if v:
+                b |= 1 << k
+        zonas[z] = b
+    return bordas(dados), zonas
 
 
 def _mapas(urls, timeout, trabalhadores):
@@ -162,7 +198,7 @@ def aprender(noticias, mascaras, fontes_max, fotos_por_fonte, timeout, trabalhad
             continue
         por_fonte[chave_fonte(n)].append(n)
     candidatas = [f for f, ns in por_fonte.items() if f and len(ns) >= MIN_FOTOS
-                  and str((mascaras.get(f) or {}).get('em') or '') < refazer]
+                  and (str((mascaras.get(f) or {}).get('em') or '') < refazer or 'z' not in (mascaras.get(f) or {}))]  # sem cantos: refaz
     candidatas.sort(key=lambda f: -len(por_fonte[f]))
     candidatas = candidatas[:fontes_max]
     print(f'Veículos com {MIN_FOTOS}+ fotos no mês: {sum(1 for ns in por_fonte.values() if len(ns) >= MIN_FOTOS)}; '
@@ -181,14 +217,17 @@ def aprender(noticias, mascaras, fontes_max, fotos_por_fonte, timeout, trabalhad
             if len(urls) >= fotos_por_fonte + 4:
                 break
         mapas = list(_mapas(urls, timeout, trabalhadores).values())[:fotos_por_fonte]
-        masc = mascara(mapas)
-        pct = (sum(1 for m in mapas if nota(m, masc) >= MARCADA) / len(mapas)) if masc and mapas else 0.0
-        mascaras[fonte] = {'n': len(mapas), 'm': format(masc, 'x') if masc else '', 'px': bin(masc).count('1'),
-                           'pct': round(pct, 2), 'em': hoje.isoformat()}
-        if masc:
+        masc = mascara([g for g, _ in mapas])
+        zonas = {z: mascara([zs[z] for _, zs in mapas], ZW, ZH) for z in ZONAS}
+        info = {'n': len(mapas), 'm': format(masc, 'x') if masc else '', 'px': bin(masc).count('1'),
+                'z': {z: format(b, 'x') for z, b in zonas.items() if b}, 'em': hoje.isoformat()}
+        pct = (sum(1 for m in mapas if nota_total(m, info) >= MARCADA) / len(mapas)) if tem_mascara(info) and mapas else 0.0
+        info['pct'] = round(pct, 2)
+        mascaras[fonte] = dict(info, **({'manual': 1} if (mascaras.get(fonte) or {}).get('manual') else {}))
+        if tem_mascara(info):
             com_marca += 1
-            print(f'  marca d\'água: {fonte} ({len(mapas)} fotos, máscara {bin(masc).count("1")} px, '
-                  f'{pct:.0%} das fotos carimbadas)', flush=True)
+            print(f'  marca d\'água: {fonte} ({len(mapas)} fotos, grade {bin(masc).count("1")} px, cantos '
+                  f'{ {z: bin(b).count("1") for z, b in zonas.items() if b} }, {pct:.0%} das fotos carimbadas)', flush=True)
     print(f'Veículos com marca d\'água encontrados nesta rodada: {com_marca} de {len(candidatas)}')
 
 
@@ -199,12 +238,12 @@ def marcar(noticias, mascaras, dias, limite, galeria, timeout, trabalhadores):
         if str(n.get('data_iso') or '') < corte:
             continue
         info = mascaras.get(chave_fonte(n)) or {}
-        if not info.get('m'):
+        if not tem_mascara(info) or info.get('manual'):
             continue
         feitas = n.get('img_marca') or {}
         falta = [u for u in _fotos(n, galeria) if u not in feitas]
         if falta:
-            pendentes.append((n, falta, int(info['m'], 16)))
+            pendentes.append((n, falta, info))
     pendentes.sort(key=lambda p: str(p[0].get('data_iso') or ''), reverse=True)
     lote = pendentes[:limite]
     urls = [u for _, falta, _ in lote for u in falta]
@@ -214,7 +253,7 @@ def marcar(noticias, mascaras, dias, limite, galeria, timeout, trabalhadores):
         feitas = dict(n.get('img_marca') or {})
         for u in falta:
             if u in mapas:
-                v = 1 if nota(mapas[u], masc) >= MARCADA else 0
+                v = 1 if nota_total(mapas[u], masc) >= MARCADA else 0
                 feitas[u] = v
                 carimbadas += v
                 conferidas += 1
@@ -384,7 +423,8 @@ def main():
     if args.aprender:
         aprender(noticias, mascaras, args.fontes, args.fotos, args.timeout, args.trabalhadores)
         MASCARAS.write_text(json.dumps({'atualizado_em': datetime.now(timezone.utc).isoformat(timespec='seconds'),
-                                        'fontes': dict(sorted(mascaras.items()))}, ensure_ascii=False, indent=0) + '\n',
+                                        'fontes': {k: {c: v for c, v in i.items() if c != 'manual'}
+                                                   for k, i in sorted(mascaras.items()) if set(i) != {'manual'}}}, ensure_ascii=False, indent=0) + '\n',
                             encoding='utf-8')
     if args.marcar and marcar(noticias, mascaras, args.dias, args.limite, args.galeria, args.timeout, args.trabalhadores):
         tmp = ARQUIVO.with_suffix('.json.tmp')
