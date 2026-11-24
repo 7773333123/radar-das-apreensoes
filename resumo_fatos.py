@@ -607,6 +607,9 @@ def redigir(fatos, fonte='', data_iso='', uf=''):
     # Item cortado na extração ("30 porções de"): sem a preposição solta no fim (24/11/2026).
     itens = [re.sub(r'(?:\s+(?:de|do|da|dos|das|em|com|e|a|o))+\s*$', '', i).strip() for i in fatos.get('apreendido', [])]
     itens = [i for i in itens if i]
+    # "79 porções de embaladas" -> "79 porções embaladas": adjetivo não leva "de" (24/11/2026).
+    itens = [re.sub(r'\b(\w+) de (embalad\w*|maiores|menores|grandes|pequen\w*|pront\w*|fracionad\w*|individualizad\w*|'
+                    r'diversas|diversos|variad\w*|preparad\w*|separad\w*)\b', r'\1 \2', i) for i in itens]
     if any(re.search(r'\d', i) for i in itens):
         verbo = 'apreenderam' if plural else 'apreendeu'
         frases.append(f'{sujeito} {verbo} {_juntar(itens)}{local}{quando}.')

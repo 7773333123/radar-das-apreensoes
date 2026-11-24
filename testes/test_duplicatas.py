@@ -477,6 +477,8 @@ def main():
     from resumo_fatos import redigir
     if 'de em' in redigir({'orgaos': ['Polícia Civil'], 'apreendido': ['30 porções de'], 'cidades': ['Umuarama']}, '', '', 'PR'):
         erros.append('item cortado na extração não pode deixar preposição solta ("porções de em")')
+    if 'de embaladas' in redigir({'orgaos': ['Polícia Militar'], 'apreendido': ['79 porções de embaladas']}, '', '', 'PE'):
+        erros.append('adjetivo não leva "de": "79 porções embaladas"')
     # Foto de arquivo (antiga, de outro fato) troca pela foto real de outra fonte (24/11/2026, arsenal no DF).
     from gerar_feed_site import foto_de_arquivo
     if not foto_de_arquivo('https://cdn.x.com.br/wp-content/uploads/2025/12/09183337/op.jpg', '2026-11-24T07:04') \
