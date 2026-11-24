@@ -367,13 +367,51 @@ ${relacionadas.length ? `<div class="section-head"><h2>Mais de ${esc(cats[(n.c |
   return { html: pagina({ titulo: `${corta(n.t, 90)} | Radar das Apreensões`, descricao, canonico: urlNoticia(n), imagem: fotos[0], atual: 'Notícias', corpo, jsonld, indexar: indexavel(n) }), canonico: urlNoticia(n) };
 }
 
-function paginaLista({ titulo, h1, intro, itens, canonico, atual, rodape = '', indexar = true }) {
+// Mini-painel das páginas de estado e cidade (24/11/2026): números dos últimos 30 dias, posição do
+// estado no país e notícias mês a mês, em SVG leve desenhado no servidor. Sem "% vs. mês anterior":
+// a variação refletiria o crescimento da cobertura do Radar (fontes novas), não das apreensões.
+function painelLocal(itens, agora, posicao = '') {
+  const r30 = itens.filter((n) => data(n) && agora - data(n) <= 30 * 864e5);
+  const s30 = somar(r30);
+  const drogas = (s) => ['coc', 'mac', 'skh', 'cra', 'dro'].reduce((t, k) => t + (s[k] || 0), 0);
+  const meses = [];
+  const d0 = new Date(agora);
+  for (let k = 11; k >= 0; k--) {
+    const d = new Date(Date.UTC(d0.getUTCFullYear(), d0.getUTCMonth() - k, 1));
+    meses.push(d.toISOString().slice(0, 7));
+  }
+  let porMes = meses.map((m) => itens.filter((n) => (n.d || '').startsWith(m)).length);
+  // Meses antes do início da cobertura recente ficam de fora (apareceriam zerados).
+  while (porMes.length > 3 && !porMes[0]) { porMes = porMes.slice(1); meses.shift(); }
+  const ultimo = porMes.length - 1;
+  const max = Math.max(1, ...porMes);
+  const NOMES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  const barras = porMes.map((v, k) => {
+    const h = Math.max(2, Math.round(v / max * 90));
+    const mes = NOMES[+meses[k].slice(5, 7) - 1];
+    return `<g><rect x="${k * 30 + 4}" y="${100 - h}" width="22" height="${h}" rx="3"${k === ultimo ? ' class="atual"' : ''}><title>${mes}/${meses[k].slice(2, 4)}: ${num(v)} notícias${k === ultimo ? ' (mês em andamento)' : ''}</title></rect>` +
+      `<text x="${k * 30 + 15}" y="114" text-anchor="middle">${mes}</text></g>`;
+  }).join('');
+  const card = (rot, val, extra = '') => `<div class="hp-card"><dt>${esc(rot)}</dt><dd>${val}</dd>${extra}</div>`;
+  return `<section class="hoje-painel local-painel"><div class="hp-head"><h2>Últimos 30 dias</h2>${posicao ? `<span class="hp-hora">${esc(posicao)}</span>` : ''}</div>` +
+    `<dl class="hp-grid">` +
+    card('Apreensões noticiadas', num(r30.length)) +
+    card('Drogas', '≈ ' + esc(qtd(drogas(s30), 'kg'))) +
+    card('Armas de fogo', num((s30.arm || 0) + (s30.fuz || 0))) +
+    card('Munições', num(s30.mun || 0)) +
+    card('Veículos de imprensa', num(new Set(r30.flatMap((n) => [n.f, ...(n.o || []).map((o) => o[0])]).filter(Boolean)).size)) +
+    `</dl><h3 class="lp-sub">Notícias no Radar por mês</h3><svg class="lp-meses" viewBox="0 0 ${porMes.length * 30} 118" role="img" aria-label="Notícias por mês nos últimos 12 meses">${barras}</svg>` +
+    `<p class="note">Quantidades informadas pela imprensa; apreensões sem peso divulgado não entram na soma. O número de notícias por mês também acompanha a ampliação das fontes do Radar. Sem valor de estatística oficial.</p></section>`;
+}
+
+function paginaLista({ titulo, h1, intro, itens, canonico, atual, rodape = '', indexar = true, posicao = '' }) {
   const { feed } = dados();
   const agora = Date.now();
   const r30 = itens.filter((n) => data(n) && agora - data(n) <= 30 * 864e5);
   const r365 = itens.filter((n) => data(n) && agora - data(n) <= 365 * 864e5);
   const recentes = [...itens].sort((a, b) => (b.d || '').localeCompare(a.d || '')).slice(0, 60);
   const corpo = `<header class="pg-head"><h1 class="art-titulo">${esc(h1)}</h1><p class="dek">${esc(intro)}</p></header>
+${painelLocal(itens, agora, posicao)}
 <div class="duas"><section class="panel"><h3>Últimos 30 dias</h3>${kpis(r30)}</section><section class="panel"><h3>Últimos 12 meses</h3>${kpis(r365)}</section></div>
 <p class="note">Valores estimados com base nas quantidades informadas pela imprensa. Apreensões sem peso divulgado não integram a soma. Dados de caráter informativo, sem valor de estatística oficial.</p>
 <div class="section-head"><h2>Notícias mais recentes</h2><span class="count">${num(itens.length)} no acervo</span></div>${lista(recentes, feed.categorias)}${rodape}`;
@@ -385,7 +423,13 @@ function paginaEstado(uf) {
   if (!ESTADOS[uf]) return null;
   const itens = feed.noticias.filter((n) => n.uf === uf);
   const nome = ESTADOS[uf];
+  // Posição do estado no país em notícias dos últimos 30 dias.
+  const agora = Date.now(), cont = {};
+  for (const n of feed.noticias) if (n.uf && data(n) && agora - data(n) <= 30 * 864e5) cont[n.uf] = (cont[n.uf] || 0) + 1;
+  const ordem = Object.keys(cont).sort((a, b) => cont[b] - cont[a]);
+  const pos = ordem.indexOf(uf) + 1;
   return { html: paginaLista({
+    posicao: pos ? `${pos}º estado com mais notícias no país` : '',
     titulo: `Apreensões ${PREP[uf]} ${nome}`, h1: `Apreensões ${PREP[uf]} ${nome}`, canonico: `/estado/${uf}`, atual: 'Notícias', itens,
     intro: `Notícias de apreensões de drogas, armas, contrabando e outros bens ${PREP[uf]} ${nome}, reunidas de veículos de imprensa e órgãos públicos e atualizadas o dia todo.`,
     rodape: listaCidades(uf) + `<p class="more"><a class="btn ghost" href="/#uf=${uf}">Ver todas e filtrar</a> <a class="btn ghost" href="/observatorio#uf=${uf}">Abrir no Observatório</a></p>`,

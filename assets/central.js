@@ -273,7 +273,35 @@ function renderInicio() {
   // Editorias na mesma ordem dos tipos (drogas primeiro), as 4 primeiras com notícias.
   const editorias = [...porCat].filter(([, l]) => l.some(ehHoje)).sort((a, b) => a[0] - b[0]).slice(0, 4);
 
-  $('inicio').innerHTML =
+  // Painel "Hoje no Brasil" (24/11/2026): números do dia até agora e, como referência, o total de ONTEM
+  // no dia inteiro. Sem porcentagem: de manhã o dia sempre parece menor (muita notícia da madrugada só
+  // chega horas depois), e "▼ 67%" às 8h enganaria o leitor.
+  const deHoje = ns.filter((n) => ehHoje(n) && n.data.getTime() <= agora);
+  const deOntem = ns.filter((n) => n.data && diaBR(n.data) === ontem);
+  const drogasDe = (l) => l.reduce((s, n) => s + ['coc', 'mac', 'skh', 'cra', 'dro'].reduce((t, k) => t + (n.q?.[k] || 0), 0), 0);
+  const armasDe = (l) => l.reduce((s, n) => s + (n.q?.arm || 0) + (n.q?.fuz || 0), 0);
+  const municoesDe = (l) => l.reduce((s, n) => s + (n.q?.mun || 0), 0);
+  const ref = (txt) => `<span class="var">ontem: ${txt}</span>`;
+  const semana = [...Array(7)].map((_, k) => diaBR(new Date(agora - (6 - k) * DIA)));
+  const porDia = semana.map((d) => ns.filter((n) => n.data && diaBR(n.data) === d).length);
+  const maxDia = Math.max(1, ...porDia);
+  const barras = porDia.map((v, k) => {
+    const h = Math.max(2, Math.round(v / maxDia * 34));
+    return `<rect x="${k * 14}" y="${36 - h}" width="10" height="${h}" rx="2"${k === 6 ? ' class="hoje"' : ''}><title>${semana[k].split('-').reverse().slice(0, 2).join('/')}: ${num(v)} notícias${k === 6 ? ' (até agora)' : ''}</title></rect>`;
+  }).join('');
+  const ufsHoje = new Set(deHoje.map((n) => n.uf).filter(Boolean)).size;
+  const cartao = (rotulo, valor, extra = '') => `<div class="hp-card"><dt>${rotulo}</dt><dd>${valor}</dd>${extra}</div>`;
+  const painelDia = deHoje.length ? `<section class="hoje-painel" aria-label="Hoje no Brasil">` +
+    `<div class="hp-head"><h2>Hoje no Brasil</h2><span class="hp-hora">até ${esc(horaBR(new Date(agora)))}</span></div><dl class="hp-grid">` +
+    cartao('Apreensões noticiadas', num(deHoje.length), ref(num(deOntem.length)) +
+      `<svg class="hp-spark" viewBox="0 0 94 36" role="img" aria-label="Notícias por dia nos últimos 7 dias">${barras}</svg>`) +
+    cartao('Drogas', `≈ ${qtd(drogasDe(deHoje), 'kg')}`, ref(`≈ ${qtd(drogasDe(deOntem), 'kg')}`)) +
+    cartao('Armas de fogo', num(armasDe(deHoje)), ref(num(armasDe(deOntem)))) +
+    cartao('Munições', num(municoesDe(deHoje)), ref(num(municoesDe(deOntem)))) +
+    cartao('Estados com ocorrência', `${ufsHoje}<small>/27</small>`, ref(`${new Set(deOntem.map((n) => n.uf).filter(Boolean)).size}/27`)) +
+    `</dl><p class="note">Hoje até agora; ontem, o dia inteiro. As notícias da madrugada e da manhã continuam chegando ao longo do dia. Quantidades informadas pela imprensa; sem valor de estatística oficial.</p></section>` : '';
+
+  $('inicio').innerHTML = painelDia +
     `<section class="lead" aria-label="Destaques">` +
       `<div class="lead-main">${story(manchete, { dek: true, cont: true }).replace('<h3 class="headline">', '<h2 class="headline">').replace('</h3>', '</h2>')}</div>` +
       `<div class="lead-side">${lado.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx)}<h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a>`).join('')}</div>` +
