@@ -380,9 +380,30 @@ NAO_PRESO_PERTO = re.compile(r'v[íi]tima|morte d|mort[oa]s?\b|morreu|morrem|ass
 PRISAO = re.compile(r'\bpres[oa]s?\b|\bprend|\bdetid[oa]|\bcaptur|flagrante|\bautuad|voz de pris', re.I)
 
 
+# Condenado/réu citado pelo nome sem a idade (24/11/2026: "condenou Ellen Larissa de Oliveira Silva à pena",
+# nome completo aparecia no resumo; regra do dono: presos só por iniciais).
+CONDENADO_NOME = re.compile(
+    r"\b(?:condenou|condenad[oa]s?|sentenciou|sentenciad[oa]s?|absolveu|denunciou|r[ée]u|r[ée]|acusad[oa]s?)\s+"
+    r"((?:[A-ZÀ-Ý][a-zà-ÿ]+)(?:\s+(?:d[aeo]s?\s+)?[A-ZÀ-Ý][a-zà-ÿ]+){1,5})")
+
+
+CONDENADO_E_NOME = re.compile(
+    r"\b(?:e|,)\s+((?:[A-ZÀ-Ý][a-zà-ÿ]+)(?:\s+(?:d[aeo]s?\s+)?[A-ZÀ-Ý][a-zà-ÿ]+){1,5})\s+(?:à|a)\s+(?:pena|\d|[a-z]+\s+anos)")
+
+
 def nomes_dos_presos(texto):
     """[(nome completo, iniciais)] dos presos identificados (para trocar por iniciais)."""
-    return [(nome, iniciais(nome)) for nome in _presos(texto, so_nomes=True)]
+    nomes = list(_presos(texto, so_nomes=True))
+    # O segundo condenado da mesma frase: "... e Maelson do Carmo Silva a cinco anos de reclusão".
+    if CONDENADO_NOME.search(texto or ''):
+        for m in CONDENADO_E_NOME.finditer(texto or ''):
+            if not NAO_PESSOA.search(m.group(1)) and m.group(1) not in nomes:
+                nomes.append(m.group(1))
+    for m in CONDENADO_NOME.finditer(texto or ''):
+        nome = m.group(1)
+        if not NAO_PESSOA.search(nome) and nome not in nomes:
+            nomes.append(nome)
+    return [(nome, iniciais(nome)) for nome in nomes]
 
 
 def anonimizar(texto, nomes):
