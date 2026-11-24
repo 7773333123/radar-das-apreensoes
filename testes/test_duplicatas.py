@@ -474,6 +474,9 @@ def main():
     if numerais_por_extenso(_idade_dos_presos(2, [39])) != 'Duas pessoas foram presas; uma delas tem 39 anos.' \
             or _idade_dos_presos(2, [41, 39]) != '2 pessoas, de 39 e 41 anos, foram presas.':
         erros.append('idade dos presos: concordância/posição errada')
+    from resumo_fatos import redigir
+    if 'de em' in redigir({'orgaos': ['Polícia Civil'], 'apreendido': ['30 porções de'], 'cidades': ['Umuarama']}, '', '', 'PR'):
+        erros.append('item cortado na extração não pode deixar preposição solta ("porções de em")')
     # Foto de arquivo (antiga, de outro fato) troca pela foto real de outra fonte (24/11/2026, arsenal no DF).
     from gerar_feed_site import foto_de_arquivo
     if not foto_de_arquivo('https://cdn.x.com.br/wp-content/uploads/2025/12/09183337/op.jpg', '2026-11-24T07:04') \

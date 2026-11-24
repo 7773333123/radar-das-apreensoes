@@ -604,7 +604,9 @@ def redigir(fatos, fonte='', data_iso='', uf=''):
     if fatos.get('rodovia'):
         local += f', na rodovia {fatos["rodovia"]}'
     quando = ''  # a data já aparece no cabeçalho da notícia; o resumo vai direto ao fato
-    itens = fatos.get('apreendido', [])
+    # Item cortado na extração ("30 porções de"): sem a preposição solta no fim (24/11/2026).
+    itens = [re.sub(r'(?:\s+(?:de|do|da|dos|das|em|com|e|a|o))+\s*$', '', i).strip() for i in fatos.get('apreendido', [])]
+    itens = [i for i in itens if i]
     if any(re.search(r'\d', i) for i in itens):
         verbo = 'apreenderam' if plural else 'apreendeu'
         frases.append(f'{sujeito} {verbo} {_juntar(itens)}{local}{quando}.')
