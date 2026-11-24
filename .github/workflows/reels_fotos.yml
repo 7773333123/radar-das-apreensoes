@@ -1,0 +1,40 @@
+name: Fotos do Reels
+# Baixa as fotos das notícias escolhidas para um Reels e guarda no release "reels" (só quando acionado).
+# Não mexe no site nem nas coletas.
+on:
+  workflow_dispatch:
+    inputs:
+      nome:
+        description: 'Nome do pacote (ex.: reels-2026-11-24)'
+        required: true
+      urls:
+        description: 'Endereços das fotos, separados por espaço'
+        required: true
+permissions:
+  contents: write
+jobs:
+  fotos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Baixar fotos
+        env:
+          URLS: ${{ inputs.urls }}
+          NOME: ${{ inputs.nome }}
+        run: |
+          case "$NOME" in *[!A-Za-z0-9._-]*|'') echo "nome inválido"; exit 1;; esac
+          mkdir fotos; i=0
+          for u in $URLS; do
+            i=$((i+1))
+            case "$u" in https://*) ;; *) echo "ignorado: $u"; continue;; esac
+            curl -sSL --max-time 30 --max-filesize 20000000 -A "Mozilla/5.0 (RadarDasApreensoes)" -o "fotos/foto$i" "$u" || echo "falhou: $u"
+          done
+          ls -la fotos
+          tar czf "$NOME.tar.gz" -C fotos .
+      - name: Guardar no release "reels"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NOME: ${{ inputs.nome }}
+        run: |
+          gh release view reels -R "$GITHUB_REPOSITORY" >/dev/null 2>&1 || gh release create reels -R "$GITHUB_REPOSITORY" --title "Fotos dos Reels" --notes "Fotos baixadas para montar os Reels."
+          gh release upload reels "$NOME.tar.gz" --clobber -R "$GITHUB_REPOSITORY"
