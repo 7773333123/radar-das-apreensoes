@@ -42,7 +42,8 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   armas, dinheiro, mercadorias), não a de policial, viatura ou fachada. `capas_ia.py` (Claude Haiku, todas as notícias, teto próprio US$ 8/mês,
   na coleta expressa) marca as fotos em `capas_ia.json`; `gerar_feed_site.py` põe as do material primeiro e
   `duplicatas.agrupar` troca a capa da versão exibida pela foto do material de outra fonte.
-- Presos identificados só por iniciais e idade.
+- Presos identificados só por iniciais e idade (no texto). **Foto com rosto pode** (24/11/2026): se o veículo
+  original publicou a foto, ela entra como veio (no site e nos Reels); não se esconde nem desfoca rosto.
 - Duplicatas: não tolerar. Correções à mão vão em `juiz_decisoes_revisao.json` (valem como veto do grupo);
   padrões viram regra + teste em `testes/test_duplicatas.py`.
 - Notícias de Portugal/exterior, páginas que não são notícia e logotipo no lugar de foto ficam fora do site.
