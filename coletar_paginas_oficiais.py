@@ -124,5 +124,29 @@ def main():
     print(f'Páginas oficiais sem feed: {len(PAGINAS)} ({falhas} com falha); novas: {novas}; completadas: {completadas}')
 
 
+def diagnostico():
+    """Mostra o que cada portal devolve (links, filtro de assunto, data e foto da matéria). Não grava."""
+    for pagina in PAGINAS:
+        print('=' * 70, pagina['url'], flush=True)
+        try:
+            html = baixar(pagina['url']).decode('utf-8', 'replace')
+        except Exception as erro:
+            print('  ERRO ao baixar:', repr(erro)[:300])
+            continue
+        p = Links()
+        p.feed(html)
+        print(f'  bytes {len(html)}; links {len(p.links)}; de apreensão: {len(links_da_pagina(pagina))}')
+        for href, texto in p.links[:60]:
+            if len(texto) >= 25:
+                print('   ', 'A' if ASSUNTO.search(texto) else '-', urljoin(pagina['url'], href)[:90], '|', texto[:80])
+        for url, titulo in links_da_pagina(pagina)[:5]:
+            try:
+                r = ler(url, 15) or {}
+                print('  LER', url[:80], '| publicada', r.get('publicada'), '| imagem', bool(r.get('imagem')))
+            except Exception as erro:
+                print('  LER ERRO', url[:80], repr(erro)[:200])
+
+
 if __name__ == '__main__':
-    main()
+    import sys
+    diagnostico() if '--diagnostico' in sys.argv else main()

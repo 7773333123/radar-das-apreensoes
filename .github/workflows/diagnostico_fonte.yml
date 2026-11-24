@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       urls:
-        description: 'Endereços separados por espaço'
+        description: 'Endereços separados por espaço (ou "oficiais" para os portais sem feed)'
         required: true
 permissions:
   contents: read
@@ -18,7 +18,13 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
+      - name: Portais oficiais sem feed
+        if: inputs.urls == 'oficiais'
+        run: |
+          pip install -q -r requirements.txt 2>/dev/null || true
+          python coletar_paginas_oficiais.py --diagnostico
       - name: Conferir
+        if: inputs.urls != 'oficiais'
         env:
           URLS: ${{ inputs.urls }}
         run: |
