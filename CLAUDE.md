@@ -46,6 +46,11 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   mesma rodada (`--recentes 6`). `verificar_site.yml` mede o atraso (meta: até ~30 min).
 - **Republicação atrasada é duplicata** (22/11/2026): o mesmo fato reescrito dias depois (ex.: O Antagonista
   "Lado OA") vai ao juiz quando repete o valor do título (`duplicatas._mesmo_valor`, até 7 dias).
+- **Estado mal lido não esconde duplicata** (24/11/2026): valor distintivo igual no título (R$ 850 mil, 383 tabletes)
+  em até 2 dias vai ao juiz mesmo com estados diferentes; nome próprio raro em comum ("Fundeb", "Operação Impacto")
+  em até 1 dia, com o mesmo material, também (`duplicatas._mesmo_valor`, `_palavra_rara`). O "mesmo" do juiz une.
+- **Site no ar nunca fica parado** (24/11/2026): no conflito de gravação entre coletas, grava-se o acervo mesclado
+  junto com o site gerado (`acervo.salvar`).
 - **Página inicial sem quadro vazio** (22/11/2026): "Em alta" sem matéria repercutida hoje não aparece.
 - **Foto sem marca d'água nem nome de jornal** (24/11/2026): `marcas_dagua.py` aprende onde cada veículo
   carimba a marca (bordas repetidas nos mesmos pixels em fotos diferentes) e confere as fotos (`img_marca`).

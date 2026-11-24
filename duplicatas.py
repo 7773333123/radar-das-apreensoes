@@ -747,6 +747,18 @@ def _valores(t):
     return out
 
 
+def _valor_distintivo(v):
+    """Valor que dificilmente se repete em fatos diferentes: dinheiro (R$ 850 mil) ou número não
+    redondo (383 tabletes, 46,5 kg). "20 kg", "300 quilos" são comuns demais entre estados."""
+    if 'r$' in v:
+        return True
+    n = re.match(r'\s*(\d[\d.]*(?:,\d+)?)', v)
+    if not n:
+        return False
+    txt = n.group(1).replace('.', '')
+    return ',' in txt or (len(txt) >= 2 and not txt.endswith('0') and not txt.endswith('5'))
+
+
 def _mesmo_valor(itens, dia, unir, raiz, dias=7):
     """Republicação atrasada de um comunicado (O Antagonista reescreve releases do Ibama, PRF e
     Receita dias depois, 22/11/2026): mesmo valor distintivo no título (R$ 197 mil, 37 toneladas),
@@ -758,6 +770,7 @@ def _mesmo_valor(itens, dia, unir, raiz, dias=7):
     juiz = decisoes_juiz()
     ja = {chave_par(p['a'][0], p['b'][0]) for p in SUSPEITAS}
     recentes = [k for k in range(len(itens)) if dia[k] is not None and dia[k] >= limite]
+    raros = _nomes_raros(itens, recentes, raiz)
     por_valor = {}
     for k in recentes:
         for v in _valores(itens[k].get('t')):
@@ -777,16 +790,90 @@ def _mesmo_valor(itens, dia, unir, raiz, dias=7):
                     continue
                 if comum and not (materiais_titulo(ia.get('t')) & materiais_titulo(ib.get('t'))):
                     continue
-                if ia.get('uf') and ib.get('uf') and ia['uf'] != ib['uf']:
+                # Estados diferentes (24/11/2026): o estado de uma das versões costuma vir mal lido
+                # ("a caminho de Salvador" virou BA; Metrópoles virou DF numa operação do Piauí). Valor
+                # distintivo (não comum) em até 2 dias vai ao juiz mesmo assim; valor comum, só com
+                # palavra própria do título em comum ("Rodoviária Interestadual", "Andradina").
+                outro_uf = bool(ia.get('uf') and ib.get('uf') and ia['uf'] != ib['uf'])
+                if outro_uf and (abs(dia[a] - dia[b]) > 2 or not (
+                        raros.get(a, set()) & raros.get(b, set()) or
+                        (_valor_distintivo(v) and ('r$' in v or materiais_titulo(ia.get('t')) & materiais_titulo(ib.get('t')))))):
                     continue
                 chave = chave_par(ia.get('i'), ib.get('i'))
                 decisao = juiz.get(chave, {}).get('v')
                 if decisao == 'mesmo':
                     if _grupos_coerentes(itens, recentes, raiz, a, b):
-                        unir(a, b, 'mesmo-valor+juiz')
+                        unir(a, b, 'mesmo-valor+juiz', forcar=outro_uf)
                 elif decisao is None and chave not in ja:
                     ja.add(chave)
                     SUSPEITAS.append({'nota': 1.0, 'motivos': ['mesmo valor no título: ' + v],
+                                      'a': [ia['i'], ia.get('f', ''), ia['t'], ia.get('d', ''), ia.get('uf', ''),
+                                            str(ia.get('_txt') or ia.get('_lead', ''))[:700], ia.get('_cid') or ''],
+                                      'b': [ib['i'], ib.get('f', ''), ib['t'], ib.get('d', ''), ib.get('uf', ''),
+                                            str(ib.get('_txt') or ib.get('_lead', ''))[:700], ib.get('_cid') or '']})
+
+
+_COMUNS_RARA = None
+# Nomes de órgão/cargo com inicial maiúscula não distinguem um fato de outro.
+_INSTITUCIONAIS = '''policia civil militar federal rodoviaria penal operacao guarda municipal receita estado estadual
+    delegacia batalhao forca tatica justica ministerio publico tribunal governo prefeitura secretaria
+    nacional ambiental gefron rotam bope choque deic denarc gaeco ficco'''
+
+
+def _nomes_raros(itens, recentes, raiz, max_df=3):
+    """{k: nomes próprios do título que aparecem em no máximo max_df FATOS (grupos) da janela}."""
+    global _COMUNS_RARA
+    if _COMUNS_RARA is None:
+        try:
+            from localizar_uf import NOMES_ESTADOS
+            estados = {radical(normal(w)) for nome in NOMES_ESTADOS.values() for w in str(nome).split()}
+        except Exception:
+            estados = set()
+        _COMUNS_RARA = estados | {radical(w) for w in PALAVRAS_VAZIAS} | {radical(w) for w in _INSTITUCIONAIS.split()}
+    nomes = {k: {w for w in nomes_proprios(itens[k].get('t')) if w not in _COMUNS_RARA and len(w) >= 4} for k in recentes}
+    grupos = {}
+    for k, ws in nomes.items():
+        for w in ws:
+            grupos.setdefault(w, set()).add(raiz(k))
+    return {k: {w for w in ws if len(grupos[w]) <= max_df} for k, ws in nomes.items()}
+
+
+def _palavra_rara(itens, dia, unir, raiz, max_df=3, max_pares=150):
+    """Nome próprio raro em comum no título, até 1 dia (24/11/2026): "Fundeb", "Andradina".
+    Pares que as outras regras não pegam (títulos curtos, estado mal lido em uma das versões) vão ao
+    juiz de IA; o "mesmo" do juiz une (o estado de uma das versões pode ter sido mal lido)."""
+    validos = [x for x in dia if x is not None]
+    if not validos:
+        return
+    limite = max(validos) - 2
+    recentes = [k for k in range(len(itens)) if dia[k] is not None and dia[k] >= limite]
+    raros = _nomes_raros(itens, recentes, raiz, max_df)
+    por_nome = {}
+    for k, ws in raros.items():
+        for w in ws:
+            por_nome.setdefault(w, []).append(k)
+    juiz = decisoes_juiz()
+    ja = {chave_par(p['a'][0], p['b'][0]) for p in SUSPEITAS}
+    enviados = 0
+    for w, ks in por_nome.items():
+        for x in range(len(ks)):
+            for y in range(x + 1, len(ks)):
+                a, b = ks[x], ks[y]
+                if raiz(a) == raiz(b) or abs(dia[a] - dia[b]) > 1:
+                    continue
+                ia, ib = itens[a], itens[b]
+                ma, mb = materiais_titulo(ia.get('t')), materiais_titulo(ib.get('t'))
+                if (ma or mb) and not ma & mb or quantidades_em_conflito(ia.get('_q'), ib.get('_q')):
+                    continue
+                chave = chave_par(ia.get('i'), ib.get('i'))
+                decisao = juiz.get(chave, {}).get('v')
+                if decisao == 'mesmo':
+                    if _grupos_coerentes(itens, recentes, raiz, a, b):
+                        unir(a, b, 'palavra-rara+juiz', forcar=True)
+                elif decisao is None and chave not in ja and enviados < max_pares:
+                    ja.add(chave)
+                    enviados += 1
+                    SUSPEITAS.append({'nota': 0.9, 'motivos': ['nome raro no título: ' + w],
                                       'a': [ia['i'], ia.get('f', ''), ia['t'], ia.get('d', ''), ia.get('uf', ''),
                                             str(ia.get('_txt') or ia.get('_lead', ''))[:700], ia.get('_cid') or ''],
                                       'b': [ib['i'], ib.get('f', ''), ib['t'], ib.get('d', ''), ib.get('uf', ''),
@@ -1596,6 +1683,10 @@ def agrupar(itens, motivos=None):
         _mesmo_valor(itens, dia, unir, raiz)
     except Exception as erro:
         print(f'Busca por mesmo valor com erro (site gerado sem ela): {erro!r}')
+    try:
+        _palavra_rara(itens, dia, unir, raiz)
+    except Exception as erro:
+        print(f'Busca por palavra rara com erro (site gerado sem ela): {erro!r}')
 
     grupos = {}
     for k in range(n):
