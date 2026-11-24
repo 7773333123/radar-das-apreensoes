@@ -619,3 +619,7 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
 .ed-head .count, .ed-head .ed-link { margin-left: auto; font-size: 13px; }
 .ed-head .ed-link { font-weight: 700; color: var(--accent); white-space: nowrap; }
 @media (max-width: 760px) { .ed-head .count { font-size: 12px; } }
+
+/* Título das 3 principais (24/11/2026), no mesmo padrão dos demais títulos. */
+.ed-principais { margin-top: 22px; margin-bottom: 0; }
+.ed-principais + .lead { padding-top: 16px; }
