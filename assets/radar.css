@@ -623,3 +623,18 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
 /* Título das 3 principais (24/11/2026), no mesmo padrão dos demais títulos. */
 .ed-principais { margin-top: 22px; margin-bottom: 0; }
 .ed-principais + .lead { padding-top: 16px; }
+
+/* "Últimos 30 dias" em destaque (24/11/2026): cartões com ícone vermelho, número em vermelho e mini-gráfico diário. */
+.k30s { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; }
+.k30 { position: relative; padding: 12px 14px 10px; border-radius: 14px; min-width: 0;
+  background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 11%, var(--surface)) 0%, color-mix(in srgb, var(--accent) 3%, var(--surface)) 100%);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line)); }
+.k30-top { display: flex; align-items: center; gap: 8px; }
+.k30-ic { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; }
+.k30-ic svg { width: 16px; height: 16px; }
+.k30 dt { font: 800 11px/1.2 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.k30 dd { margin: 8px 0 6px; font: 800 28px/1.05 var(--serif); color: var(--accent); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.k30-spark { display: block; width: 100%; height: 30px; }
+.k30-spark rect { fill: color-mix(in srgb, var(--accent) 32%, transparent); }
+.k30-spark rect.hoje { fill: var(--accent); }
+@media (max-width: 760px) { .k30 dd { font-size: 24px; } .k30 { padding: 10px 12px 8px; } }
