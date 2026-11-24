@@ -822,18 +822,43 @@ def main():
         return bool(it.get('img') or it.get('x') or d.get('tr'))
     # Foto com marca d'água que o agrupamento não trocou por foto limpa de outra fonte: usa uma
     # foto limpa da própria galeria ou fica sem foto ("sf": o site não busca a foto original).
-    sem_marca = 0
+    # Antes de ficar sem foto: a MESMA foto, limpa, publicada por órgão oficial (polícia, secretaria) no
+    # mesmo estado e em até 3 dias (24/11/2026). Muitas fotos carimbadas por jornais são a foto que a
+    # própria polícia divulgou; a versão oficial entra com o crédito do órgão ("fc").
+    from duplicatas import mesma_foto_recortada as _mesma_foto
+    oficiais = [o for o in saida if o.get('_ofi') and o.get('img') and '_marca' not in o and (o.get('_h') or o.get('_mini'))]
+    def _dias(a, b):
+        try:
+            return abs((_dt.fromisoformat(a[:16]) - _dt.fromisoformat(b[:16])).total_seconds()) / 86400
+        except (TypeError, ValueError):
+            return 99
+    sem_marca = foto_oficial = 0
     for it in saida:
         if '_marca' in it:
             limpas = it.pop('_marca')
-            if limpas:
+            oficial = None
+            if not limpas and (it.get('_h') or it.get('_mini')):
+                for o in oficiais:
+                    if o is it or o.get('uf') != it.get('uf') or _dias(o.get('d', ''), it.get('d', '')) > 3:
+                        continue
+                    if (it.get('_h') and o.get('_h') and bin(it['_h'] ^ o['_h']).count('1') <= 8) or \
+                            (it.get('_mini') and o.get('_mini') and _mesma_foto(it['_mini'], o['_mini'])):
+                        oficial = o
+                        break
+            if oficial:
+                it['img'] = oficial['img']
+                it['fc'] = oficial.get('f', '')  # crédito da foto: o órgão oficial
+                it.pop('g', None)
+                foto_oficial += 1
+            elif limpas:
                 it['img'] = limpas[0]
             else:
                 it.pop('img', None)
                 it.pop('g', None)
                 it['sf'] = 1
                 sem_marca += 1
-    print(f"Fotos com marca d'água fora do site (sem foto limpa de outra fonte): {sem_marca}")
+    print(f"Fotos com marca d'água fora do site (sem foto limpa de outra fonte): {sem_marca}; "
+          f"trocadas pela mesma foto do órgão oficial: {foto_oficial}")
     vazias = [it for it in saida if not tem_conteudo(it)]
     if vazias:
         saida = [it for it in saida if tem_conteudo(it)]
