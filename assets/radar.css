@@ -587,3 +587,13 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
   .lead-faixa .headline, .editoria .first .headline, .fr-principais .headline { font-size: 16px; }
   .lead-faixa .story, .editoria .first .story, .fr-principais .story { grid-template-columns: minmax(0, 1fr) 88px; }
 }
+
+/* "Em alta" em destaque (24/11/2026): fundo vermelho bem claro e suave, título vermelho maior com ponto pulsante. */
+.panel-alta { background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 9%, var(--surface)) 0%, color-mix(in srgb, var(--accent) 3%, var(--surface)) 100%);
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--line)); box-shadow: 0 6px 18px -12px color-mix(in srgb, var(--accent) 45%, transparent); }
+.panel-alta h3 { display: flex; align-items: center; gap: 9px; color: var(--accent); font: 800 17px/1.1 var(--sans); letter-spacing: .12em; margin-bottom: 8px; }
+.alta-ponto { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 50%, transparent); }
+@media (prefers-reduced-motion: no-preference) { .alta-ponto { animation: altaPulso 1.8s ease-out infinite; } }
+@keyframes altaPulso { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); } 100% { box-shadow: 0 0 0 9px transparent; } }
+.panel-alta .trend li { border-bottom-color: color-mix(in srgb, var(--accent) 14%, var(--line)); }
+.panel-alta .note { color: color-mix(in srgb, var(--accent) 35%, var(--muted)); }
