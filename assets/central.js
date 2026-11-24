@@ -276,7 +276,7 @@ function renderInicio() {
   [...frPrincipais, ...frMenores, ...frExtras].forEach((n) => usados.add(n));
   const lugarFr = (n) => `${n.cidade ? `${n.cidade} (${n.uf})` : (NOME_UF[n.uf] || '')}`;
   const blocoFronteira = frPrincipais.length ? `<section class="fronteira" aria-label="Fronteira">` +
-    `<div class="section-head ed-head"><span class="ed-ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 42s-13-11-13-21a13 13 0 0 1 26 0c0 10-13 21-13 21z"/><circle cx="24" cy="21" r="4.5"/></svg></span><h2>Fronteira</h2>` +
+    `<div class="section-head ed-head"><span class="ed-ic">${ICONE.mapa}</span><h2>Fronteira</h2>` +
     `<span class="ed-qtd">${frPrincipais.length + frMenores.length + frExtras.length} notícias</span></div>` +
     `<div class="fr-principais">${frPrincipais.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}">${midia(n)}` +
       `<div><div class="kicker">${esc(n.polo)}</div><h3 class="headline">${esc(n.titulo)}</h3>` +
@@ -305,7 +305,6 @@ function renderInicio() {
     const barras = vals.map((v, k) => { const h = Math.max(1.5, (v / max) * 30); return `<rect x="${(k * (w + gap)).toFixed(1)}" y="${(32 - h).toFixed(1)}" width="${w}" height="${h.toFixed(1)}" rx="1"${k === vals.length - 1 ? ' class="hoje"' : ''}/>`; }).join('');
     return `<svg class="k30-spark" viewBox="0 0 ${(30 * (w + gap)).toFixed(0)} 32" preserveAspectRatio="none" role="img" aria-label="${esc(rotulo)} por dia nos últimos 30 dias">${barras}</svg>`;
   };
-  const IC = (d) => `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
   const kpi30 = (rotulo, valor, vals, icone) => `<div class="k30"><div class="k30-top"><span class="k30-ic">${icone}</span><dt>${rotulo}</dt></div>` +
     `<dd>${valor}</dd>${mini(vals, rotulo)}</div>`;
   const porUf = {};
@@ -336,7 +335,7 @@ function renderInicio() {
   const ufsHoje = new Set(deHoje.map((n) => n.uf).filter(Boolean)).size;
   const cartao = (rotulo, valor, extra = '', icone = '') => `<div class="hp-card">${icone ? `<span class="hp-ic">${icone}</span>` : ''}<dt>${rotulo}</dt><dd>${valor}</dd>${extra}</div>`;
   const painelDia = deHoje.length ? `<section class="hoje-painel" aria-label="Hoje no Brasil">` +
-    `<div class="hp-head"><h2><span class="hp-ic hp-ic-tit">${IC('<circle cx="24" cy="24" r="16"/><path d="M24 15v10l7 4"/>')}</span>Hoje no Brasil</h2><span class="hp-hora">até ${esc(horaBR(new Date(agora)))}</span></div><dl class="hp-grid">` +
+    `<div class="hp-head"><h2><span class="hp-ic hp-ic-tit">${ICONE.relogio}</span>Hoje no Brasil</h2><span class="hp-hora">até ${esc(horaBR(new Date(agora)))}</span></div><dl class="hp-grid">` +
     cartao('Apreensões noticiadas', num(deHoje.length), ref(num(deOntem.length)) +
       `<svg class="hp-spark" viewBox="0 0 94 36" role="img" aria-label="Notícias por dia nos últimos 7 dias">${barras}</svg>`,
       ICONE.jornal) +
@@ -347,7 +346,7 @@ function renderInicio() {
     `</dl><p class="note">Hoje até agora; ontem, o dia inteiro. As notícias da madrugada e da manhã continuam chegando ao longo do dia. Quantidades informadas pela imprensa; sem valor de estatística oficial.</p></section>` : '';
 
   $('inicio').innerHTML = painelDia +
-    `<div class="section-head ed-head ed-principais"><span class="ed-ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 34V24a10 10 0 0 1 20 0v10"/><path d="M10 34h28v5H10z"/><path d="M24 6v4M9 12l3 3M39 12l-3 3"/><path d="M20 24a4 4 0 0 1 4-4"/></svg></span><h2>Destaques do dia</h2>` +
+    `<div class="section-head ed-head ed-principais"><span class="ed-ic">${ICONE.sirene}</span><h2>Destaques do dia</h2>` +
     `<span class="ed-qtd">${new Date(agora).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', timeZone: 'America/Sao_Paulo' }).replace('.', '')}</span></div>` +
     `<section class="lead" aria-label="Destaques do dia">` +
       `<div class="lead-tres">${principais.map((n, k) => (k === 2 ? '<div class="principal-fr">' : '<div>') +
@@ -357,7 +356,7 @@ function renderInicio() {
         `<div class="ver-mais"><a href="#resultados" data-ir-lista>Ver mais notícias</a></div>` : '') +
     `</section>` +
     blocoFronteira +
-    `<div class="section-head ed-head"><span class="ed-ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 40h32"/><path d="M13 34V24M21 34V14M29 34V20M37 34V9"/></svg></span><h2>${alta.length ? 'Em alta e em números' : 'Em números'}</h2><a class="ed-link" href="observatorio">Observatório →</a></div>` +
+    `<div class="section-head ed-head"><span class="ed-ic">${ICONE.grafico}</span><h2>${alta.length ? 'Em alta e em números' : 'Em números'}</h2><a class="ed-link" href="observatorio">Observatório →</a></div>` +
     `<section class="band${alta.length ? '' : ' sem-alta'}">` +
       (alta.length ? `<div class="panel panel-alta"><h3><span class="alta-ponto" aria-hidden="true"></span>Em alta</h3><ol class="trend">${alta.map((n) =>
         `<li><a class="story com-foto" href="${urlNoticia(n)}" data-read="${n.i}"><div><h4 class="headline">${esc(n.titulo)}</h4><div class="meta"><span class="sources">${n.outras.length + 1} veículos</span> · ${esc(relativo(n.data))}</div></div>${midia(n)}</a></li>`).join('')}</ol>` +

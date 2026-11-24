@@ -46,22 +46,26 @@ const I = (d) => `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" str
 // Ícones cheios (24/11/2026): folha de maconha e pistola, mais fáceis de reconhecer que o traço.
 const F = (d) => `<svg viewBox="0 0 48 48" fill="currentColor" stroke="none" aria-hidden="true">${d}</svg>`;
 // Outros ícones dos painéis: tablete de droga (cocaína), munição, mapa e jornal.
+// Conjunto cheio e moderno (24/11/2026), o mesmo estilo em todo o site.
 export const ICONE = {
-  tablete: I('<path d="M7 17l17-8 17 8v14l-17 8-17-8z"/><path d="M7 17l17 8 17-8M24 25v14"/><path d="M15.5 13l17 8M32.5 13l-17 8" stroke-width="2"/>'),
-  municao: I('<path d="M11 40V22c0-6 4-12 4-12s4 6 4 12v18z"/><path d="M29 40V22c0-6 4-12 4-12s4 6 4 12v18z"/><path d="M11 33h8M29 33h8"/>'),
-  mapa: I('<path d="M24 42s-13-11-13-21a13 13 0 0 1 26 0c0 10-13 21-13 21z"/><circle cx="24" cy="21" r="4.5"/>'),
-  jornal: I('<path d="M10 9h24v30H14a4 4 0 0 1-4-4z"/><path d="M34 17h5v18a4 4 0 0 1-8 0"/><path d="M16 16h12M16 23h12M16 30h8"/>'),
+  tablete: F('<path d="M24 6l19 8.5-19 8.5L5 14.5z"/><path d="M5 18l17 7.6V43L5 35.4z" opacity=".75"/><path d="M43 18l-17 7.6V43l17-7.6z" opacity=".9"/>'),
+  municao: F('<path d="M9 25c0-8 5.5-17 5.5-17S20 17 20 25z"/><path d="M9 28h11v15H9z"/><path d="M28 25c0-8 5.5-17 5.5-17S39 17 39 25z"/><path d="M28 28h11v15H28z"/>'),
+  mapa: F('<path fill-rule="evenodd" d="M24 45S9.5 32.5 9.5 21a14.5 14.5 0 0 1 29 0C38.5 32.5 24 45 24 45zm0-18.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11z"/>'),
+  jornal: F('<path fill-rule="evenodd" d="M8 7h27v34H13a5 5 0 0 1-5-5zM14 14v3.5h15V14zM14 21.5V25h15v-3.5zM14 29v3.5h9V29z"/><path d="M37 15h5v21a5 5 0 0 1-5 5z"/>'),
+  relogio: F('<path fill-rule="evenodd" d="M24 5a19 19 0 1 0 0 38 19 19 0 0 0 0-38zm-1.8 8h3.6v10.2l7.3 4.2-1.8 3.1-9.1-5.3z"/>'),
+  sirene: F('<path d="M12 36V25.5a12 12 0 0 1 24 0V36z"/><path d="M7 38.5h34V44H7z"/><path d="M22.4 3h3.2v7h-3.2zM7.3 9.6l2.3-2.3 5 5-2.3 2.3zM40.7 9.6l-2.3-2.3-5 5 2.3 2.3z"/>'),
+  grafico: F('<path d="M6 25h7v14H6zM16.5 15h7v24h-7zM27 20h7v19h-7zM37.5 8h7v31h-7z"/><path d="M4 41.5h42V45H4z"/>'),
 };
 export const ICONES = [
   F('<path transform="rotate(0 24 31)" d="M24 31C18.1 18.9 19.7 8.1 24 4C28.3 8.1 29.9 18.9 24 31Z"/><path transform="rotate(-38 24 31)" d="M24 31C18.9 20.6 20.3 11.4 24 8C27.7 11.4 29.1 20.6 24 31Z"/><path transform="rotate(38 24 31)" d="M24 31C18.9 20.6 20.3 11.4 24 8C27.7 11.4 29.1 20.6 24 31Z"/><path transform="rotate(-78 24 31)" d="M24 31C20.3 23.4 21.3 16.6 24 14C26.7 16.6 27.7 23.4 24 31Z"/><path transform="rotate(78 24 31)" d="M24 31C20.3 23.4 21.3 16.6 24 14C26.7 16.6 27.7 23.4 24 31Z"/><path transform="rotate(-112 24 31)" d="M24 31C21.8 26.5 22.4 22.5 24 21C25.6 22.5 26.2 26.5 24 31Z"/><path transform="rotate(112 24 31)" d="M24 31C21.8 26.5 22.4 22.5 24 21C25.6 22.5 26.2 26.5 24 31Z"/><rect x="22.8" y="31" width="2.4" height="13" rx="1.2"/>'),
   F('<path d="M5 13h35a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H25.5l-1.2 2.6a4 4 0 0 1-3.6 2.4H19l-2.6 11.4a2 2 0 0 1-2 1.6H8.6a1.5 1.5 0 0 1-1.5-1.8L10 23H5a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z"/><path d="M38 11h3v2h-3z"/>'),
-  I('<rect x="6" y="14" width="22" height="20" rx="2"/><path d="M28 20h8l6 7v7H28zM6 22h22"/><circle cx="14" cy="36" r="3"/><circle cx="34" cy="36" r="3"/>'),
-  I('<path d="M8 30l4-10h24l4 10v6H8z"/><circle cx="15" cy="36" r="3"/><circle cx="33" cy="36" r="3"/><path d="M14 20l3-6h14l3 6"/>'),
-  I('<rect x="6" y="14" width="36" height="20" rx="2"/><circle cx="24" cy="24" r="5"/><path d="M11 19h2M35 29h2"/>'),
-  I('<path d="M24 42V24M24 24c-8 0-12-6-12-12 6 0 12 4 12 12zM24 30c6 0 12-4 12-12-6 0-12 4-12 12z"/>'),
-  I('<rect x="10" y="18" width="28" height="12" rx="6" transform="rotate(-35 24 24)"/><path d="M20 14l8 20"/>'),
-  I('<path d="M8 40h32M10 36h28M12 20h24v16H12zM8 20l16-12 16 12"/><path d="M18 24v8M24 24v8M30 24v8"/>'),
-  I('<circle cx="20" cy="20" r="11"/><path d="M28 28l12 12"/>'),
+  F('<path d="M3 11h25a1 1 0 0 1 1 1v20H3a1 1 0 0 1-1-1V12a1 1 0 0 1 1-1z"/><path d="M31 17h7.5a2 2 0 0 1 1.6.8l5.4 7.2V32H31z"/><circle cx="11" cy="36" r="4.5"/><circle cx="37" cy="36" r="4.5"/>'),
+  F('<path fill-rule="evenodd" d="M6 26l4.6-9.6A4 4 0 0 1 14.2 14h19.6a4 4 0 0 1 3.6 2.4L42 26v8a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2zM13.5 25h21l-3-7.5h-15z"/><circle cx="14" cy="37" r="4.5"/><circle cx="34" cy="37" r="4.5"/>'),
+  F('<path d="M8 9h34a2 2 0 0 1 2 2v1H10a2 2 0 0 0-2 2z" opacity=".6"/><path fill-rule="evenodd" d="M6 15h36a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V17a2 2 0 0 1 2-2zM24 20a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/>'),
+  F('<path d="M41 6C20 6 8 16 8 31c0 3 .6 5.8 1.6 8.2L5.5 43.3l2.2 2.2 4-4C14.2 42.5 17 43 20 43c15 0 21-15 21-37z"/>'),
+  F('<g transform="rotate(-40 24 24)"><path d="M11 17h12v14H11a7 7 0 0 1 0-14z"/><path d="M25 17h12a7 7 0 0 1 0 14H25z" opacity=".6"/></g>'),
+  F('<path d="M24 4L4 14.5V19h40v-4.5z"/><path d="M8 21h5v15H8zM17 21h5v15h-5zM26 21h5v15h-5zM35 21h5v15h-5z"/><path d="M4 38h40v6H4z"/>'),
+  F('<path fill-rule="evenodd" d="M20 5a15 15 0 1 0 8.9 27.1l9.4 9.4 3.2-3.2-9.4-9.4A15 15 0 0 0 20 5zm0 5a10 10 0 1 1 0 20 10 10 0 0 1 0-20z"/>'),
 ];
 // Sem foto: o brasão oficial da instituição que fez a ação (img/brasoes, conferidos à mão) e o
 // nome dela; sem brasão disponível, um escudo genérico; sem órgão identificado, a editoria.
