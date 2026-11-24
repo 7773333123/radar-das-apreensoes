@@ -67,13 +67,13 @@ confere('tarjas pretas laterais não viram marca', md.mascara([md.bordas(tarja(s
 
 # foto_com_marca: conferida vale; sem conferir, vale o veículo que carimba quase tudo.
 masc = {'site.com.br': {'m': 'ff', 'pct': 0.9}, 'limpo.com.br': {'m': '', 'pct': 0}, 'as-vezes.com.br': {'m': 'ff', 'pct': 0.3}}
-n = {'url': 'https://www.site.com.br/x', 'img_marca': {'https://a/1.jpg': 0}}
+n = {'url': 'https://www.site.com.br/x', 'img_marca': {'https://a/1.jpg': 0}, 'img_marca_v': md.VERSAO}
 confere('foto conferida limpa passa', not md.foto_com_marca(n, 'https://a/1.jpg', masc))
 confere('foto não conferida de veículo que carimba 90%: fora', md.foto_com_marca(n, 'https://a/2.jpg', masc))
 confere('veículo sem marca: passa', not md.foto_com_marca({'url': 'https://limpo.com.br/x'}, 'https://a/3.jpg', masc))
 confere('veículo que carimba às vezes: só a conferida sai',
         not md.foto_com_marca({'url': 'https://as-vezes.com.br/x'}, 'https://a/4.jpg', masc)
-        and md.foto_com_marca({'url': 'https://as-vezes.com.br/x', 'img_marca': {'https://a/4.jpg': 1}}, 'https://a/4.jpg', masc))
+        and md.foto_com_marca({'url': 'https://as-vezes.com.br/x', 'img_marca': {'https://a/4.jpg': 1}, 'img_marca_v': md.VERSAO}, 'https://a/4.jpg', masc))
 # Cantos (24/11/2026): fotos de formatos diferentes (retrato/paisagem) com a marca a distância fixa do canto.
 def canto(semente, marca, tam):
     r = random.Random(semente)
@@ -101,5 +101,12 @@ confere('veículo sem marca: nenhum canto aprende', all(md.mascara([z[c] for _, 
 # Marcado à mão (fontes.json "marca_dagua": true): toda foto conta como carimbada.
 confere('veículo marcado à mão: foto conferida limpa também sai',
         md.foto_com_marca({'url': 'https://manual.com.br/x', 'img_marca': {'u': 0}}, 'u', {'manual.com.br': {'manual': 1}}))
+# Meio da foto com poucos pixels "fixos" (assunto centralizado) não é marca; canto pequeno também não.
+pequeno = format((1 << 15) - 1, 'x')  # 15 px
+confere('meio com 15 px não conta como marca', not md.tem_mascara({'z': {'meio': pequeno}}))
+confere('canto com 15 px não conta como marca', not md.tem_mascara({'z': {'inf_dir': pequeno}}))
+confere('canto com 30 px conta', md.tem_mascara({'z': {'inf_dir': format((1 << 30) - 1, 'x')}}))
+confere('conferência de versão antiga não vale', not md.foto_com_marca(
+    {'url': 'https://as-vezes.com.br/x', 'img_marca': {'u': 1}}, 'u', {'as-vezes.com.br': {'m': 'ff', 'pct': 0.3}}))
 print('falhas:', falhas)
 sys.exit(1 if falhas else 0)

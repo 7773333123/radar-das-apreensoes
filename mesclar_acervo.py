@@ -46,7 +46,15 @@ def juntar(base, outro):
                     junto[u] = k
             base[campo] = junto
         elif campo == 'img_marca' and isinstance(valor, dict) and isinstance(atual, dict):
-            base[campo] = {**atual, **valor}  # fotos conferidas contra a marca d'água (marcas_dagua.py)
+            # Fotos conferidas contra a marca d'água (marcas_dagua.py): só junta conferências da mesma versão
+            # das máscaras; a versão mais nova substitui a antiga.
+            va, vb = int(base.get('img_marca_v') or 0), int(outro.get('img_marca_v') or 0)
+            if vb > va:
+                base[campo], base['img_marca_v'] = valor, vb
+            elif vb == va:
+                base[campo] = {**atual, **valor}
+        elif campo == 'img_marca_v':
+            continue  # tratado junto com img_marca
         elif isinstance(valor, list) and isinstance(atual, list) and len(valor) > len(atual):
             base[campo] = valor
         elif campo == 'url_original' and 'news.google.com' in str(atual) and 'news.google.com' not in str(valor):
