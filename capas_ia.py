@@ -17,6 +17,7 @@ import base64
 import io
 import json
 import os
+import re
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -84,6 +85,12 @@ def candidatas(horas, ja):
             if isinstance(f, str) and f.startswith('http') and f not in fotos:
                 fotos.append(f)
         fotos = fotos[:MAX_FOTOS]
+        # Economia (24/11/2026): só onde a escolha muda a capa: galeria com 2+ fotos, ou apreensão com
+        # peso (as que disputam os destaques e podem trocar de capa com outra fonte da mesma notícia).
+        apreendido = ' '.join(str(x) for x in ((n.get('fatos') or {}).get('apreendido') or []))
+        com_peso = re.search(r'\b(?:kg|quilos?|toneladas?)\b', apreendido + ' ' + str(n.get('titulo') or ''), re.I)
+        if len(fotos) < 2 and not com_peso:
+            continue
         if fotos and any(f not in ja for f in fotos):
             saida.append((n.get('id') or n.get('url'), fotos))
     saida.sort(key=lambda x: -len(x[1]))  # galerias primeiro: é onde a escolha da capa muda alguma coisa
