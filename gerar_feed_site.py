@@ -60,6 +60,11 @@ from coletar_feeds_estaduais import agregador
 from classificar import CATEGORIAS, REGRAS, relevante, categorias as classificar_categorias
 from marcas_dagua import carregar_mascaras, foto_com_marca
 MASCARAS_MARCA = carregar_mascaras()  # marca d'água por veículo (marcas_dagua.json)
+# Capa = foto do material apreendido (regra do dono, 24/11/2026): capas_ia.py marca quais fotos mostram o
+# que foi apreendido (1) e quais não (0: policial, viatura, fachada). As do material vão primeiro.
+from capas_ia import fotos_conferidas
+CAPAS = fotos_conferidas()
+_ORDEM_CAPA = {1: 0, None: 1, 0: 2}
 
 
 # Veículos portugueses com domínio .com e marcas do noticiário de Portugal (polícias e cidades).
@@ -623,7 +628,10 @@ def main():
         # Foto com marca d'água / nome do jornal carimbado (marcas_dagua.py, regra do dono de 24/11/2026)
         # não é exibida: fica só como evidência de duplicata; a galeria leva só as fotos limpas e a
         # versão exibida troca pela foto limpa de outra fonte (duplicatas.agrupar) ou fica sem foto.
+        fotos.sort(key=lambda f: _ORDEM_CAPA.get(CAPAS.get(f), 1))  # estável: dentro do grupo, a ordem da matéria
         limpas = [f for f in fotos if not foto_com_marca(n, f, MASCARAS_MARCA)]
+        if limpas and CAPAS.get(limpas[0]) == 1:
+            item['_prod'] = 1  # a capa limpa mostra o material apreendido
         if fotos:
             item['img'] = fotos[0]
             if fotos[0] not in limpas:
@@ -866,7 +874,7 @@ def main():
         antes -= len(vazias)
     print(f'Sem foto e sem conteúdo (aguardando leitura): {len(vazias)} fora do site')
     for item in saida:
-        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx', '_mesma', '_txt', '_ofi', '_uff', '_mini', '_marca'):
+        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx', '_mesma', '_txt', '_ofi', '_uff', '_mini', '_marca', '_prod'):
             item.pop(k, None)
     for lote in list(detalhes):
         for chave in [c for c in detalhes[lote] if int(c) in removidas]:

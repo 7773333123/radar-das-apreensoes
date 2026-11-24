@@ -20,6 +20,7 @@ jobs:
     timeout-minutes: 350
     env:
       GH_TOKEN: ${{ github.token }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       INTERVALO: 480      # segundos entre o início de cada rodada (rodada mais longa: a próxima começa logo)
       RADAR_AUDITOR_DIAS: 10
       DURACAO: 19200      # 5h20: depois disso não começa rodada nova e a execução dispara a seguinte
@@ -31,7 +32,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Instalar dependências
-        run: python -m pip install --quiet googlenewsdecoder pillow numpy opencv-python-headless
+        run: python -m pip install --quiet googlenewsdecoder pillow numpy opencv-python-headless anthropic
       - name: Restaurar a análise das fotos recentes
         uses: actions/cache/restore@v4
         with:
@@ -62,8 +63,10 @@ jobs:
                 # Na entrada da notícia (24/11/2026): veículo que ainda não teve a marca aprendida é aprendido já
                 # (até 6 por rodada) e a foto nova é conferida antes de ir ao site.
                 timeout 200 python marcas_dagua.py --aprender --horas 3 --fontes 6 --marcar --dias 2 --limite 200 --timeout 8 || true
+                # Capa = foto do material apreendido (24/11/2026): o Claude Haiku marca as fotos das notícias novas.
+                timeout 240 python capas_ia.py --horas 36 --max 150 || true
                 if python testes/test_duplicatas.py >/dev/null; then
-                  python acervo.py salvar "Coleta expressa (rodada $ciclo)" feeds_saude.json duplicatas_suspeitas.json marcas_dagua.json \
+                  python acervo.py salvar "Coleta expressa (rodada $ciclo)" feeds_saude.json duplicatas_suspeitas.json marcas_dagua.json capas_ia.json \
                     && gh workflow run juiz_claude.yml --ref main || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
                 else
                   echo 'Testes de duplicatas falharam: nada gravado nesta rodada.'

@@ -1710,6 +1710,14 @@ def agrupar(itens, motivos=None):
             if '_marca' in principal and outro.get('img') and '_marca' not in outro:
                 principal['img'] = outro['img']
                 del principal['_marca']
+                if outro.get('_prod'):
+                    principal['_prod'] = 1
+            # Capa = foto do material apreendido (regra do dono, 24/11/2026): se a versão exibida mostra
+            # policial/viatura e outra fonte tem a foto do material (sem marca d'água), a capa vem dela.
+            elif outro.get('_prod') and not principal.get('_prod') and '_marca' not in outro and outro.get('img'):
+                principal['img'] = outro['img']
+                principal['_prod'] = 1
+                principal.pop('_marca', None)
             # Mantém a ordem da versão exibida (a 1ª é o selo) e acrescenta as das outras.
             principal['c'] = list(dict.fromkeys(principal.get('c', []) + outro.get('c', [])))
             if not principal['c']:
