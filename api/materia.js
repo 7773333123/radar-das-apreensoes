@@ -5,7 +5,15 @@ const { carregar, noticiaCompleta } = require('./pagina.js');
 const { lerNoticia } = require('./_extrair.js');
 
 module.exports = async (req, res) => {
-  const i = Number(new URL(req.url, 'https://x').searchParams.get('i'));
+  const q = new URL(req.url, 'https://x').searchParams;
+  // Segurança (24/11/2026): só ?i=<número>. Parâmetro a mais ou id inválido é recusado (fica no cache),
+  // para ninguém furar o cache da Vercel e gastar o servidor com milhares de endereços diferentes.
+  if ([...q.keys()].some((k) => k !== 'i') || !/^\d{1,17}$/.test(q.get('i') || '')) {
+    res.statusCode = 400;
+    res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=604800');
+    return res.end();
+  }
+  const i = Number(q.get('i'));
   let item = null;
   try { await carregar(req); item = Number.isFinite(i) && ((await noticiaCompleta(i)) || {}).n; } catch (e) { console.error(e); }
   res.setHeader('Content-Type', 'application/json; charset=utf-8');

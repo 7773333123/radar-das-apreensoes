@@ -32,12 +32,40 @@ const limpar = (f) => decodificar(String(f || '').replace(/<br\s*\/?>/gi, ' ').r
 const absoluta = (u, base) => { if (!u || !String(u).trim()) return ''; try { const x = new URL(decodificar(u).trim(), base); return /^https?:$/.test(x.protocol) ? x.href : ''; } catch { return ''; } };
 
 // ---------- rede ----------
+// Segurança (24/11/2026): o servidor só busca páginas públicas da internet. Endereço interno (localhost,
+// rede privada, metadados da nuvem) é recusado, inclusive quando chega por redirecionamento.
+function enderecoPublico(u) {
+  let x;
+  try { x = new URL(u); } catch { return false; }
+  if (!/^https?:$/.test(x.protocol) || x.username || x.password) return false;
+  const h = x.hostname.toLowerCase().replace(/^\[|\]$/g, '');
+  if (!h || h === 'localhost' || h.endsWith('.localhost') || h.endsWith('.local') || h.endsWith('.internal') || !h.includes('.') && !h.includes(':')) return false;
+  if (/^\d+$/.test(h) || /^0x/i.test(h)) return false;  // IP escrito como número
+  const v4 = h.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
+  if (v4) {
+    const [a, b] = [Number(v4[1]), Number(v4[2])];
+    if (a === 0 || a === 10 || a === 127 || a >= 224 || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31)
+      || (a === 192 && b === 168) || (a === 100 && b >= 64 && b <= 127)) return false;
+  }
+  if (h.includes(':') && (h === '::1' || h === '::' || /^f[cd]/.test(h) || /^fe[89ab]/.test(h) || h.startsWith('::ffff:'))) return false;
+  return true;
+}
+
 async function baixar(url, { timeout = 7000, limite = 2_500_000, metodo = 'GET', corpo, cabecalhos = {} } = {}) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), timeout);
   try {
-    const r = await fetch(url, { method: metodo, body: corpo, redirect: 'follow', signal: ctrl.signal,
-      headers: { 'User-Agent': UA, 'Accept-Language': 'pt-BR,pt;q=0.9', Accept: 'text/html,application/xhtml+xml,*/*;q=0.8', ...cabecalhos } });
+    let r;
+    for (let saltos = 0; ; saltos++) {  // segue no máximo 5 redirecionamentos, conferindo cada destino
+      if (!enderecoPublico(url)) throw new Error('endereço não público');
+      r = await fetch(url, { method: metodo, body: corpo, redirect: 'manual', signal: ctrl.signal,
+        headers: { 'User-Agent': UA, 'Accept-Language': 'pt-BR,pt;q=0.9', Accept: 'text/html,application/xhtml+xml,*/*;q=0.8', ...cabecalhos } });
+      const destino = r.status >= 300 && r.status < 400 && r.headers.get('location');
+      if (!destino) break;
+      if (saltos >= 5) throw new Error('redirecionamentos demais');
+      url = new URL(destino, url).href;
+      if (r.status !== 307 && r.status !== 308) { metodo = 'GET'; corpo = undefined; }
+    }
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const buf = new Uint8Array(await r.arrayBuffer()).slice(0, limite);
     // Charset: cabeçalho, depois <meta charset> (muitos sites brasileiros ainda usam ISO-8859-1).
@@ -45,7 +73,7 @@ async function baixar(url, { timeout = 7000, limite = 2_500_000, metodo = 'GET',
     if (!cs) cs = new TextDecoder('latin1').decode(buf.slice(0, 4000)).match(/<meta[^>]+charset=["']?([\w-]+)/i)?.[1];
     let texto;
     try { texto = new TextDecoder(cs || 'utf-8').decode(buf); } catch { texto = new TextDecoder('utf-8').decode(buf); }
-    return { url: r.url, texto };
+    return { url: r.url || url, texto };
   } finally { clearTimeout(t); }
 }
 
