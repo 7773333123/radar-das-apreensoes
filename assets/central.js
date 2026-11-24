@@ -190,7 +190,9 @@ function renderInicio() {
   // Destaques = notícias DO DIA (horário de Brasília), da mais relevante para a
   // menos relevante: maior quantidade apreendida primeiro, depois repercussão.
   // Só se o dia ainda tiver menos de 5 com foto (de madrugada), entra a véspera.
-  const diaBR = (d) => d.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
+  // Dia em Brasília (UTC-3 o ano todo, sem horário de verão desde 2019). Conta direta: toLocaleDateString
+  // com fuso, chamado dezenas de milhares de vezes, levava ~7 s no celular (24/11/2026).
+  const diaBR = (d) => new Date(d.getTime() - 3 * 3600e3).toISOString().slice(0, 10);
   const hoje = diaBR(new Date(agora));
   const ontem = diaBR(new Date(agora - DIA));
   // PADRÃO (dono do site, 21/11/2026): a página inicial mostra SÓ notícias com a data do dia.
@@ -422,24 +424,24 @@ function montarControles() {
 }
 
 async function iniciar() {
-  // 1º os últimos 31 dias (abre rápido e já monta manchete, destaques e panorama);
-  // depois o acervo completo, para a lista com busca e filtros por ano.
-  const rapida = carregarFeed('feed-recente.json').catch(() => null);
-  const promessa = carregarFeed();
-  iniciarCabecalho(promessa);
+  // Celular (24/11/2026): abre SÓ com os últimos 31 dias (feed-recente.json) e monta tudo com eles; o
+  // acervo de 6 meses (feed.json, ~20 MB) vem depois, quando o navegador está livre, sem disputar a rede
+  // nem o processador com a primeira tela. Com busca/filtro na URL, o acervo completo vem direto.
   $('lista').innerHTML = '<li><div class="sk" style="height:120px;margin:18px 0"></div></li>'.repeat(4);
-  rapida.then((ctx) => {
-    if (!ctx || st.ctx) return;
-    const filtro = lerHash();
-    if (!filtro.q && !filtro.uf && !filtro.cat && !filtro.ano) { st.ctx = ctx; renderInicio(); st.ctx = null; }
-  });
-  try {
-    st.ctx = await promessa;
-  } catch (err) {
-    console.error(err);
-    $('lista').innerHTML = '<li class="empty">Não foi possível carregar as notícias. Verifique a conexão e recarregue a página.</li>';
-    return;
+  const h0 = lerHash();
+  const comFiltro = h0.q || h0.uf || h0.cat || h0.ano;
+  let ctx = null;
+  if (!comFiltro) ctx = await carregarFeed('feed-recente.json').catch(() => null);
+  const completo = !ctx;
+  if (!ctx) {
+    try { ctx = await carregarFeed(); } catch (err) {
+      console.error(err);
+      $('lista').innerHTML = '<li class="empty">Não foi possível carregar as notícias. Verifique a conexão e recarregue a página.</li>';
+      return;
+    }
   }
+  st.ctx = ctx;
+  iniciarCabecalho(Promise.resolve(ctx));
   montarControles();
   Object.assign(st.filtro, lerHash());
   renderInicio();
@@ -449,5 +451,14 @@ async function iniciar() {
   setInterval(atualizarAoVivo, 5 * 60000);
   setInterval(conferirAgora, 30000);  // notícia nova aparece na faixa Agora em até 30 s depois de publicada
   document.addEventListener('visibilitychange', () => { if (!document.hidden) conferirAgora(); });
+  if (completo) return;
+  // Acervo de 6 meses em segundo plano: entra no MESMO objeto (o leitor e os filtros já o usam).
+  const trazerTudo = () => carregarFeed().then((tudo) => {
+    Object.assign(st.ctx, tudo);
+    iniciarCabecalho(Promise.resolve(st.ctx));
+    render();
+  }).catch((err) => console.error(err));
+  if ('requestIdleCallback' in window) requestIdleCallback(trazerTudo, { timeout: 5000 });
+  else setTimeout(trazerTudo, 3000);
 }
 iniciar();
