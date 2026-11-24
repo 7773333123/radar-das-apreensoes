@@ -1,5 +1,5 @@
 /* Central de notícias: manchete, destaques, Em alta, panorama, editorias e busca. */
-import { $, esc, num, fold, debounce, relativo, horaBR, qtd, ESTADOS, NOME_UF, CURTO, carregarFeed, carregarAnos, anosForaDoFeed, indiceAnos, iniciarCabecalho, midia, renderMapa, ranking, urlNoticia } from './core.js';
+import { $, esc, num, fold, debounce, relativo, horaBR, qtd, ESTADOS, NOME_UF, CURTO, carregarFeed, carregarAnos, anosForaDoFeed, indiceAnos, iniciarCabecalho, midia, renderMapa, ranking, urlNoticia, ICONES } from './core.js';
 import { iniciarLeitor, kickerHTML, metaHTML } from './leitor.js';
 
 const POR_PAGINA = 20;
@@ -371,8 +371,12 @@ function renderInicio() {
       usados.add(primeira);
       const resto = janela.filter((n) => n !== primeira && !usados.has(n)).sort(porPrioridade).slice(0, 3);
       resto.forEach((n) => usados.add(n));
-      return `<section class="editoria"><div class="section-head"><h2>${esc(st.ctx.categorias[c])}</h2></div>` +
-        `<div class="first"><a class="story" href="${urlNoticia(primeira)}" data-read="${primeira.i}">${midia(primeira)}<div>${kickerHTML(primeira, st.ctx, c)}<h3 class="headline">${esc(primeira.titulo)}</h3>${metaHTML(primeira)}</div></a></div>` +
+      // Título da editoria em destaque (24/11/2026): ícone vermelho, nome forte e quantas notícias hoje.
+      // Dentro da editoria o tipo não se repete na primeira notícia: só o lugar.
+      const lugarEd = (x) => x.cidade ? `${x.cidade} (${x.uf})` : (NOME_UF[x.uf] || '');
+      return `<section class="editoria"><div class="section-head ed-head"><span class="ed-ic">${ICONES[c] || ''}</span>` +
+        `<h2>${esc(st.ctx.categorias[c])}</h2><span class="ed-qtd">${janela.length} hoje</span></div>` +
+        `<div class="first"><a class="story" href="${urlNoticia(primeira)}" data-read="${primeira.i}">${midia(primeira)}<div>${lugarEd(primeira) ? `<div class="kicker">${esc(lugarEd(primeira))}</div>` : ''}<h3 class="headline">${esc(primeira.titulo)}</h3>${metaHTML(primeira)}</div></a></div>` +
         `<ul>${resto.map((n) => `<li><a class="story com-foto" href="${urlNoticia(n)}" data-read="${n.i}"><div><h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a></li>`).join('')}</ul>` +
         `<div class="ver-mais"><a href="#cat=${c}" data-cat="${c}" data-mais="1">Ver mais notícias</a></div></section>`;
     }).join('')}</div>`;

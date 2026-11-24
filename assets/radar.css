@@ -602,3 +602,15 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
 .agora-trilho { gap: 0; border-radius: 6px; overflow: hidden;
   background: linear-gradient(to bottom, color-mix(in srgb, var(--accent) 12%, var(--surface)) 0 50%, color-mix(in srgb, #e8577a 8%, var(--surface)) 50% 100%); }
 .agora-trilho ol { padding: 5px 10px; }
+
+/* Títulos das editorias em destaque (24/11/2026): ícone em círculo vermelho, nome forte e contagem do dia. */
+.ed-head { border-top: 0; padding: 12px 14px; margin: 34px 0 14px; align-items: center; justify-content: flex-start; gap: 12px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 12%, var(--surface)) 0%, color-mix(in srgb, var(--accent) 3%, var(--surface)) 100%);
+  border-left: 5px solid var(--accent); border-radius: 0 10px 10px 0; }
+.ed-ic { flex: none; width: 38px; height: 38px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center;
+  box-shadow: 0 4px 12px -4px color-mix(in srgb, var(--accent) 70%, transparent); }
+.ed-ic svg { width: 22px; height: 22px; }
+.ed-head h2 { font: 900 18px/1.15 var(--sans); letter-spacing: .08em; color: var(--ink); }
+.ed-qtd { margin-left: auto; flex: none; font: 700 12px/1 var(--sans); color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); padding: 6px 10px; border-radius: 999px; white-space: nowrap; }
+@media (max-width: 760px) { .ed-head { padding: 10px 12px; } .ed-head h2 { font-size: 16px; letter-spacing: .06em; } .ed-ic { width: 34px; height: 34px; } }
