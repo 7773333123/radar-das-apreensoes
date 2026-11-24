@@ -106,7 +106,7 @@ def main():
         print('Capas: sem ANTHROPIC_API_KEY; nada a fazer.')
         return
     import anthropic
-    from juiz_duplicatas import PRECO_CLAUDE
+    from juiz_duplicatas import AJUSTE_REAL, PRECO_CLAUDE
     cache, gasto = carregar()
     if gasto['usd'] >= TETO_USD:
         print('Capas: teto mensal atingido; nada a fazer.')
@@ -148,7 +148,7 @@ def main():
             if gasto['usd'] >= TETO_USD:
                 break
             if u is not None:
-                gasto['usd'] = round(gasto['usd'] + ((u.input_tokens or 0) * pe + (u.output_tokens or 0) * ps) / 1e6, 6)
+                gasto['usd'] = round(gasto['usd'] + AJUSTE_REAL * ((u.input_tokens or 0) * pe + (u.output_tokens or 0) * ps) / 1e6, 6)
             if res is None:
                 falhas += 1
                 continue

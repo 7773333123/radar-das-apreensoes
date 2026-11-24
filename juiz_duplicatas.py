@@ -36,6 +36,9 @@ DECISOES = RAIZ / 'juiz_decisoes.json'
 CALIBRACAO = RAIZ / 'juiz_calibracao.json'
 GASTO = RAIZ / 'juiz_gasto.json'  # gasto do mês com o juiz Claude (API paga)
 PRECO_CLAUDE = {'claude-haiku-5-5': (0.10, 0.50), 'claude-sonnet-5-5': (2.00, 10.00), 'claude-opus-5-5': (4.00, 20.00)}
+# A conta pela tabela de preços ficou ~25% abaixo do gasto real do Console (24/11/2026: US$ 3,69 x US$ 4,58);
+# a diferença vem de cobranças que o cálculo não vê. Toda estimativa de gasto é multiplicada por este ajuste.
+AJUSTE_REAL = 1.25
 TETO_MENSAL_USD = 9.0
 ESCALONAR = 'claude-sonnet-5-5'  # o juiz Claude pergunta a este modelo quando fica incerto
 TETO_ESCALONAR_USD = 6.0  # acima deste gasto no mês, só o Haiku (o Sonnet custa ~17x mais)  # ao chegar aqui, o juiz Claude para e o juiz próprio (Qwen) assume até o mês virar
@@ -224,7 +227,7 @@ class JuizClaude:
         entrada = (u.input_tokens or 0) + (u.cache_creation_input_tokens or 0) * 1.25 + (u.cache_read_input_tokens or 0) * 0.1
         pe, ps = PRECO_CLAUDE.get(modelo, (4.0, 20.0))
         with self.trava:
-            self.gasto['usd'] = round(self.gasto['usd'] + (entrada * pe + (u.output_tokens or 0) * ps) / 1e6, 6)
+            self.gasto['usd'] = round(self.gasto['usd'] + AJUSTE_REAL * (entrada * pe + (u.output_tokens or 0) * ps) / 1e6, 6)
             self.gasto['pares'] += 1
         if r.stop_reason == 'refusal':
             return None
