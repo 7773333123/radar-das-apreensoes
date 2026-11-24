@@ -43,7 +43,12 @@ function navegador(ua) {
   return `${nome} · ${so}`;
 }
 
-async function acrescentar(token, caminho, linha, mensagem) {
+// Segurança (24/11/2026): limites contra quem tentar encher o registro com envios em massa.
+const MAX_LINHAS_DIA = 4000;     // por arquivo por dia (pessoas ou robôs)
+const MAX_POR_MINUTO = 25;       // linhas no mesmo minuto: acima disso é ataque, não leitura
+const ORIGENS = /^https:\/\/(?:www\.)?radardasapreensoes\.com\.br$|^https:\/\/radar-das-apreensoes[\w-]*\.vercel\.app$/;
+
+async function acrescentar(token, caminho, linha, mensagem, { substituir = false } = {}) {
   const url = `https://api.github.com/repos/${PRIVADO}/contents/${caminho}`;
   const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'User-Agent': 'radar-visita' };
   let status = 0;
@@ -51,6 +56,12 @@ async function acrescentar(token, caminho, linha, mensagem) {
     const g = await fetch(url, { headers, signal: AbortSignal.timeout(5000) });
     let sha, atual = '';
     if (g.ok) { const j = await g.json(); sha = j.sha; atual = Buffer.from(j.content || '', 'base64').toString('utf8'); }
+    if (substituir) atual = '';
+    const linhas = atual.split('\n').filter(Boolean);
+    const minuto = (JSON.parse(linha).quando || '').slice(0, 16);
+    if (linhas.length >= MAX_LINHAS_DIA || (minuto && linhas.slice(-MAX_POR_MINUTO).filter((l) => l.includes(`"quando":"${minuto}`)).length >= MAX_POR_MINUTO)) {
+      return 429;  // limite atingido: não grava
+    }
     const p = await fetch(url, { method: 'PUT', headers, signal: AbortSignal.timeout(5000),
       body: JSON.stringify({ message: mensagem, content: Buffer.from(atual + linha).toString('base64'), ...(sha ? { sha } : {}) }) });
     status = p.status;
@@ -63,7 +74,9 @@ module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   const token = process.env.GH_VISITA_TOKEN;
   const teste = /[?&]teste=1\b/.test(req.url || '');
-  if (req.method !== 'POST' || !token) {
+  // Só aceita o aviso enviado pelas páginas do próprio site (o navegador manda a origem em todo POST).
+  const origem = String(req.headers.origin || '');
+  if (req.method !== 'POST' || !token || (origem && !ORIGENS.test(origem)) || (!origem && !teste)) {
     res.statusCode = 204;
     return res.end();
   }
@@ -88,7 +101,7 @@ module.exports = async (req, res) => {
   let status = 0;
   try {
     status = teste
-      ? await acrescentar(token, 'teste/ok.txt', `teste ${visita.quando}\n`, 'Teste da gravação')
+      ? await acrescentar(token, 'teste/ok.txt', JSON.stringify({ quando: visita.quando }) + '\n', 'Teste da gravação', { substituir: true })
       // Pessoas em visitas/, robôs e prováveis robôs à parte em robos/ (separação pedida pelo dono, 24/11/2026).
       : await acrescentar(token, `${visita.tipo === 'pessoa' ? 'visitas' : 'robos'}/${dia}.jsonl`, JSON.stringify(visita) + '\n',
         `${visita.tipo === 'pessoa' ? 'Visitante' : 'Robô'} ${visita.quando}`);
