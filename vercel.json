@@ -156,6 +156,18 @@
   ],
   "redirects": [
     {
+      "source": "/((?!api/bloqueado).*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*[Bb][Yy][Tt][Ee][Ss][Pp][Ii][Dd][Ee][Rr].*"
+        }
+      ],
+      "destination": "/api/bloqueado",
+      "permanent": false
+    },
+    {
       "source": "/dados",
       "destination": "/",
       "permanent": true
