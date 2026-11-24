@@ -121,7 +121,7 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
     irPara(galeria.atual, false);
   }
   function montarGaleria(n, fotos) {
-    Object.assign(galeria, { fotos, fonte: n.fonte, atual: 0 });
+    Object.assign(galeria, { fotos, fonte: n.creditoFoto || n.fonte, atual: 0 });  // fc: foto do órgão oficial
     const alvo = $('leitorFotos');
     if (!alvo) return;
     if (!fotos.length) {

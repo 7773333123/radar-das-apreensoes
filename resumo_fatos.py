@@ -27,7 +27,9 @@ ORGAOS = [
     ('Polícia Federal', r'\bPF\b|Pol[ií]cia Federal'),
     ('Receita Federal', r'Receita Federal'),
     ('Polícia Rodoviária Estadual', r'\bBPRv\b|\bPRE\b|Pol[ií]cia Rodovi[aá]ria Estadual|Comando Rodovi[aá]rio|\bCPRv\b'),
-    ('Polícia Militar', r'\bPM(?:-?[A-Z]{2})?\b|Pol[ií]cia Militar|\bBOPE\b|\bROTAM\b|\bRotam\b|\bBPChoque\b|\bCPRaio\b|\bROCAM\b|\bBAEP\b|For[çc]a T[aá]tica'),
+    ('Polícia Militar', r'\bPM(?:-?[A-Z]{2})?\b|Pol[ií]cia Militar|\bBOPE\b|\bROTAM\b|\bRotam\b|\bBPChoque\b|\bCPRaio\b|\bROCAM\b|\bBAEP\b|For[çc]a T[aá]tica'
+                         r'|\bBEPI\b|\bGATI\b|\bBPTran\b|\b\d{1,3}º\s*BPM\b|\bBPM\b|\bCIPM\b|\bRAIO\b|\bCOTAM\b|\bBPRaio\b'
+                         r'|Batalh[ãa]o (?:Especializado|de Pol[ií]cia Militar|de Choque|de Opera[çc][õo]es Policiais Especiais)'),
     ('Polícia Civil', r'\bPC(?:-?[A-Z]{2})?\b|Pol[ií]cia Civil|\bDENARC\b|\bDenarc\b|\bDRACO\b|\bDEIC\b|\bDHPP\b|\bDelegacia\b'),
     ('Polícia Penal', r'Pol[ií]cia Penal'),
     ('FICCO', r'\bFICCO\b'),
@@ -394,6 +396,14 @@ CONDENADO_E_NOME = re.compile(
 def nomes_dos_presos(texto):
     """[(nome completo, iniciais)] dos presos identificados (para trocar por iniciais)."""
     nomes = list(_presos(texto, so_nomes=True))
+    # Qualquer pessoa citada com nome completo e idade ("teve como alvos Daniel M. dos Santos, de 25 anos")
+    # vira iniciais no que o Radar exibe (24/11/2026): a regra do dono é presos só por iniciais e, na dúvida
+    # entre preso e não preso, proteger o nome é o lado seguro.
+    for padrao in (NOME_IDADE, NOME_IDADE_PARENTESE):
+        for m in padrao.finditer(texto or ''):
+            nome = m.group(1)
+            if len(nome.split()) >= 2 and not NAO_PESSOA.search(nome) and 12 <= int(m.group(2)) <= 95 and nome not in nomes:
+                nomes.append(nome)
     # O segundo condenado da mesma frase: "... e Maelson do Carmo Silva a cinco anos de reclusão".
     if CONDENADO_NOME.search(texto or ''):
         for m in CONDENADO_E_NOME.finditer(texto or ''):

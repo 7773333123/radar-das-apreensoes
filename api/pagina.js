@@ -351,7 +351,7 @@ async function paginaNoticia(i) {
 <div class="meta">${esc(fmtData(d, true))} · ${n.fp ? 'Fonte primária: ' : ''}${esc(n.f || '')}${url ? ` · <a href="${esc(url)}" target="_blank" rel="noopener noreferrer">ver original ↗</a>` : ''}</div>
 ${compartilharHTML(n)}
 ${fotos.length ? `<div class="art-fotos">${fotos.map((src, k) => `<img src="${esc(src)}" alt="${k ? '' : esc(n.t)}" ${k ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async" referrerpolicy="no-referrer">`).join('')}</div>
-${fotos.length > 1 ? `<p class="reader-note">${fotos.length} fotos · deslize para ver todas. Imagens: ${esc(n.f)}.</p>` : `<p class="reader-note">Imagem: ${esc(n.f)}.</p>`}` : ''}
+${fotos.length > 1 ? `<p class="reader-note">${fotos.length} fotos · deslize para ver todas. Imagens: ${esc(n.fc || n.f)}.</p>` : `<p class="reader-note">Imagem: ${esc(n.fc || n.f)}.</p>`}` : ''}
 ${ficha.length ? `<section class="em-resumo" aria-label="Em resumo"><h2>Em resumo</h2><dl>${ficha.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` : ''}
 ${radar}
 ${fonte}
