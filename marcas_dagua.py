@@ -269,6 +269,31 @@ def nome_na_foto(texto, palavras):
     return achou, site
 
 
+# Zonas ancoradas nos cantos (24/11/2026): a foto é reduzida a 256 px de largura (altura proporcional) e
+# cada zona de 64x40 px é tirada a partir do seu canto. Assim a marca carimbada a uma distância fixa do
+# canto cai nos mesmos pixels mesmo quando as fotos têm formatos diferentes (retrato, paisagem).
+LARG, ZW, ZH = 256, 64, 40
+ZONAS = ('sup_esq', 'sup_dir', 'inf_esq', 'inf_dir', 'inf_meio', 'meio')
+
+
+def zonas_de_bordas(dados):
+    """{zona: lista de 0/1 (ZW*ZH)} com os 20% de bordas mais fortes da foto inteira."""
+    from PIL import Image, ImageFilter
+    with Image.open(io.BytesIO(dados)) as img:
+        img.draft('L', (512, 512))
+        c = img.convert('L')
+    alt = max(ZH * 2, round(c.height * LARG / c.width))
+    c = c.resize((LARG, alt), Image.Resampling.BOX).filter(ImageFilter.FIND_EDGES)
+    px = list(c.getdata())
+    interno = [px[y * LARG + x] for y in range(2, alt - 2) for x in range(2, LARG - 2)]
+    lim = max(16, sorted(interno)[int(len(interno) * (1 - TOPO))])
+    cantos = {'sup_esq': (2, 2), 'sup_dir': (LARG - 2 - ZW, 2), 'inf_esq': (2, alt - 2 - ZH),
+              'inf_dir': (LARG - 2 - ZW, alt - 2 - ZH), 'inf_meio': ((LARG - ZW) // 2, alt - 2 - ZH),
+              'meio': ((LARG - ZW) // 2, (alt - ZH) // 2)}
+    return {z: [1 if px[(y0 + y) * LARG + x0 + x] >= lim else 0 for y in range(ZH) for x in range(ZW)]
+            for z, (x0, y0) in cantos.items()}
+
+
 def diagnostico(noticias, fontes, timeout, trabalhadores):
     """Calibração com fotos reais: para cada veículo, quantos pixels passariam com limiares diferentes."""
     global TOPO
@@ -319,20 +344,21 @@ def diagnostico(noticias, fontes, timeout, trabalhadores):
                     linha.append(f'≥{f}: 0 px')
             print('   ' + '; '.join(linha))
         TOPO = 0.20
-        nome = next((str(n.get('fonte') or '') for n in noticias if chave_fonte(n) == fonte), '')
-        palavras = palavras_do_veiculo(nome, fonte)
-        com_nome = com_site = 0
-        for u, dados in list(ocr.items())[:12]:
-            try:
-                txt = texto_na_foto(dados)
-            except Exception as e:
-                print(f'   OCR falhou: {e!r}'[:120])
-                continue
-            achou, site = nome_na_foto(txt, palavras)
-            com_nome += bool(achou)
-            com_site += bool(site)
-            print(f'   OCR: nome={achou} site={site[:2]} texto={" ".join(txt.split())[:90]!r}')
-        print(f'   palavras do veículo: {sorted(palavras)}; fotos com o nome: {com_nome}; com endereço de site: {com_site} (de {min(12, len(ocr))})')
+        for topo in (0.2, 0.3):
+            TOPO = topo
+            mapas = []
+            for dados in ocr.values():
+                try:
+                    mapas.append(zonas_de_bordas(dados))
+                except Exception:
+                    pass
+            n = max(1, len(mapas))
+            partes = []
+            for z in ZONAS:
+                conta = [sum(m[z][k] for m in mapas) for k in range(ZW * ZH)]
+                partes.append(f"{z}: máx {max(conta) / n:.2f}, ≥0.6 {sum(1 for c in conta if c >= 0.6 * n)} px, ≥0.75 {sum(1 for c in conta if c >= 0.75 * n)} px")
+            print(f'   cantos (topo {topo}, {len(mapas)} fotos): ' + ' | '.join(partes))
+        TOPO = 0.20
 
 
 def main():
