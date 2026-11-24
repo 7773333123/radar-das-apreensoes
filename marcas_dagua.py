@@ -111,15 +111,28 @@ def nota(mapa, masc):
     return bin(mapa & masc).count('1') / total if total else 0.0
 
 
+# Tamanho mínimo da máscara de cada zona (24/11/2026, calibrado com fotos reais): marcas de verdade dão
+# 25-300 px nos cantos (GP1 177, Record 179, Lupa1 155, Patos Já 27). O MEIO da foto engana: o assunto da
+# notícia costuma estar centralizado e 10-40 px "fixos" aparecem em veículos sem marca (Poder360,
+# InfoMoney, Jornal de Brasília); só conta com 60 px ou mais.
+MIN_PX_CANTO, MIN_PX_MEIO = 25, 60
+VERSAO = 2  # versão das máscaras: conferências feitas com outra versão não valem
+
+
+def zonas_validas(info):
+    return {z: h for z, h in (info.get('z') or {}).items()
+            if h and bin(int(h, 16)).count('1') >= (MIN_PX_MEIO if z == 'meio' else MIN_PX_CANTO)}
+
+
 def tem_mascara(info):
-    return bool(info.get('m') or any((info.get('z') or {}).values()))
+    return bool(info.get('m') or zonas_validas(info))
 
 
 def nota_total(mapa, info):
     """Maior fração entre a grade da foto inteira e as zonas dos cantos (mapa = (grade, {zona: bits}))."""
     grade, zonas = mapa
     notas = [nota(grade, int(info['m'], 16))] if info.get('m') else []
-    notas += [nota(zonas.get(z, 0), int(h, 16)) for z, h in (info.get('z') or {}).items() if h]
+    notas += [nota(zonas.get(z, 0), int(h, 16)) for z, h in zonas_validas(info).items()]
     return max(notas or [0.0])
 
 
@@ -145,10 +158,12 @@ def foto_com_marca(n, url, mascaras):
     info = mascaras.get(chave_fonte(n)) or {}
     if info.get('manual'):
         return True  # veículo marcado à mão pelo dono do site
-    conferidas = n.get('img_marca') or {}
+    if not tem_mascara(info):
+        return False
+    conferidas = n.get('img_marca') or {} if n.get('img_marca_v') == VERSAO else {}
     if url in conferidas:
         return bool(conferidas[url])
-    return tem_mascara(info) and float(info.get('pct') or 0) >= FONTE_MARCA
+    return float(info.get('pct') or 0) >= FONTE_MARCA
 
 
 def _baixar_mapa(url, timeout):
@@ -198,7 +213,7 @@ def aprender(noticias, mascaras, fontes_max, fotos_por_fonte, timeout, trabalhad
             continue
         por_fonte[chave_fonte(n)].append(n)
     candidatas = [f for f, ns in por_fonte.items() if f and len(ns) >= MIN_FOTOS
-                  and (str((mascaras.get(f) or {}).get('em') or '') < refazer or 'z' not in (mascaras.get(f) or {}))]  # sem cantos: refaz
+                  and (str((mascaras.get(f) or {}).get('em') or '') < refazer or (mascaras.get(f) or {}).get('v') != VERSAO)]  # versão antiga: refaz
     candidatas.sort(key=lambda f: -len(por_fonte[f]))
     candidatas = candidatas[:fontes_max]
     print(f'Veículos com {MIN_FOTOS}+ fotos no mês: {sum(1 for ns in por_fonte.values() if len(ns) >= MIN_FOTOS)}; '
@@ -220,7 +235,9 @@ def aprender(noticias, mascaras, fontes_max, fotos_por_fonte, timeout, trabalhad
         masc = mascara([g for g, _ in mapas])
         zonas = {z: mascara([zs[z] for _, zs in mapas], ZW, ZH) for z in ZONAS}
         info = {'n': len(mapas), 'm': format(masc, 'x') if masc else '', 'px': bin(masc).count('1'),
-                'z': {z: format(b, 'x') for z, b in zonas.items() if b}, 'em': hoje.isoformat()}
+                'z': {z: format(b, 'x') for z, b in zonas.items() if b}, 'em': hoje.isoformat(), 'v': VERSAO}
+        info['z'] = zonas_validas(info)
+        zonas = {z: int(h, 16) for z, h in info['z'].items()}
         pct = (sum(1 for m in mapas if nota_total(m, info) >= MARCADA) / len(mapas)) if tem_mascara(info) and mapas else 0.0
         info['pct'] = round(pct, 2)
         mascaras[fonte] = dict(info, **({'manual': 1} if (mascaras.get(fonte) or {}).get('manual') else {}))
@@ -240,7 +257,7 @@ def marcar(noticias, mascaras, dias, limite, galeria, timeout, trabalhadores):
         info = mascaras.get(chave_fonte(n)) or {}
         if not tem_mascara(info) or info.get('manual'):
             continue
-        feitas = n.get('img_marca') or {}
+        feitas = (n.get('img_marca') or {}) if n.get('img_marca_v') == VERSAO else {}
         falta = [u for u in _fotos(n, galeria) if u not in feitas]
         if falta:
             pendentes.append((n, falta, info))
@@ -250,7 +267,7 @@ def marcar(noticias, mascaras, dias, limite, galeria, timeout, trabalhadores):
     mapas = _mapas(urls, timeout, trabalhadores)
     carimbadas = conferidas = 0
     for n, falta, masc in lote:
-        feitas = dict(n.get('img_marca') or {})
+        feitas = dict(n.get('img_marca') or {}) if n.get('img_marca_v') == VERSAO else {}
         for u in falta:
             if u in mapas:
                 v = 1 if nota_total(mapas[u], masc) >= MARCADA else 0
@@ -259,6 +276,7 @@ def marcar(noticias, mascaras, dias, limite, galeria, timeout, trabalhadores):
                 conferidas += 1
         if feitas:
             n['img_marca'] = feitas
+            n['img_marca_v'] = VERSAO
     print(f'Fotos conferidas contra a marca do veículo: {conferidas} ({carimbadas} com marca d\'água); '
           f'notícias pendentes: {len(pendentes)}, nesta rodada: {len(lote)}')
     return bool(lote)
