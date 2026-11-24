@@ -378,7 +378,8 @@ details.tbl th, details.tbl td { text-align: left; padding: 5px 6px; border-bott
 .meses { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
 .meses a { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); text-decoration: none; }
 .meses a:hover { border-color: var(--data); }
-.meses strong { text-transform: capitalize; }
+.meses strong { text-transform: none; }
+.meses strong::first-letter { text-transform: uppercase; }
 .meses span { font-size: 12.5px; color: var(--muted); }
 .lista-texto { font: 400 18px/1.6 var(--serif); padding-left: 22px; }
 .lista-texto li { margin-bottom: 8px; }
@@ -664,3 +665,35 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
 .hoje-painel:not(.local-painel) .hp-card dt { min-height: 2.4em; }
 .hoje-painel:not(.local-painel) .hp-card .var { margin-top: auto; padding-top: 4px; }
 .hoje-painel:not(.local-painel) .hp-card, .hoje-painel:not(.local-painel) .hp-card:first-child { align-items: stretch; text-align: left; }
+
+/* Contagem dos títulos é link (24/11/2026). */
+a.ed-qtd { text-decoration: none; cursor: pointer; transition: background .15s, color .15s; }
+a.ed-qtd::after { content: ' →'; }
+a.ed-qtd:hover { background: var(--accent); color: #fff; text-decoration: none; }
+
+/* Padrão visual da página inicial em todo o site (Observatório, Relatórios, estados, tipos e notícias), 24/11/2026:
+   títulos em faixa vermelha clara com barra vermelha, quadros com título vermelho e números em cartões vermelhos. */
+.section-head { border-top: 0; padding: 12px 14px; align-items: center;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 12%, var(--surface)) 0%, color-mix(in srgb, var(--accent) 3%, var(--surface)) 100%);
+  border-left: 5px solid var(--accent); border-radius: 0 10px 10px 0; }
+.section-head h2 { font-weight: 900; color: var(--ink); }
+.section-head a, .section-head button { color: var(--accent); font-weight: 700; }
+.panel h3 { display: flex; align-items: center; gap: 8px; color: var(--accent); }
+.panel h3::before { content: ''; flex: none; width: 4px; height: 15px; border-radius: 2px; background: var(--accent); }
+.panel-alta h3::before, .panel-30 h3::before { display: none; }
+.kpis, .obs-kpis { gap: 10px; background: none; border: 0; border-radius: 0; overflow: visible; }
+.kpi { border-radius: 14px; border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
+  background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 11%, var(--surface)) 0%, color-mix(in srgb, var(--accent) 3%, var(--surface)) 100%); }
+.kpi dt { color: var(--ink-2); font-weight: 800; }
+.kpi dd { color: var(--accent); font-weight: 800; }
+.local-painel { border-top-color: var(--accent); }
+.local-painel .hp-card { border-radius: 14px; border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
+  background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 11%, var(--surface)) 0%, color-mix(in srgb, var(--accent) 3%, var(--surface)) 100%); }
+.local-painel .hp-card dd { color: var(--accent); font-weight: 800; }
+.page-head .kicker { color: var(--accent); }
+/* Barras, gráficos e destaques numéricos no vermelho do site (o mapa segue em azul: escala de dados). */
+.rank .bar span, .barras .bar i { background: var(--accent); }
+.chart .col { fill: color-mix(in srgb, var(--accent) 45%, transparent); }
+.chart .col.hi { fill: var(--accent); }
+.toplist .q { color: var(--accent); }
+.meses a:hover { border-color: var(--accent); }
