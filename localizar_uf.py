@@ -181,7 +181,10 @@ def ufs_aprendidas(noticias, fontes_cadastradas=None, minimo=5, fatia=0.85):
     quando o lugar escrito nas notícias dele (estado ou município sem homônimo, no título, resumo
     ou abertura) cai em um só estado em pelo menos 85% de 5+ notícias, o veículo é desse estado.
     Veículos nacionais espalham-se por vários estados e não passam no corte."""
-    cadastrados = {str(f.get('dominio') or '').lower() for f in (fontes_cadastradas or []) if f.get('uf') in ESTADOS}
+    # Veículo de divisa/corredor sem estado cadastrado (campo "fronteira" em fontes.json) cobre dois
+    # estados: não aprende (23/11/2026: o Zap Catalão, de Goiás, noticia Araguari/MG e virava GO).
+    cadastrados = {str(f.get('dominio') or '').lower() for f in (fontes_cadastradas or [])
+                   if f.get('uf') in ESTADOS or f.get('fronteira')}
     contagem = {}
     for n in noticias:
         if not isinstance(n, dict):

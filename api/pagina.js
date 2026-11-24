@@ -277,7 +277,7 @@ function kpis(itens) {
 // Notícia ainda sem trecho ou sem fotos da matéria: lê o original na hora (até 4,5 s).
 async function completar(n, t) {
   const falta = !(Array.isArray(t.p) && t.p.length) && !t.tr;
-  const poucasFotos = !(Array.isArray(t.g) && t.g.length > 1);
+  const poucasFotos = !n.sf && !(Array.isArray(t.g) && t.g.length > 1);  // sf: foto da fonte tem marca d'água
   if (!falta && !poucasFotos) return t;
   try {
     const { lerNoticia } = require('./_extrair.js');

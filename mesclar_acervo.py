@@ -45,6 +45,8 @@ def juntar(base, outro):
                 if isinstance(k, list) and not isinstance(junto.get(u), list):
                     junto[u] = k
             base[campo] = junto
+        elif campo == 'img_marca' and isinstance(valor, dict) and isinstance(atual, dict):
+            base[campo] = {**atual, **valor}  # fotos conferidas contra a marca d'água (marcas_dagua.py)
         elif isinstance(valor, list) and isinstance(atual, list) and len(valor) > len(atual):
             base[campo] = valor
         elif campo == 'url_original' and 'news.google.com' in str(atual) and 'news.google.com' not in str(valor):

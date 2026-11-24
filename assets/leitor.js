@@ -223,7 +223,7 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
       if (ler && n.url) ler.href = n.url;
       // Ainda sem trecho ou sem as fotos da matéria: o servidor lê o original na hora.
       const semTexto = !(Array.isArray(t.p) && t.p.length) && !t.tr;
-      const poucasFotos = !(Array.isArray(t.g) && t.g.length > 1);
+      const poucasFotos = !n.semFoto && !(Array.isArray(t.g) && t.g.length > 1);  // sf: foto da fonte tem marca d'água
       if (!semTexto && !poucasFotos) return;
       if (semTexto) $('leitorTexto').insertAdjacentHTML('afterbegin', '<p class="reader-note" id="lendoOriginal">Buscando o texto e as fotos na reportagem original…</p>');
       fetch(`/api/materia?i=${n.i}`).then((r) => (r.ok ? r.json() : null)).catch(() => null).then((r) => {

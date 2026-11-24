@@ -1607,6 +1607,13 @@ def agrupar(itens, motivos=None):
             for campo in ('uf', 'img', 'r'):
                 if outro.get(campo) and not principal.get(campo):
                     principal[campo] = outro[campo]
+                    if campo == 'img' and '_marca' in outro:
+                        principal['_marca'] = list(outro['_marca'])  # foto carimbada copiada: segue marcada
+            # Foto com marca d'água/nome do jornal na versão exibida: troca pela foto limpa de outra
+            # fonte da mesma notícia (regra do dono, 24/11/2026).
+            if '_marca' in principal and outro.get('img') and '_marca' not in outro:
+                principal['img'] = outro['img']
+                del principal['_marca']
             # Mantém a ordem da versão exibida (a 1ª é o selo) e acrescenta as das outras.
             principal['c'] = list(dict.fromkeys(principal.get('c', []) + outro.get('c', [])))
             if not principal['c']:
