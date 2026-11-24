@@ -1705,6 +1705,8 @@ def agrupar(itens, motivos=None):
                     principal[campo] = outro[campo]
                     if campo == 'img' and '_marca' in outro:
                         principal['_marca'] = list(outro['_marca'])  # foto carimbada copiada: segue marcada
+                    if campo == 'img' and outro.get('_arq'):
+                        principal['_arq'] = 1
             # Foto com marca d'água/nome do jornal na versão exibida: troca pela foto limpa de outra
             # fonte da mesma notícia (regra do dono, 24/11/2026).
             if '_marca' in principal and outro.get('img') and '_marca' not in outro:
@@ -1712,12 +1714,24 @@ def agrupar(itens, motivos=None):
                 del principal['_marca']
                 if outro.get('_prod'):
                     principal['_prod'] = 1
+                if outro.get('_arq'):
+                    principal['_arq'] = 1
+                else:
+                    principal.pop('_arq', None)
+            # Foto de arquivo (antiga, de outro fato) na versão exibida: troca pela foto real de outra fonte
+            # da mesma notícia (dono do site, 24/11/2026: "sempre imagens reais").
+            elif principal.get('_arq') and outro.get('img') and not outro.get('_arq') and '_marca' not in outro:
+                principal['img'] = outro['img']
+                principal.pop('_arq', None)
+                if outro.get('_prod'):
+                    principal['_prod'] = 1
             # Capa = foto do material apreendido (regra do dono, 24/11/2026): se a versão exibida mostra
             # policial/viatura e outra fonte tem a foto do material (sem marca d'água), a capa vem dela.
-            elif outro.get('_prod') and not principal.get('_prod') and '_marca' not in outro and outro.get('img'):
+            elif outro.get('_prod') and not principal.get('_prod') and '_marca' not in outro and outro.get('img') and not outro.get('_arq'):
                 principal['img'] = outro['img']
                 principal['_prod'] = 1
                 principal.pop('_marca', None)
+                principal.pop('_arq', None)
             # Mantém a ordem da versão exibida (a 1ª é o selo) e acrescenta as das outras.
             principal['c'] = list(dict.fromkeys(principal.get('c', []) + outro.get('c', [])))
             if not principal['c']:

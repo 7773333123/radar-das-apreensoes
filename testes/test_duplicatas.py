@@ -461,6 +461,18 @@ def main():
     juntas = agrupar_duplicatas(mw2)[0]
     if len(juntas) != 1 or '_marca' not in juntas[0]:
         erros.append("sem foto limpa, a foto deveria seguir marcada (o gerador tira a foto)")
+    # Foto de arquivo (antiga, de outro fato) troca pela foto real de outra fonte (24/11/2026, arsenal no DF).
+    from gerar_feed_site import foto_de_arquivo
+    if not foto_de_arquivo('https://cdn.x.com.br/wp-content/uploads/2025/12/09183337/op.jpg', '2026-11-24T07:04') \
+            or foto_de_arquivo('https://x.com/uploads/images/2026/11/arsenal.jpg', '2026-11-24T15:01') \
+            or foto_de_arquivo('https://x.com/foto.jpg', '2026-11-24T15:01'):
+        erros.append('foto de arquivo: deveria reconhecer só a foto de mais de 2 meses antes da notícia')
+    ar = [dict(mc[0], img='https://a.com/2025/12/arquivo.jpg', _arq=1, d='2026-11-20T10:00'),
+          dict(mc[1], img='https://b.com/2026/11/real.jpg', d='2026-11-20T11:00')]
+    ar[0].pop('_ofi', None)
+    juntas = agrupar_duplicatas(ar)[0]
+    if len(juntas) != 1 or juntas[0].get('img') != 'https://b.com/2026/11/real.jpg' or juntas[0].get('_arq'):
+        erros.append('a versão exibida deveria trocar a foto de arquivo pela foto real da outra fonte')
     # Condenado citado pelo nome sem idade vira iniciais (24/11/2026).
     from resumo_fatos import anonimizar, nomes_dos_presos
     t = 'A 2ª Vara Criminal condenou Ellen Larissa de Oliveira Silva à pena de cinco anos'

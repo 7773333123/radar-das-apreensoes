@@ -85,15 +85,12 @@ def candidatas(horas, ja):
             if isinstance(f, str) and f.startswith('http') and f not in fotos:
                 fotos.append(f)
         fotos = fotos[:MAX_FOTOS]
-        # Economia (24/11/2026): só onde a escolha muda a capa: galeria com 2+ fotos, ou apreensão com
-        # peso (as que disputam os destaques e podem trocar de capa com outra fonte da mesma notícia).
-        apreendido = ' '.join(str(x) for x in ((n.get('fatos') or {}).get('apreendido') or []))
-        com_peso = re.search(r'\b(?:kg|quilos?|toneladas?)\b', apreendido + ' ' + str(n.get('titulo') or ''), re.I)
-        if len(fotos) < 2 and not com_peso:
-            continue
+        # Todas as notícias (dono do site, 24/11/2026): inclusive as de armas/operações com uma foto só,
+        # para a versão exibida poder trocar a foto genérica pela foto real de outra fonte.
         if fotos and any(f not in ja for f in fotos):
-            saida.append((n.get('id') or n.get('url'), fotos))
-    saida.sort(key=lambda x: -len(x[1]))  # galerias primeiro: é onde a escolha da capa muda alguma coisa
+            saida.append((n.get('id') or n.get('url'), fotos, str(n.get('data_iso') or '')))
+    saida.sort(key=lambda x: x[2], reverse=True)  # as mais recentes primeiro (são as que estão no ar)
+    saida = [(a, b) for a, b, _ in saida]
     return saida
 
 
