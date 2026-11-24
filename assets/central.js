@@ -217,7 +217,13 @@ function renderInicio() {
   const fora = (n) => desdobramento(n) || soPessoa(n);
   const porVolume = (a, b) => (fora(a) - fora(b)) || (Boolean(b.img) - Boolean(a.img)) || (kgDroga(b) - kgDroga(a)) ||
     (pontosManchete(b) - pontosManchete(a)) || (b.data - a.data);
-  const [manchete, segunda] = [...pool].sort(porVolume);
+  const [manchete, segunda0] = [...pool].sort(porVolume);
+  // Cocaína sempre entre as principais (dono do site, 24/11/2026): vale muito mais por quilo que a
+  // maconha. Se nenhuma das duas é de cocaína/pasta base/crack, a 2ª vira a maior de cocaína do dia (com foto).
+  const kgCoca = (n) => (n.q?.coc || 0) + (n.q?.cra || 0);
+  const coca = [...pool].filter((n) => n.img && !fora(n) && kgCoca(n) > 0)
+    .sort((a, b) => kgCoca(b) - kgCoca(a) || pontosManchete(b) - pontosManchete(a) || b.data - a.data)[0];
+  const segunda = coca && manchete && !kgCoca(manchete) && !(segunda0 && kgCoca(segunda0)) ? coca : segunda0;
   const principais = [manchete || ns[0], segunda].filter(Boolean);
   const usados = new Set(principais);
   // 3ª principal, da Fronteira: 1) PRF em Foz do Iguaçu ou Santa Terezinha de Itaipu; 2) Ponte da Amizade;
