@@ -12,6 +12,10 @@ on:
         description: 'Veículos a aprender nesta rodada'
         required: false
         default: '500'
+      diagnostico:
+        description: 'Só calibrar: veículos separados por vírgula (não grava nada)'
+        required: false
+        default: ''
 permissions:
   contents: write
 # Grupo próprio: a regeneração de todos os anos (publicar-site) leva horas e travava esta rotina na fila.
@@ -35,9 +39,14 @@ jobs:
         run: python testes/test_marcas_dagua.py
       - name: Baixar o acervo (release "dados")
         run: python acervo.py baixar
+      - name: Diagnóstico (só calibração)
+        if: inputs.diagnostico != ''
+        run: python marcas_dagua.py --diagnostico "${{ inputs.diagnostico }}"
       - name: Aprender as marcas e conferir as fotos recentes
+        if: inputs.diagnostico == ''
         run: python marcas_dagua.py --aprender --fontes "${{ inputs.fontes || '500' }}" --marcar --dias 10 --limite 6000
       - name: Regenerar e salvar
+        if: inputs.diagnostico == ''
         run: |
           python testes/test_duplicatas.py
           python gerar_feed_site.py > /tmp/gerar.log
