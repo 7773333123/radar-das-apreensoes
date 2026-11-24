@@ -37,7 +37,7 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   (`porPrioridade`). Celular: só as 3 principais com foto grande; o resto com foto pequena ao lado; painel "Hoje no
   Brasil" compacto; editoria termina com o botão vermelho "Ver mais notícias" (24/11/2026).
 - **Capa = foto do material apreendido** (24/11/2026): na capa vai a foto que mostra o que foi apreendido (drogas,
-  armas, dinheiro, mercadorias), não a de policial, viatura ou fachada. `capas_ia.py` (Claude Haiku, teto US$ 2/mês,
+  armas, dinheiro, mercadorias), não a de policial, viatura ou fachada. `capas_ia.py` (Claude Haiku, todas as notícias, teto próprio US$ 8/mês,
   na coleta expressa) marca as fotos em `capas_ia.json`; `gerar_feed_site.py` põe as do material primeiro e
   `duplicatas.agrupar` troca a capa da versão exibida pela foto do material de outra fonte.
 - Presos identificados só por iniciais e idade.

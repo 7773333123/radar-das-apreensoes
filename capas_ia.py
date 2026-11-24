@@ -8,7 +8,7 @@ de cada notícia recente (miniaturas de 256 px, uma pergunta por notícia) e diz
 Resultado em capas_ia.json: {"fotos": {url: 1 (mostra o material) | 0 (não mostra)}, "gasto": {...}}. O gerador do site
 (gerar_feed_site.py) põe primeiro as fotos marcadas com 1 e a versão exibida de um grupo de duplicatas
 troca a capa pela foto do material de outra fonte (duplicatas.agrupar). Gasto próprio, com teto de
-US$ 2 por mês (TETO_USD), somado ao do juiz de duplicatas para nunca passar do teto geral.
+US$ 8 por mês (TETO_USD), separado do teto do juiz de duplicatas (US$ 9).
 
   python capas_ia.py --horas 36 --max 250
 """
@@ -17,7 +17,6 @@ import base64
 import io
 import json
 import os
-import re
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -28,7 +27,7 @@ ARQUIVO = RAIZ / 'capas_ia.json'
 ACERVO = RAIZ / 'noticias.json'
 MODELO = 'claude-haiku-5-5'
 MAX_FOTOS = 5
-TETO_USD = 2.0
+TETO_USD = 8.0  # autorizado pelo dono do site (24/11/2026): todas as notícias
 UA = 'Mozilla/5.0 (compatible; RadarDasApreensoes/1.0; +https://www.radardasapreensoes.com.br)'
 PERGUNTA = ('Estas fotos são de uma notícia policial brasileira sobre uma apreensão. Para cada foto, diga se ela '
             'MOSTRA o material apreendido em destaque: drogas (tabletes, pacotes, pó, plantas), armas, munições, '
@@ -85,12 +84,6 @@ def candidatas(horas, ja):
             if isinstance(f, str) and f.startswith('http') and f not in fotos:
                 fotos.append(f)
         fotos = fotos[:MAX_FOTOS]
-        # Economia (24/11/2026): só onde a escolha muda a capa: galeria com 2+ fotos, ou apreensão com
-        # peso (as que disputam os destaques e podem trocar de capa com outra fonte da mesma notícia).
-        apreendido = ' '.join(str(x) for x in ((n.get('fatos') or {}).get('apreendido') or []))
-        com_peso = re.search(r'\b(?:kg|quilos?|toneladas?)\b', apreendido + ' ' + str(n.get('titulo') or ''), re.I)
-        if len(fotos) < 2 and not com_peso:
-            continue
         if fotos and any(f not in ja for f in fotos):
             saida.append((n.get('id') or n.get('url'), fotos))
     saida.sort(key=lambda x: -len(x[1]))  # galerias primeiro: é onde a escolha da capa muda alguma coisa
@@ -106,9 +99,9 @@ def main():
         print('Capas: sem ANTHROPIC_API_KEY; nada a fazer.')
         return
     import anthropic
-    from juiz_duplicatas import PRECO_CLAUDE, TETO_MENSAL_USD, gasto_do_mes
+    from juiz_duplicatas import PRECO_CLAUDE
     cache, gasto = carregar()
-    if gasto['usd'] >= TETO_USD or gasto['usd'] + gasto_do_mes()['usd'] >= TETO_MENSAL_USD:
+    if gasto['usd'] >= TETO_USD:
         print('Capas: teto mensal atingido; nada a fazer.')
         return
     fila = candidatas(a.horas, cache)[:a.max]
