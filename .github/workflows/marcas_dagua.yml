@@ -41,7 +41,9 @@ jobs:
         run: python acervo.py baixar
       - name: Diagnóstico (só calibração)
         if: inputs.diagnostico != ''
-        run: python marcas_dagua.py --diagnostico "${{ inputs.diagnostico }}"
+        run: |
+          sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-por >/dev/null
+          python marcas_dagua.py --diagnostico "${{ inputs.diagnostico }}"
       - name: Aprender as marcas e conferir as fotos recentes
         if: inputs.diagnostico == ''
         run: python marcas_dagua.py --aprender --fontes "${{ inputs.fontes || '500' }}" --marcar --dias 10 --limite 6000
