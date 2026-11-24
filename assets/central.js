@@ -335,7 +335,9 @@ function renderInicio() {
     `</dl><p class="note">Hoje até agora; ontem, o dia inteiro. As notícias da madrugada e da manhã continuam chegando ao longo do dia. Quantidades informadas pela imprensa; sem valor de estatística oficial.</p></section>` : '';
 
   $('inicio').innerHTML = painelDia +
-    `<section class="lead" aria-label="Destaques">` +
+    `<div class="section-head ed-head ed-principais"><span class="ed-ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 34V24a10 10 0 0 1 20 0v10"/><path d="M10 34h28v5H10z"/><path d="M24 6v4M9 12l3 3M39 12l-3 3"/><path d="M20 24a4 4 0 0 1 4-4"/></svg></span><h2>Destaques do dia</h2>` +
+    `<span class="ed-qtd">${new Date(agora).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', timeZone: 'America/Sao_Paulo' }).replace('.', '')}</span></div>` +
+    `<section class="lead" aria-label="Destaques do dia">` +
       `<div class="lead-tres">${principais.map((n, k) => (k === 2 ? '<div class="principal-fr">' : '<div>') +
         (k === 2 ? `<span class="tag-fr">Fronteira${n.polo ? ' · ' + esc(n.polo) : ''}</span>` : '') +
         story(n, { dek: true, cont: k === 0 }).replace('<h3 class="headline">', '<h2 class="headline">').replace('</h3>', '</h2>') + '</div>').join('')}</div>` +
