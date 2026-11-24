@@ -211,11 +211,34 @@ function renderInicio() {
   const INSTITUICAO = /\b(PF|PRF|Pol[ií]cia (?:Federal|Rodovi[áa]ria|Civil|Militar|Penal)|PM|PC|Receita Federal|Gaeco|FICCO|BOPE|DOF|Gefron|BPFron|Rotam|Denarc|Ibama|Marinha|Ex[ée]rcito|For[çc]a Nacional)\b/i;
   const pontosManchete = (n) => importancia(n) + (n.oficial ? 3 : 0) + (INSTITUICAO.test(n.titulo) ? 1 : 0)
     - (desdobramento(n) || soPessoa(n) ? 5 : 0);
-  const manchete = [...pool].sort((a, b) => pontosManchete(b) - pontosManchete(a) || b.data - a.data)[0] || ns[0];
-  destaques.splice(destaques.indexOf(manchete), destaques.includes(manchete) ? 1 : 0);
-  destaques.unshift(manchete);
-  const usados = new Set([manchete]);
-  const lado = destaques.slice(1, 5);
+  // TRÊS PRINCIPAIS (dono do site, 24/11/2026): 1ª e 2ª = maiores apreensões do dia COM FOTO, pelo volume
+  // de droga; depois os critérios já estabelecidos (pontosManchete). 3ª = Fronteira (abaixo).
+  const kgDroga = (n) => ['coc', 'mac', 'skh', 'cra', 'dro'].reduce((t, k) => t + (n.q?.[k] || 0), 0);
+  const fora = (n) => desdobramento(n) || soPessoa(n);
+  const porVolume = (a, b) => (fora(a) - fora(b)) || (Boolean(b.img) - Boolean(a.img)) || (kgDroga(b) - kgDroga(a)) ||
+    (pontosManchete(b) - pontosManchete(a)) || (b.data - a.data);
+  const [manchete, segunda] = [...pool].sort(porVolume);
+  const principais = [manchete || ns[0], segunda].filter(Boolean);
+  const usados = new Set(principais);
+  // 3ª principal, da Fronteira: 1) PRF em Foz do Iguaçu ou Santa Terezinha de Itaipu; 2) Ponte da Amizade;
+  // 3) Foz e Santa Terezinha por outros órgãos; 4) demais, na ordem regional (prioridadeFr). Dentro de cada
+  // nível, a maior apreensão de droga. Com foto; do dia (sem nenhuma hoje, das últimas 48 h).
+  const FOZ_ST = /Foz do Igua[çc]u|Santa Terezinha de Itaipu/i;
+  const PRF = /\bPRF\b|Pol[ií]cia Rodovi[áa]ria Federal/i;
+  const PONTE = /Ponte da Amizade/i;
+  const textoFr = (n) => `${n.titulo} ${n.resumo || ''} ${n.cidade || ''}`;
+  const nivelFr = (n) => {
+    const t = textoFr(n);
+    if (FOZ_ST.test(t) && (PRF.test(t) || PRF.test(n.fonte) || n.orgao === 'Polícia Rodoviária Federal')) return 0;
+    if (PONTE.test(t)) return 1;
+    if (FOZ_ST.test(t)) return 2;
+    return 3 + (n.prioridadeFr || 9);
+  };
+  const candFr = (h) => ns.filter((n) => n.polo && n.img && !usados.has(n) && !fora(n) && n.data && horas(n) <= h && n.data.getTime() <= agora + 3600000);
+  const poolFr = candFr(24).filter(ehHoje).length ? candFr(24).filter(ehHoje) : candFr(48);
+  const terceira = [...poolFr].sort((a, b) => nivelFr(a) - nivelFr(b) || kgDroga(b) - kgDroga(a) || nota(b) - nota(a) || b.data - a.data)[0];
+  if (terceira) { principais.push(terceira); usados.add(terceira); }
+  const lado = destaques.filter((n) => !usados.has(n)).slice(0, 4);
   lado.forEach((n) => usados.add(n));
 
   // Fronteira: 2 principais (com foto) e até 6 menores, das últimas 24 h (amplia para 48 h e 7 dias
@@ -305,8 +328,10 @@ function renderInicio() {
 
   $('inicio').innerHTML = painelDia +
     `<section class="lead" aria-label="Destaques">` +
-      `<div class="lead-main">${story(manchete, { dek: true, cont: true }).replace('<h3 class="headline">', '<h2 class="headline">').replace('</h3>', '</h2>')}</div>` +
-      `<div class="lead-side">${lado.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx)}<h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a>`).join('')}</div>` +
+      `<div class="lead-tres">${principais.map((n, k) => (k === 2 ? '<div class="principal-fr">' : '<div>') +
+        (k === 2 ? `<span class="tag-fr">Fronteira${n.polo ? ' · ' + esc(n.polo) : ''}</span>` : '') +
+        story(n, { dek: true, cont: k === 0 }).replace('<h3 class="headline">', '<h2 class="headline">').replace('</h3>', '</h2>') + '</div>').join('')}</div>` +
+      (lado.length ? `<div class="lead-side lead-faixa">${lado.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx)}<h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a>`).join('')}</div>` : '') +
     `</section>` +
     blocoFronteira +
     `<div class="section-head"><h2>${alta.length ? 'Em alta e em números' : 'Em números'}</h2><a href="observatorio">Abrir o Observatório →</a></div>` +

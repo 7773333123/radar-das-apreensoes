@@ -134,6 +134,17 @@ button, input, select { font: inherit; color: inherit; }
 .lead-side .story:last-child { border-bottom: 0; padding-bottom: 0; }
 .lead-side .headline { font-size: 18px; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .lead-side .media { aspect-ratio: 1; }
+/* Três principais (24/11/2026): 2 maiores apreensões do dia + 1 da Fronteira; abaixo, a faixa de destaques. */
+.lead:has(.lead-tres) { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+.lead-tres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.lead-tres .media { aspect-ratio: 3 / 2; margin-bottom: 12px; }
+.lead-tres .headline { font-size: clamp(21px, 2vw, 27px); }
+.lead-tres .dek { font-size: 15px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.principal-fr { position: relative; }
+.tag-fr { position: absolute; z-index: 2; top: 10px; left: 10px; background: var(--accent); color: #fff; font: 800 11px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; padding: 6px 9px; border-radius: 3px; }
+.lead-faixa { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 20px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.lead-faixa .story { border-bottom: 0; padding-bottom: 0; grid-template-columns: 1fr 88px; }
+.lead-faixa .headline { font-size: 16px; }
 
 .trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
 .trio .headline { font-size: 20px; }
@@ -312,6 +323,8 @@ details.tbl th, details.tbl td { text-align: left; padding: 5px 6px; border-bott
   .lead-side { border-left: 0; padding-left: 0; grid-template-columns: repeat(2, 1fr); }
   .lead-side .story { grid-template-columns: 1fr; border-bottom: 0; }
   .lead-side .media { aspect-ratio: 16 / 9; order: -1; }
+  .lead-tres { grid-template-columns: 1fr 1fr; }
+  .lead-tres > :first-child { grid-column: 1 / -1; }
   .side { position: static; }
   .obs-kpis { grid-template-columns: repeat(3, 1fr); }
   .obs-row { grid-template-columns: 1fr; }
@@ -326,7 +339,7 @@ details.tbl th, details.tbl td { text-align: left; padding: 5px 6px; border-bott
   .mainnav { margin-left: 0; order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; }
   .mainnav a { padding: 8px 10px; font-size: 14px; }
   .searchbox { order: 2; width: auto; flex: 1; min-width: 140px; }
-  .lead-side, .trio, .editorias { grid-template-columns: 1fr; }
+  .lead-side, .trio, .editorias, .lead-tres { grid-template-columns: 1fr; }
   .editoria .first .story { grid-template-columns: 1fr; }
   .news .story { grid-template-columns: minmax(0, 1fr) 104px; gap: 14px; }
   .news .headline { font-size: 18px; }
