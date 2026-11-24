@@ -75,6 +75,8 @@ jobs:
               grep -q '^Recuperados: 0/' /tmp/links.log && PAUSA_LINKS=3
             fi
             # Notícias novas primeiro; o restante relê páginas antigas (trecho de abertura, fotos).
+            # Portais oficiais sem feed (PM-PE, SDS-PE): nota oficial com a foto limpa (24/11/2026).
+            timeout 240 python coletar_paginas_oficiais.py || true
             python ler_materias.py --limite 800 --trabalhadores 10 || true
             python hash_imagens.py --limite 600 --trabalhadores 16 || true  # fotos: duplicatas por imagem
             python fotos_orb.py --limite 1500 || true  # mesma foto com recorte/zoom, mesmo com título genérico
