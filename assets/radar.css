@@ -638,3 +638,24 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
 .k30-spark rect { fill: color-mix(in srgb, var(--accent) 32%, transparent); }
 .k30-spark rect.hoje { fill: var(--accent); }
 @media (max-width: 760px) { .k30 dd { font-size: 24px; } .k30 { padding: 10px 12px 8px; } }
+
+/* "Hoje no Brasil" no padrão novo (24/11/2026): cartões em vermelho claro, ícone vermelho e número em vermelho. */
+.hoje-painel:not(.local-painel) .hp-card { position: relative;
+  background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 11%, var(--surface)) 0%, color-mix(in srgb, var(--accent) 3%, var(--surface)) 100%);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line)); border-radius: 14px; }
+.hoje-painel:not(.local-painel) .hp-card dd { color: var(--accent); font-weight: 800; }
+.hoje-painel:not(.local-painel) .hp-card dt { color: var(--ink-2); font-weight: 800; padding-right: 30px; }
+.hp-card .hp-ic { position: absolute; top: 8px; right: 8px; }
+.hp-ic { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; flex: none; }
+.hp-ic svg { width: 15px; height: 15px; }
+.hp-head h2 { display: flex; align-items: center; gap: 9px; }
+.hp-ic-tit { width: 30px; height: 30px; }
+.hp-ic-tit svg { width: 17px; height: 17px; }
+.hoje-painel:not(.local-painel) .hp-card:first-child .hp-spark { grid-row: 2 / 4; }
+@media (max-width: 760px) { .hp-ic { width: 22px; height: 22px; } .hp-ic svg { width: 13px; height: 13px; } .hp-card .hp-ic { top: 6px; right: 6px; }
+  .hoje-painel:not(.local-painel) .hp-card dt { padding-right: 24px; } .hp-ic-tit { width: 26px; height: 26px; } }
+.hoje-painel:not(.local-painel) .hp-card:first-child { display: block; }
+.hoje-painel:not(.local-painel) .hp-card:first-child .hp-spark { position: absolute; right: 12px; bottom: 10px; width: 84px; height: 34px; margin: 0; }
+.hoje-painel:not(.local-painel) .hp-spark rect { fill: color-mix(in srgb, var(--accent) 32%, transparent); }
+.hoje-painel:not(.local-painel) .hp-spark rect.hoje { fill: var(--accent); }
+@media (max-width: 760px) { .hoje-painel:not(.local-painel) .hp-card:first-child .hp-spark { width: 64px; height: 26px; right: 10px; bottom: 8px; } }
