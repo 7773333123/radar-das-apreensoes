@@ -21,7 +21,7 @@ jobs:
       - name: Portais oficiais sem feed
         if: inputs.urls == 'oficiais'
         run: |
-          pip install -q -r requirements.txt 2>/dev/null || true
+          python -m pip install --quiet pillow numpy
           python coletar_paginas_oficiais.py --diagnostico
       - name: Conferir
         if: inputs.urls != 'oficiais'
