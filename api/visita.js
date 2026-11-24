@@ -3,7 +3,8 @@
 // Desde 24/11/2026 cada linha diz se é pessoa, robô (com o nome: Google, Bing, WhatsApp...) ou
 // provável robô (navegador comum saindo de centro de dados), e o tipo de navegador/aparelho.
 // Não guarda IP nem nada que identifique a pessoa. Grava direto no repositório PRIVADO
-// 7773333123/radar-visitas (visitas/AAAA-MM-DD.jsonl): nada aparece no site nem no repositório público.
+// 7773333123/radar-visitas (pessoas em visitas/AAAA-MM-DD.jsonl, robôs em robos/AAAA-MM-DD.jsonl; resumo diário
+// separado em resumo/ pelo resumo.py de lá): nada aparece no site nem no repositório público.
 // Precisa da variável GH_VISITA_TOKEN na Vercel (token do GitHub com acesso a radar-visitas, Contents: write).
 const PRIVADO = '7773333123/radar-visitas';
 const ROBO = /bot|crawl|spider|slurp|facebookexternalhit|whatsapp|preview|headless|lighthouse|monitor/i;
@@ -88,7 +89,9 @@ module.exports = async (req, res) => {
   try {
     status = teste
       ? await acrescentar(token, 'teste/ok.txt', `teste ${visita.quando}\n`, 'Teste da gravação')
-      : await acrescentar(token, `visitas/${dia}.jsonl`, JSON.stringify(visita) + '\n', `Visitante ${visita.quando}`);
+      // Pessoas em visitas/, robôs e prováveis robôs à parte em robos/ (separação pedida pelo dono, 24/11/2026).
+      : await acrescentar(token, `${visita.tipo === 'pessoa' ? 'visitas' : 'robos'}/${dia}.jsonl`, JSON.stringify(visita) + '\n',
+        `${visita.tipo === 'pessoa' ? 'Visitante' : 'Robô'} ${visita.quando}`);
   } catch (e) { status = -1; }
   if (teste) {
     res.setHeader('Content-Type', 'application/json');
