@@ -277,7 +277,7 @@ function renderInicio() {
   const lugarFr = (n) => `${n.cidade ? `${n.cidade} (${n.uf})` : (NOME_UF[n.uf] || '')}`;
   const blocoFronteira = frPrincipais.length ? `<section class="fronteira" aria-label="Fronteira">` +
     `<div class="section-head ed-head"><span class="ed-ic">${ICONE.mapa}</span><h2>Fronteira</h2>` +
-    `<span class="ed-qtd">${frPrincipais.length + frMenores.length + frExtras.length} notícias</span></div>` +
+    `<a class="ed-qtd" href="#resultados" ${frExtras.length ? 'data-fr-mais' : 'data-ir-lista'}>${frPrincipais.length + frMenores.length + frExtras.length} notícias</a></div>` +
     `<div class="fr-principais">${frPrincipais.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}">${midia(n)}` +
       `<div><div class="kicker">${esc(n.polo)}</div><h3 class="headline">${esc(n.titulo)}</h3>` +
       `${n.resumo ? `<p class="dek">${esc(curto(n.resumo, 160))}</p>` : ''}${metaHTML(n)}</div></a>`).join('')}</div>` +
@@ -389,7 +389,7 @@ function renderInicio() {
       // Dentro da editoria o tipo não se repete na primeira notícia: só o lugar.
       const lugarEd = (x) => x.cidade ? `${x.cidade} (${x.uf})` : (NOME_UF[x.uf] || '');
       return `<section class="editoria"><div class="section-head ed-head"><span class="ed-ic">${ICONES[c] || ''}</span>` +
-        `<h2>${esc(st.ctx.categorias[c])}</h2><span class="ed-qtd">${janela.length} hoje</span></div>` +
+        `<h2>${esc(st.ctx.categorias[c])}</h2><a class="ed-qtd" href="#cat=${c}" data-cat="${c}" data-mais="1" title="Ver todas as notícias de ${esc(st.ctx.categorias[c])}">${janela.length} hoje</a></div>` +
         `<div class="first"><a class="story" href="${urlNoticia(primeira)}" data-read="${primeira.i}">${midia(primeira)}<div>${lugarEd(primeira) ? `<div class="kicker">${esc(lugarEd(primeira))}</div>` : ''}<h3 class="headline">${esc(primeira.titulo)}</h3>${metaHTML(primeira)}</div></a></div>` +
         `<ul>${resto.map((n) => `<li><a class="story com-foto" href="${urlNoticia(n)}" data-read="${n.i}"><div><h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a></li>`).join('')}</ul>` +
         `<div class="ver-mais"><a href="#cat=${c}" data-cat="${c}" data-mais="1">Ver mais notícias</a></div></section>`;
@@ -469,8 +469,12 @@ function montarControles() {
   document.addEventListener('click', (e) => {
     const fr = e.target.closest('[data-fr-mais]');
     if (fr) {
-      fr.closest('section').querySelectorAll('.fr-extra').forEach((li) => { li.hidden = false; });
-      fr.outerHTML = '<a href="#resultados" data-ir-lista>Ver mais notícias</a>';
+      e.preventDefault();
+      const sec = fr.closest('section');
+      sec.querySelectorAll('.fr-extra').forEach((li) => { li.hidden = false; });
+      sec.querySelectorAll('[data-fr-mais]').forEach((b) => { b.removeAttribute('data-fr-mais'); b.setAttribute('data-ir-lista', ''); });
+      const bt = sec.querySelector('.ver-mais button');
+      if (bt) bt.outerHTML = '<a href="#resultados" data-ir-lista>Ver mais notícias</a>';
       return;
     }
     const ir = e.target.closest('[data-ir-lista]');
