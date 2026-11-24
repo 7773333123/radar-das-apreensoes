@@ -344,7 +344,7 @@ function renderInicio() {
     blocoFronteira +
     `<div class="section-head"><h2>${alta.length ? 'Em alta e em números' : 'Em números'}</h2><a href="observatorio">Abrir o Observatório →</a></div>` +
     `<section class="band${alta.length ? '' : ' sem-alta'}">` +
-      (alta.length ? `<div class="panel"><h3>Em alta</h3><ol class="trend">${alta.map((n) =>
+      (alta.length ? `<div class="panel panel-alta"><h3><span class="alta-ponto" aria-hidden="true"></span>Em alta</h3><ol class="trend">${alta.map((n) =>
         `<li><a class="story com-foto" href="${urlNoticia(n)}" data-read="${n.i}"><div><h4 class="headline">${esc(n.titulo)}</h4><div class="meta"><span class="sources">${n.outras.length + 1} veículos</span> · ${esc(relativo(n.data))}</div></div>${midia(n)}</a></li>`).join('')}</ol>` +
         `<p class="note">Matérias de hoje publicadas por mais veículos.</p></div>` : '') +
       `<div class="panel"><h3>Últimos 30 dias</h3><dl class="kpis">` +
