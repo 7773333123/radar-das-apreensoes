@@ -297,6 +297,17 @@ function renderInicio() {
   // Panorama de 30 dias (apreensões noticiadas).
   const r30 = recentes(30);
   const soma = (k) => r30.reduce((s, n) => s + (n.q?.[k] || 0), 0);
+  // Série diária dos 30 dias para o mini-gráfico de cada número (24/11/2026).
+  const dias30 = Array.from({ length: 30 }, (_, k) => diaBR(new Date(agora - (29 - k) * DIA)));
+  const serie = (f) => { const m = new Map(dias30.map((d) => [d, 0])); r30.forEach((n) => { const d = diaBR(n.data); if (m.has(d)) m.set(d, m.get(d) + f(n)); }); return [...m.values()]; };
+  const mini = (vals, rotulo) => {
+    const max = Math.max(...vals, 1), w = 4, gap = 1.6;
+    const barras = vals.map((v, k) => { const h = Math.max(1.5, (v / max) * 30); return `<rect x="${(k * (w + gap)).toFixed(1)}" y="${(32 - h).toFixed(1)}" width="${w}" height="${h.toFixed(1)}" rx="1"${k === vals.length - 1 ? ' class="hoje"' : ''}/>`; }).join('');
+    return `<svg class="k30-spark" viewBox="0 0 ${(30 * (w + gap)).toFixed(0)} 32" preserveAspectRatio="none" role="img" aria-label="${esc(rotulo)} por dia nos últimos 30 dias">${barras}</svg>`;
+  };
+  const IC = (d) => `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const kpi30 = (rotulo, valor, vals, icone) => `<div class="k30"><div class="k30-top"><span class="k30-ic">${icone}</span><dt>${rotulo}</dt></div>` +
+    `<dd>${valor}</dd>${mini(vals, rotulo)}</div>`;
   const porUf = {};
   r30.forEach((n) => { if (n.uf) porUf[n.uf] = (porUf[n.uf] || 0) + 1; });
 
@@ -350,11 +361,11 @@ function renderInicio() {
       (alta.length ? `<div class="panel panel-alta"><h3><span class="alta-ponto" aria-hidden="true"></span>Em alta</h3><ol class="trend">${alta.map((n) =>
         `<li><a class="story com-foto" href="${urlNoticia(n)}" data-read="${n.i}"><div><h4 class="headline">${esc(n.titulo)}</h4><div class="meta"><span class="sources">${n.outras.length + 1} veículos</span> · ${esc(relativo(n.data))}</div></div>${midia(n)}</a></li>`).join('')}</ol>` +
         `<p class="note">Matérias de hoje publicadas por mais veículos.</p></div>` : '') +
-      `<div class="panel"><h3>Últimos 30 dias</h3><dl class="kpis">` +
-        `<div class="kpi"><dt>Notícias</dt><dd>${num(r30.length)}</dd></div>` +
-        `<div class="kpi"><dt>Cocaína</dt><dd>≈ ${qtd(soma('coc'), 'kg')}</dd></div>` +
-        `<div class="kpi"><dt>Maconha e skunk</dt><dd>≈ ${qtd(soma('mac') + soma('skh'), 'kg')}</dd></div>` +
-        `<div class="kpi"><dt>Armas de fogo</dt><dd>≈ ${qtd(soma('arm'), 'un')}</dd></div>` +
+      `<div class="panel panel-30"><h3>Últimos 30 dias</h3><dl class="k30s">` +
+        kpi30('Notícias', num(r30.length), serie(() => 1), IC('<rect x="9" y="8" width="30" height="32" rx="3"/><path d="M15 16h18M15 23h18M15 30h11"/>')) +
+        kpi30('Cocaína', `≈ ${qtd(soma('coc'), 'kg')}`, serie((n) => n.q?.coc || 0), IC('<path d="M10 30l14-14 14 14-14 8z"/><path d="M10 30l14 8 14-8"/>')) +
+        kpi30('Maconha e skunk', `≈ ${qtd(soma('mac') + soma('skh'), 'kg')}`, serie((n) => (n.q?.mac || 0) + (n.q?.skh || 0)), ICONES[0]) +
+        kpi30('Armas de fogo', `≈ ${qtd(soma('arm'), 'un')}`, serie((n) => n.q?.arm || 0), ICONES[1]) +
       `</dl><p class="note">Valores estimados com base nas quantidades informadas pela imprensa. Apreensões sem peso divulgado não integram a soma. Dados de caráter informativo, sem valor de estatística oficial.</p></div>` +
       `<div class="panel"><h3>Notícias por estado · 30 dias</h3><div class="map" id="mapaInicio"></div></div>` +
     `</section>` +
