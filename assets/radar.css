@@ -659,3 +659,8 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
 .hoje-painel:not(.local-painel) .hp-spark rect { fill: color-mix(in srgb, var(--accent) 32%, transparent); }
 .hoje-painel:not(.local-painel) .hp-spark rect.hoje { fill: var(--accent); }
 @media (max-width: 760px) { .hoje-painel:not(.local-painel) .hp-card:first-child .hp-spark { width: 64px; height: 26px; right: 10px; bottom: 8px; } }
+/* "ontem" sempre no rodapé do cartão e números na mesma altura (24/11/2026). */
+.hoje-painel:not(.local-painel) .hp-card, .hoje-painel:not(.local-painel) .hp-card:first-child { display: flex; flex-direction: column; }
+.hoje-painel:not(.local-painel) .hp-card dt { min-height: 2.4em; }
+.hoje-painel:not(.local-painel) .hp-card .var { margin-top: auto; padding-top: 4px; }
+.hoje-painel:not(.local-painel) .hp-card, .hoje-painel:not(.local-painel) .hp-card:first-child { align-items: stretch; text-align: left; }

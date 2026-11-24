@@ -343,7 +343,7 @@ function renderInicio() {
     cartao('Drogas', `≈ ${qtd(drogasDe(deHoje), 'kg')}`, ref(`≈ ${qtd(drogasDe(deOntem), 'kg')}`), ICONES[0]) +
     cartao('Armas de fogo', num(armasDe(deHoje)), ref(num(armasDe(deOntem))), ICONES[1]) +
     cartao('Munições', num(municoesDe(deHoje)), ref(num(municoesDe(deOntem))), ICONE.municao) +
-    cartao('Estados com ocorrência', `${ufsHoje}<small>/27</small>`, ref(`${new Set(deOntem.map((n) => n.uf).filter(Boolean)).size}/27`), ICONE.mapa) +
+    cartao('Estados', `${ufsHoje}<small>/27</small>`, ref(`${new Set(deOntem.map((n) => n.uf).filter(Boolean)).size}/27`), ICONE.mapa) +
     `</dl><p class="note">Hoje até agora; ontem, o dia inteiro. As notícias da madrugada e da manhã continuam chegando ao longo do dia. Quantidades informadas pela imprensa; sem valor de estatística oficial.</p></section>` : '';
 
   $('inicio').innerHTML = painelDia +
