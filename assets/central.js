@@ -334,15 +334,16 @@ function renderInicio() {
     return `<rect x="${k * 14}" y="${36 - h}" width="10" height="${h}" rx="2"${k === 6 ? ' class="hoje"' : ''}><title>${semana[k].split('-').reverse().slice(0, 2).join('/')}: ${num(v)} notícias${k === 6 ? ' (até agora)' : ''}</title></rect>`;
   }).join('');
   const ufsHoje = new Set(deHoje.map((n) => n.uf).filter(Boolean)).size;
-  const cartao = (rotulo, valor, extra = '') => `<div class="hp-card"><dt>${rotulo}</dt><dd>${valor}</dd>${extra}</div>`;
+  const cartao = (rotulo, valor, extra = '', icone = '') => `<div class="hp-card">${icone ? `<span class="hp-ic">${icone}</span>` : ''}<dt>${rotulo}</dt><dd>${valor}</dd>${extra}</div>`;
   const painelDia = deHoje.length ? `<section class="hoje-painel" aria-label="Hoje no Brasil">` +
-    `<div class="hp-head"><h2>Hoje no Brasil</h2><span class="hp-hora">até ${esc(horaBR(new Date(agora)))}</span></div><dl class="hp-grid">` +
+    `<div class="hp-head"><h2><span class="hp-ic hp-ic-tit">${IC('<circle cx="24" cy="24" r="16"/><path d="M24 15v10l7 4"/>')}</span>Hoje no Brasil</h2><span class="hp-hora">até ${esc(horaBR(new Date(agora)))}</span></div><dl class="hp-grid">` +
     cartao('Apreensões noticiadas', num(deHoje.length), ref(num(deOntem.length)) +
-      `<svg class="hp-spark" viewBox="0 0 94 36" role="img" aria-label="Notícias por dia nos últimos 7 dias">${barras}</svg>`) +
-    cartao('Drogas', `≈ ${qtd(drogasDe(deHoje), 'kg')}`, ref(`≈ ${qtd(drogasDe(deOntem), 'kg')}`)) +
-    cartao('Armas de fogo', num(armasDe(deHoje)), ref(num(armasDe(deOntem)))) +
-    cartao('Munições', num(municoesDe(deHoje)), ref(num(municoesDe(deOntem)))) +
-    cartao('Estados com ocorrência', `${ufsHoje}<small>/27</small>`, ref(`${new Set(deOntem.map((n) => n.uf).filter(Boolean)).size}/27`)) +
+      `<svg class="hp-spark" viewBox="0 0 94 36" role="img" aria-label="Notícias por dia nos últimos 7 dias">${barras}</svg>`,
+      IC('<rect x="9" y="8" width="30" height="32" rx="3"/><path d="M15 16h18M15 23h18M15 30h11"/>')) +
+    cartao('Drogas', `≈ ${qtd(drogasDe(deHoje), 'kg')}`, ref(`≈ ${qtd(drogasDe(deOntem), 'kg')}`), ICONES[0]) +
+    cartao('Armas de fogo', num(armasDe(deHoje)), ref(num(armasDe(deOntem))), ICONES[1]) +
+    cartao('Munições', num(municoesDe(deHoje)), ref(num(municoesDe(deOntem))), IC('<rect x="13" y="18" width="7" height="22" rx="2"/><rect x="28" y="18" width="7" height="22" rx="2"/><path d="M13 18c0-6 3.5-10 3.5-10S20 12 20 18M28 18c0-6 3.5-10 3.5-10S35 12 35 18"/>')) +
+    cartao('Estados com ocorrência', `${ufsHoje}<small>/27</small>`, ref(`${new Set(deOntem.map((n) => n.uf).filter(Boolean)).size}/27`), IC('<path d="M24 42s-13-11-13-21a13 13 0 0 1 26 0c0 10-13 21-13 21z"/><circle cx="24" cy="21" r="4.5"/>')) +
     `</dl><p class="note">Hoje até agora; ontem, o dia inteiro. As notícias da madrugada e da manhã continuam chegando ao longo do dia. Quantidades informadas pela imprensa; sem valor de estatística oficial.</p></section>` : '';
 
   $('inicio').innerHTML = painelDia +
