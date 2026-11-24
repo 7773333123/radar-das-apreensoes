@@ -461,6 +461,19 @@ def main():
     juntas = agrupar_duplicatas(mw2)[0]
     if len(juntas) != 1 or '_marca' not in juntas[0]:
         erros.append("sem foto limpa, a foto deveria seguir marcada (o gerador tira a foto)")
+    # Português do texto redigido pelo Radar (24/11/2026): zero a dez por extenso, com concordância de gênero;
+    # algarismo com unidade/valor; idade junto do sujeito ou em oração separada.
+    from resumo_fatos import numerais_por_extenso, _idade_dos_presos
+    for antes, depois in [('apreendeu 6 armas, 2 pistolas, 2 fuzis, 2 motos, 2 caminhões e 6 kg de maconha.',
+                           'apreendeu seis armas, duas pistolas, dois fuzis, duas motos, dois caminhões e 6 kg de maconha.'),
+                          ('Foi cumprido 1 mandado de prisão.', 'Foi cumprido um mandado de prisão.'),
+                          ('O caso repercutiu: 5 veículos publicaram.', 'O caso repercutiu: cinco veículos publicaram.'),
+                          ('R$ 2 mil, 2 t de soja, BR-2, 3ª vez, de 9 anos, 12 notícias', 'R$ 2 mil, 2 t de soja, BR-2, 3ª vez, de 9 anos, 12 notícias')]:
+        if numerais_por_extenso(antes) != depois:
+            erros.append(f'numerais por extenso: {numerais_por_extenso(antes)!r}')
+    if numerais_por_extenso(_idade_dos_presos(2, [39])) != 'Duas pessoas foram presas; uma delas tem 39 anos.' \
+            or _idade_dos_presos(2, [41, 39]) != '2 pessoas, de 39 e 41 anos, foram presas.':
+        erros.append('idade dos presos: concordância/posição errada')
     # Foto de arquivo (antiga, de outro fato) troca pela foto real de outra fonte (24/11/2026, arsenal no DF).
     from gerar_feed_site import foto_de_arquivo
     if not foto_de_arquivo('https://cdn.x.com.br/wp-content/uploads/2025/12/09183337/op.jpg', '2026-11-24T07:04') \

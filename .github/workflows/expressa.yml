@@ -65,8 +65,9 @@ jobs:
                 timeout 200 python marcas_dagua.py --aprender --horas 3 --fontes 6 --marcar --dias 2 --limite 200 --timeout 8 || true
                 # Capa = foto do material apreendido (24/11/2026): o Claude Haiku marca as fotos das notícias novas.
                 timeout 240 python capas_ia.py --horas 36 --max 150 || true
+                timeout 120 python revisar_titulos.py --horas 36 --max 400 || true
                 if python testes/test_duplicatas.py >/dev/null; then
-                  python acervo.py salvar "Coleta expressa (rodada $ciclo)" feeds_saude.json duplicatas_suspeitas.json marcas_dagua.json capas_ia.json \
+                  python acervo.py salvar "Coleta expressa (rodada $ciclo)" feeds_saude.json duplicatas_suspeitas.json marcas_dagua.json capas_ia.json revisao_titulos.json \
                     && gh workflow run juiz_claude.yml --ref main || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
                 else
                   echo 'Testes de duplicatas falharam: nada gravado nesta rodada.'

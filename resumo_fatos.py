@@ -154,6 +154,58 @@ def _itens(texto):
     return itens
 
 
+# Números de zero a dez por extenso no texto redigido pelo Radar (Manual de Redação da Folha e do Estadão;
+# Bechara, Moderna Gramática Portuguesa): "seis armas", "duas pessoas". Com unidade/símbolo fica o algarismo
+# ("6 kg", "R$ 2 mil"). Dono do site, 24/11/2026: "corrigir qualquer erro de português".
+_EXT = {0: 'zero', 3: 'três', 4: 'quatro', 5: 'cinco', 6: 'seis', 7: 'sete', 8: 'oito', 9: 'nove', 10: 'dez'}
+_UNIDADE = r'(?:(?:kg|g|t|mg|ml|l|km|m|h|min|mil|anos?)(?![\wà-ú])|milh|bilh)'
+
+
+_FEM = {'moto', 'motos', 'foto', 'fotos', 'mão', 'mãos', 'vez', 'vezes', 'aeronave', 'aeronaves', 'caminhonete',
+        'caminhonetes', 'mulher', 'mulheres', 'ave', 'aves', 'rede', 'redes', 'chave', 'chaves', 'ponte', 'pontes',
+        'árvore', 'árvores', 'pele', 'peles', 'gente', 'lebre', 'carne', 'carnes', 'noite', 'noites', 'tarde', 'tardes'}
+_MASC = {'dia', 'dias', 'mapa', 'mapas', 'sistema', 'sistemas', 'programa', 'programas', 'problema', 'problemas',
+         'guarda', 'guardas', 'agente', 'agentes'}
+
+
+def _feminino(palavra):
+    p = palavra.lower()
+    if p in _FEM:
+        return True
+    if p in _MASC:
+        return False
+    return bool(re.search(r'(?:a|as|ção|ções|são|sões|gem|gens|dade|dades)$', p))
+
+
+def numerais_por_extenso(texto):
+    def troca(m):
+        n, palavra = int(m.group(1)), m.group(2)
+        if n in (1, 2):
+            ext = ('uma' if n == 1 else 'duas') if _feminino(palavra) else ('um' if n == 1 else 'dois')
+        else:
+            ext = _EXT[n]
+        if m.start() == 0 or texto[:m.start()].rstrip().endswith(('.', '!', '?')):
+            ext = ext[0].upper() + ext[1:]
+        return f'{ext} {palavra}'
+    return re.sub(r'(?<![\w$.,/º°ª-])(10|[0-9])(?![\w.,/ºª%-]) (?!' + _UNIDADE + r')([a-zà-ú][\w-]*)', troca, texto)
+
+
+def _idade_dos_presos(n, idades):
+    """Concordância e posição da idade (Cunha & Cintra): "Duas pessoas, de 39 e 41 anos, foram presas"."""
+    sujeito = 'Uma pessoa' if n == 1 else f'{_fmt(n)} pessoas'
+    verbo = 'foi presa' if n == 1 else 'foram presas'
+    if not idades:
+        return f'{sujeito} {verbo}.'
+    if n == 1:
+        return f'{sujeito}, de {idades[0]} anos, {verbo}.'
+    if len(idades) >= n:
+        lista = sorted(idades)[:n]
+        return f'{sujeito}, de {_juntar([str(i) for i in lista])} anos, {verbo}.'
+    if len(idades) == 1:
+        return f'{sujeito} {verbo}; uma delas tem {idades[0]} anos.'
+    return f'{sujeito} {verbo}; {len(idades)} delas têm {_juntar([str(i) for i in sorted(idades)])} anos.'
+
+
 def _valor(texto):
     melhores = []
     for m in VALOR.finditer(texto):
@@ -571,12 +623,12 @@ def redigir(fatos, fonte='', data_iso='', uf=''):
         frases.append(_mandados(fatos["mandados"]))
     if fatos.get('presos'):
         n = fatos['presos']
-        frases.append('Uma pessoa foi presa.' if n == 1 else f'{_fmt(n)} pessoas foram presas.')
+        frases.append(_idade_dos_presos(n, []))
     elif fatos.get('presos_texto'):
         frases.append(f'Segundo a reportagem, {fatos["presos_texto"]}.')
     if fatos.get('valor') and fatos['valor'] not in frases[0]:
         frases.append(f'Os valores citados chegam a {fatos["valor"]}.')
-    return ' '.join(frases)
+    return numerais_por_extenso(' '.join(frases))
 
 
 if __name__ == '__main__':

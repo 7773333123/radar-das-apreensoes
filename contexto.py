@@ -8,7 +8,7 @@ duplicatas). Nenhuma frase da reportagem é copiada.
 import re
 
 from localizar_uf import NOMES_ESTADOS
-from resumo_fatos import PREP_UF, _data_extenso, _fmt, _juntar, redigir
+from resumo_fatos import PREP_UF, _data_extenso, _fmt, _idade_dos_presos, _juntar, numerais_por_extenso, redigir
 
 ORGAO_PAPEL = {
     'Polícia Federal': 'que investiga crimes federais, como o tráfico internacional de drogas e de armas, o contrabando e os crimes em áreas de fronteira',
@@ -224,8 +224,7 @@ def resumo_secoes(item, fatos, ctx=None):
         juntos = lista[0] if len(lista) == 1 else ', '.join(lista[:-1]) + ', e ' + lista[-1]
         frases.append(f'{verbo} {juntos}.' + (f' Ao todo, {_fmt(n)} pessoas foram presas.' if n > len(lista) else ''))
     elif fatos.get('presos'):
-        frases.append(f'{_pessoas(fatos["presos"]).capitalize()} {"foi presa" if fatos["presos"] == 1 else "foram presas"}'
-                      f'{_idades(fatos.get("idades"))}.')
+        frases.append(_idade_dos_presos(fatos['presos'], fatos.get('idades') or []))
     elif fatos.get('presos_texto'):
         flagrante = ' em flagrante' if 'flagrante' in fatos['presos_texto'] else ''
         idades = fatos.get('idades') or []
@@ -267,7 +266,7 @@ def resumo_secoes(item, fatos, ctx=None):
     outras = [o[0] for o in item.get('o', []) if o and o[0]]
     if outras:
         secoes.append(('Quem noticiou', f'A notícia foi publicada por {fonte} e também por {_juntar(outras[:8])}.'))
-    return [(t, re.sub(r'\s+', ' ', x).strip()) for t, x in secoes if x.strip()]
+    return [(t, numerais_por_extenso(re.sub(r'\s+', ' ', x).strip())) for t, x in secoes if x.strip()]
 
 
 def resumo_ampliado(item, fatos):
