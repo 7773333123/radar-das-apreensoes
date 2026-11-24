@@ -238,7 +238,10 @@ function renderInicio() {
   const poolFr = candFr(24).filter(ehHoje).length ? candFr(24).filter(ehHoje) : candFr(48);
   const terceira = [...poolFr].sort((a, b) => nivelFr(a) - nivelFr(b) || kgDroga(b) - kgDroga(a) || nota(b) - nota(a) || b.data - a.data)[0];
   if (terceira) { principais.push(terceira); usados.add(terceira); }
-  const lado = destaques.filter((n) => !usados.has(n)).slice(0, 4);
+  // Faixa abaixo das principais (24/11/2026): maior quantidade de droga primeiro, depois as de mais
+  // repercussão (importância: tamanho da apreensão + veículos que publicaram).
+  const porPrioridade = (a, b) => (fora(a) - fora(b)) || (kgDroga(b) - kgDroga(a)) || (importancia(b) - importancia(a)) || (b.data - a.data);
+  const lado = destaques.filter((n) => !usados.has(n)).sort(porPrioridade).slice(0, 4);
   lado.forEach((n) => usados.add(n));
 
   // Fronteira: 2 principais (com foto) e até 6 menores, das últimas 24 h (amplia para 48 h e 7 dias
@@ -266,7 +269,7 @@ function renderInicio() {
   const frPrincipais = [...ordemFr.filter(temFoto), ...ordemFr.filter((n) => !temFoto(n))].slice(0, 2);
   // Menores: apreensão de adolescente sem material (moto roubada etc.) só entra se faltar notícia.
   const restoFr = ordemFr.filter((n) => !frPrincipais.includes(n));
-  const frMenores = [...restoFr.filter((n) => !soPessoa(n)), ...restoFr.filter(soPessoa)].slice(0, 6).sort((a, b) => b.data - a.data);
+  const frMenores = [...restoFr.filter((n) => !soPessoa(n)), ...restoFr.filter(soPessoa)].slice(0, 6).sort(porPrioridade);
   [...frPrincipais, ...frMenores].forEach((n) => usados.add(n));
   const lugarFr = (n) => `${n.cidade ? `${n.cidade} (${n.uf})` : (NOME_UF[n.uf] || '')}`;
   const blocoFronteira = frPrincipais.length ? `<section class="fronteira" aria-label="Fronteira">` +
@@ -354,7 +357,6 @@ function renderInicio() {
       // maior apreensão DO DIA (com foto); só sem notícia de hoje vale a de ontem.
       // A lista ao lado vem por data.
       const porTamanho = (a, b) => (desdobramento(a) - desdobramento(b)) || (tamanhoNo(b, c) - tamanhoNo(a, c)) || (b.data - a.data);
-      const porData = (a, b) => (desdobramento(a) - desdobramento(b)) || (b.data - a.data);
       const janela = itens.filter((n) => !usados.has(n) && ehHoje(n) && n.data.getTime() <= agora + 3600000);
       if (!janela.length) return '';
       // Notícia de HOJE (horário de Brasília) sempre antes da de ontem; dentro do dia, a maior
@@ -362,11 +364,12 @@ function renderInicio() {
       const livres = [...janela].sort((a, b) => diaBR(b.data).localeCompare(diaBR(a.data)) || porTamanho(a, b));
       const primeira = livres.find((n) => n.img) || livres[0];
       usados.add(primeira);
-      const resto = janela.filter((n) => n !== primeira && !usados.has(n)).sort(porData).slice(0, 3);
+      const resto = janela.filter((n) => n !== primeira && !usados.has(n)).sort(porPrioridade).slice(0, 3);
       resto.forEach((n) => usados.add(n));
-      return `<section class="editoria"><div class="section-head"><h2>${esc(st.ctx.categorias[c])}</h2><a href="#cat=${c}" data-cat="${c}">Ver tudo →</a></div>` +
+      return `<section class="editoria"><div class="section-head"><h2>${esc(st.ctx.categorias[c])}</h2></div>` +
         `<div class="first"><a class="story" href="${urlNoticia(primeira)}" data-read="${primeira.i}">${midia(primeira)}<div>${kickerHTML(primeira, st.ctx, c)}<h3 class="headline">${esc(primeira.titulo)}</h3>${metaHTML(primeira)}</div></a></div>` +
-        `<ul>${resto.map((n) => `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</a></li>`).join('')}</ul></section>`;
+        `<ul>${resto.map((n) => `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</a></li>`).join('')}</ul>` +
+        `<div class="ver-mais"><a href="#cat=${c}" data-cat="${c}" data-mais="1">Ver mais notícias</a></div></section>`;
     }).join('')}</div>`;
   renderMapa($('mapaInicio'), porUf, { rotulo: 'Notícias por estado nos últimos 30 dias', formato: (v) => `${num(v)} notícias`, aoClicar: (uf) => definir({ uf }) });
 }
@@ -431,7 +434,7 @@ function montarControles() {
     if (!a || e.target.closest('[data-read]')) return;
     e.preventDefault();
     const c = a.dataset.cat;
-    definir(a.closest('#editorias') ? { cat: c, q: '' } : { cat: st.filtro.cat === c ? '' : c });
+    definir(a.closest('#editorias') || a.dataset.mais ? { cat: c, q: '' } : { cat: st.filtro.cat === c ? '' : c });
   });
   $('selEstado').addEventListener('change', (e) => definir({ uf: e.target.value }));
   $('fEstado').addEventListener('change', (e) => definir({ uf: e.target.value }, { rolar: false }));

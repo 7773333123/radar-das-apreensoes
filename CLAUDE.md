@@ -33,6 +33,9 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   tamanho e repercussão; desdobramentos fora). 3ª = Fronteira: PRF em Foz do Iguaçu/Santa Terezinha de Itaipu;
   senão Ponte da Amizade; senão Foz/Santa Terezinha por outro órgão; senão a ordem regional (`prioridadeFr`);
   em cada nível, o maior volume de droga. `assets/central.js` (`porVolume`, `nivelFr`).
+  Faixa abaixo delas, Fronteira e listas das editorias: maior quantidade de droga primeiro, depois repercussão
+  (`porPrioridade`). Celular: só as 3 principais com foto grande; o resto com foto pequena ao lado; painel "Hoje no
+  Brasil" compacto; editoria termina com o botão vermelho "Ver mais notícias" (24/11/2026).
 - Presos identificados só por iniciais e idade.
 - Duplicatas: não tolerar. Correções à mão vão em `juiz_decisoes_revisao.json` (valem como veto do grupo);
   padrões viram regra + teste em `testes/test_duplicatas.py`.

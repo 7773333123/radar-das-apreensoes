@@ -141,6 +141,10 @@ _EXTERIOR = re.compile(
     r"|\b(?:na|em)\s+(?:Col[ôo]mbia|Venezuela|Argentina|Bol[ií]via|Espanha|It[áa]lia|Holanda|B[ée]lgica|França|Alemanha|China|Europa"
     r"|Austr[áa]lia|Inglaterra|Rússia|Ucr[âa]nia|Israel|Gaza|[ÁA]frica)\b"
     r"|\b(?:no|em)\s+(?:Equador|Peru|Chile|Uruguai|Jap[ãa]o|Reino Unido|Haiti|Panam[áa])\b"
+    # cidades estrangeiras (24/11/2026: "...apreendida em Londres" entrou na página inicial)
+    r"|\b(?:em|na|no|de)\s+(?:Londres|Paris|Madri|Lisboa|Roma|Mil[ãa]o|Amsterd[ãa]|Roterd[ãa]|Antu[ée]rpia|Berlim"
+    r"|Nova York|Miami|Los Angeles|Toronto|Buenos Aires|Montevid[ée]u|Assun[çc][ãa]o|Bogot[áa]|Medell[ií]n|Lima(?! Duarte)"
+    r"|Santiago do Chile|Caracas|Cidade do M[ée]xico|T[óo]quio|Pequim|Dubai)\b"
     # país estrangeiro como sujeito da frase ("Por que a China arrisca...", "O Irã está..."), 22/11/2026;
     # "com a Bolívia" / "a Europa" como destino não contam.
     r"|(?:^|\bque\s+|:\s*)(?:a|o)\s+(?:China|R[úu]ssia|Coreia do Norte|Ucr[âa]nia|Venezuela|Col[ôo]mbia|Argentina"
@@ -188,6 +192,8 @@ def categorias(titulo, texto=''):
 
 if __name__ == '__main__':
     casos = [
+        ('Uma tonelada de substâncias proibidas escondidas em laranjas é apreendida em Londres', None),
+        ('Polícia prende traficante e apreende drogas em Lima Duarte', 0),
         ('Fórum em SP discute soluções urbanas e o futuro das cidades inteligentes', None),
         ('Semana começa com alerta de tempestade e ventos para 19 estados e o DF', None),
         ('Adolescente é morto a facadas em Montenegro', None),

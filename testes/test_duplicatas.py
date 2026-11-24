@@ -333,6 +333,12 @@ def main():
     if not any({p['a'][0], p['b'][0]} == {41, 42} for p in dup.SUSPEITAS):
         erros.append('Fundeb (DF x AL): palavra rara em comum deveria ir ao juiz')
     dup.SUSPEITAS.clear()
+    # "prendem motorista com 253 kg de maconha": apreensão concreta, a quantidade entra (24/11/2026).
+    from estatisticas import somavel
+    if not somavel('PMPR e PF prendem motorista com 253 kg de maconha na região de Umuarama'):
+        erros.append('"prendem motorista com 253 kg" deveria contar como apreensão concreta')
+    if somavel('Balanço: PM prende 40 pessoas com 2 toneladas de drogas no total do ano'):
+        erros.append('balanço não deveria contar como apreensão concreta')
     # Cidade pequena: par só com o material em comum vai ao juiz (Vereda/BA, 20/11/2026).
     ver = [{'i': 11, 't': 'PM apreende 11 porções de cocaína em Vereda', 'f': 'informebaiano.com.br', '_cid': 'Vereda', 'uf': 'BA'},
            {'i': 12, 't': 'PMBA apreende 82 gramas de cocaína durante abordagem em Vereda', 'f': 'Itamaraju Notícias',
