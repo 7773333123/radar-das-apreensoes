@@ -38,7 +38,9 @@ LIMITES = {'kg': 8_000, 'un': 20_000, 'R$': 5e10}
 TETO = {'arm': 300, 'fuz': 100, 'mun': 20_000}
 # Só entram nas somas notícias de uma apreensão concreta...
 APREENSAO = re.compile(r'apreend|apreens|flagra|intercept|encontr|localiz|descobr|retid|confisc|'
-                       r'pres[oa]s? com|carregad[oa] com|escondid|recolh|incinera', re.I)
+                       r'pres[oa]s? com|carregad[oa] com|escondid|recolh|incinera|'
+                       # "PMPR e PF prendem motorista com 253 kg de maconha" (24/11/2026): quantidade com peso no título
+                       r'\bcom (?:mais de |cerca de |quase |aproximadamente )?\d[\d.,]* ?(?:kg|quilos?|toneladas?|t)\b', re.I)
 # ...e não balanços, hipóteses, acusações ou fatos no exterior.
 NAO_SOMAR = re.compile(r'\bbalan[çc]o\b|\btotal\b|\b(?:n?este|no último) ano\b|acumulad|\bem (?:19|20)\d\d\b|\bno ano\b|\bdesde\b|'
                        r'\bpoderia\b|refinaria|seria(?:m)? capaz|\bcapaz de\b|estimad|acusad|suspeit[oa] de traficar|'

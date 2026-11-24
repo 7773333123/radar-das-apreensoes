@@ -529,3 +529,46 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
 .lp-meses rect { fill: var(--line-strong, #cfcac0); }
 .lp-meses rect.atual { fill: var(--accent); }
 .lp-meses text { font: 600 10px var(--sans); fill: var(--muted); }
+
+/* "Ver mais notícias" no fim de cada editoria (24/11/2026): botão vermelho pequeno, centralizado. */
+.ver-mais { display: flex; justify-content: center; margin: 14px 0 4px; }
+.ver-mais a { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px; background: var(--accent); color: #fff; font: 700 12.5px/1 var(--sans); letter-spacing: .04em; text-transform: uppercase; text-decoration: none; }
+.ver-mais a::after { content: '→'; font-size: 13px; }
+.ver-mais a:hover { opacity: .9; text-decoration: none; }
+
+/* Celular (24/11/2026): as 3 principais seguem grandes; o resto fica compacto, com foto pequena ao lado. */
+@media (max-width: 760px) {
+  .lead-faixa { grid-template-columns: 1fr; gap: 0; padding-top: 6px; }
+  .lead-faixa .story { grid-template-columns: 1fr 92px; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .lead-faixa .story:last-child { border-bottom: 0; }
+  .lead-faixa .media { aspect-ratio: 1; order: 0; }
+  .lead-faixa .headline { font-size: 15.5px; -webkit-line-clamp: 3; }
+  .editoria .first .story { grid-template-columns: 1fr 104px; gap: 12px; align-items: start; }
+  .editoria .first .media { order: 2; aspect-ratio: 1; margin: 0; }
+  .editoria .first .headline { font-size: 17px; }
+  .editoria li .headline { font-size: 15px; }
+  .section-head { margin: 26px 0 10px; }
+  .fr-principais { gap: 0; }
+  .fr-principais .story { display: grid; grid-template-columns: 1fr 104px; gap: 12px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .fr-principais .media { order: 2; aspect-ratio: 1; margin: 0; }
+  .fr-principais .headline { font-size: 17px; }
+  .fr-principais .dek { display: none; }
+  .fr-menores { margin-top: 10px; padding-top: 10px; gap: 12px; }
+  .fr-menores .headline { font-size: 15px; }
+  .media .ph span, .media .ph-org span { font-size: 9px; letter-spacing: .04em; }
+  /* Painel "Hoje no Brasil" menor e alinhado: 3 colunas, números menores. */
+  .hoje-painel { margin: 12px 0 16px; padding: 10px 10px 8px; }
+  .hp-head { margin-bottom: 6px; }
+  .hp-head h2 { font-size: 16px; }
+  .hp-hora { font-size: 11px; }
+  .hp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .hp-card { padding: 7px 8px; }
+  .hp-card dt { font-size: 9.5px; letter-spacing: .03em; line-height: 1.2; }
+  .hp-card dd { font-size: 18px; margin: 3px 0 1px; }
+  .hp-card dd small { font-size: 11px; }
+  .hp-card .var { font-size: 10.5px; }
+  .hoje-painel:not(.local-painel) .hp-card:first-child { grid-column: span 2; display: grid; grid-template-columns: 1fr auto; align-items: end; column-gap: 6px; }
+  .hoje-painel:not(.local-painel) .hp-card:first-child .hp-spark { grid-row: 1 / 4; grid-column: 2; }
+  .hp-spark { width: 64px; height: 26px; margin-top: 2px; }
+  .hoje-painel .note { font-size: 10px; line-height: 1.35; margin-top: 6px; }
+}
