@@ -387,9 +387,18 @@ CONDENADO_NOME = re.compile(
     r"((?:[A-ZÀ-Ý][a-zà-ÿ]+)(?:\s+(?:d[aeo]s?\s+)?[A-ZÀ-Ý][a-zà-ÿ]+){1,5})")
 
 
+CONDENADO_E_NOME = re.compile(
+    r"\b(?:e|,)\s+((?:[A-ZÀ-Ý][a-zà-ÿ]+)(?:\s+(?:d[aeo]s?\s+)?[A-ZÀ-Ý][a-zà-ÿ]+){1,5})\s+(?:à|a)\s+(?:pena|\d|[a-z]+\s+anos)")
+
+
 def nomes_dos_presos(texto):
     """[(nome completo, iniciais)] dos presos identificados (para trocar por iniciais)."""
     nomes = list(_presos(texto, so_nomes=True))
+    # O segundo condenado da mesma frase: "... e Maelson do Carmo Silva a cinco anos de reclusão".
+    if CONDENADO_NOME.search(texto or ''):
+        for m in CONDENADO_E_NOME.finditer(texto or ''):
+            if not NAO_PESSOA.search(m.group(1)) and m.group(1) not in nomes:
+                nomes.append(m.group(1))
     for m in CONDENADO_NOME.finditer(texto or ''):
         nome = m.group(1)
         if not NAO_PESSOA.search(nome) and nome not in nomes:

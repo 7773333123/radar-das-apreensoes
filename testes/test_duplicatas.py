@@ -444,6 +444,9 @@ def main():
     t = 'A 2ª Vara Criminal condenou Ellen Larissa de Oliveira Silva à pena de cinco anos'
     if 'Ellen' in anonimizar(t, nomes_dos_presos(t)):
         erros.append('nome de condenado deveria virar iniciais')
+    t = 'A Vara condenou Vitor Hugo Alves à pena de seis anos de reclusão e Maelson do Carmo Silva a cinco anos'
+    if 'Maelson' in anonimizar(t, nomes_dos_presos(t)):
+        erros.append('segundo condenado da frase deveria virar iniciais')
     for e in erros:
         print('FALHOU:', e)
     total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 31
