@@ -597,3 +597,8 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
 @keyframes altaPulso { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); } 100% { box-shadow: 0 0 0 9px transparent; } }
 .panel-alta .trend li { border-bottom-color: color-mix(in srgb, var(--accent) 14%, var(--line)); }
 .panel-alta .note { color: color-mix(in srgb, var(--accent) 35%, var(--muted)); }
+
+/* Faixa AGORA (24/11/2026): cada linha com um tom de vermelho bem claro, para separar as duas. */
+.agora-trilho { gap: 0; border-radius: 6px; overflow: hidden;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--accent) 12%, var(--surface)) 0 50%, color-mix(in srgb, #e8577a 8%, var(--surface)) 50% 100%); }
+.agora-trilho ol { padding: 5px 10px; }
