@@ -225,6 +225,57 @@ def marcar(noticias, mascaras, dias, limite, galeria, timeout, trabalhadores):
     return bool(lote)
 
 
+def diagnostico(noticias, fontes, timeout, trabalhadores):
+    """Calibração com fotos reais: para cada veículo, quantos pixels passariam com limiares diferentes."""
+    global TOPO
+    por_fonte = defaultdict(list)
+    for n in sorted(noticias, key=lambda n: str(n.get('data_iso') or ''), reverse=True):
+        if str(n.get('imagem_url') or '').startswith('http'):
+            por_fonte[chave_fonte(n)].append(n['imagem_url'])
+    for fonte in fontes:
+        urls = list(dict.fromkeys(por_fonte.get(fonte, [])))[:16]
+        brutos = {}
+        def um(u):
+            try:
+                from hash_imagens import HEADERS, MAX_BYTES
+                from urllib.request import Request, urlopen
+                from PIL import Image, ImageFilter
+                with urlopen(Request(u, headers=HEADERS), timeout=timeout) as r:
+                    dados = r.read(MAX_BYTES)
+                with Image.open(io.BytesIO(dados)) as img:
+                    img.draft('L', (256, 256))
+                    c = img.convert('L')
+                    tam = c.size
+                    c = c.resize((LADO, LADO), Image.Resampling.BOX)
+                return u, (list(c.filter(ImageFilter.FIND_EDGES).getdata()), tam)
+            except Exception as e:
+                return u, None
+        with ThreadPoolExecutor(max_workers=trabalhadores) as pool:
+            for u, v in pool.map(um, urls):
+                if v:
+                    brutos[u] = v
+        print(f'== {fonte}: {len(brutos)} fotos baixadas de {len(urls)}; tamanhos: {sorted(set(t for _, t in brutos.values()))[:6]}')
+        for topo in (0.2, 0.3, 0.4):
+            TOPO = topo
+            mapas = [_binario(px) for px, _ in brutos.values()]
+            conta = [0] * (LADO * LADO)
+            for m in mapas:
+                for k in range(LADO * LADO):
+                    if m >> k & 1:
+                        conta[k] += 1
+            n = max(1, len(mapas))
+            linha = [f'topo {topo}: freq máx {max(conta) / n:.2f}']
+            for f in (0.4, 0.5, 0.6):
+                pix = [k for k, c in enumerate(conta) if c >= f * n]
+                if pix:
+                    ys = [k // LADO for k in pix]; xs = [k % LADO for k in pix]
+                    linha.append(f'≥{f}: {len(pix)} px (x {min(xs)}-{max(xs)}, y {min(ys)}-{max(ys)})')
+                else:
+                    linha.append(f'≥{f}: 0 px')
+            print('   ' + '; '.join(linha))
+        TOPO = 0.20
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--aprender', action='store_true')
@@ -236,11 +287,15 @@ def main():
     ap.add_argument('--galeria', type=int, default=5, help='--marcar: fotos da galeria conferidas por notícia')
     ap.add_argument('--timeout', type=int, default=10)
     ap.add_argument('--trabalhadores', type=int, default=16)
+    ap.add_argument('--diagnostico', default='', help='veículos separados por vírgula: só mostra a calibração')
     args = ap.parse_args()
     inicio = time.time()
     dados = json.loads(ARQUIVO.read_text(encoding='utf-8'))
     noticias = [n for n in (dados['noticias'] if isinstance(dados, dict) else dados) if isinstance(n, dict)]
     mascaras = carregar_mascaras()
+    if args.diagnostico:
+        diagnostico(noticias, [f.strip() for f in args.diagnostico.split(',') if f.strip()], args.timeout, args.trabalhadores)
+        return
     if args.aprender:
         aprender(noticias, mascaras, args.fontes, args.fotos, args.timeout, args.trabalhadores)
         MASCARAS.write_text(json.dumps({'atualizado_em': datetime.now(timezone.utc).isoformat(timespec='seconds'),
