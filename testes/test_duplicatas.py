@@ -301,6 +301,7 @@ def main():
              '_cid': 'Foz do Iguaçu', 'uf': 'PR'},
             {'i': 2, 't': 'Ação integrada entre PF e PM apreende cinco mil maços de cigarros em Foz do Iguaçu/PR', 'f': 'GOV.BR',
              '_cid': 'Foz do Iguaçu', 'uf': 'PR'}]
+    dup.SUSPEITAS.clear()  # pares de testes anteriores (mesmos ids) não contam como "já enviados"
     antes = len(dup.SUSPEITAS)
     dup._mesma_cidade(foz, [100] * len(foz), lambda a, b, r: None, lambda k: k)
     novos = dup.SUSPEITAS[antes:]
@@ -317,6 +318,21 @@ def main():
     if inferir_uf({'titulo': 'Operação prende cinco pessoas em Paraíso', 'fonte': 'Jornal Opção | Tocantins',
                    'dominio_fonte': 'jornalopcao.com.br', 'uf_fonte': 'TO'}, cad) != 'TO':
         erros.append('edição estadual com o estado no nome deveria manter o estado (Jornal Opção | Tocantins)')
+    # Estado mal lido numa das versões (24/11/2026): valor distintivo igual vai ao juiz mesmo com estados
+    # diferentes (R$ 850 mil: Metrópoles=DF x PF=PI); palavra rara em comum também ("Fundeb": DF x AL).
+    dup.SUSPEITAS.clear()
+    pi = [{'i': 31, 't': 'PF faz operação no Piauí e no DF após homem ser flagrado com R$ 850 mil', 'f': 'Metrópoles', 'uf': 'DF'},
+          {'i': 32, 't': 'PF deflagra operação após apreensão de R$ 850 mil no Piauí', 'f': 'Governo Federal', 'uf': 'PI'}]
+    dup._mesmo_valor(pi, [100, 100], lambda a, b, r, forcar=False: None, lambda k: k)
+    if not any({p['a'][0], p['b'][0]} == {31, 32} for p in dup.SUSPEITAS):
+        erros.append('R$ 850 mil (DF x PI, estado mal lido) deveria ir ao juiz')
+    dup.SUSPEITAS.clear()
+    fu = [{'i': 41, 't': 'PF acha cofre recheado de dinheiro em operação contra desvio do Fundeb', 'f': 'Metrópoles', 'uf': 'DF'},
+          {'i': 42, 't': 'PF faz operação contra suspeita de corrupção com dinheiro do Fundeb em Alagoas', 'f': 'todosegundo', 'uf': 'AL'}]
+    dup._palavra_rara(fu, [100, 100], lambda a, b, r, forcar=False: None, lambda k: k)
+    if not any({p['a'][0], p['b'][0]} == {41, 42} for p in dup.SUSPEITAS):
+        erros.append('Fundeb (DF x AL): palavra rara em comum deveria ir ao juiz')
+    dup.SUSPEITAS.clear()
     # Cidade pequena: par só com o material em comum vai ao juiz (Vereda/BA, 20/11/2026).
     ver = [{'i': 11, 't': 'PM apreende 11 porções de cocaína em Vereda', 'f': 'informebaiano.com.br', '_cid': 'Vereda', 'uf': 'BA'},
            {'i': 12, 't': 'PMBA apreende 82 gramas de cocaína durante abordagem em Vereda', 'f': 'Itamaraju Notícias',
