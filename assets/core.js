@@ -43,9 +43,18 @@ export const urlNoticia = (n) => `/noticia/${n.i}-${slug(n.titulo ?? n.t)}`;
 
 // ---------- ícones das editorias (traço simples, sem texto embutido) ----------
 const I = (d) => `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+// Ícones cheios (24/11/2026): folha de maconha e pistola, mais fáceis de reconhecer que o traço.
+const F = (d) => `<svg viewBox="0 0 48 48" fill="currentColor" stroke="none" aria-hidden="true">${d}</svg>`;
+// Outros ícones dos painéis: tablete de droga (cocaína), munição, mapa e jornal.
+export const ICONE = {
+  tablete: I('<path d="M7 17l17-8 17 8v14l-17 8-17-8z"/><path d="M7 17l17 8 17-8M24 25v14"/><path d="M15.5 13l17 8M32.5 13l-17 8" stroke-width="2"/>'),
+  municao: I('<path d="M11 40V22c0-6 4-12 4-12s4 6 4 12v18z"/><path d="M29 40V22c0-6 4-12 4-12s4 6 4 12v18z"/><path d="M11 33h8M29 33h8"/>'),
+  mapa: I('<path d="M24 42s-13-11-13-21a13 13 0 0 1 26 0c0 10-13 21-13 21z"/><circle cx="24" cy="21" r="4.5"/>'),
+  jornal: I('<path d="M10 9h24v30H14a4 4 0 0 1-4-4z"/><path d="M34 17h5v18a4 4 0 0 1-8 0"/><path d="M16 16h12M16 23h12M16 30h8"/>'),
+};
 export const ICONES = [
-  I('<path d="M24 6c3 8 3 14 0 20M24 26c-6-2-11-7-13-14 7 1 11 5 13 14zM24 26c6-2 11-7 13-14-7 1-11 5-13 14zM24 26v16"/>'),
-  I('<path d="M6 18h30l4 4v6H26l-4 8h-8l3-8H6z"/><path d="M14 18v-4h8v4"/>'),
+  F('<path transform="rotate(0 24 31)" d="M24 31C18.1 18.9 19.7 8.1 24 4C28.3 8.1 29.9 18.9 24 31Z"/><path transform="rotate(-38 24 31)" d="M24 31C18.9 20.6 20.3 11.4 24 8C27.7 11.4 29.1 20.6 24 31Z"/><path transform="rotate(38 24 31)" d="M24 31C18.9 20.6 20.3 11.4 24 8C27.7 11.4 29.1 20.6 24 31Z"/><path transform="rotate(-78 24 31)" d="M24 31C20.3 23.4 21.3 16.6 24 14C26.7 16.6 27.7 23.4 24 31Z"/><path transform="rotate(78 24 31)" d="M24 31C20.3 23.4 21.3 16.6 24 14C26.7 16.6 27.7 23.4 24 31Z"/><path transform="rotate(-112 24 31)" d="M24 31C21.8 26.5 22.4 22.5 24 21C25.6 22.5 26.2 26.5 24 31Z"/><path transform="rotate(112 24 31)" d="M24 31C21.8 26.5 22.4 22.5 24 21C25.6 22.5 26.2 26.5 24 31Z"/><rect x="22.8" y="31" width="2.4" height="13" rx="1.2"/>'),
+  F('<path d="M5 13h35a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H25.5l-1.2 2.6a4 4 0 0 1-3.6 2.4H19l-2.6 11.4a2 2 0 0 1-2 1.6H8.6a1.5 1.5 0 0 1-1.5-1.8L10 23H5a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Z"/><path d="M38 11h3v2h-3z"/>'),
   I('<rect x="6" y="14" width="22" height="20" rx="2"/><path d="M28 20h8l6 7v7H28zM6 22h22"/><circle cx="14" cy="36" r="3"/><circle cx="34" cy="36" r="3"/>'),
   I('<path d="M8 30l4-10h24l4 10v6H8z"/><circle cx="15" cy="36" r="3"/><circle cx="33" cy="36" r="3"/><path d="M14 20l3-6h14l3 6"/>'),
   I('<rect x="6" y="14" width="36" height="20" rx="2"/><circle cx="24" cy="24" r="5"/><path d="M11 19h2M35 29h2"/>'),

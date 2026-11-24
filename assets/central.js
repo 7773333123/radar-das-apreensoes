@@ -1,5 +1,5 @@
 /* Central de notícias: manchete, destaques, Em alta, panorama, editorias e busca. */
-import { $, esc, num, fold, debounce, relativo, horaBR, qtd, ESTADOS, NOME_UF, CURTO, carregarFeed, carregarAnos, anosForaDoFeed, indiceAnos, iniciarCabecalho, midia, renderMapa, ranking, urlNoticia, ICONES } from './core.js';
+import { $, esc, num, fold, debounce, relativo, horaBR, qtd, ESTADOS, NOME_UF, CURTO, carregarFeed, carregarAnos, anosForaDoFeed, indiceAnos, iniciarCabecalho, midia, renderMapa, ranking, urlNoticia, ICONES, ICONE } from './core.js';
 import { iniciarLeitor, kickerHTML, metaHTML } from './leitor.js';
 
 const POR_PAGINA = 20;
@@ -339,11 +339,11 @@ function renderInicio() {
     `<div class="hp-head"><h2><span class="hp-ic hp-ic-tit">${IC('<circle cx="24" cy="24" r="16"/><path d="M24 15v10l7 4"/>')}</span>Hoje no Brasil</h2><span class="hp-hora">até ${esc(horaBR(new Date(agora)))}</span></div><dl class="hp-grid">` +
     cartao('Apreensões noticiadas', num(deHoje.length), ref(num(deOntem.length)) +
       `<svg class="hp-spark" viewBox="0 0 94 36" role="img" aria-label="Notícias por dia nos últimos 7 dias">${barras}</svg>`,
-      IC('<rect x="9" y="8" width="30" height="32" rx="3"/><path d="M15 16h18M15 23h18M15 30h11"/>')) +
+      ICONE.jornal) +
     cartao('Drogas', `≈ ${qtd(drogasDe(deHoje), 'kg')}`, ref(`≈ ${qtd(drogasDe(deOntem), 'kg')}`), ICONES[0]) +
     cartao('Armas de fogo', num(armasDe(deHoje)), ref(num(armasDe(deOntem))), ICONES[1]) +
-    cartao('Munições', num(municoesDe(deHoje)), ref(num(municoesDe(deOntem))), IC('<rect x="13" y="18" width="7" height="22" rx="2"/><rect x="28" y="18" width="7" height="22" rx="2"/><path d="M13 18c0-6 3.5-10 3.5-10S20 12 20 18M28 18c0-6 3.5-10 3.5-10S35 12 35 18"/>')) +
-    cartao('Estados com ocorrência', `${ufsHoje}<small>/27</small>`, ref(`${new Set(deOntem.map((n) => n.uf).filter(Boolean)).size}/27`), IC('<path d="M24 42s-13-11-13-21a13 13 0 0 1 26 0c0 10-13 21-13 21z"/><circle cx="24" cy="21" r="4.5"/>')) +
+    cartao('Munições', num(municoesDe(deHoje)), ref(num(municoesDe(deOntem))), ICONE.municao) +
+    cartao('Estados com ocorrência', `${ufsHoje}<small>/27</small>`, ref(`${new Set(deOntem.map((n) => n.uf).filter(Boolean)).size}/27`), ICONE.mapa) +
     `</dl><p class="note">Hoje até agora; ontem, o dia inteiro. As notícias da madrugada e da manhã continuam chegando ao longo do dia. Quantidades informadas pela imprensa; sem valor de estatística oficial.</p></section>` : '';
 
   $('inicio').innerHTML = painelDia +
@@ -363,8 +363,8 @@ function renderInicio() {
         `<li><a class="story com-foto" href="${urlNoticia(n)}" data-read="${n.i}"><div><h4 class="headline">${esc(n.titulo)}</h4><div class="meta"><span class="sources">${n.outras.length + 1} veículos</span> · ${esc(relativo(n.data))}</div></div>${midia(n)}</a></li>`).join('')}</ol>` +
         `<p class="note">Matérias de hoje publicadas por mais veículos.</p></div>` : '') +
       `<div class="panel panel-30"><h3>Últimos 30 dias</h3><dl class="k30s">` +
-        kpi30('Notícias', num(r30.length), serie(() => 1), IC('<rect x="9" y="8" width="30" height="32" rx="3"/><path d="M15 16h18M15 23h18M15 30h11"/>')) +
-        kpi30('Cocaína', `≈ ${qtd(soma('coc'), 'kg')}`, serie((n) => n.q?.coc || 0), IC('<path d="M10 30l14-14 14 14-14 8z"/><path d="M10 30l14 8 14-8"/>')) +
+        kpi30('Notícias', num(r30.length), serie(() => 1), ICONE.jornal) +
+        kpi30('Cocaína', `≈ ${qtd(soma('coc'), 'kg')}`, serie((n) => n.q?.coc || 0), ICONE.tablete) +
         kpi30('Maconha e skunk', `≈ ${qtd(soma('mac') + soma('skh'), 'kg')}`, serie((n) => (n.q?.mac || 0) + (n.q?.skh || 0)), ICONES[0]) +
         kpi30('Armas de fogo', `≈ ${qtd(soma('arm'), 'un')}`, serie((n) => n.q?.arm || 0), ICONES[1]) +
       `</dl><p class="note">Valores estimados com base nas quantidades informadas pela imprensa. Apreensões sem peso divulgado não integram a soma. Dados de caráter informativo, sem valor de estatística oficial.</p></div>` +
