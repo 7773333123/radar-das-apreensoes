@@ -3,7 +3,7 @@
 
 Na capa de uma notícia vai, sempre que existir, a foto que mostra o que foi apreendido (drogas, armas,
 dinheiro, mercadorias...), e não a de policial, viatura, fachada ou brasão. O Claude Haiku olha as fotos
-de cada notícia recente (miniaturas de 320 px, uma pergunta por notícia) e diz quais mostram o material.
+de cada notícia recente (miniaturas de 256 px, uma pergunta por notícia) e diz quais mostram o material.
 
 Resultado em capas_ia.json: {"fotos": {url: 1 (mostra o material) | 0 (não mostra)}, "gasto": {...}}. O gerador do site
 (gerar_feed_site.py) põe primeiro as fotos marcadas com 1 e a versão exibida de um grupo de duplicatas
@@ -17,6 +17,7 @@ import base64
 import io
 import json
 import os
+import re
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -62,7 +63,7 @@ def miniatura(url):
         im = Image.open(io.BytesIO(dados)).convert('RGB')
         if min(im.size) < 120:
             return None  # ícone/logotipo pequeno
-        im.thumbnail((320, 320))
+        im.thumbnail((256, 256))
         saida = io.BytesIO()
         im.save(saida, 'JPEG', quality=70)
         return base64.standard_b64encode(saida.getvalue()).decode('ascii')
@@ -84,6 +85,12 @@ def candidatas(horas, ja):
             if isinstance(f, str) and f.startswith('http') and f not in fotos:
                 fotos.append(f)
         fotos = fotos[:MAX_FOTOS]
+        # Economia (24/11/2026): só onde a escolha muda a capa: galeria com 2+ fotos, ou apreensão com
+        # peso (as que disputam os destaques e podem trocar de capa com outra fonte da mesma notícia).
+        apreendido = ' '.join(str(x) for x in ((n.get('fatos') or {}).get('apreendido') or []))
+        com_peso = re.search(r'\b(?:kg|quilos?|toneladas?)\b', apreendido + ' ' + str(n.get('titulo') or ''), re.I)
+        if len(fotos) < 2 and not com_peso:
+            continue
         if fotos and any(f not in ja for f in fotos):
             saida.append((n.get('id') or n.get('url'), fotos))
     saida.sort(key=lambda x: -len(x[1]))  # galerias primeiro: é onde a escolha da capa muda alguma coisa
