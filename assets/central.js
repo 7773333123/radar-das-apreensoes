@@ -269,16 +269,20 @@ function renderInicio() {
   const frPrincipais = [...ordemFr.filter(temFoto), ...ordemFr.filter((n) => !temFoto(n))].slice(0, 2);
   // Menores: apreensão de adolescente sem material (moto roubada etc.) só entra se faltar notícia.
   const restoFr = ordemFr.filter((n) => !frPrincipais.includes(n));
-  const frMenores = [...restoFr.filter((n) => !soPessoa(n)), ...restoFr.filter(soPessoa)].slice(0, 6).sort(porPrioridade);
-  [...frPrincipais, ...frMenores].forEach((n) => usados.add(n));
+  // Até 6 visíveis; mais até 8 aparecem no botão "Ver mais notícias" (24/11/2026).
+  const frTodas = [...restoFr.filter((n) => !soPessoa(n)), ...restoFr.filter(soPessoa)].slice(0, 14);
+  const frMenores = frTodas.slice(0, 6).sort(porPrioridade);
+  const frExtras = frTodas.slice(6).sort(porPrioridade);
+  [...frPrincipais, ...frMenores, ...frExtras].forEach((n) => usados.add(n));
   const lugarFr = (n) => `${n.cidade ? `${n.cidade} (${n.uf})` : (NOME_UF[n.uf] || '')}`;
   const blocoFronteira = frPrincipais.length ? `<section class="fronteira" aria-label="Fronteira">` +
     `<div class="section-head"><h2>Fronteira</h2><span class="count">Apreensões nas regiões de fronteira</span></div>` +
     `<div class="fr-principais">${frPrincipais.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}">${midia(n)}` +
       `<div><div class="kicker">${esc(n.polo)}</div><h3 class="headline">${esc(n.titulo)}</h3>` +
       `${n.resumo ? `<p class="dek">${esc(curto(n.resumo, 160))}</p>` : ''}${metaHTML(n)}</div></a>`).join('')}</div>` +
-    (frMenores.length ? `<ul class="fr-menores">${frMenores.map((n) => `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}">` +
+    (frMenores.length ? `<ul class="fr-menores">${[...frMenores, ...frExtras].map((n, k) => `<li${k >= frMenores.length ? ' class="fr-extra" hidden' : ''}><a class="story" href="${urlNoticia(n)}" data-read="${n.i}">` +
       `<span class="fr-lugar">${esc(lugarFr(n))}</span><h4 class="headline">${esc(n.titulo)}</h4>${metaHTML(n)}</a></li>`).join('')}</ul>` : '') +
+    `<div class="ver-mais">${frExtras.length ? '<button type="button" data-fr-mais>Ver mais notícias</button>' : '<a href="#resultados" data-ir-lista>Ver mais notícias</a>'}</div>` +
     `</section>` : '';
 
   // Em alta: publicadas por mais veículos nas últimas 24 h (ou 48 h, se houver poucas).
@@ -334,7 +338,8 @@ function renderInicio() {
       `<div class="lead-tres">${principais.map((n, k) => (k === 2 ? '<div class="principal-fr">' : '<div>') +
         (k === 2 ? `<span class="tag-fr">Fronteira${n.polo ? ' · ' + esc(n.polo) : ''}</span>` : '') +
         story(n, { dek: true, cont: k === 0 }).replace('<h3 class="headline">', '<h2 class="headline">').replace('</h3>', '</h2>') + '</div>').join('')}</div>` +
-      (lado.length ? `<div class="lead-side lead-faixa">${lado.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx)}<h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a>`).join('')}</div>` : '') +
+      (lado.length ? `<div class="lead-side lead-faixa">${lado.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><div>${kickerHTML(n, st.ctx)}<h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a>`).join('')}</div>` +
+        `<div class="ver-mais"><a href="#resultados" data-ir-lista>Ver mais notícias</a></div>` : '') +
     `</section>` +
     blocoFronteira +
     `<div class="section-head"><h2>${alta.length ? 'Em alta e em números' : 'Em números'}</h2><a href="observatorio">Abrir o Observatório →</a></div>` +
@@ -442,6 +447,20 @@ function montarControles() {
   $('fAno').addEventListener('change', (e) => definir({ ano: e.target.value }, { rolar: false }));
   $('limpar').addEventListener('click', () => definir({ q: '', uf: '', cat: '', ano: '' }));
   $('mais').addEventListener('click', () => { st.limite += POR_PAGINA; render(); });
+  // "Ver mais notícias" (24/11/2026): na Fronteira mostra as demais; nos destaques leva à lista completa.
+  document.addEventListener('click', (e) => {
+    const fr = e.target.closest('[data-fr-mais]');
+    if (fr) {
+      fr.closest('section').querySelectorAll('.fr-extra').forEach((li) => { li.hidden = false; });
+      fr.outerHTML = '<a href="#resultados" data-ir-lista>Ver mais notícias</a>';
+      return;
+    }
+    const ir = e.target.closest('[data-ir-lista]');
+    if (ir) {
+      e.preventDefault();
+      $('resultados').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
   $('formBusca').addEventListener('submit', (e) => { e.preventDefault(); definir({ q: $('buscaTopo').value.trim() }); });
   $('buscaTopo').addEventListener('input', debounce((e) => { if (e.target.value.trim().length !== 1) definir({ q: e.target.value.trim() }, { rolar: false }); }, 250));
   window.addEventListener('hashchange', () => {

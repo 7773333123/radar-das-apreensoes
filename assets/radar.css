@@ -532,9 +532,11 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
 
 /* "Ver mais notícias" no fim de cada editoria (24/11/2026): botão vermelho pequeno, centralizado. */
 .ver-mais { display: flex; justify-content: center; margin: 14px 0 4px; }
-.ver-mais a { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px; background: var(--accent); color: #fff; font: 700 12.5px/1 var(--sans); letter-spacing: .04em; text-transform: uppercase; text-decoration: none; }
-.ver-mais a::after { content: '→'; font-size: 13px; }
-.ver-mais a:hover { opacity: .9; text-decoration: none; }
+.ver-mais [hidden] { display: none !important; }
+.ver-mais button { border: 0; cursor: pointer; }
+.ver-mais a, .ver-mais button { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px; background: var(--accent); color: #fff; font: 700 12.5px/1 var(--sans); letter-spacing: .04em; text-transform: uppercase; text-decoration: none; }
+.ver-mais a::after, .ver-mais button::after { content: '→'; font-size: 13px; }
+.ver-mais a:hover, .ver-mais button:hover { opacity: .9; text-decoration: none; }
 
 /* Celular (24/11/2026): as 3 principais seguem grandes; o resto fica compacto, com foto pequena ao lado. */
 @media (max-width: 760px) {
