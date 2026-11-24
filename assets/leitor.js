@@ -53,9 +53,9 @@ function textoOriginalHTML(paragrafos) {
 // Resumo do Radar: "O que aconteceu" em destaque; ação, envolvidos e órgãos em
 // cartões; quem noticiou em etiquetas.
 const ICONE_SECAO = {
-  'Como foi a ação': '<path d="M3 12h4l3-7 4 14 3-7h4"/>',
-  'Envolvidos e próximos passos': '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
-  'Quem atuou': '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',
+  'Como foi a ação': '<path d="M6 18V12.5a6 6 0 0 1 12 0V18z"/><path d="M3.5 19.3h17V22h-17z"/><path d="M11.2 1.5h1.6V5h-1.6zM3.6 4.8l1.2-1.2 2.5 2.5-1.2 1.2zM20.4 4.8l-1.2-1.2-2.5 2.5 1.2 1.2z"/>',
+  'Envolvidos e próximos passos': '<circle cx="12" cy="7.5" r="4.5"/><path d="M3 22c0-5 4-8 9-8s9 3 9 8z"/>',
+  'Quem atuou': '<path d="M12 2l9 3.4v6.4c0 5.6-3.8 9.1-9 10.2-5.2-1.1-9-4.6-9-10.2V5.4z"/>',
 };
 function radarHTML(secoes, veiculos) {
   if (!secoes.length) return '';
