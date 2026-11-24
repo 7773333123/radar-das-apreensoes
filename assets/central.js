@@ -276,7 +276,8 @@ function renderInicio() {
   [...frPrincipais, ...frMenores, ...frExtras].forEach((n) => usados.add(n));
   const lugarFr = (n) => `${n.cidade ? `${n.cidade} (${n.uf})` : (NOME_UF[n.uf] || '')}`;
   const blocoFronteira = frPrincipais.length ? `<section class="fronteira" aria-label="Fronteira">` +
-    `<div class="section-head"><h2>Fronteira</h2><span class="count">Apreensões nas regiões de fronteira</span></div>` +
+    `<div class="section-head ed-head"><span class="ed-ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 42s-13-11-13-21a13 13 0 0 1 26 0c0 10-13 21-13 21z"/><circle cx="24" cy="21" r="4.5"/></svg></span><h2>Fronteira</h2>` +
+    `<span class="ed-qtd">${frPrincipais.length + frMenores.length + frExtras.length} notícias</span></div>` +
     `<div class="fr-principais">${frPrincipais.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}">${midia(n)}` +
       `<div><div class="kicker">${esc(n.polo)}</div><h3 class="headline">${esc(n.titulo)}</h3>` +
       `${n.resumo ? `<p class="dek">${esc(curto(n.resumo, 160))}</p>` : ''}${metaHTML(n)}</div></a>`).join('')}</div>` +
@@ -342,7 +343,7 @@ function renderInicio() {
         `<div class="ver-mais"><a href="#resultados" data-ir-lista>Ver mais notícias</a></div>` : '') +
     `</section>` +
     blocoFronteira +
-    `<div class="section-head"><h2>${alta.length ? 'Em alta e em números' : 'Em números'}</h2><a href="observatorio">Abrir o Observatório →</a></div>` +
+    `<div class="section-head ed-head"><span class="ed-ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 40h32"/><path d="M13 34V24M21 34V14M29 34V20M37 34V9"/></svg></span><h2>${alta.length ? 'Em alta e em números' : 'Em números'}</h2><a class="ed-link" href="observatorio">Observatório →</a></div>` +
     `<section class="band${alta.length ? '' : ' sem-alta'}">` +
       (alta.length ? `<div class="panel panel-alta"><h3><span class="alta-ponto" aria-hidden="true"></span>Em alta</h3><ol class="trend">${alta.map((n) =>
         `<li><a class="story com-foto" href="${urlNoticia(n)}" data-read="${n.i}"><div><h4 class="headline">${esc(n.titulo)}</h4><div class="meta"><span class="sources">${n.outras.length + 1} veículos</span> · ${esc(relativo(n.data))}</div></div>${midia(n)}</a></li>`).join('')}</ol>` +

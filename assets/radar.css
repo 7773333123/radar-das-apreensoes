@@ -614,3 +614,8 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
 .ed-qtd { margin-left: auto; flex: none; font: 700 12px/1 var(--sans); color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--surface));
   border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); padding: 6px 10px; border-radius: 999px; white-space: nowrap; }
 @media (max-width: 760px) { .ed-head { padding: 10px 12px; } .ed-head h2 { font-size: 16px; letter-spacing: .06em; } .ed-ic { width: 34px; height: 34px; } }
+
+/* Mesmo destaque nos títulos da Fronteira, Em alta e em números e Últimas notícias (24/11/2026). */
+.ed-head .count, .ed-head .ed-link { margin-left: auto; font-size: 13px; }
+.ed-head .ed-link { font-weight: 700; color: var(--accent); white-space: nowrap; }
+@media (max-width: 760px) { .ed-head .count { font-size: 12px; } }
