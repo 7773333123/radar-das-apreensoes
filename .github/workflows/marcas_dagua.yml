@@ -1,0 +1,44 @@
+name: Fotos com marca d'água (aprender e conferir)
+# Regra do dono (24/11/2026): nada de marca d'água ou nome de jornal nas fotos do site.
+# Aprende onde cada veículo carimba a marca (bordas que se repetem nos mesmos pixels em fotos
+# diferentes) e confere as fotos recentes dos veículos com marca. O site troca a foto carimbada
+# pela foto limpa de outra fonte da mesma notícia ou mostra o marcador da editoria.
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      fontes:
+        description: 'Veículos a aprender nesta rodada'
+        required: false
+        default: '500'
+permissions:
+  contents: write
+concurrency:
+  group: publicar-site
+  cancel-in-progress: false
+jobs:
+  marcas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet pillow numpy
+      - name: Testes
+        run: python testes/test_marcas_dagua.py
+      - name: Baixar o acervo (release "dados")
+        run: python acervo.py baixar
+      - name: Aprender as marcas e conferir as fotos recentes
+        run: python marcas_dagua.py --aprender --fontes "${{ inputs.fontes || '500' }}" --marcar --dias 10 --limite 6000
+      - name: Regenerar e salvar
+        run: |
+          python testes/test_duplicatas.py
+          python gerar_feed_site.py > /tmp/gerar.log
+          grep -i "marca" /tmp/gerar.log || true
+          python compactar_acervo.py
+          python acervo.py salvar "Fotos com marca d'água" marcas_dagua.json

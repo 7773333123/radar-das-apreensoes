@@ -418,9 +418,30 @@ def main():
                        ('Polícia apreende drogas em São Paulo', 'SP')]:
         if inferir_uf({'titulo': titulo}) != uf:
             erros.append(f'estado do fato deveria ser {uf}: {titulo}')
+    # Veículo de divisa sem estado cadastrado não aprende estado (Zap Catalão/GO noticia Araguari/MG).
+    from localizar_uf import ufs_aprendidas
+    zap = [{'titulo': f'PM prende suspeito em Catalão ({k})', 'dominio_fonte': 'zapcatalao.com.br'} for k in range(9)]
+    zap.append({'titulo': 'PM apreende maconha em Araguari', 'dominio_fonte': 'zapcatalao.com.br'})
+    divisa = [{'dominio': 'zapcatalao.com.br', 'uf': '', 'fronteira': 'Corredor do Triângulo Mineiro e de Goiás'}]
+    if ufs_aprendidas(zap, divisa) or not ufs_aprendidas(zap, []):
+        erros.append('veículo de divisa não deveria aprender estado (e veículo comum deveria)')
+    if inferir_uf(zap[-1], divisa + ufs_aprendidas(zap, divisa)) != 'MG':
+        erros.append('Araguari noticiada por veículo de Goiás deveria ficar em MG')
+    # Foto com marca d'água na versão exibida: troca pela foto limpa da outra fonte (24/11/2026).
+    mw = [dict(mc[0], img='https://a.com/carimbada.jpg', _marca=[], d='2026-11-20T10:00'),
+          dict(mc[1], img='https://b.com/limpa.jpg', d='2026-11-20T11:00')]
+    mw[0].pop('_ofi', None)
+    juntas = agrupar_duplicatas(mw)[0]
+    if len(juntas) != 1 or juntas[0].get('img') != 'https://b.com/limpa.jpg' or '_marca' in juntas[0]:
+        erros.append("a versão exibida deveria trocar a foto com marca d'água pela foto limpa da outra fonte")
+    mw2 = [dict(mc[0], img='https://a.com/carimbada.jpg', _marca=[], d='2026-11-20T10:00'),
+           dict(mc[1], img='https://b.com/outra-carimbada.jpg', _marca=[], d='2026-11-20T11:00')]
+    juntas = agrupar_duplicatas(mw2)[0]
+    if len(juntas) != 1 or '_marca' not in juntas[0]:
+        erros.append("sem foto limpa, a foto deveria seguir marcada (o gerador tira a foto)")
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 26
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 30
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 

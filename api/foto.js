@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
   let item = null;
   try { await carregar(req); item = Number.isFinite(i) && ((await noticiaCompleta(i)) || {}).n; } catch (e) { console.error(e); }
   try {
-    if (!item) throw new Error('id');
+    if (!item || item.sf) throw new Error('id');  // sf: a foto da fonte tem marca d'água
     if (item.img) { res.statusCode = 302; res.setHeader('Location', item.img); res.setHeader('Cache-Control', 'public, s-maxage=604800'); return res.end(); }
     const r = await lerNoticia(item, item.u);
     if (!r || !r.img) throw new Error('sem foto');

@@ -58,6 +58,8 @@ jobs:
                 # A foto de cada notícia nova passa pela comparação de imagens antes de publicar.
                 python hash_imagens.py --limite 300 --trabalhadores 16 --timeout 8 >/dev/null || true
                 python fotos_orb.py --limite 400 --timeout 8 || true
+                # Foto nova de veículo que carimba marca d'água/nome na foto: conferida antes de publicar.
+                timeout 150 python marcas_dagua.py --marcar --dias 2 --limite 200 --timeout 8 || true
                 if python testes/test_duplicatas.py >/dev/null; then
                   python acervo.py salvar "Coleta expressa (rodada $ciclo)" feeds_saude.json duplicatas_suspeitas.json \
                     && gh workflow run juiz_claude.yml --ref main || echo 'Falha ao salvar; a próxima rodada tenta de novo.'

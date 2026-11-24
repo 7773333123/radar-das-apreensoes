@@ -58,6 +58,8 @@ from mesclar_acervo import chave as chave_acervo
 from ler_materias import foto_alheia
 from coletar_feeds_estaduais import agregador
 from classificar import CATEGORIAS, REGRAS, relevante, categorias as classificar_categorias
+from marcas_dagua import carregar_mascaras, foto_com_marca
+MASCARAS_MARCA = carregar_mascaras()  # marca d'água por veículo (marcas_dagua.json)
 
 
 # Veículos portugueses com domínio .com e marcas do noticiário de Portugal (polícias e cidades).
@@ -618,10 +620,16 @@ def main():
             if k > 0 and (foto_alheia(foto, '', '', '') or _chave_foto(foto) in repetidas):
                 continue  # galeria: só fotos da própria matéria
             fotos.append(foto)
+        # Foto com marca d'água / nome do jornal carimbado (marcas_dagua.py, regra do dono de 24/11/2026)
+        # não é exibida: fica só como evidência de duplicata; a galeria leva só as fotos limpas e a
+        # versão exibida troca pela foto limpa de outra fonte (duplicatas.agrupar) ou fica sem foto.
+        limpas = [f for f in fotos if not foto_com_marca(n, f, MASCARAS_MARCA)]
         if fotos:
             item['img'] = fotos[0]
-        if len(fotos) > 1:
-            item['g'] = len(fotos)
+            if fotos[0] not in limpas:
+                item['_marca'] = limpas
+        if len(limpas) > 1:
+            item['g'] = len(limpas)
         resumo = str(n.get('descricao') or n.get('resumo') or '').strip()
         # Imprensa: nome completo de preso vira iniciais no que o Radar exibe (resumo
         # e trecho da fonte). Notas oficiais ficam como o órgão publicou.
@@ -652,8 +660,8 @@ def main():
         if paragrafos and n.get('licenca_texto'):
             item['x'] = 1
             detalhe.update(p=[anonimizar(x, nomes_presos) for x in paragrafos] if nomes_presos else paragrafos, l=str(n['licenca_texto']))
-        if len(fotos) > 1:
-            detalhe['g'] = fotos
+        if len(limpas) > 1:
+            detalhe['g'] = limpas
         # Resumo do Radar: fatos da página original (ler_materias.py) ou, na falta
         # dela, do título e do resumo da fonte; redigido com frases próprias.
         # Fatos do título e do resumo da fonte: os mais confiáveis para as
@@ -812,6 +820,20 @@ def main():
     def tem_conteudo(it):
         d = detalhes.get(it['i'] % LOTES, {}).get(str(it['i']), {})
         return bool(it.get('img') or it.get('x') or d.get('tr'))
+    # Foto com marca d'água que o agrupamento não trocou por foto limpa de outra fonte: usa uma
+    # foto limpa da própria galeria ou fica sem foto ("sf": o site não busca a foto original).
+    sem_marca = 0
+    for it in saida:
+        if '_marca' in it:
+            limpas = it.pop('_marca')
+            if limpas:
+                it['img'] = limpas[0]
+            else:
+                it.pop('img', None)
+                it.pop('g', None)
+                it['sf'] = 1
+                sem_marca += 1
+    print(f"Fotos com marca d'água fora do site (sem foto limpa de outra fonte): {sem_marca}")
     vazias = [it for it in saida if not tem_conteudo(it)]
     if vazias:
         saida = [it for it in saida if tem_conteudo(it)]
@@ -819,7 +841,7 @@ def main():
         antes -= len(vazias)
     print(f'Sem foto e sem conteúdo (aguardando leitura): {len(vazias)} fora do site')
     for item in saida:
-        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx', '_mesma', '_txt', '_ofi', '_uff', '_mini'):
+        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx', '_mesma', '_txt', '_ofi', '_uff', '_mini', '_marca'):
             item.pop(k, None)
     for lote in list(detalhes):
         for chave in [c for c in detalhes[lote] if int(c) in removidas]:

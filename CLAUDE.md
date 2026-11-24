@@ -44,3 +44,9 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
 - **Republicação atrasada é duplicata** (22/11/2026): o mesmo fato reescrito dias depois (ex.: O Antagonista
   "Lado OA") vai ao juiz quando repete o valor do título (`duplicatas._mesmo_valor`, até 7 dias).
 - **Página inicial sem quadro vazio** (22/11/2026): "Em alta" sem matéria repercutida hoje não aparece.
+- **Foto sem marca d'água nem nome de jornal** (24/11/2026): `marcas_dagua.py` aprende onde cada veículo
+  carimba a marca (bordas repetidas nos mesmos pixels em fotos diferentes) e confere as fotos (`img_marca`).
+  A versão exibida troca a foto carimbada pela foto limpa de outra fonte da mesma notícia
+  (`duplicatas.agrupar`); sem foto limpa, fica sem foto (`sf`: o site não busca a foto original). Rotina
+  `marcas_dagua.yml` (a cada 6 h); testes em `testes/test_marcas_dagua.py`. Veículo de divisa
+  (campo `fronteira` em fontes.json, sem estado) não aprende estado (`localizar_uf.ufs_aprendidas`).

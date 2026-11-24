@@ -24,7 +24,7 @@ if (!base || !existe(base)) base = 'HEAD^';
 if (!existe(base)) process.exit(1);
 
 // Arquivos de dados/estado das coletas: não mudam o site por si.
-const SO_DADOS = /^(dados_versao|duplicatas_suspeitas|feeds_saude|buscadores_cursor|cobertura_historica|agencia_cursor|historico_cursor|juiz_[a-z_]+|wayback_cursor_\d{4}|[a-z_]*_cursor(_\d{4})?)\.json$/;
+const SO_DADOS = /^(dados_versao|marcas_dagua|duplicatas_suspeitas|feeds_saude|buscadores_cursor|cobertura_historica|agencia_cursor|historico_cursor|juiz_[a-z_]+|wayback_cursor_\d{4}|[a-z_]*_cursor(_\d{4})?)\.json$/;
 
 let arquivos;
 try {
