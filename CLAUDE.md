@@ -28,8 +28,11 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   ano em paralelo, 250 sites por ano, cursor `wayback_cursor_AAAA.json`. 21/11/2026.
 - **Quantidade é só do fato noticiado** (21/11/2026): frases do resumo/texto sobre OUTRO fato ("após a apreensão
   de…", "anteriormente", "em março", "semana passada") não contam (`resumo_fatos.sem_outros_fatos`).
-- **Manchete**: a notícia mais relevante do dia, partindo das instituições policiais (fonte oficial +3,
-  instituição no título +1, depois tamanho e repercussão; desdobramentos fora). `assets/central.js`.
+- **Três principais no topo** (24/11/2026, substitui a manchete única): 1ª e 2ª = maiores apreensões do dia
+  COM FOTO, pelo volume de droga (kg); empate pelos critérios antigos (fonte oficial +3, instituição no título +1,
+  tamanho e repercussão; desdobramentos fora). 3ª = Fronteira: PRF em Foz do Iguaçu/Santa Terezinha de Itaipu;
+  senão Ponte da Amizade; senão Foz/Santa Terezinha por outro órgão; senão a ordem regional (`prioridadeFr`);
+  em cada nível, o maior volume de droga. `assets/central.js` (`porVolume`, `nivelFr`).
 - Presos identificados só por iniciais e idade.
 - Duplicatas: não tolerar. Correções à mão vão em `juiz_decisoes_revisao.json` (valem como veto do grupo);
   padrões viram regra + teste em `testes/test_duplicatas.py`.
