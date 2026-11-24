@@ -280,8 +280,8 @@ function renderInicio() {
     `<div class="fr-principais">${frPrincipais.map((n) => `<a class="story" href="${urlNoticia(n)}" data-read="${n.i}">${midia(n)}` +
       `<div><div class="kicker">${esc(n.polo)}</div><h3 class="headline">${esc(n.titulo)}</h3>` +
       `${n.resumo ? `<p class="dek">${esc(curto(n.resumo, 160))}</p>` : ''}${metaHTML(n)}</div></a>`).join('')}</div>` +
-    (frMenores.length ? `<ul class="fr-menores">${[...frMenores, ...frExtras].map((n, k) => `<li${k >= frMenores.length ? ' class="fr-extra" hidden' : ''}><a class="story" href="${urlNoticia(n)}" data-read="${n.i}">` +
-      `<span class="fr-lugar">${esc(lugarFr(n))}</span><h4 class="headline">${esc(n.titulo)}</h4>${metaHTML(n)}</a></li>`).join('')}</ul>` : '') +
+    (frMenores.length ? `<ul class="fr-menores">${[...frMenores, ...frExtras].map((n, k) => `<li${k >= frMenores.length ? ' class="fr-extra" hidden' : ''}><a class="story com-foto" href="${urlNoticia(n)}" data-read="${n.i}">` +
+      `<div><span class="fr-lugar">${esc(lugarFr(n))}</span><h4 class="headline">${esc(n.titulo)}</h4>${metaHTML(n)}</div>${midia(n)}</a></li>`).join('')}</ul>` : '') +
     `<div class="ver-mais">${frExtras.length ? '<button type="button" data-fr-mais>Ver mais notícias</button>' : '<a href="#resultados" data-ir-lista>Ver mais notícias</a>'}</div>` +
     `</section>` : '';
 
@@ -345,7 +345,7 @@ function renderInicio() {
     `<div class="section-head"><h2>${alta.length ? 'Em alta e em números' : 'Em números'}</h2><a href="observatorio">Abrir o Observatório →</a></div>` +
     `<section class="band${alta.length ? '' : ' sem-alta'}">` +
       (alta.length ? `<div class="panel"><h3>Em alta</h3><ol class="trend">${alta.map((n) =>
-        `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><h4 class="headline">${esc(n.titulo)}</h4><div class="meta"><span class="sources">${n.outras.length + 1} veículos</span> · ${esc(relativo(n.data))}</div></a></li>`).join('')}</ol>` +
+        `<li><a class="story com-foto" href="${urlNoticia(n)}" data-read="${n.i}"><div><h4 class="headline">${esc(n.titulo)}</h4><div class="meta"><span class="sources">${n.outras.length + 1} veículos</span> · ${esc(relativo(n.data))}</div></div>${midia(n)}</a></li>`).join('')}</ol>` +
         `<p class="note">Matérias de hoje publicadas por mais veículos.</p></div>` : '') +
       `<div class="panel"><h3>Últimos 30 dias</h3><dl class="kpis">` +
         `<div class="kpi"><dt>Notícias</dt><dd>${num(r30.length)}</dd></div>` +
@@ -373,7 +373,7 @@ function renderInicio() {
       resto.forEach((n) => usados.add(n));
       return `<section class="editoria"><div class="section-head"><h2>${esc(st.ctx.categorias[c])}</h2></div>` +
         `<div class="first"><a class="story" href="${urlNoticia(primeira)}" data-read="${primeira.i}">${midia(primeira)}<div>${kickerHTML(primeira, st.ctx, c)}<h3 class="headline">${esc(primeira.titulo)}</h3>${metaHTML(primeira)}</div></a></div>` +
-        `<ul>${resto.map((n) => `<li><a class="story" href="${urlNoticia(n)}" data-read="${n.i}"><h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</a></li>`).join('')}</ul>` +
+        `<ul>${resto.map((n) => `<li><a class="story com-foto" href="${urlNoticia(n)}" data-read="${n.i}"><div><h3 class="headline">${esc(n.titulo)}</h3>${metaHTML(n)}</div>${midia(n)}</a></li>`).join('')}</ul>` +
         `<div class="ver-mais"><a href="#cat=${c}" data-cat="${c}" data-mais="1">Ver mais notícias</a></div></section>`;
     }).join('')}</div>`;
   renderMapa($('mapaInicio'), porUf, { rotulo: 'Notícias por estado nos últimos 30 dias', formato: (v) => `${num(v)} notícias`, aoClicar: (uf) => definir({ uf }) });

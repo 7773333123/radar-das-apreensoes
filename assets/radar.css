@@ -574,3 +574,16 @@ details.rs-lei p { margin: 10px 0 2px; font: 400 16px/1.6 var(--serif); }
   .hp-spark { width: 64px; height: 26px; margin-top: 2px; }
   .hoje-painel .note { font-size: 10px; line-height: 1.35; margin-top: 6px; }
 }
+
+/* Foto em todas as notícias das listas (24/11/2026): miniatura pequena à direita do título. */
+.story.com-foto { display: grid; grid-template-columns: minmax(0, 1fr) 76px; gap: 12px; align-items: start; }
+.story.com-foto .media { aspect-ratio: 1; margin: 0; border-radius: 6px; }
+.story.com-foto .media .ph span { display: none; }
+.trend .story.com-foto { grid-template-columns: minmax(0, 1fr) 64px; }
+@media (max-width: 760px) {
+  .story.com-foto { grid-template-columns: minmax(0, 1fr) 72px; gap: 10px; }
+  .editoria li .headline, .fr-menores .headline { font-size: 14.5px; }
+  .trend .headline { font-size: 15px; }
+  .lead-faixa .headline, .editoria .first .headline, .fr-principais .headline { font-size: 16px; }
+  .lead-faixa .story, .editoria .first .story, .fr-principais .story { grid-template-columns: minmax(0, 1fr) 88px; }
+}
