@@ -439,9 +439,14 @@ def main():
     juntas = agrupar_duplicatas(mw2)[0]
     if len(juntas) != 1 or '_marca' not in juntas[0]:
         erros.append("sem foto limpa, a foto deveria seguir marcada (o gerador tira a foto)")
+    # Condenado citado pelo nome sem idade vira iniciais (24/11/2026).
+    from resumo_fatos import anonimizar, nomes_dos_presos
+    t = 'A 2ª Vara Criminal condenou Ellen Larissa de Oliveira Silva à pena de cinco anos'
+    if 'Ellen' in anonimizar(t, nomes_dos_presos(t)):
+        erros.append('nome de condenado deveria virar iniciais')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 30
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 31
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 

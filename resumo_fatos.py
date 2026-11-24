@@ -380,9 +380,21 @@ NAO_PRESO_PERTO = re.compile(r'v[íi]tima|morte d|mort[oa]s?\b|morreu|morrem|ass
 PRISAO = re.compile(r'\bpres[oa]s?\b|\bprend|\bdetid[oa]|\bcaptur|flagrante|\bautuad|voz de pris', re.I)
 
 
+# Condenado/réu citado pelo nome sem a idade (24/11/2026: "condenou Ellen Larissa de Oliveira Silva à pena",
+# nome completo aparecia no resumo; regra do dono: presos só por iniciais).
+CONDENADO_NOME = re.compile(
+    r"\b(?:condenou|condenad[oa]s?|sentenciou|sentenciad[oa]s?|absolveu|denunciou|r[ée]u|r[ée]|acusad[oa]s?)\s+"
+    r"((?:[A-ZÀ-Ý][a-zà-ÿ]+)(?:\s+(?:d[aeo]s?\s+)?[A-ZÀ-Ý][a-zà-ÿ]+){1,5})")
+
+
 def nomes_dos_presos(texto):
     """[(nome completo, iniciais)] dos presos identificados (para trocar por iniciais)."""
-    return [(nome, iniciais(nome)) for nome in _presos(texto, so_nomes=True)]
+    nomes = list(_presos(texto, so_nomes=True))
+    for m in CONDENADO_NOME.finditer(texto or ''):
+        nome = m.group(1)
+        if not NAO_PESSOA.search(nome) and nome not in nomes:
+            nomes.append(nome)
+    return [(nome, iniciais(nome)) for nome in nomes]
 
 
 def anonimizar(texto, nomes):
