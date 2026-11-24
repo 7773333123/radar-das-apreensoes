@@ -203,7 +203,7 @@ def _fotos(n, galeria):
     return [f for f in dict.fromkeys(fotos) if isinstance(f, str) and f.startswith('http')]
 
 
-def aprender(noticias, mascaras, fontes_max, fotos_por_fonte, timeout, trabalhadores):
+def aprender(noticias, mascaras, fontes_max, fotos_por_fonte, timeout, trabalhadores, horas=0):
     hoje = datetime.now(timezone.utc).date()
     corte = (hoje - timedelta(days=30)).isoformat()
     refazer = (hoje - timedelta(days=REFAZER_DIAS)).isoformat()
@@ -214,6 +214,9 @@ def aprender(noticias, mascaras, fontes_max, fotos_por_fonte, timeout, trabalhad
         por_fonte[chave_fonte(n)].append(n)
     candidatas = [f for f, ns in por_fonte.items() if f and len(ns) >= MIN_FOTOS
                   and (str((mascaras.get(f) or {}).get('em') or '') < refazer or (mascaras.get(f) or {}).get('v') != VERSAO)]  # versão antiga: refaz
+    if horas:  # na entrada da notícia (coleta expressa): só veículos com notícia nas últimas `horas`
+        desde = (datetime.now(timezone.utc) - timedelta(hours=horas)).isoformat()[:16]
+        candidatas = [f for f in candidatas if str(por_fonte[f][0].get('data_iso') or '')[:16] >= desde]
     candidatas.sort(key=lambda f: -len(por_fonte[f]))
     candidatas = candidatas[:fontes_max]
     print(f'Veículos com {MIN_FOTOS}+ fotos no mês: {sum(1 for ns in por_fonte.values() if len(ns) >= MIN_FOTOS)}; '
@@ -429,6 +432,7 @@ def main():
     ap.add_argument('--galeria', type=int, default=5, help='--marcar: fotos da galeria conferidas por notícia')
     ap.add_argument('--timeout', type=int, default=10)
     ap.add_argument('--trabalhadores', type=int, default=16)
+    ap.add_argument('--horas', type=int, default=0, help='--aprender: só veículos com notícia nestas últimas horas')
     ap.add_argument('--diagnostico', default='', help='veículos separados por vírgula: só mostra a calibração')
     args = ap.parse_args()
     inicio = time.time()
@@ -439,7 +443,7 @@ def main():
         diagnostico(noticias, [f.strip() for f in args.diagnostico.split(',') if f.strip()], args.timeout, args.trabalhadores)
         return
     if args.aprender:
-        aprender(noticias, mascaras, args.fontes, args.fotos, args.timeout, args.trabalhadores)
+        aprender(noticias, mascaras, args.fontes, args.fotos, args.timeout, args.trabalhadores, args.horas)
         MASCARAS.write_text(json.dumps({'atualizado_em': datetime.now(timezone.utc).isoformat(timespec='seconds'),
                                         'fontes': {k: {c: v for c, v in i.items() if c != 'manual'}
                                                    for k, i in sorted(mascaras.items()) if set(i) != {'manual'}}}, ensure_ascii=False, indent=0) + '\n',
