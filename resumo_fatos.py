@@ -208,8 +208,16 @@ def sem_outros_fatos(texto):
     return ' '.join(f for f in frases if not OUTRO_FATO.search(f))
 
 
+# Vírgula decimal que virou espaço: "apreende 1 2 tonelada" = 1,2 t (24/11/2026: era lido como 2 t). Separador
+# de milhar tem 3 dígitos ("1 200 kg"), então só 1 ou 2 dígitos depois do espaço contam como decimal.
+DECIMAL_PARTIDO = re.compile(r'\b(\d{1,3}) (\d{1,2})(?= (?:toneladas?|quilos?|kg)\b)', re.I)
+# Milhar separado por espaço: "1 200 kg" = 1.200 kg (era lido como 200 kg).
+MILHAR_ESPACO = re.compile(r'\b(\d{1,3}) (\d{3})(?= (?:toneladas?|quilos?|kg|gramas?|g|muni[çc][õo]es|cartuchos|por[çc][õo]es|pinos|pedras|tabletes|maços|pacotes)\b)', re.I)
+
+
 def extrair(titulo, resumo='', texto=''):
     """Fatos objetivos da notícia. Campos vazios ficam de fora."""
+    titulo, resumo, texto = (MILHAR_ESPACO.sub(r'\1\2', DECIMAL_PARTIDO.sub(r'\1,\2', x or '')) for x in (titulo, resumo, texto))
     fontes = [droga_pelo_nome(titulo), droga_pelo_nome(sem_outros_fatos(resumo)),
               droga_pelo_nome(sem_outros_fatos((texto or '')[:6000]))]
     tudo = '. '.join(f for f in fontes if f)

@@ -143,6 +143,8 @@ def quantidades_titulo(texto):
 
 @lru_cache(maxsize=300000)
 def _quantidades_titulo(texto):
+    from resumo_fatos import DECIMAL_PARTIDO, MILHAR_ESPACO  # "1 2 tonelada" = 1,2; "1 200 kg" = 1200
+    texto = MILHAR_ESPACO.sub(r'\1\2', DECIMAL_PARTIDO.sub(r'\1,\2', texto))
     saida = numeros(texto)
     for w in normal(texto).split():
         if w in EXTENSO:
@@ -1430,6 +1432,9 @@ def agrupar(itens, motivos=None):
             if dia[k] < ult - 4:
                 continue
             chaves_k = palavras_proprias_foto(itens[k]['t']) | _valores(itens[k]['t'])
+            # Mesma quantidade do mesmo material (24/11/2026: "1,2 tonelada de maconha" na Agência SP e no
+            # Diário do Povo, com a mesma foto, não dividiam nenhuma palavra rara do título).
+            chaves_k |= {f'q:{m}:{round(v, 1)}' for m, v in (itens[k].get('_q') or {}).items() if v}
             for c in chaves_k:
                 indice_f.setdefault((dia[k], c), []).append(k)
         vistos_f = set()

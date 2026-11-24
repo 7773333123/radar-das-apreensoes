@@ -447,9 +447,15 @@ def main():
     t = 'A Vara condenou Vitor Hugo Alves à pena de seis anos de reclusão e Maelson do Carmo Silva a cinco anos'
     if 'Maelson' in anonimizar(t, nomes_dos_presos(t)):
         erros.append('segundo condenado da frase deveria virar iniciais')
+    # "1 2 tonelada" (vírgula que virou espaço) = 1,2 t; "1 200 kg" = 1.200 kg (24/11/2026).
+    from duplicatas import quantidades_titulo
+    if quantidades_titulo('PM rodoviária apreende 1 2 tonelada de maconha') != quantidades_titulo('PM apreende mais de 1,2 tonelada de maconha'):
+        erros.append('"1 2 tonelada" deveria ser 1,2 t')
+    if '1200' not in quantidades_titulo('PF apreende 1 200 kg de cocaína'):
+        erros.append('"1 200 kg" deveria ser 1.200 kg')
     for e in erros:
         print('FALHOU:', e)
-    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 31
+    total = len(MESMA) + len(DIFERENTES) + len(AVANCADOS) + 33
     print(f'{total - len(erros)}/{total} casos corretos')
     sys.exit(1 if erros else 0)
 
