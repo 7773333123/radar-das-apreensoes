@@ -325,7 +325,7 @@ def salvar(msg, extras, sem_dados=False, parte=None):
     if not sem_dados:
         garantir_release()
         unir_com_release(parte)
-    so_acervo = False  # depois de um conflito na MESMA parte: grava só o acervo mesclado
+    so_acervo = False  # (não usado desde 24/11/2026: no conflito grava acervo mesclado + site desta execução)
     gz = tgz = None
     for tentativa in range(1, 9):
         subidos = []
@@ -380,9 +380,11 @@ def salvar(msg, extras, sem_dados=False, parte=None):
         baixar(parte=parte)
         sh(sys.executable, 'mesclar_acervo.py', str(nossa))
         # Regenerar o site leva minutos e, nesse tempo, outra coleta grava de novo (corrida
-        # sem fim). Grava só o acervo mesclado; a próxima geração desta parte atualiza o site.
+        # sem fim). Grava o acervo mesclado JUNTO com o site já gerado nesta execução (24/11/2026):
+        # antes gravava só o acervo e, com 4-5 coletas gravando a parte quente, o site no ar ficou
+        # parado por horas (duplicatas já resolvidas e decisões dos juízes não chegavam ao ar).
+        # As notícias que a outra coleta acabou de trazer entram no site na próxima geração (minutos).
         sh(sys.executable, 'compactar_acervo.py')
-        so_acervo = True
         gz = tgz = None
         time.sleep(3 * tentativa)
     raise SystemExit('Não foi possível salvar após 8 tentativas.')
