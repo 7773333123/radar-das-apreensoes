@@ -45,6 +45,12 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   **Sempre imagens reais** (24/11/2026): foto de arquivo (pasta de envio /AAAA/MM/ de mais de 2 meses antes da
   notícia) perde para a foto real; a versão exibida troca pela foto real de outra fonte (`foto_de_arquivo`, `_arq`).
   `capas_ia.py` confere as fotos de todas as notícias (as mais recentes primeiro).
+- **Português correto** (24/11/2026), pelas referências: Bechara, Cunha & Cintra, VOLP/ABL, Manual de Redação da
+  Presidência, manuais da Folha e do Estadão. Texto do Radar: zero a dez por extenso com concordância ("seis armas",
+  "duas pessoas"), algarismo com unidade/valor ("6 kg", "R$ 2 mil"), idade junto do sujeito
+  (`resumo_fatos.numerais_por_extenso`, `_idade_dos_presos`). Títulos das fontes: `revisar_titulos.py` (Claude Haiku,
+  teto US$ 2/mês, na coleta expressa) corrige só erros claros; trava mantém números e nomes (`aceitavel`);
+  registro em `revisao_titulos.json`. Roteiro dos Reels passa pela mesma revisão.
 - Presos identificados só por iniciais e idade (no texto). **Foto com rosto pode** (24/11/2026): se o veículo
   original publicou a foto, ela entra como veio (no site e nos Reels); não se esconde nem desfoca rosto.
 - Duplicatas: não tolerar. Correções à mão vão em `juiz_decisoes_revisao.json` (valem como veto do grupo);

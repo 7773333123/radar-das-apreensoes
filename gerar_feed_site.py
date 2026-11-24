@@ -63,7 +63,9 @@ MASCARAS_MARCA = carregar_mascaras()  # marca d'água por veículo (marcas_dagua
 # Capa = foto do material apreendido (regra do dono, 24/11/2026): capas_ia.py marca quais fotos mostram o
 # que foi apreendido (1) e quais não (0: policial, viatura, fachada). As do material vão primeiro.
 from capas_ia import fotos_conferidas
+from revisar_titulos import correcoes as _correcoes_titulos
 CAPAS = fotos_conferidas()
+TITULOS_REVISADOS = _correcoes_titulos()  # português revisado (revisar_titulos.py, 24/11/2026)
 _ORDEM_CAPA = {1: 0, None: 1, 0: 2}
 
 
@@ -597,7 +599,7 @@ def main():
         if pago(n):
             pagas += 1
             continue
-        titulo = limpar_titulo(n.get('titulo'), fonte)
+        titulo = limpar_titulo(TITULOS_REVISADOS.get(str(n.get('titulo') or '').strip()) or n.get('titulo'), fonte)
         if not titulo:
             continue
         # Páginas de busca, etiqueta e arquivo dos sites não são notícias ("Busca: ...", "Tag: ...",
