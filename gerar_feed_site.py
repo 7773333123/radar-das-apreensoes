@@ -67,6 +67,17 @@ CAPAS = fotos_conferidas()
 _ORDEM_CAPA = {1: 0, None: 1, 0: 2}
 
 
+def foto_de_arquivo(foto, data_iso):
+    """Foto antiga reaproveitada (dono do site, 24/11/2026: "sempre imagens reais"): o endereço traz a
+    pasta do mês do envio (/2025/12/) e ela é de mais de 2 meses antes da notícia. Ex.: Jornal de
+    Brasília ilustrou o arsenal do Jardim Botânico (24/11/2026) com uma foto de dezembro de 2025."""
+    m = re.search(r'/(20\d\d)/(0[1-9]|1[0-2])/', str(foto or '').split('?')[0])
+    if not m or len(data_iso or '') < 7 or not str(data_iso)[:4].isdigit():
+        return False
+    meses = lambda a, b: int(a) * 12 + int(b)
+    return meses(data_iso[:4], data_iso[5:7]) - meses(m.group(1), m.group(2)) > 2
+
+
 # Veículos portugueses com domínio .com e marcas do noticiário de Portugal (polícias e cidades).
 SITES_PORTUGAL = ('noticiasaominuto.com', 'cmjornal', 'observador.pt', 'sapo.', 'rtp.', 'sicnoticias', 'tvi24',
                   'jn.pt', 'dn.pt', 'expresso.pt', 'publico.pt', 'iol.pt', 'record.pt', 'nit.pt')
@@ -628,12 +639,14 @@ def main():
         # Foto com marca d'água / nome do jornal carimbado (marcas_dagua.py, regra do dono de 24/11/2026)
         # não é exibida: fica só como evidência de duplicata; a galeria leva só as fotos limpas e a
         # versão exibida troca pela foto limpa de outra fonte (duplicatas.agrupar) ou fica sem foto.
-        fotos.sort(key=lambda f: _ORDEM_CAPA.get(CAPAS.get(f), 1))  # estável: dentro do grupo, a ordem da matéria
+        fotos.sort(key=lambda f: (foto_de_arquivo(f, data), _ORDEM_CAPA.get(CAPAS.get(f), 1)))  # real antes da de arquivo; estável
         limpas = [f for f in fotos if not foto_com_marca(n, f, MASCARAS_MARCA)]
         if limpas and CAPAS.get(limpas[0]) == 1:
             item['_prod'] = 1  # a capa limpa mostra o material apreendido
         if fotos:
             item['img'] = fotos[0]
+            if foto_de_arquivo(fotos[0], data):
+                item['_arq'] = 1  # só tem foto de arquivo: a versão exibida troca pela real de outra fonte
             if fotos[0] not in limpas:
                 item['_marca'] = limpas
         if len(limpas) > 1:
@@ -874,7 +887,7 @@ def main():
         antes -= len(vazias)
     print(f'Sem foto e sem conteúdo (aguardando leitura): {len(vazias)} fora do site')
     for item in saida:
-        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx', '_mesma', '_txt', '_ofi', '_uff', '_mini', '_marca', '_prod'):
+        for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx', '_mesma', '_txt', '_ofi', '_uff', '_mini', '_marca', '_prod', '_arq'):
             item.pop(k, None)
     for lote in list(detalhes):
         for chave in [c for c in detalhes[lote] if int(c) in removidas]:
