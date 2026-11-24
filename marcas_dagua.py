@@ -225,6 +225,50 @@ def marcar(noticias, mascaras, dias, limite, galeria, timeout, trabalhadores):
     return bool(lote)
 
 
+GENERICAS = {'portal', 'noticias', 'noticia', 'jornal', 'news', 'online', 'agora', 'diario', 'folha', 'gazeta', 'tribuna',
+             'radio', 'blog', 'site', 'globo', 'internet', 'brasil', 'www', 'http', 'https', 'cidade', 'policia', 'policial', 'militar', 'civil'}
+
+
+def _letras(t):
+    import unicodedata
+    t = unicodedata.normalize('NFKD', str(t or '').lower())
+    return ''.join(c for c in t if c.isalnum() or c in ' .\n')
+
+
+def palavras_do_veiculo(nome, dominio):
+    """Palavras que identificam o jornal ("agreste", "violento", "campos24horas"), sem as genéricas."""
+    import re
+    base = _letras(nome) + ' ' + _letras(dominio.split('.')[0]) + ' ' + _letras(dominio.replace('.com', ' ').replace('.br', ' '))
+    return {p for p in re.split(r'[^a-z0-9]+', base) if len(p) >= 5 and p not in GENERICAS}
+
+
+def texto_na_foto(dados):
+    """Texto escrito na foto (OCR, tesseract): marca d'água, nome do jornal, endereço do site."""
+    import subprocess
+    from PIL import Image, ImageOps
+    with Image.open(io.BytesIO(dados)) as img:
+        c = img.convert('L')
+    if c.width < 1200:  # letra pequena de marca d'água: amplia antes de ler
+        f = 1200 / c.width
+        c = c.resize((1200, max(1, round(c.height * f))))
+    saida = []
+    for versao in (c, ImageOps.invert(c)):  # marca branca sobre a foto: invertida fica preta
+        b = io.BytesIO()
+        versao.save(b, 'PNG')
+        r = subprocess.run(['tesseract', 'stdin', 'stdout', '-l', 'por', '--psm', '11'], input=b.getvalue(),
+                           capture_output=True, timeout=60)
+        saida.append(r.stdout.decode('utf-8', 'ignore'))
+    return _letras(' '.join(saida))
+
+
+def nome_na_foto(texto, palavras):
+    """O texto lido na foto tem o nome do jornal ou um endereço de site?"""
+    import re
+    achou = [p for p in palavras if p in texto.replace(' ', '') or p in texto]
+    site = re.findall(r'[a-z0-9-]{3,}\.com(?:\.br)?|www\.[a-z0-9-]{3,}', texto)
+    return achou, site
+
+
 def diagnostico(noticias, fontes, timeout, trabalhadores):
     """Calibração com fotos reais: para cada veículo, quantos pixels passariam com limiares diferentes."""
     global TOPO
@@ -234,7 +278,7 @@ def diagnostico(noticias, fontes, timeout, trabalhadores):
             por_fonte[chave_fonte(n)].append(n['imagem_url'])
     for fonte in fontes:
         urls = list(dict.fromkeys(por_fonte.get(fonte, [])))[:16]
-        brutos = {}
+        brutos, ocr = {}, {}
         def um(u):
             try:
                 from hash_imagens import HEADERS, MAX_BYTES
@@ -242,6 +286,7 @@ def diagnostico(noticias, fontes, timeout, trabalhadores):
                 from PIL import Image, ImageFilter
                 with urlopen(Request(u, headers=HEADERS), timeout=timeout) as r:
                     dados = r.read(MAX_BYTES)
+                ocr[u] = dados
                 with Image.open(io.BytesIO(dados)) as img:
                     img.draft('L', (256, 256))
                     c = img.convert('L')
@@ -274,6 +319,20 @@ def diagnostico(noticias, fontes, timeout, trabalhadores):
                     linha.append(f'≥{f}: 0 px')
             print('   ' + '; '.join(linha))
         TOPO = 0.20
+        nome = next((str(n.get('fonte') or '') for n in noticias if chave_fonte(n) == fonte), '')
+        palavras = palavras_do_veiculo(nome, fonte)
+        com_nome = com_site = 0
+        for u, dados in list(ocr.items())[:12]:
+            try:
+                txt = texto_na_foto(dados)
+            except Exception as e:
+                print(f'   OCR falhou: {e!r}'[:120])
+                continue
+            achou, site = nome_na_foto(txt, palavras)
+            com_nome += bool(achou)
+            com_site += bool(site)
+            print(f'   OCR: nome={achou} site={site[:2]} texto={" ".join(txt.split())[:90]!r}')
+        print(f'   palavras do veículo: {sorted(palavras)}; fotos com o nome: {com_nome}; com endereço de site: {com_site} (de {min(12, len(ocr))})')
 
 
 def main():
