@@ -1,0 +1,45 @@
+name: Diagnóstico de fonte (manual)
+# Mostra o que um site/feed devolve para a coleta (status, tipo, títulos e datas dos itens), para descobrir
+# por que uma fonte cadastrada não traz notícias. Não grava nada.
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: 'Endereços separados por espaço'
+        required: true
+permissions:
+  contents: read
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Conferir
+        env:
+          URLS: ${{ inputs.urls }}
+        run: |
+          python3 - <<'PY'
+          import os, re, urllib.request
+          UA = 'Mozilla/5.0 (compatible; RadarDasApreensoes/1.0; +https://www.radardasapreensoes.com.br)'
+          for u in os.environ['URLS'].split():
+              print('=' * 80); print(u)
+              try:
+                  r = urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': UA}), timeout=25)
+                  b = r.read(3_000_000).decode('utf-8', 'ignore')
+                  print('status', r.status, '| tipo', r.headers.get('content-type'), '| final', r.url, '| bytes', len(b))
+                  itens = re.findall(r'<item>.*?</item>|<entry>.*?</entry>', b, re.S)
+                  print('itens no feed:', len(itens))
+                  for it in itens[:8]:
+                      t = re.search(r'<title[^>]*>(.*?)</title>', it, re.S)
+                      d = re.search(r'<(?:pubDate|published|updated)>(.*?)<', it, re.S)
+                      print('  -', (d.group(1).strip() if d else '?')[:31], '|', re.sub(r'<!\[CDATA\[|\]\]>', '', t.group(1)).strip()[:100] if t else '?')
+                  if not itens:
+                      print('  links de notícia na página:', len(re.findall(r'href="[^"]*(?:noticia|news|/20\d\d/)[^"]*"', b)))
+                      print('  título da página:', (re.search(r'<title>(.*?)</title>', b, re.S) or [None, '?'])[1][:120])
+              except Exception as e:
+                  print('ERRO', repr(e)[:200])
+          PY
