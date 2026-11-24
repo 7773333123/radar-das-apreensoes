@@ -88,6 +88,8 @@ module.exports = async (req, res) => {
   const visita = { pais, codigo_pais: codigo, estado: h('x-vercel-ip-country-region'), cidade: h('x-vercel-ip-city'),
     quando: agora.toISOString().slice(0, 16) + 'Z' };
   // Robô ou pessoa (24/11/2026): robôs também ficam registrados, com o nome, para o dono saber quem lê o site.
+  // Mesma pessoa voltando ao site depois de 30 min ou mais (assets/visita.js): conta como nova visita.
+  if (/[?&]retorno=1\b/.test(req.url || '')) visita.retorno = 1;
   const ua = String(req.headers['user-agent'] || '').slice(0, 400);
   const robo = nomeRobo(ua);
   if (robo) { visita.tipo = 'robo'; visita.robo = robo; } else {
