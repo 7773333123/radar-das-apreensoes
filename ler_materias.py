@@ -37,7 +37,7 @@ LICENCA = re.compile(
 NAO_COMERCIAL = re.compile(r'N[ãa]oComercial|licenses/by-nc', re.I)
 VERSAO = 10  # 10 = trecho de 70% da reportagem (atravessa intertítulos); 9 = fotos só da matéria (sem anúncios e chamadas); 2 = galeria; 3 = fatos; 4-5 = trecho; 6 = íntegra oficial; 7 = fatos do corpo; 8 = trecho proporcional e detalhes da ação. Versões anteriores são relidas
 MAX_FOTOS = 10  # galeria: até 10 fotos da matéria
-NAO_FOTO = re.compile(r'logo|icon|icone|avatar|sprite|banner|placeholder|blank|pixel|spacer|loading|selo|'
+NAO_FOTO = re.compile(r'^https?://i\.s3\.glbimg\.com/|midia-de-distribuicao|logo|icon|icone|avatar|sprite|banner|placeholder|blank|pixel|spacer|loading|selo|'
                       r'whatsapp-share|/ads?/|publicidade|video\.glbimg|/x240/|\.svg(?:$|\?)|\.gif(?:$|\?)', re.I)
 # Parágrafos que não fazem parte da reportagem (chamadas, assinatura, redes sociais).
 RUIDO = re.compile(r'^(?:Leia (?:tamb[ée]m|mais)|Veja (?:tamb[ée]m|mais|o v[íi]deo)|Siga|Assine|Clique|Receba|Inscreva|'
