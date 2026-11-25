@@ -10,6 +10,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  actions: write  # chama a publicação dos dados no GitHub Pages
 concurrency:
   group: juiz-claude
   cancel-in-progress: false
@@ -51,3 +52,8 @@ jobs:
       - name: Gravar decisões, gasto e calibração
         if: steps.c.outputs.ativo == 'sim' && !cancelled()
         run: python acervo.py salvar --sem-dados 'Juiz de duplicatas (Claude)' juiz_decisoes.json juiz_gasto.json juiz_calibracao_claude.json
+      # Dados do site no GitHub Pages (25/11/2026): o juiz roda depois de cada gravação das coletas e sempre com a
+      # versão atual desta rotina; publica os dados mais novos (no máximo uma publicação rodando e uma na espera).
+      - name: Publicar os dados no GitHub Pages
+        if: always()
+        run: gh workflow run publicar_dados.yml --ref main || true
