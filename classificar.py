@@ -56,7 +56,7 @@ FORTE = re.compile(
     r'fuzil|fuzis|\bmuni[çc][ãaõo]|pistolas?\b|rev[oó]lver|armas? de fogo|arsenal|contraband|descaminho|'
     r'tr[aá]fico de drogas|lavagem de dinheiro|bloqueio de bens|sequestro de bens|garimpo ilegal|'
     r'desmanche|ponto de (?:venda de drogas|tr[aá]fico)|boca de fumo|estufa de maconha|p[ée]s de maconha|'
-    r'tabletes|papelotes|pinos de|(?:encontr|localiz|achad|flagr)\w* (?:\w+ )?(?:armas?|drogas?|fuzil|fuzis|muni[çc])|'
+    r'tabletes|papelotes|pinos de|(?:encontr|localiz|achad|flagr)\w* (?:\w+ )?(?:armas?|drogas?|fuzil|fuzis|muni[çc](?:[ãa]o|[õo]es))|'
     r'canetas? emagrecedoras?', re.I)
 MEDIO = re.compile(
     r'tr[aá]fic|\bdrogas?\b|\barmas?\b|armament|opera[çc][ãa]o|mandados?|flagrante|fac[çc][ãa]o|quadrilha|'
@@ -65,7 +65,7 @@ MEDIO = re.compile(
     r'mercadorias?|ouro|dinheiro', re.I)
 ACAO = re.compile(
     r'combat|\bpren(?:de|dem|deu|deram)\b|\bpres[oa]s?\b|\bpris[ãa]o|\bpris[õo]es|\bdetid|cumpr|deflagr|desarticul|'
-    r'flagr|captur|apreend|apreens|\bfecha\b|\bfecham\b|desmont|estour|intercept|localiz|encontr|recuper|'
+    r'flagr|captur|apreend|apreens|\bfecha\b|\bfecham\b|desmont|estour|intercept|localiz|encontr|recuper(?!a[çc][ãa]o d[aoe] (?:Amaz|flores|[áa]rea|mata|bioma|solo|nascente|rio))|'
     r'\bpega\b|\bpegam\b|\bflagra\b|\bbloque|\bretira de circula|\bincinera|\bdestr[oó]i|erradic|'
     r'opera[çc][ãa]o|abordag|\bPRF\b|\bPF\b|\bPM\b|\bPC\b|Pol[ií]cia|Receita Federal|Ibama|Gaeco|FICCO|BOPE|Rotam|Denarc', re.I)
 # Assuntos que não são apreensão (quando não há termo FORTE no título).
@@ -276,6 +276,11 @@ if __name__ == '__main__':
         ('PF apreende cocaína em navio que seguiria pelo Mediterrâneo a partir do Porto de Santos', 0),
         ('Polícia paraguaia apreende maconha em Pedro Juan Caballero', 0),
         ('PM flagra rinha de galo e apreende aves', 5),
+        # "Encontro Municipal" não é "munição"; "recuperação da Amazônia" não é ação policial (25/11/2026).
+        ('Prefeitura realiza nesta quinta-feira o II Encontro Municipal de Educação Permanente em Saúde', None),
+        ('Extração planejada de madeira reduz danos e acelera recuperação da Amazônia', None),
+        ('PM encontra munições escondidas em terreno baldio', 1),
+        ('Polícia recupera madeira extraída ilegalmente e prende dois', 5),
         ('Irã cobra US$ 290 bilhões dos EUA por ofensiva militar e diz ter apreendido navios', None),
         ('EUA devolvem ao Brasil cocaína apreendida com brasileiro em Miami', 0),
     ]
