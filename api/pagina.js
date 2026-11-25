@@ -134,6 +134,16 @@ async function noticiaCompleta(i) {
 
 // ---------- utilidades ----------
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// Vídeos publicados pelo órgão oficial na nota (25/11/2026): baixam só quando o leitor aperta play.
+function videoHTML(t) {
+  const arquivos = (Array.isArray(t.v) ? t.v : []).map((v) => urlOk(v)).filter((u) => u.startsWith('https://'));
+  const yt = (Array.isArray(t.yt) ? t.yt : []).filter((id) => /^[\w-]{11}$/.test(id));
+  if (!arquivos.length && !yt.length) return '';
+  return `<section class="reader-video" aria-label="Vídeo do órgão oficial"><h2>▶ Vídeo da ocorrência</h2>` +
+    arquivos.map((u) => `<video controls preload="none" playsinline src="${esc(u)}"></video>`).join('') +
+    yt.map((id) => `<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${id}" title="Vídeo do órgão oficial" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`).join('') +
+    `<p class="reader-credit">Vídeo: ${esc(t.vf || 'órgão oficial')}. Direitos reservados ao órgão.</p></section>`;
+}
 const urlOk = (v) => { try { const u = new URL(v); return /^https?:$/.test(u.protocol) ? u.href : ''; } catch { return ''; } };
 const slug = (t) => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
   .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').split('-').slice(0, 12).join('-');
@@ -361,6 +371,7 @@ async function paginaNoticia(i) {
 ${compartilharHTML(n)}
 ${fotos.length ? `<div class="art-fotos">${fotos.map((src, k) => `<img src="${esc(src)}" alt="${k ? '' : esc(n.t)}" ${k ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async" referrerpolicy="no-referrer">`).join('')}</div>
 ${fotos.length > 1 ? `<p class="reader-note">${fotos.length} fotos · deslize para ver todas. Imagens: ${esc(n.fc || n.f)}.</p>` : `<p class="reader-note">Imagem: ${esc(n.fc || n.f)}.</p>`}` : ''}
+${videoHTML(t)}
 ${ficha.length ? `<section class="em-resumo" aria-label="Em resumo"><h2>Em resumo</h2><dl>${ficha.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` : ''}
 ${radar}
 ${IG_CARD}
