@@ -479,6 +479,18 @@ def main():
         erros.append('item cortado na extração não pode deixar preposição solta ("porções de em")')
     if 'de embaladas' in redigir({'orgaos': ['Polícia Militar'], 'apreendido': ['79 porções de embaladas']}, '', '', 'PE'):
         erros.append('adjetivo não leva "de": "79 porções embaladas"')
+    # Revisor de títulos (25/11/2026): não mexe no nome do site, em endereço, em palavra cortada no fim nem na
+    # concordância com a quantidade; corrige acento, crase e erro de digitação.
+    from revisar_titulos import aceitavel
+    for a, b, esperado in [('PRF apreende 50 kg de cocaína escondidos em móveis', 'PRF apreende 50 kg de cocaína escondida em móveis', False),
+                           ('Seleção inicia Data Fifa no Japão - oobservador.com', 'Seleção inicia Data Fifa no Japão - observador.com', False),
+                           ('ROTAM apreende pistola em Pontes e Lacerda - Lapada Lapada', 'ROTAM apreende pistola em Pontes e Lacerda - Lapada', False),
+                           ('A investigação começou após a polícia rastrea', 'A investigação começou após a polícia rastreia', False),
+                           ('Homem é flagrado com 330 kg de skunk em Goias', 'Homem é flagrado com 330 kg de skunk em Goiás', True),
+                           ('Vereadores estão entre os alavos', 'Vereadores estão entre os alvos', True),
+                           ('PM apreende drogas arma e dinheiro em Americana', 'PM apreende drogas, arma e dinheiro em Americana', True)]:
+        if aceitavel(a, b) != esperado:
+            erros.append(f'revisor de títulos: {a!r} -> {b!r} deveria ser {esperado}')
     # Foto de arquivo (antiga, de outro fato) troca pela foto real de outra fonte (24/11/2026, arsenal no DF).
     from gerar_feed_site import foto_de_arquivo
     from gerar_feed_site import pagina_de_arquivo

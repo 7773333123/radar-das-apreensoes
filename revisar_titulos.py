@@ -33,7 +33,9 @@ PEDIDO = ('Você é revisor de um jornal brasileiro. Revise os títulos de notí
           'manuais da Folha e do Estadão). Corrija SÓ erros claros: ortografia, acentuação, crase, concordância '
           'verbal e nominal, regência, pontuação e digitação (letra trocada, palavra repetida, espaço faltando). '
           'NÃO mude estilo, ordem das palavras, sentido, números, siglas, nomes de pessoas, lugares, operações e '
-          'órgãos; não troque sinônimos; não reescreva. Na dúvida, não corrija. Responda só com os títulos que '
+          'órgãos; não troque sinônimos; não reescreva. Na dúvida, não corrija. Concordância com a quantidade '
+          '("50 kg de cocaína escondidos", "2 toneladas de maconha apreendidas") é aceita pela norma: não altere. Não '
+          'mexa no nome do site depois de " - " ou " | ", em endereços (".com") nem em palavra cortada no fim do título. Responda só com os títulos que '
           'tinham erro, com o número e o título corrigido inteiro.\n\n')
 ESQUEMA = {'type': 'object', 'additionalProperties': False, 'required': ['correcoes'],
            'properties': {'correcoes': {'type': 'array', 'items': {
@@ -52,19 +54,42 @@ def carregar():
 
 
 def correcoes():
-    """{título original: título corrigido} para o gerador do site (só os que mudaram)."""
-    return {k: v for k, v in carregar()[0].items() if v}
+    """{título original: título corrigido} para o gerador do site (só os que mudaram e passam na trava atual)."""
+    return {k: v for k, v in carregar()[0].items() if v and aceitavel(k, v)}
 
 
 _NOMES = re.compile(r'\b[A-ZÁÉÍÓÚÂÊÔÃÕÇ][\wÀ-ú]+')
 
 
+_SUFIXO = re.compile(r'\s[-|–]\s(?!.*\s[-|–]\s)')
+_QTD = re.compile(r'\d[\d.,]*\s*(?:kg|quilos?|toneladas?|t|g|gramas?)\s+de\b', re.I)
+
+
+def _palavras_trocadas(a, b):
+    sa, sb = a.split(), b.split()
+    m = difflib.SequenceMatcher(None, sa, sb)
+    return [(sa[i1:i2], sb[j1:j2], i2 == len(sa)) for op, i1, i2, j1, j2 in m.get_opcodes() if op != 'equal']
+
+
 def aceitavel(original, corrigido):
-    """Trava: a correção não pode mudar números, nomes próprios nem reescrever o título."""
+    """Trava: a correção não pode mudar números, nomes próprios nem reescrever o título (25/11/2026: nem o nome
+    do site depois de " - ", nem endereço ".com", nem palavra cortada no fim, nem concordância com quantidade)."""
     if not corrigido or corrigido == original or len(corrigido) > len(original) * 1.15 + 3:
         return False
-    if re.findall(r'\d+', original) != re.findall(r'\d+', corrigido):
-        return False
+    so, sc = _SUFIXO.split(original, 1), _SUFIXO.split(corrigido, 1)
+    if len(so) != len(sc) or (len(so) == 2 and so[1].strip() != sc[1].strip()):
+        return False  # nome do site / veículo no fim do título
+    if set(re.findall(r'\w+\.\w{2,}', original)) != set(re.findall(r'\w+\.\w{2,}', corrigido)):
+        return False  # endereço de site
+    sem_acento = lambda x: x.lower().translate(str.maketrans('áéíóúâêôãõçàü', 'aeiouaeoaocau'))
+    tema = lambda w: re.sub(r'[oa]s?$', '', w.lower())
+    for antes, depois, no_fim in _palavras_trocadas(so[0], sc[0]):
+        if no_fim and len(antes) == 1 and len(depois) == 1 and sem_acento(antes[0]) != sem_acento(depois[0]) \
+                and len(depois[0]) > len(antes[0]):
+            return False  # palavra cortada no fim ("rastrea" -> "rastreia"): não se completa
+        if _QTD.search(original) and len(antes) == len(depois) == 1 and antes[0] != depois[0] \
+                and tema(antes[0]) == tema(depois[0]) and sem_acento(antes[0]) != sem_acento(depois[0]):
+            return False  # "50 kg de cocaína escondidos" -> "escondida": concordância com a quantidade é aceita
     # Nomes próprios: os do original continuam (sem acento conta como o mesmo nome, ex.: "Itajai" -> "Itajaí").
     sem = lambda x: x.lower().translate(str.maketrans('áéíóúâêôãõçà', 'aeiouaeoaoca'))
     nomes_c = {sem(n) for n in _NOMES.findall(corrigido)}

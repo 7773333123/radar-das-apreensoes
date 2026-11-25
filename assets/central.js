@@ -199,7 +199,15 @@ function renderInicio() {
   // A véspera entra apenas enquanto o dia ainda não tem nenhuma notícia (logo após a meia-noite).
   const ehHoje = (n) => n.data && diaBR(n.data) === hoje;
   const doDia = comFoto.filter(ehHoje);
-  const pool = doDia.length ? doDia : comFoto.filter((n) => [hoje, ontem].includes(diaBR(n.data))).slice(0, 20);
+  // REGRA DEFINITIVA DOS DESTAQUES (dono do site, 25/11/2026): destaque principal só com foto do material
+  // apreendido (capas_ia), sem notícia de morte e sem desdobramento. Enquanto o dia não tiver 3 notícias assim,
+  // os destaques vêm das MAIORES de ontem inteiro (não das últimas da noite): depois da meia-noite a capa
+  // continua com as apreensões mais relevantes até o novo dia ter as suas.
+  const MORTE = /\b(morre|morreu|morrem|mort[oa]s?|[óo]bito|assassinad|executad|homic[íi]dio|cad[áa]ver|corpos?\s+(?:[ée]|s[ãa]o|foi|foram)\s+encontrad|carbonizad|latroc[íi]nio)/i;
+  const desdobra0 = (n) => /\b(solta|soltura|liberad[oa]|absolvid|julgament|condenad|habeas|den[uú]ncia|audi[êe]ncia|foragid|incinera|destr[oó]i|queima)/i.test(n.titulo);
+  const elegivel = (n) => Boolean(n.img) && !desdobra0(n) && !MORTE.test(n.titulo);
+  const elegivelHoje = doDia.filter((n) => elegivel(n) && n.fotoMaterial);
+  const pool = elegivelHoje.length >= 3 ? doDia : [...doDia, ...comFoto.filter((n) => diaBR(n.data) === ontem)];
   // Ordem dos destaques: por TIPO (drogas, armas, contrabando, veículos,
   // dinheiro, ambientais, medicamentos, patrimoniais, outras) e, dentro de cada
   // tipo, da maior apreensão para a menor. Desdobramentos (soltura, condenação,
@@ -217,11 +225,14 @@ function renderInicio() {
   const fora = (n) => desdobramento(n) || soPessoa(n);
   const porVolume = (a, b) => (fora(a) - fora(b)) || (Boolean(b.img) - Boolean(a.img)) || (kgDroga(b) - kgDroga(a)) ||
     (pontosManchete(b) - pontosManchete(a)) || (b.data - a.data);
-  const [manchete, segunda0] = [...pool].sort(porVolume);
+  const candPrinc = pool.filter((n) => elegivel(n) && !fora(n));
+  const comMaterial = candPrinc.filter((n) => n.fotoMaterial);
+  const basePrinc = comMaterial.length >= 2 ? comMaterial : candPrinc.length ? candPrinc : pool;
+  const [manchete, segunda0] = [...basePrinc].sort(porVolume);
   // Cocaína sempre entre as principais (dono do site, 24/11/2026): vale muito mais por quilo que a
   // maconha. Se nenhuma das duas é de cocaína/pasta base/crack, a 2ª vira a maior de cocaína do dia (com foto).
   const kgCoca = (n) => (n.q?.coc || 0) + (n.q?.cra || 0);
-  const coca = [...pool].filter((n) => n.img && !fora(n) && kgCoca(n) > 0)
+  const coca = [...basePrinc].filter((n) => n.img && !fora(n) && kgCoca(n) > 0)
     .sort((a, b) => kgCoca(b) - kgCoca(a) || pontosManchete(b) - pontosManchete(a) || b.data - a.data)[0];
   const segunda = coca && manchete && !kgCoca(manchete) && !(segunda0 && kgCoca(segunda0)) ? coca : segunda0;
   const principais = [manchete || ns[0], segunda].filter(Boolean);
@@ -240,9 +251,10 @@ function renderInicio() {
     if (FOZ_ST.test(t)) return 2;
     return 3 + (n.prioridadeFr || 9);
   };
-  const candFr = (h) => ns.filter((n) => n.polo && n.img && !usados.has(n) && !fora(n) && n.data && horas(n) <= h && n.data.getTime() <= agora + 3600000);
+  const candFr = (h) => ns.filter((n) => n.polo && elegivel(n) && !usados.has(n) && !fora(n) && n.data && horas(n) <= h && n.data.getTime() <= agora + 3600000)
+    .sort((a, b) => Boolean(b.fotoMaterial) - Boolean(a.fotoMaterial));
   const poolFr = candFr(24).filter(ehHoje).length ? candFr(24).filter(ehHoje) : candFr(48);
-  const terceira = [...poolFr].sort((a, b) => nivelFr(a) - nivelFr(b) || kgDroga(b) - kgDroga(a) || nota(b) - nota(a) || b.data - a.data)[0];
+  const terceira = [...poolFr].sort((a, b) => nivelFr(a) - nivelFr(b) || (Boolean(b.fotoMaterial) - Boolean(a.fotoMaterial)) || kgDroga(b) - kgDroga(a) || nota(b) - nota(a) || b.data - a.data)[0];
   if (terceira) { principais.push(terceira); usados.add(terceira); }
   // Faixa abaixo das principais (24/11/2026): maior quantidade de droga primeiro, depois as de mais
   // repercussão (importância: tamanho da apreensão + veículos que publicaram).
