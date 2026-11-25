@@ -1,0 +1,26 @@
+name: Vídeos oficiais (canais dos órgãos no YouTube)
+# Dono do site, 25/11/2026: buscar os vídeos que os órgãos publicam. Só LÊ o feed público dos canais oficiais
+# (PRF, PF, Receita, polícias estaduais); nada é baixado nem publicado no YouTube. videos_youtube.py grava
+# videos_oficiais.json; o site mostra o vídeo na notícia pelo player do YouTube e a análise das 8h lista os do dia.
+on:
+  schedule:
+    - cron: '41 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: videos-youtube
+  cancel-in-progress: false
+jobs:
+  ler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Ler os canais oficiais
+        run: python videos_youtube.py
+      - name: Gravar
+        run: python acervo.py salvar --sem-dados 'Vídeos oficiais (YouTube)' videos_oficiais.json youtube_canais.json

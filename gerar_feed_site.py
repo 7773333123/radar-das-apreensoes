@@ -447,6 +447,41 @@ CAPA_GENERICA = re.compile(r'(?:^|[/_-])(?:logo|logotipo|brasao|default|og-?imag
 FOTO_INACESSIVEL = re.compile(r'^https?://i\.s3\.glbimg\.com/|midia-de-distribuicao', re.I)
 
 
+def _palavras_video(t):
+    import unicodedata
+    t = ''.join(ch for ch in unicodedata.normalize('NFKD', str(t or '').lower()) if not unicodedata.combining(ch))
+    return {w for w in re.findall(r'[a-z0-9]{4,}', t)} - {'apreende', 'apreendem', 'apreensao', 'policia', 'durante',
+                                                        'militar', 'federal', 'civil', 'rodoviaria', 'operacao'}
+
+
+def _videos_oficiais_youtube():
+    """Vídeos de apreensão dos canais oficiais no YouTube (videos_oficiais.json, 25/11/2026)."""
+    try:
+        lista = json.loads((Path(__file__).resolve().parent / 'videos_oficiais.json').read_text(encoding='utf-8')).get('videos', [])
+    except (OSError, ValueError):
+        return []
+    return [dict(v, _p=_palavras_video(v.get('t')), _n=set(re.findall(r'\d+', str(v.get('t'))))) for v in lista
+            if re.fullmatch(r'[\w-]{11}', str(v.get('yt', '')))]
+
+
+def _video_do_canal(item, videos):
+    """Vídeo do canal oficial que trata do mesmo fato: até 2 dias de distância, 3+ palavras em comum e o mesmo
+    número (ou metade das palavras do título do vídeo em comum)."""
+    if not videos or not item.get('d'):
+        return None
+    pt, nt = _palavras_video(item.get('t')), set(re.findall(r'\d+', str(item.get('t'))))
+    for v in videos:
+        try:
+            if abs((_dt.fromisoformat(v.get('d', '')[:16]) - _dt.fromisoformat(item['d'][:16])).total_seconds()) > 2 * 86400:
+                continue
+        except ValueError:
+            continue
+        comum = pt & v['_p']
+        if len(comum) >= 3 and ((nt & v['_n']) or len(comum) >= max(3, len(v['_p']) // 2)):
+            return {'yt': [v['yt']], 'vf': v.get('orgao', '')}
+    return None
+
+
 BLOCO_FIXO = re.compile(
     r'^(?:\s*(?:Conte[úu]dos? copiados?[^.]*?cr[ée]ditos?[^.]*\.|Nos adicione como fonte preferencial[^.]*\.|'
     r'Siga (?:o|a|nosso|nossa)[^.]{0,80}(?:WhatsApp|Instagram|Google|canal)[^.]*\.|'
@@ -565,6 +600,7 @@ def main():
     origem_por_i = {}
     detalhes = {}
     videos_por_id = {}  # vídeos publicados pelo órgão oficial na nota (ler_materias.videos_da_materia)
+    videos_yt = _videos_oficiais_youtube()  # canais oficiais dos órgãos no YouTube (videos_youtube.py)
     fatos_por_i = {}
     fatos_titulo = {}
     # Anti-imagem: foto que aparece na galeria de 3+ notícias diferentes é de
@@ -991,6 +1027,8 @@ def main():
         alvo = detalhes[item['i'] % LOTES][str(item['i'])]
         # Vídeo do órgão: da versão exibida ou de outra versão da mesma notícia (a nota oficial).
         vid = next((videos_por_id[x] for x in [item['i']] + [o[2] for o in item.get('o', [])] if x in videos_por_id), None)
+        if not vid:
+            vid = _video_do_canal(item, videos_yt)
         if vid:
             alvo.update({k: v for k, v in vid.items() if v})
             item['vd'] = 1
