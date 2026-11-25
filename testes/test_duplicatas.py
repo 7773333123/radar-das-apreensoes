@@ -482,6 +482,12 @@ def main():
     # Foto de arquivo (antiga, de outro fato) troca pela foto real de outra fonte (24/11/2026, arsenal no DF).
     from gerar_feed_site import foto_de_arquivo
     from gerar_feed_site import pagina_de_arquivo
+    from ler_materias import videos_da_materia
+    _arq, _yt = videos_da_materia('<article><video src="/m/op.mp4"></video><iframe src="https://www.youtube.com/embed/abcdefghijk"></iframe>'
+                                  '<a href="https://www.gov.br/prf/v.mp4/@@download/file">baixar</a><a href="/outra">x</a></article>',
+                                  'https://www.gov.br/prf/noticia', {})
+    if _arq != ['https://www.gov.br/m/op.mp4', 'https://www.gov.br/prf/v.mp4/@@download/file'] or _yt != ['https://www.youtube.com/watch?v=abcdefghijk']:
+        erros.append(f'vídeos da nota oficial: {_arq} {_yt}')
     if not pagina_de_arquivo('https://www.gov.br/receitafederal/pt-br/x/apreensao-generico_prancheta.jpg/view') \
             or pagina_de_arquivo('https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/novembro/receita-retem-1-tonelada'):
         erros.append('página de arquivo de imagem do portal não é notícia (e notícia do portal é)')
