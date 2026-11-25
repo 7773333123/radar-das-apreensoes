@@ -114,7 +114,7 @@ function preparar(raw, ctx) {
   const n = {
     i: raw.i, titulo: raw.t, fonte: raw.f || 'Fonte não informada', resumo: raw.r || '',
     url: urlSegura(raw.u || ''), temLink: Boolean(raw.u || raw.uh), img: urlSegura(raw.img || ''), uf, cats, data,
-    texto: raw.x === 1, semFoto: raw.sf === 1, creditoFoto: raw.fc || '', nFotos: raw.g || (raw.img ? 1 : 0),
+    texto: raw.x === 1, semFoto: raw.sf === 1, fotoMaterial: raw.pm === 1, creditoFoto: raw.fc || '', nFotos: raw.g || (raw.img ? 1 : 0),
     outras: Array.isArray(raw.o) ? raw.o.filter((o) => Array.isArray(o) && o[0]) : [],
     q: raw.q || null, ag: raw.ag || [], orgao: (raw.ag || []).map((a) => ctx.orgaos?.[a]).find(Boolean) || '', rd: raw.rd || '', vq: raw.vq || 0, cidade: uf ? raw.cid || '' : '', polo: raw.fr || '', prioridadeFr: raw.frp || 9, oficial: Boolean(raw.fp),
     ano: data ? data.getUTCFullYear() : null,

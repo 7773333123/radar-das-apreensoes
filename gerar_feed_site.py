@@ -899,6 +899,8 @@ def main():
         antes -= len(vazias)
     print(f'Sem foto e sem conteúdo (aguardando leitura): {len(vazias)} fora do site')
     for item in saida:
+        if item.get('_prod') and item.get('img'):
+            item['pm'] = 1  # capa mostra o material apreendido (capas_ia): elegível aos 3 principais
         for k in ('_h', '_iguais', '_lead', '_q', '_ufx', '_tr', '_bloq', '_cid', '_ag', '_pend', '_fx', '_mesma', '_txt', '_ofi', '_uff', '_mini', '_marca', '_prod', '_arq'):
             item.pop(k, None)
     for lote in list(detalhes):

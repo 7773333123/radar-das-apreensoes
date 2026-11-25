@@ -33,6 +33,11 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   tamanho e repercussão; desdobramentos fora). 3ª = Fronteira: PRF em Foz do Iguaçu/Santa Terezinha de Itaipu;
   senão Ponte da Amizade; senão Foz/Santa Terezinha por outro órgão; senão a ordem regional (`prioridadeFr`);
   em cada nível, o maior volume de droga. `assets/central.js` (`porVolume`, `nivelFr`).
+  **REGRA DEFINITIVA dos destaques** (25/11/2026): destaque principal só com foto do material apreendido
+  (`pm`, marcada por `capas_ia`), sem notícia de morte (morre, morto, óbito, executado, homicídio...) e sem
+  desdobramento. Enquanto o dia não tiver 3 notícias assim, os destaques vêm das MAIORES de ontem inteiro (nunca das
+  últimas da noite): depois da meia-noite a capa continua com as mais relevantes até o novo dia ter as suas
+  (`assets/central.js`: `elegivel`, `MORTE`, `pool`). A Fronteira (3ª) também segue `elegivel` e prefere foto do material.
   **Cocaína sempre entre as principais** (24/11/2026): vale muito mais por quilo; se nem a 1ª nem a 2ª é de
   cocaína/pasta base/crack, a 2ª vira a maior de cocaína do dia com foto (`kgCoca`).
   Faixa abaixo delas, Fronteira e listas das editorias: maior quantidade de droga primeiro, depois repercussão
