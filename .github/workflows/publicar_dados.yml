@@ -17,11 +17,9 @@ concurrency:
   group: dados-pages
   cancel-in-progress: true
 jobs:
-  publicar:
+  montar:
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    environment:
-      name: github-pages
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,4 +40,15 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public
-      - uses: actions/deploy-pages@v4
+  # Publicação em parte separada (modelo oficial): só começa com o pacote já registrado
+  # (na mesma parte, a publicação não encontrava o pacote recém-enviado: "Found 0 artifact(s)").
+  publicar:
+    needs: montar
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
