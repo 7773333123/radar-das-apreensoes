@@ -73,7 +73,7 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
 - **Estado mal lido não esconde duplicata** (24/11/2026): valor distintivo igual no título (R$ 850 mil, 383 tabletes)
   em até 2 dias vai ao juiz mesmo com estados diferentes; nome próprio raro em comum ("Fundeb", "Operação Impacto")
   em até 1 dia, com o mesmo material, também (`duplicatas._mesmo_valor`, `_palavra_rara`). O "mesmo" do juiz une.
-- **Custo da Vercel: teto de US$ 20-30/mês** (25/11/2026). Mudança só de dados publica no máximo a cada 30 min
+- **Custo da Vercel: teto de US$ 20-30/mês** (25/11/2026). Mudança só de dados publica no máximo a cada 60 min (30 depois que os dados forem para o GitHub Pages)
   (`scripts/vercel-ignorar.js`, `INTERVALO_MIN`); código/página publica na hora. Arquivo novo de dados/estado das
   coletas (ex.: `capas_ia.json`, `revisao_titulos.json`) TEM de entrar em `SO_DADOS`, senão cada rodada vira publicação
   (foi o que elevou o gasto a US$ 107 em 24-25/11). Build na máquina padrão (mais barata).

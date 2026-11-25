@@ -13,7 +13,7 @@
 // da parte quente em dados_versao.json e já passaram 30 min da última publicação (VERCEL_GIT_PREVIOUS_SHA)).
 // Na dúvida (sem histórico para comparar), publica.
 const { execSync } = require('child_process');
-const INTERVALO_MIN = 30;  // publicação de dados no máximo a cada 30 min (custo da Vercel, 25/11/2026)
+const INTERVALO_MIN = 60;  // publicação de dados no máximo a cada 60 min (custo da Vercel, 25/11/2026; volta a 30 quando os dados forem para o GitHub Pages)
 
 if (process.env.VERCEL_GIT_COMMIT_REF !== 'main') process.exit(0);
 
