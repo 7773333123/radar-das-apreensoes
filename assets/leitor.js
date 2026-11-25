@@ -1,5 +1,5 @@
 /* Leitor de notícias (janela), galeria de fotos e visualizador em tela cheia. */
-import { $, esc, num, dataBR, urlSegura, debounce, imgTag, placeholder, NOME_UF, urlNoticia } from './core.js';
+import { $, esc, num, dataBR, urlSegura, debounce, imgTag, placeholder, NOME_UF, urlNoticia, buscarDados } from './core.js';
 import { comOrigem } from './medir.js';
 
 const HTML = `
@@ -31,11 +31,11 @@ const compartilharHTML = (n) => {
 const detalhesCache = new Map();
 const carregarDetalhe = (i) => {
   const lote = Number(i) % 256; // mesmo LOTES de gerar_feed_site.py
-  if (!detalhesCache.has(lote)) detalhesCache.set(lote, fetch(`/det/${lote}.json`).then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
+  if (!detalhesCache.has(lote)) detalhesCache.set(lote, buscarDados(`det/${lote}.json`).then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
   return detalhesCache.get(lote).then((d) => d[String(i)] || {});
 };
 let linksPromise = null;
-const carregarLinks = () => (linksPromise ??= fetch('/feed_links.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
+const carregarLinks = () => (linksPromise ??= buscarDados('feed_links.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
 
 // Texto completo (nota oficial ou licença aberta) como o órgão editou:
 // "## " = intertítulo, "• " = item de lista, o resto são parágrafos.

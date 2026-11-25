@@ -68,7 +68,7 @@ jobs:
                 timeout 120 python revisar_titulos.py --horas 36 --max 400 || true
                 if python testes/test_duplicatas.py >/dev/null; then
                   python acervo.py salvar "Coleta expressa (rodada $ciclo)" feeds_saude.json duplicatas_suspeitas.json marcas_dagua.json capas_ia.json revisao_titulos.json \
-                    && gh workflow run juiz_claude.yml --ref main || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
+                    && gh workflow run juiz_claude.yml --ref main && gh workflow run publicar_dados.yml --ref main || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
                 else
                   echo 'Testes de duplicatas falharam: nada gravado nesta rodada.'
                 fi

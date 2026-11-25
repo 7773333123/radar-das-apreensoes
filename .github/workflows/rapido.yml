@@ -84,7 +84,7 @@ jobs:
             if [ "$(sha1sum noticias.json | cut -c1-40)" = "$antes" ]; then
               echo 'Nada novo nesta rodada.'
             elif python testes/test_duplicatas.py; then
-              python acervo.py salvar "Coleta rápida (rodada $ciclo)" buscadores_cursor.json duplicatas_suspeitas.json || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
+              python acervo.py salvar "Coleta rápida (rodada $ciclo)" buscadores_cursor.json duplicatas_suspeitas.json && gh workflow run publicar_dados.yml --ref main || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
             else
               echo 'Falha ao gerar o site; nada foi gravado nesta rodada.'
             fi
