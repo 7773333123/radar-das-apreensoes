@@ -1,0 +1,44 @@
+name: Publicar dados do site (GitHub Pages)
+# Custo (dono do site, 25/11/2026: só o plano da Vercel, sem gasto extra): os DADOS do site (feed.json,
+# feed-recente.json, agora.json, anos/, det/, dados/) saem da publicação da Vercel e vão para o GitHub
+# Pages, gratuito, a cada gravação da coleta (dados_versao.json). A Vercel publica só quando o código muda.
+# Só os dados vão para o Pages (sem páginas HTML: o site continua sendo o radardasapreensoes.com.br).
+on:
+  push:
+    branches: [main]
+    paths: [dados_versao.json]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: dados-pages
+  cancel-in-progress: true
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Montar os dados do site
+        run: node --max-old-space-size=12288 scripts/baixar-dados.js
+      - name: Deixar só os dados
+        run: |
+          cd public
+          find . -maxdepth 1 -type f \( -name '*.html' -o -name '*.txt' -o -name '*.xml' -o -name '*.webmanifest' -o -name '*.ico' \) -delete
+          rm -rf assets img
+          printf 'User-agent: *\nDisallow: /\n' > robots.txt
+          touch .nojekyll
+          du -sh . && ls | head -30
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - uses: actions/deploy-pages@v4
