@@ -3,10 +3,14 @@ name: Publicar dados do site (GitHub Pages)
 # feed-recente.json, agora.json, anos/, det/, dados/) saem da publicação da Vercel e vão para o GitHub
 # Pages, gratuito, a cada gravação da coleta (dados_versao.json). A Vercel publica só quando o código muda.
 # Só os dados vão para o Pages (sem páginas HTML: o site continua sendo o radardasapreensoes.com.br).
+# Disparo: as coletas expressa e rápida chamam esta rotina depois de gravar (o push feito pelo GITHUB_TOKEN
+# não dispara rotinas); de hora em hora, para a regeneração dos anos e o juiz.
 on:
   push:
     branches: [main]
     paths: [dados_versao.json]
+  schedule:
+    - cron: '23 * * * *'
   workflow_dispatch:
 permissions:
   contents: read
@@ -15,7 +19,7 @@ permissions:
   id-token: write
 concurrency:
   group: dados-pages
-  cancel-in-progress: true
+  cancel-in-progress: false  # no máximo uma rodando e uma na espera (a da espera pega os dados mais novos)
 jobs:
   montar:
     runs-on: ubuntu-latest

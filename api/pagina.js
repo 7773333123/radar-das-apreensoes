@@ -27,8 +27,11 @@ const MATERIAIS = [['coc', 'Cocaína', 'kg'], ['mac', 'Maconha', 'kg'], ['skh', 
 const VALIDADE = 5 * 60e3;
 let cache = null;
 let carregando = null;
-function base(req) {
+// Dados no GitHub Pages (custo da Vercel, 25/11/2026); se o Pages falhar, a cópia publicada pelo próprio site.
+const PAGES = 'https://7773333123.github.io/radar-das-apreensoes';
+function base(req, local = false) {
   if (process.env.RADAR_DADOS_BASE) return process.env.RADAR_DADOS_BASE.replace(/\/$/, '');
+  if (!local) return PAGES;
   const h = req && req.headers ? String(req.headers['x-forwarded-host'] || req.headers.host || '') : '';
   return /^[a-z0-9.-]+(:\d+)?$/i.test(h) && !/^localhost|^127\./.test(h) ? `https://${h}` : SITE;
 }
@@ -40,9 +43,13 @@ async function carregar(req) {
   if (cache && Date.now() - cache.t < VALIDADE) return cache;
   if (carregando) return carregando;
   carregando = (async () => {
-    const b = base(req);
+    let b = base(req);
     try {
-      const r = await buscarJSON(`${b}/feed.json`, { headers: cache && cache.etag ? { 'If-None-Match': cache.etag } : {} });
+      let r = await buscarJSON(`${b}/feed.json`, { headers: cache && cache.etag ? { 'If-None-Match': cache.etag } : {} }).catch(() => null);
+      if (!r || (!r.ok && r.status !== 304)) {  // Pages fora do ar: cópia do próprio site
+        b = base(req, true);
+        r = await buscarJSON(`${b}/feed.json`);
+      }
       if (r.status === 304 && cache) { cache.t = Date.now(); return cache; }
       if (!r.ok) throw new Error(`feed.json: HTTP ${r.status}`);
       const feed = await r.json();

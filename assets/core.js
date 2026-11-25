@@ -2,6 +2,15 @@ import { BRASOES } from './brasoes.js';
 import './medir.js';
 /* Radar das Apreensões — núcleo compartilhado (dados, utilidades, mapa e gráficos). */
 export const $ = (id) => document.getElementById(id);
+// Dados do site (notícias, anos, textos) no GitHub Pages, gratuito (custo da Vercel, 25/11/2026): a Vercel
+// publica só quando o código muda. Se o Pages falhar, usa a cópia publicada pelo próprio site.
+export const DADOS = 'https://7773333123.github.io/radar-das-apreensoes/';
+export function buscarDados(caminho, opcoes) {
+  const c = String(caminho).replace(/^\//, '');
+  return fetch(DADOS + c, opcoes)
+    .then((r) => (r.ok ? r : Promise.reject(new Error('HTTP ' + r.status))))
+    .catch(() => fetch('/' + c, opcoes));
+}
 export const ESTADOS = [
   ['AC', 'Acre'], ['AL', 'Alagoas'], ['AP', 'Amapá'], ['AM', 'Amazonas'], ['BA', 'Bahia'], ['CE', 'Ceará'],
   ['DF', 'Distrito Federal'], ['ES', 'Espírito Santo'], ['GO', 'Goiás'], ['MA', 'Maranhão'], ['MT', 'Mato Grosso'],
@@ -203,7 +212,7 @@ const feeds = new Map();
 export function carregarFeed(arquivo = 'feed.json', { novo = false } = {}) {
   if (!novo && feeds.has(arquivo)) return feeds.get(arquivo);
   // novo: busca de novo no servidor (atualização da página aberta), sem o cache do navegador.
-  const feedPromise = fetch(novo ? `${arquivo}?t=${Date.now()}` : arquivo, novo ? { cache: 'no-store' } : {}).then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then((dados) => {
+  const feedPromise = buscarDados(novo ? `${arquivo}?t=${Date.now()}` : arquivo, novo ? { cache: 'no-store' } : {}).then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then((dados) => {
     const ctx = {
       categorias: dados.categorias || [], orgaos: dados.orgaos || [], materiais: dados.materiais || {},
       atualizado: dados.atualizado_em ? new Date(dados.atualizado_em) : null,
@@ -221,7 +230,7 @@ export function carregarFeed(arquivo = 'feed.json', { novo = false } = {}) {
 
 /** anos/indice.json: contagens por ano e mês do acervo inteiro e a data de corte do feed.json. */
 let indicePromise = null;
-export const indiceAnos = () => (indicePromise ??= fetch('anos/indice.json').then((r) => (r.ok ? r.json() : null)).catch(() => null));
+export const indiceAnos = () => (indicePromise ??= buscarDados('anos/indice.json').then((r) => (r.ok ? r.json() : null)).catch(() => null));
 
 /**
  * O feed.json traz só os últimos meses; os anos anteriores ficam em anos/AAAA.json e entram
@@ -236,7 +245,7 @@ export async function carregarAnos(ctx, anos, aoProgresso) {
   let feitos = 0;
   await Promise.all(faltam.map((a) => {
     if (!anosCarregando.has(a)) {
-      anosCarregando.set(a, fetch(`anos/${a}.json`).then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }));
+      anosCarregando.set(a, buscarDados(`anos/${a}.json`).then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }));
     }
     return anosCarregando.get(a).then((dados) => {
       if (ctx.anosCarregados.has(a)) return;

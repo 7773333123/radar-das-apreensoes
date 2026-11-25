@@ -9,11 +9,10 @@
 // (a coleta expressa troca a quente a cada ~8 min), porque o build baixa sempre a versão atual de
 // todas as partes (scripts/baixar-dados.js).
 //
-// Publica quando: branch main E (mudou algum arquivo que não é dado/cursor — na hora — OU mudou o "site"
-// da parte quente em dados_versao.json e já passaram 30 min da última publicação (VERCEL_GIT_PREVIOUS_SHA)).
-// Na dúvida (sem histórico para comparar), publica.
+// Publica quando: branch main E mudou algum arquivo que não é dado/cursor (código, página, regra).
+// Desde 25/11/2026 os dados vão para o GitHub Pages (publicar_dados.yml) e o site os lê de lá; mudança só de
+// dados não publica na Vercel. Na dúvida (sem histórico para comparar), publica.
 const { execSync } = require('child_process');
-const INTERVALO_MIN = 60;  // publicação de dados no máximo a cada 60 min (custo da Vercel, 25/11/2026; volta a 30 quando os dados forem para o GitHub Pages)
 
 if (process.env.VERCEL_GIT_COMMIT_REF !== 'main') process.exit(0);
 
@@ -39,28 +38,7 @@ try {
 }
 if (arquivos.some((f) => !SO_DADOS.test(f))) process.exit(1); // código, página ou regra mudou
 
-const siteQuente = (ref) => {
-  try {
-    return JSON.parse(sh(`git show ${ref}:dados_versao.json`)).site || '';
-  } catch {
-    return null;
-  }
-};
-const antes = siteQuente(base);
-const depois = siteQuente('HEAD');
-if (antes === null || depois === null || antes !== depois) {
-  // Custo (dono do site, 25/11/2026: teto de US$ 20-30/mês na Vercel): mudança SÓ de dados publica no
-  // máximo a cada 30 min (antes: a cada ~8 min, 100+ publicações por dia). Código/página publica na hora (acima).
-  if (temBase) {
-    const quando = (ref) => Number(sh(`git show -s --format=%ct ${ref}`).trim());
-    const passou = quando('HEAD') - quando(base);
-    if (passou < INTERVALO_MIN * 60) {
-      console.log(`Notícias novas, mas a última publicação foi há ${Math.round(passou / 60)} min: espera até ${INTERVALO_MIN} min (custo).`);
-      process.exit(0);
-    }
-  }
-  process.exit(1);
-}
-
-console.log('Só dados de anos antigos, cursores ou juiz mudaram: publicação fica para a próxima rodada da parte quente.');
+// Só dados mudaram: as notícias já vão para o GitHub Pages (publicar_dados.yml), de onde o site as lê.
+// A Vercel não publica (custo, 25/11/2026: só o plano, sem gasto extra).
+console.log('Só dados mudaram: vão para o GitHub Pages; a Vercel não publica.');
 process.exit(0);

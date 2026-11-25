@@ -1,5 +1,5 @@
 /* Central de notícias: manchete, destaques, Em alta, panorama, editorias e busca. */
-import { $, esc, num, fold, debounce, relativo, horaBR, qtd, ESTADOS, NOME_UF, CURTO, carregarFeed, carregarAnos, anosForaDoFeed, indiceAnos, iniciarCabecalho, midia, renderMapa, ranking, urlNoticia, ICONES, ICONE } from './core.js';
+import { $, esc, num, fold, debounce, relativo, horaBR, qtd, ESTADOS, NOME_UF, CURTO, carregarFeed, carregarAnos, anosForaDoFeed, indiceAnos, iniciarCabecalho, midia, renderMapa, ranking, urlNoticia, ICONES, ICONE, buscarDados } from './core.js';
 import { iniciarLeitor, kickerHTML, metaHTML } from './leitor.js';
 
 const POR_PAGINA = 20;
@@ -99,7 +99,7 @@ let agoraVistos = '';
 async function conferirAgora() {
   if (document.hidden || !st.ctx) return;
   let r;
-  try { r = await fetch(`agora.json?t=${Date.now()}`, { cache: 'no-store' }).then((x) => (x.ok ? x.json() : null)); } catch { return; }
+  try { r = await buscarDados(`agora.json?t=${Date.now()}`, { cache: 'no-store' }).then((x) => (x.ok ? x.json() : null)); } catch { return; }
   const ids = (r?.noticias || []).map((n) => n.i);
   if (!ids.length) return;
   const assinatura = ids.join(',');

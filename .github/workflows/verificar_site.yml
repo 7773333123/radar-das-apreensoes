@@ -22,7 +22,7 @@ jobs:
           HOSTS: ${{ inputs.hosts }}
         run: |
           # Página de notícia: a mais nova da faixa Agora (um id que existe de verdade).
-          id=$(curl -sS https://www.radardasapreensoes.com.br/agora.json | python3 -c 'import json,sys; print(json.load(sys.stdin)["noticias"][0]["i"])' || echo 0)
+          id=$(curl -sS https://7773333123.github.io/radar-das-apreensoes/agora.json | python3 -c 'import json,sys; print(json.load(sys.stdin)["noticias"][0]["i"])' || echo 0)
           for host in ${HOSTS:-radardasapreensoes.com.br www.radardasapreensoes.com.br radar-das-apreensoes.vercel.app}; do
             for caminho in / /google07199f6dab12c6a3.html /sitemap.xml /observatorio /noticia/$id /estado/MT /relatorios /sobre /feed.json /agora.json /det/7.json /assets/central.js; do
               echo "=== https://$host$caminho"
@@ -32,7 +32,8 @@ jobs:
           done
       - name: Atraso da faixa Agora (coleta x site no ar)
         run: |
-          curl -sS "https://www.radardasapreensoes.com.br/agora.json?t=$(date +%s)" | python3 -c '
+          # Desde 25/11/2026 o site lê as notícias do GitHub Pages (a Vercel publica só código).
+          curl -sS "https://7773333123.github.io/radar-das-apreensoes/agora.json?t=$(date +%s)" | python3 -c '
           import json,sys,datetime as dt
           d=json.load(sys.stdin); agora=dt.datetime.now(dt.timezone.utc)
           at=dt.datetime.fromisoformat(d["atualizado_em"])
