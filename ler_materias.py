@@ -240,6 +240,32 @@ POLICIAL = re.compile(r'pol[íi]cia|apreen|droga|maconha|coca[íi]na|arma|\bmuni
                       r've[íi]culo|carga|contrabando|PRF|PF|PM|PC|delegacia|fronteira|rodovia|BR-|viatura|suspeit', re.I)
 
 
+_VIDEO_ARQ = re.compile(r'\.(?:mp4|webm|mov|m4v)(?:[?#/].*)?$', re.I)
+
+
+def videos_da_materia(pagina, base, metas=None):
+    """Vídeos da nota oficial (dono do site, 25/11/2026: vídeos reais das operações nos Reels, com crédito).
+
+    Devolve (arquivos, youtube): arquivos de vídeo publicados pelo órgão (<video>, <source>, link .mp4,
+    og:video) e vídeos do YouTube incorporados (só o endereço, para referência; não se baixa do YouTube)."""
+    regiao = regiao_da_materia(pagina) or pagina
+    arquivos, youtube = [], []
+    candidatos = re.findall(r'<(?:video|source)\b[^>]*\bsrc=["\']([^"\']+)', regiao, re.I)
+    candidatos += re.findall(r'<a\b[^>]*\bhref=["\']([^"\']+\.(?:mp4|webm|mov|m4v)(?:[/?][^"\']*)?)["\']', regiao, re.I)
+    for chave in ('og:video', 'og:video:url', 'og:video:secure_url'):
+        if metas and metas.get(chave):
+            candidatos.append(metas[chave])
+    for c in candidatos:
+        u = urljoin(base, html.unescape(c.strip()))
+        if u.startswith('http') and (_VIDEO_ARQ.search(u) or '/@@download' in u) and u not in arquivos:
+            arquivos.append(u)
+    for vid in re.findall(r'(?:youtube(?:-nocookie)?\.com/(?:embed/|watch\?v=)|youtu\.be/)([\w-]{11})', regiao):
+        u = f'https://www.youtube.com/watch?v={vid}'
+        if u not in youtube:
+            youtube.append(u)
+    return arquivos[:5], youtube[:5]
+
+
 def regiao_da_materia(pagina):
     """Trecho do HTML que contém a matéria, sem cabeçalho, barra lateral e chamadas finais."""
     for padrao in (r'itemprop="articleBody"[^>]*>', r'property="rnews:articleBody"[^>]*>', r'<article\b[^>]*>',
@@ -442,6 +468,11 @@ def ler(url, timeout):
             resultado['texto'] = texto
             resultado['licenca'] = 'oficial'
             resultado['texto_v'] = 2
+        arquivos, youtube = videos_da_materia(pagina, base, m)
+        if arquivos:
+            resultado['videos'] = arquivos
+        if youtube:
+            resultado['videos_youtube'] = youtube
     return resultado
 
 
@@ -542,6 +573,9 @@ def main():
             if r.get('trecho'):
                 n['trecho'] = r['trecho']
                 n['tamanho_texto'] = r.get('tamanho_texto') or 0
+            for campo in ('videos', 'videos_youtube'):
+                if r.get(campo):
+                    n[campo] = r[campo]
             if r.get('texto'):
                 n['texto_integral'] = r['texto']
                 n['licenca_texto'] = r['licenca']
