@@ -69,6 +69,11 @@ TITULOS_REVISADOS = _correcoes_titulos()  # português revisado (revisar_titulos
 _ORDEM_CAPA = {1: 0, None: 1, 0: 2}
 
 
+def pagina_de_arquivo(url):
+    """Endereço de um arquivo (foto/PDF) ou da página de visualização dele no portal, não de uma notícia."""
+    return bool(re.search(r'\.(?:jpe?g|png|webp|gif|pdf)(?:/view)?/?(?:[?#].*)?$', str(url or ''), re.I))
+
+
 def foto_de_arquivo(foto, data_iso):
     """Foto antiga reaproveitada (dono do site, 24/11/2026: "sempre imagens reais"): o endereço traz a
     pasta do mês do envio (/2025/12/) e ela é de mais de 2 meses antes da notícia. Ex.: Jornal de
@@ -604,6 +609,11 @@ def main():
             continue
         # Páginas de busca, etiqueta e arquivo dos sites não são notícias ("Busca: ...", "Tag: ...",
         # "Tudo sobre: ...", "Arquivos #Draco ...").
+        # Página de arquivo de imagem/documento do portal (gov.br ".../apreensao-generico.jpg/view", título
+        # "Apreensão") não é notícia (25/11/2026).
+        if pagina_de_arquivo(n.get('url_original') or n.get('url')):
+            ocultas += 1
+            continue
         if nao_e_noticia(titulo) or not relevante(titulo):
             ocultas += 1
             continue
