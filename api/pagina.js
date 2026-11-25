@@ -159,14 +159,16 @@ function cabecalho(atual) {
 <a class="brand" href="/" aria-label="Radar das Apreensões — página inicial"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 3C19 3 9 13 9 26c0 17 23 35.5 23 35.5S55 43 55 26C55 13 45 3 32 3z" fill="#b3261e"/><path d="M24.5 40V14.5h9a8 8 0 0 1 0 16h-9" fill="none" stroke="#fff" stroke-width="5.4" stroke-linejoin="round"/><path d="M31.5 30.5l9.5 9.5" stroke="#fff" stroke-width="5.4" stroke-linecap="round"/><path d="M40.5 9.6a11 11 0 0 1 7.9 7.9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".55"/><path d="M40.6 13.8a6.6 6.6 0 0 1 3.6 3.6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".9"/></svg>
 <span class="brand-name"><b>RADAR</b><span>das Apreensões</span></span></a>
 <nav class="mainnav" aria-label="Seções do site">${nav.map(([h, t]) => `<a href="${h}"${t === atual ? ' aria-current="page"' : ''}>${t}</a>`).join('')}</nav>
+<a class="ig-top" href="https://www.instagram.com/radardasapreensoes/" target="_blank" rel="noopener noreferrer" aria-label="Siga o Radar das Apreensões no Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zm0 4.7a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2zm0 8.4a3.3 3.3 0 1 1 0-6.6 3.3 3.3 0 0 1 0 6.6zm5.3-9.8a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/></svg><span>Siga</span></a>
 <form class="searchbox" action="/" method="get" role="search" id="formBuscaPagina"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
 <label class="sr" for="buscaTopo">Pesquisar notícias</label><input type="search" id="buscaTopo" name="q" placeholder="Buscar" autocomplete="off" enterkeyhint="search"></form>
 </div><nav class="wrap sections" aria-label="Tipos de apreensão">${dados().feed.categorias.slice(0, 8).map((c, k) =>
     `<a href="/categoria/${SLUG_CAT[k]}">${esc(c)}</a>`).join('')}</nav></header>`;
 }
+const IG_CARD = '<a class="ig-card" href="https://www.instagram.com/radardasapreensoes/" target="_blank" rel="noopener noreferrer"><span class="ig-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zm0 4.7a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2zm0 8.4a3.3 3.3 0 1 1 0-6.6 3.3 3.3 0 0 1 0 6.6zm5.3-9.8a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/></svg></span><span class="ig-tx"><b>Siga o Radar no Instagram</b><small>As maiores apreensões do dia em vídeo · @radardasapreensoes</small></span><span class="ig-btn">Seguir</span></a>';
 const RODAPE = `<footer class="footer"><div class="wrap cols">
 <div><h4>Radar das Apreensões</h4><p>O conteúdo das reportagens pertence aos veículos de origem; cada notícia leva à fonte original.</p></div>
-<div><h4>Navegue</h4><p><a href="/observatorio">Observatório</a> · <a href="/relatorios">Relatórios mensais</a></p><p><a href="/sobre">Sobre e expediente</a></p></div>
+<div><h4>Navegue</h4><p><a href="/observatorio">Observatório</a> · <a href="/relatorios">Relatórios mensais</a></p><p><a href="/sobre">Sobre e expediente</a></p><p><a href="https://www.instagram.com/radardasapreensoes/" target="_blank" rel="noopener noreferrer">Instagram @radardasapreensoes</a></p></div>
 <div><h4>Transparência</h4><p><a href="/termos">Termos de uso</a> · <a href="/privacidade">Privacidade</a></p><p><a href="/remocao">Correções e pedidos de remoção</a></p>
 <p><button type="button" class="theme-toggle" id="tema">Alternar tema claro/escuro</button></p></div>
 </div></footer>`;
@@ -354,6 +356,7 @@ ${fotos.length ? `<div class="art-fotos">${fotos.map((src, k) => `<img src="${es
 ${fotos.length > 1 ? `<p class="reader-note">${fotos.length} fotos · deslize para ver todas. Imagens: ${esc(n.fc || n.f)}.</p>` : `<p class="reader-note">Imagem: ${esc(n.fc || n.f)}.</p>`}` : ''}
 ${ficha.length ? `<section class="em-resumo" aria-label="Em resumo"><h2>Em resumo</h2><dl>${ficha.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></section>` : ''}
 ${radar}
+${IG_CARD}
 ${fonte}
 ${fontesHTML(n)}
 </article>

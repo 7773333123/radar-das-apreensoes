@@ -20,6 +20,7 @@ const HTML = `
   <p class="viewer-credit" id="visorCredito"></p>
 </dialog>`;
 
+const IG_CARD = '<a class="ig-card" href="https://www.instagram.com/radardasapreensoes/" target="_blank" rel="noopener noreferrer"><span class="ig-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zm0 4.7a5.1 5.1 0 1 0 0 10.2 5.1 5.1 0 0 0 0-10.2zm0 8.4a3.3 3.3 0 1 1 0-6.6 3.3 3.3 0 0 1 0 6.6zm5.3-9.8a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/></svg></span><span class="ig-tx"><b>Siga o Radar no Instagram</b><small>As maiores apreensões do dia em vídeo · @radardasapreensoes</small></span><span class="ig-btn">Seguir</span></a>';
 const compartilharHTML = (n) => {
   const link = `https://www.radardasapreensoes.com.br${urlNoticia(n)}`;
   const wa = `https://wa.me/?text=${encodeURIComponent(`${n.titulo} — Radar das Apreensões\n${comOrigem(link, 'whatsapp')}`)}`;
@@ -195,7 +196,7 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
     const c = $('leitorConteudo');
     c.innerHTML = `${kickerHTML(n, ctx)}<h1 id="leitorTitulo">${esc(n.titulo)}</h1>${metaHTML(n)}${compartilharHTML(n)}` +
       `<div id="leitorFotos" class="reader-media"></div><div id="leitorRadar"><p class="reader-note">Carregando o resumo…</p></div>${fonte}<div id="leitorMiniaturas"></div>` +
-      compartilharHTML(n) + `<footer class="reader-foot"><span>Fonte: ${esc(n.fonte)}${n.uf ? ' · ' + esc(NOME_UF[n.uf]) : ''} · ${esc(cats)}</span>` +
+      compartilharHTML(n) + IG_CARD + `<footer class="reader-foot"><span>Fonte: ${esc(n.fonte)}${n.uf ? ' · ' + esc(NOME_UF[n.uf]) : ''} · ${esc(cats)}</span>` +
       `<span class="links"><a class="link-sm" id="leitorLink" href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer"${n.url ? '' : ' aria-disabled="true"'}>ver original ↗</a>` +
       `<button type="button" class="link-sm" id="compartilhar">compartilhar</button></span>` +
       (n.outras.length ? `<span class="also">também em: ${n.outras.map(([f, url, k, dd]) => `<a class="link-sm" href="${esc(urlSegura(url || '') || '#')}" target="_blank" rel="noopener noreferrer" data-outra="${Number(k)}">${esc(f)}</a>${dd ? ` <span class="fonte-quando">(${esc(quandoCurto(dd))})</span>` : ''}`).join(', ')}</span>` : '') +

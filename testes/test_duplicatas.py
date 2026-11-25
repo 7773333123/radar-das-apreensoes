@@ -481,6 +481,10 @@ def main():
         erros.append('adjetivo não leva "de": "79 porções embaladas"')
     # Foto de arquivo (antiga, de outro fato) troca pela foto real de outra fonte (24/11/2026, arsenal no DF).
     from gerar_feed_site import foto_de_arquivo
+    from gerar_feed_site import pagina_de_arquivo
+    if not pagina_de_arquivo('https://www.gov.br/receitafederal/pt-br/x/apreensao-generico_prancheta.jpg/view') \
+            or pagina_de_arquivo('https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/novembro/receita-retem-1-tonelada'):
+        erros.append('página de arquivo de imagem do portal não é notícia (e notícia do portal é)')
     if not foto_de_arquivo('https://cdn.x.com.br/wp-content/uploads/2025/12/09183337/op.jpg', '2026-11-24T07:04') \
             or foto_de_arquivo('https://x.com/uploads/images/2026/11/arsenal.jpg', '2026-11-24T15:01') \
             or foto_de_arquivo('https://x.com/foto.jpg', '2026-11-24T15:01'):

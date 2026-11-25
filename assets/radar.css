@@ -697,3 +697,19 @@ a.ed-qtd:hover { background: var(--accent); color: #fff; text-decoration: none; 
 .chart .col.hi { fill: var(--accent); }
 .toplist .q { color: var(--accent); }
 .meses a:hover { border-color: var(--accent); }
+
+/* Siga no Instagram (25/11/2026): botão discreto no topo e cartão no fim da notícia. */
+.ig-top{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;background:#b3261e;color:#fff !important;font-weight:700;font-size:14px;text-decoration:none;white-space:nowrap;flex:none}
+.ig-top svg{width:17px;height:17px}
+.ig-top:hover{background:#8f1d17}
+@media (max-width:720px){.ig-top span{display:none}.ig-top{padding:8px}}
+.ig-card{display:flex;align-items:center;gap:14px;margin:22px 0;padding:14px 16px;border-radius:14px;background:#fdecea;border:1px solid #f5c6c1;color:#1a0a0a !important;text-decoration:none}
+.ig-card .ig-ic{width:44px;height:44px;flex:none;border-radius:12px;display:grid;place-items:center;color:#fff;background:linear-gradient(45deg,#f58529,#dd2a7b 45%,#8134af 80%)}
+.ig-card .ig-ic svg{width:24px;height:24px}
+.ig-card .ig-tx{flex:1;min-width:0}
+.ig-card b{display:block;font-size:16px}
+.ig-card small{display:block;font-size:13px;color:#7a4b45;margin-top:2px}
+.ig-card .ig-btn{flex:none;padding:8px 16px;border-radius:999px;background:#b3261e;color:#fff;font-weight:700;font-size:14px}
+:root[data-theme="dark"] .ig-card{background:#2a1214;border-color:#5a2a26;color:#fff6f3 !important}
+:root[data-theme="dark"] .ig-card small{color:#e9c2bc}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ig-card{background:#2a1214;border-color:#5a2a26;color:#fff6f3 !important}:root:not([data-theme="light"]) .ig-card small{color:#e9c2bc}}
