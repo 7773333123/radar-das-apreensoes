@@ -709,8 +709,12 @@ def main():
         # público (a leitura só guarda vídeos de portais oficiais); vídeo de jornal privado não entra.
         yt = [m.group(1) for u in (n.get('videos_youtube') or []) for m in [re.search(r'v=([\w-]{11})', str(u))] if m]
         arq = [u.replace('http://', 'https://', 1) for u in (url_publica(x) for x in (n.get('videos') or [])) if u and u.startswith('http')]
+        arq = list({re.sub(r'[?#].*$', '', u): u for u in arq}.values())  # mesmo arquivo com "?_=1" só uma vez
         if arq or yt:
-            videos_por_id[i] = {'v': arq[:3], 'yt': yt[:2], 'vf': str(n.get('fonte') or '')}
+            vf = str(n.get('fonte') or '')
+            if ' ' not in vf and '.' in vf:  # só o endereço do portal: o nome do órgão, se houver
+                vf = next((str(o) for o in ((n.get('fatos') or {}).get('orgaos') or [])), vf.removeprefix('www.'))
+            videos_por_id[i] = {'v': arq[:3], 'yt': yt[:2], 'vf': vf}
         # Resumo do Radar: fatos da página original (ler_materias.py) ou, na falta
         # dela, do título e do resumo da fonte; redigido com frases próprias.
         # Fatos do título e do resumo da fonte: os mais confiáveis para as
