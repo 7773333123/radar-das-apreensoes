@@ -564,6 +564,7 @@ def main():
     usados = set()
     origem_por_i = {}
     detalhes = {}
+    videos_por_id = {}  # vídeos publicados pelo órgão oficial na nota (ler_materias.videos_da_materia)
     fatos_por_i = {}
     fatos_titulo = {}
     # Anti-imagem: foto que aparece na galeria de 3+ notícias diferentes é de
@@ -704,6 +705,12 @@ def main():
             detalhe.update(p=[anonimizar(x, nomes_presos) for x in paragrafos] if nomes_presos else paragrafos, l=str(n['licenca_texto']))
         if len(limpas) > 1:
             detalhe['g'] = limpas
+        # Vídeos da nota oficial (dono do site, 25/11/2026): arquivo do órgão e YouTube do órgão. Só de órgão
+        # público (a leitura só guarda vídeos de portais oficiais); vídeo de jornal privado não entra.
+        yt = [m.group(1) for u in (n.get('videos_youtube') or []) for m in [re.search(r'v=([\w-]{11})', str(u))] if m]
+        arq = [u.replace('http://', 'https://', 1) for u in (url_publica(x) for x in (n.get('videos') or [])) if u and u.startswith('http')]
+        if arq or yt:
+            videos_por_id[i] = {'v': arq[:3], 'yt': yt[:2], 'vf': str(n.get('fonte') or '')}
         # Resumo do Radar: fatos da página original (ler_materias.py) ou, na falta
         # dela, do título e do resumo da fonte; redigido com frases próprias.
         # Fatos do título e do resumo da fonte: os mais confiáveis para as
@@ -978,6 +985,11 @@ def main():
         # Resumo e ficha ("Onde") citam só o local da apreensão, nunca a cidade da
         # delegacia, da moradia ou da origem/destino da carga.
         alvo = detalhes[item['i'] % LOTES][str(item['i'])]
+        # Vídeo do órgão: da versão exibida ou de outra versão da mesma notícia (a nota oficial).
+        vid = next((videos_por_id[x] for x in [item['i']] + [o[2] for o in item.get('o', [])] if x in videos_por_id), None)
+        if vid:
+            alvo.update({k: v for k, v in vid.items() if v})
+            item['vd'] = 1
         if fatos:
             fatos = dict(fatos)
             if cid:

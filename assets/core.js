@@ -102,7 +102,7 @@ export function midia(n, { contador = false } = {}) {
   // Só havia foto com marca d'água/nome do jornal (sf): marcador da editoria, sem buscar a original.
   if (!n.img && n.semFoto) return `<div class="media" data-cat="${n.cats[0] ?? 8}">${placeholder(n)}</div>`;
   const foto = n.img ? imgTag(n.img, '', 'data-ph') : imgTag(`/api/foto?i=${n.i}`, '', 'data-ph');
-  const extra = contador && n.nFotos > 1 ? `<span class="count">${n.nFotos} fotos</span>` : '';
+  const extra = (n.video ? '<span class="vid">▶ Vídeo</span>' : '') + (contador && n.nFotos > 1 ? `<span class="count">${n.nFotos} fotos</span>` : '');
   return `<div class="media" data-cat="${n.cats[0] ?? 8}"${n.orgao ? ` data-org="${esc(n.orgao)}" data-uf="${esc(n.uf || '')}"` : ''}>${foto}${extra}</div>`;
 }
 // Foto externa que falha vira o marcador da editoria.
@@ -123,7 +123,7 @@ function preparar(raw, ctx) {
   const n = {
     i: raw.i, titulo: raw.t, fonte: raw.f || 'Fonte não informada', resumo: raw.r || '',
     url: urlSegura(raw.u || ''), temLink: Boolean(raw.u || raw.uh), img: urlSegura(raw.img || ''), uf, cats, data,
-    texto: raw.x === 1, semFoto: raw.sf === 1, fotoMaterial: raw.pm === 1, creditoFoto: raw.fc || '', nFotos: raw.g || (raw.img ? 1 : 0),
+    texto: raw.x === 1, semFoto: raw.sf === 1, fotoMaterial: raw.pm === 1, video: raw.vd === 1, creditoFoto: raw.fc || '', nFotos: raw.g || (raw.img ? 1 : 0),
     outras: Array.isArray(raw.o) ? raw.o.filter((o) => Array.isArray(o) && o[0]) : [],
     q: raw.q || null, ag: raw.ag || [], orgao: (raw.ag || []).map((a) => ctx.orgaos?.[a]).find(Boolean) || '', rd: raw.rd || '', vq: raw.vq || 0, cidade: uf ? raw.cid || '' : '', polo: raw.fr || '', prioridadeFr: raw.frp || 9, oficial: Boolean(raw.fp),
     ano: data ? data.getUTCFullYear() : null,

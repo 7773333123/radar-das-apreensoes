@@ -121,6 +121,17 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
     if (!$('visor').open) $('visor').showModal();
     irPara(galeria.atual, false);
   }
+  // Vídeos publicados pelo órgão oficial na nota (25/11/2026): baixam só quando o leitor aperta play.
+  function videoHTML(t) {
+    const arquivos = (Array.isArray(t.v) ? t.v : []).map(urlSegura).filter((u) => u.startsWith('https://'));
+    const yt = (Array.isArray(t.yt) ? t.yt : []).filter((id) => /^[\w-]{11}$/.test(id));
+    if (!arquivos.length && !yt.length) return '';
+    const credito = `Vídeo: ${esc(t.vf || 'órgão oficial')}`;
+    return `<section class="reader-video" aria-label="Vídeo do órgão oficial"><h2>▶ Vídeo da ocorrência</h2>` +
+      arquivos.map((u) => `<video controls preload="none" playsinline src="${esc(u)}"></video>`).join('') +
+      yt.map((id) => `<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${id}" title="Vídeo do órgão oficial" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`).join('') +
+      `<p class="reader-credit">${credito}. Direitos reservados ao órgão.</p></section>`;
+  }
   function montarGaleria(n, fotos) {
     Object.assign(galeria, { fotos, fonte: n.creditoFoto || n.fonte, atual: 0 });  // fc: foto do órgão oficial
     const alvo = $('leitorFotos');
@@ -195,7 +206,7 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
     const fonte = `<div id="leitorTexto">${n.texto ? '<p class="reader-note">Carregando o texto…</p>' : fonteHTML(n, null)}</div>`;
     const c = $('leitorConteudo');
     c.innerHTML = `${kickerHTML(n, ctx)}<h1 id="leitorTitulo">${esc(n.titulo)}</h1>${metaHTML(n)}${compartilharHTML(n)}` +
-      `<div id="leitorFotos" class="reader-media"></div><div id="leitorRadar"><p class="reader-note">Carregando o resumo…</p></div>${fonte}<div id="leitorMiniaturas"></div>` +
+      `<div id="leitorFotos" class="reader-media"></div><div id="leitorVideo"></div><div id="leitorRadar"><p class="reader-note">Carregando o resumo…</p></div>${fonte}<div id="leitorMiniaturas"></div>` +
       compartilharHTML(n) + IG_CARD + `<footer class="reader-foot"><span>Fonte: ${esc(n.fonte)}${n.uf ? ' · ' + esc(NOME_UF[n.uf]) : ''} · ${esc(cats)}</span>` +
       `<span class="links"><a class="link-sm" id="leitorLink" href="${esc(n.url || '#')}" target="_blank" rel="noopener noreferrer"${n.url ? '' : ' aria-disabled="true"'}>ver original ↗</a>` +
       `<button type="button" class="link-sm" id="compartilhar">compartilhar</button></span>` +
@@ -218,6 +229,7 @@ export function iniciarLeitor(ctx, { aoFechar } = {}) {
         }
       }
       if (Array.isArray(t.g) && t.g.length > 1) montarGaleria(n, t.g.map(urlSegura).filter(Boolean));
+      $('leitorVideo').innerHTML = videoHTML(t);
       $('leitorRadar').innerHTML = fichaHTML(n, t);
       $('leitorTexto').innerHTML = fonteHTML(n, t);
       const ler = c.querySelector('[data-ler-original]');
