@@ -62,6 +62,9 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   padrões viram regra + teste em `testes/test_duplicatas.py`.
 - Notícias de Portugal/exterior, páginas que não são notícia e logotipo no lugar de foto ficam fora do site.
   Fato no exterior (México, EUA, Europa...) sem polícia/lugar do Brasil no título: `classificar.exterior` (22/11/2026).
+  **O que não tem relação com o Brasil não entra no site** (25/11/2026): autoridade estrangeira pela nacionalidade
+  ("Marinha francesa", "polícia espanhola", "Guarda Costeira americana") e oceano/mar estrangeiro ("no Pacífico",
+  "no Mediterrâneo", "no Caribe") também são exterior; casos de teste em `python classificar.py`.
 - Coletas: `expressa.yml` (feeds → site a cada ~8 min, faixa AGORA atualizada em seguida) e `rapido.yml`
   (complementar: Google, Bing, links, leitura, fotos), em paralelo, 21/11/2026. A faixa AGORA confere
   `agora.json` a cada 30 s.
