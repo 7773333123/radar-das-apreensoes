@@ -159,7 +159,12 @@ _EXTERIOR = re.compile(
     r"|marroquin|nigerian|sul-african|canadense|hondurenh|guatemalt|costarriquenh|panamenh|dominican|haitian|turc"
     r"|grega|grego|irlandes|escoces|sueca|sueco|norueguês|norueguesa|dinamarques)\w*"
     r"|\b(?:no|do|pelo|nas águas do)\s+(?:Oceano\s+)?(?:Pac[ií]fico|Mediterr[âa]neo|Caribe|Mar do Norte|Mar Negro"
-    r"|Mar Vermelho|Mar B[áa]ltico|Golfo do M[ée]xico|[ÍI]ndico)\b", re.I)
+    r"|Mar Vermelho|Mar B[áa]ltico|Golfo do M[ée]xico|[ÍI]ndico)\b"
+    # País estrangeiro abrindo o título, sem artigo ("Irã cobra US$ 290 bilhões dos EUA... e diz ter apreendido
+    # navios", 25/11/2026). Paraguai e Bolívia ficam de fora (fronteira).
+    r"|^(?:Ir[ãa]|Iraque|Israel|EUA|Estados Unidos|China|R[úu]ssia|Ucr[âa]nia|Coreia do Norte|Coreia do Sul|Venezuela"
+    r"|Col[ôo]mbia|Argentina|Equador|Peru|Chile|M[ée]xico|Fran[çc]a|Espanha|It[áa]lia|Alemanha|Reino Unido|Portugal"
+    r"|Jap[ãa]o|[ÍI]ndia|Turquia|Ar[áa]bia Saudita|Gaza|Hamas|Hezbollah|Taliban|Otan|ONU)\b", re.I)
 _BRASIL = re.compile(
     r"\b(?:Brasil|brasileir\w*|PF|PRF|PM\w*|PC\w*|Pol[ií]cia (?:Federal|Rodovi[áa]ria|Civil|Militar|Penal)|Receita Federal|RFB"
     r"|Brigada Militar|Gaeco|FICCO|BPFron|DOF|Gefron|Ibama|Marinha do Brasil|Ex[ée]rcito Brasileiro|BR-\d+|aeroporto de"
@@ -271,6 +276,8 @@ if __name__ == '__main__':
         ('PF apreende cocaína em navio que seguiria pelo Mediterrâneo a partir do Porto de Santos', 0),
         ('Polícia paraguaia apreende maconha em Pedro Juan Caballero', 0),
         ('PM flagra rinha de galo e apreende aves', 5),
+        ('Irã cobra US$ 290 bilhões dos EUA por ofensiva militar e diz ter apreendido navios', None),
+        ('EUA devolvem ao Brasil cocaína apreendida com brasileiro em Miami', 0),
     ]
     erros = 0
     for t, esperado in casos:
