@@ -83,6 +83,7 @@ def id_do_canal(url, cache):
 def videos_do_canal(cid, orgao):
     ns = {'a': 'http://www.w3.org/2005/Atom', 'yt': 'http://www.youtube.com/xml/schemas/2015'}
     raiz = ET.fromstring(baixar(f'https://www.youtube.com/feeds/videos.xml?channel_id={cid}'))
+    yield {'_nome': html.unescape((raiz.findtext('a:title', '', ns) or '').strip())}
     for e in raiz.findall('a:entry', ns):
         vid = (e.findtext('yt:videoId', '', ns) or '').strip()
         titulo = html.unescape((e.findtext('a:title', '', ns) or '').strip())
@@ -109,6 +110,9 @@ def main():
             continue
         try:
             for v in videos_do_canal(cid, orgao):
+                if '_nome' in v:
+                    cache[url]['nome'] = v['_nome']  # nome do canal no YouTube (conferir se é mesmo o oficial)
+                    continue
                 if v['d'] >= limite and APREENSAO.search(v['t']):
                     novos[v['yt']] = v
         except Exception as erro:  # noqa: BLE001
