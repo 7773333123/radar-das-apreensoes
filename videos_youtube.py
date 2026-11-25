@@ -30,25 +30,13 @@ UA = {'User-Agent': 'Mozilla/5.0 (compatible; RadarDasApreensoes/1.0)', 'Accept-
 # Endereço público do canal oficial -> nome do órgão (crédito). Endereços conferidos na primeira rodada;
 # os que não existirem aparecem no registro (youtube_canais.json, "erro") para ajuste.
 CANAIS = {
-    'https://www.youtube.com/@prfbrasil': 'PRF',
-    'https://www.youtube.com/pfnatela': 'Polícia Federal',
-    'https://www.youtube.com/@receitafederal': 'Receita Federal',
-    'https://www.youtube.com/@ministeriodajustica': 'Ministério da Justiça',
-    'https://www.youtube.com/@policiamilitarsp': 'Polícia Militar de SP',
-    'https://www.youtube.com/@policiacivilsp': 'Polícia Civil de SP',
-    'https://www.youtube.com/@pmparana': 'Polícia Militar do Paraná',
-    'https://www.youtube.com/@policiacivilpr': 'Polícia Civil do Paraná',
-    'https://www.youtube.com/@pmscoficial': 'Polícia Militar de SC',
-    'https://www.youtube.com/@pmmgoficial': 'Polícia Militar de MG',
-    'https://www.youtube.com/@pmerj': 'Polícia Militar do RJ',
-    'https://www.youtube.com/@brigadamilitarrs': 'Brigada Militar (RS)',
-    'https://www.youtube.com/@pmgo': 'Polícia Militar de GO',
-    'https://www.youtube.com/@pmce': 'Polícia Militar do CE',
-    'https://www.youtube.com/@sejuspms': 'Sejusp MS',
-    'https://www.youtube.com/@pmms': 'Polícia Militar de MS',
-    'https://www.youtube.com/@pmbahia': 'Polícia Militar da BA',
-    'https://www.youtube.com/@pmpe': 'Polícia Militar de PE',
-    'https://www.youtube.com/@pmmt': 'Polícia Militar de MT',
+    # Conferidos em 25/11/2026 pelo nome do canal no YouTube (youtube_canais.json, "nome"). Só entram canais
+    # comprovadamente oficiais; endereço que levou a canal de terceiros (ex.: @pmgo, @pmmt) foi retirado.
+    'https://www.youtube.com/@prfbrasil': 'PRF',                       # "PRF Brasil"
+    'https://www.youtube.com/pfnatela': 'Polícia Federal',             # "PFnaTela"
+    'https://www.youtube.com/@pmmgoficial': 'Polícia Militar de MG',   # "TV PMMG"
+    'https://www.youtube.com/@pmscoficial': 'Polícia Militar de SC',   # "PMSC Oficial"
+    'https://www.youtube.com/@pmpe': 'Polícia Militar de PE',          # "PM PE"
 }
 # Vídeo de apreensão: os mesmos termos do site (classificar.relevante) ou palavras típicas dos títulos dos órgãos.
 APREENSAO = re.compile(r'apreen|apreende|cocaína|cocaina|maconha|skunk|haxixe|crack|droga|entorpecente|fuzil|fuzis|'
