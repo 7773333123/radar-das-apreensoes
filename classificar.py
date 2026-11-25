@@ -39,7 +39,7 @@ REGRAS = [re.compile(r, re.I) for r in [
     # 5 ambiental
     r'ambient|madeira|animais silvestres|aves silvestres|p[áa]ssaros|pesca (?:ilegal|predat)|pescado|'
     r'garimpo|merc[uú]rio|min[eé]rio|desmatamento|\bca[çc]a\b|ca[çc]ador|jabutis?|tartarugas?|carv[ãa]o|'
-    r'palmito|queimada criminosa|extra[çc][ãa]o ilegal|dragas?\b|balsas? de garimpo|rinha',
+    r'palmito|queimada criminosa|extra[çc][ãa]o ilegal|dragas?\b|balsas? de garimpo|\brinhas?\b',
     # 6 medicamentos e produtos
     r'medicamento|rem[eé]dio|anabolizante|falsificad|canetas? emagrecedoras?|tirzepatida|semaglutida|'
     r'ozempic|mounjaro|ampolas|cosm[ée]ticos?|bebidas? (?:falsificad|adulterad)|produtos? (?:falsificad|pirata|sem registro)|'
@@ -148,7 +148,18 @@ _EXTERIOR = re.compile(
     # país estrangeiro como sujeito da frase ("Por que a China arrisca...", "O Irã está..."), 22/11/2026;
     # "com a Bolívia" / "a Europa" como destino não contam.
     r"|(?:^|\bque\s+|:\s*)(?:a|o)\s+(?:China|R[úu]ssia|Coreia do Norte|Ucr[âa]nia|Venezuela|Col[ôo]mbia|Argentina"
-    r"|Bol[ií]via|EUA|Estados Unidos|Europa|Israel|Ir[ãa])\b", re.I)
+    r"|Bol[ií]via|EUA|Estados Unidos|Europa|Israel|Ir[ãa])\b"
+    # Autoridade estrangeira pela nacionalidade e oceano/mar estrangeiro (25/11/2026: "Marinha francesa apreende
+    # 3,3 toneladas de metanfetamina num petroleiro no Pacífico" entrou como Piauí). O que não tem relação com o
+    # Brasil não entra no site (dono, 25/11/2026). Paraguai fica de fora desta lista (fronteira com o Paraná).
+    r"|\b(?:Marinha|Pol[ií]cia|Guarda Costeira|Guarda Civil|Guarda Nacional|Ex[ée]rcito|For[çc]as Armadas|Alf[âa]ndega"
+    r"|Autoridades|Justi[çc]a|Governo|Procuradoria|Ministério Público)\s+(?:\w+\s+)?(?:frances|espanhol|american|norte-american"
+    r"|estadunidense|colombian|venezuelan|argentin|bolivian|peruan|equatorian|chilen|uruguai|mexican|portugues|italian"
+    r"|alem[ãa]|holandes|neerlandes|belga|brit[âa]nic|ingles|australian|chines|japones|russ|ucranian|indian|filipin"
+    r"|marroquin|nigerian|sul-african|canadense|hondurenh|guatemalt|costarriquenh|panamenh|dominican|haitian|turc"
+    r"|grega|grego|irlandes|escoces|sueca|sueco|norueguês|norueguesa|dinamarques)\w*"
+    r"|\b(?:no|do|pelo|nas águas do)\s+(?:Oceano\s+)?(?:Pac[ií]fico|Mediterr[âa]neo|Caribe|Mar do Norte|Mar Negro"
+    r"|Mar Vermelho|Mar B[áa]ltico|Golfo do M[ée]xico|[ÍI]ndico)\b", re.I)
 _BRASIL = re.compile(
     r"\b(?:Brasil|brasileir\w*|PF|PRF|PM\w*|PC\w*|Pol[ií]cia (?:Federal|Rodovi[áa]ria|Civil|Militar|Penal)|Receita Federal|RFB"
     r"|Brigada Militar|Gaeco|FICCO|BPFron|DOF|Gefron|Ibama|Marinha do Brasil|Ex[ée]rcito Brasileiro|BR-\d+|aeroporto de"
@@ -249,6 +260,17 @@ if __name__ == '__main__':
         ('Por que a China arrisca tudo no contrabando de chips de inteligência artificial', None),
         ('Fiscalização apreende drogas e fetos de lhama na fronteira de MS com a Bolívia', 0),
         ('Empresário ligado a envio de cocaína a Europa é preso em Balneário Camboriú', 0),
+        # Autoridade estrangeira e oceano/mar estrangeiro sem relação com o Brasil ficam fora (25/11/2026).
+        ('Marinha francesa apreende 3,3 toneladas de metanfetamina num petroleiro no Pacífico', None),
+        ('Guarda Costeira americana apreende cocaína em lancha', None),
+        ('Polícia espanhola apreende 2 toneladas de haxixe em operação', None),
+        ('Navio com 5 toneladas de cocaína é apreendido no Mediterrâneo', None),
+        ('Autoridades colombianas apreendem submarino com cocaína', None),
+        ('PF e polícia espanhola apreendem cocaína e prendem brasileiro', 0),
+        ('Marinha do Brasil apreende cocaína em navio no Pará', 0),
+        ('PF apreende cocaína em navio que seguiria pelo Mediterrâneo a partir do Porto de Santos', 0),
+        ('Polícia paraguaia apreende maconha em Pedro Juan Caballero', 0),
+        ('PM flagra rinha de galo e apreende aves', 5),
     ]
     erros = 0
     for t, esperado in casos:
