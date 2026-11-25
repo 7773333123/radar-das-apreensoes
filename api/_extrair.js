@@ -7,7 +7,7 @@ const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 const MAX_FOTOS = 10;
 const OFICIAL = /\.(?:gov|jus|mp|leg|def)\.br$/i;
 
-const NAO_FOTO = /(?:^|[\/_-])(?:share|default|padrao|og-?image|ogimage|fallback|no-?image|sem-?imagem)[\w-]*\.(?:png|jpe?g|webp)|logo|icon|icone|avatar|sprite|banner|placeholder|blank|pixel|spacer|loading|selo|whatsapp-share|\/ads?\/|publicidade|video\.glbimg|\/x240\/|\.svg(?:$|\?)|\.gif(?:$|\?)|gravatar|emoji|badge|flag/i;
+const NAO_FOTO = /^https?:\/\/i\.s3\.glbimg\.com\/|midia-de-distribuicao|(?:^|[\/_-])(?:share|default|padrao|og-?image|ogimage|fallback|no-?image|sem-?imagem)[\w-]*\.(?:png|jpe?g|webp)|logo|icon|icone|avatar|sprite|banner|placeholder|blank|pixel|spacer|loading|selo|whatsapp-share|\/ads?\/|publicidade|video\.glbimg|\/x240\/|\.svg(?:$|\?)|\.gif(?:$|\?)|gravatar|emoji|badge|flag/i;
 const DOMINIO_ANUNCIO = /doubleclick|googlesyndication|googleadservices|adservice|adsystem|taboola|outbrain|teads|criteo|adnxs|rubiconproject|pubmatic|smartadserver|facebook\.com\/tr|scorecardresearch|\/ads?\/|\/banners?\/|\/publicidade\/|\/anuncios?\/|\/patrocin/i;
 const MINIATURA = /[-_](?:\d{2,3})x(?:\d{2,3})\.(?:jpe?g|png|webp)|\/thumbs?\/|[-_]thumb|\/(?:50|75|100|120|150|160|180|200)x|\/fit-in\/(?:\d{2,3})x|w=(?:\d{2,3})\b(?!\d)/i;
 const CONTEINER_ALHEIO = /\b(?:ads?|adv|advert\w*|anuncio\w*|publicidade|banner\w*|sponsor\w*|patrocin\w*|dfp|gpt|teads|taboola|outbrain|related\w*|relacionad\w*|recomend\w*|recommend\w*|mais-?lidas|most-?read|leia-?tamb\w*|veja-?tamb\w*|saiba-?mais|sidebar|aside|widget\w*|newsletter|promo\w*|carousel-?news|ultimas|latest|trending|shopping|video-?playlist|playlist|feed-?item|card-?news|outras-?noticias|author|autor)\b/i;

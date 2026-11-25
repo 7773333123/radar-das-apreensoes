@@ -440,6 +440,13 @@ CAPA_GENERICA = re.compile(r'(?:^|[/_-])(?:logo|logotipo|brasao|default|og-?imag
                            r'/api/og-image|/thumb\.php$|/img$|/(?:None|null|undefined)$', re.I)
 
 
+# Foto que o navegador do leitor não consegue abrir (25/11/2026): o arquivo original do G1 no armazenamento
+# interno (i.s3.glbimg.com, sem a versão reduzida s2-*.glbimg.com) não responde fora do G1 (o quadro ficava cinza),
+# e a arte genérica de divulgação do G1 ("midia-de-distribuicao") não é foto do fato. Fica de fora; entra outra
+# foto da matéria ou a que o servidor busca na página original.
+FOTO_INACESSIVEL = re.compile(r'^https?://i\.s3\.glbimg\.com/|midia-de-distribuicao', re.I)
+
+
 BLOCO_FIXO = re.compile(
     r'^(?:\s*(?:Conte[úu]dos? copiados?[^.]*?cr[ée]ditos?[^.]*\.|Nos adicione como fonte preferencial[^.]*\.|'
     r'Siga (?:o|a|nosso|nossa)[^.]{0,80}(?:WhatsApp|Instagram|Google|canal)[^.]*\.|'
@@ -643,6 +650,8 @@ def main():
             if not foto or foto in fotos:
                 continue
             sem_param = foto.split('?')[0]
+            if FOTO_INACESSIVEL.search(foto):
+                continue  # original interno do G1 (não abre fora do G1) ou arte de divulgação
             if (CAPA_GENERICA.search(sem_param) and not re.search(r'-c-default\.', sem_param)) or _chave_foto(foto) in capas_genericas:
                 continue  # logotipo/arte padrão: não é foto do fato
             if k > 0 and (foto_alheia(foto, '', '', '') or _chave_foto(foto) in repetidas):
