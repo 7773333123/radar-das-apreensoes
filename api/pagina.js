@@ -138,10 +138,12 @@ const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 function videoHTML(t) {
   const arquivos = (Array.isArray(t.v) ? t.v : []).map((v) => urlOk(v)).filter((u) => u.startsWith('https://'));
   const yt = (Array.isArray(t.yt) ? t.yt : []).filter((id) => /^[\w-]{11}$/.test(id));
-  if (!arquivos.length && !yt.length) return '';
+  const ig = (Array.isArray(t.ig) ? t.ig : []).filter((c) => /^(?:reel|p)\/[\w-]{5,40}$/.test(c));
+  if (!arquivos.length && !yt.length && !ig.length) return '';
   return `<section class="reader-video" aria-label="Vídeo do órgão oficial"><h2>▶ Vídeo da ocorrência</h2>` +
     arquivos.map((u) => `<video controls preload="none" playsinline src="${esc(u)}"></video>`).join('') +
     yt.map((id) => `<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${id}" title="Vídeo do órgão oficial" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`).join('') +
+    ig.map((c) => `<div class="ig"><iframe src="https://www.instagram.com/${c}/embed/" title="Vídeo do órgão oficial no Instagram" loading="lazy" allow="encrypted-media; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`).join('') +
     `<p class="reader-credit">Vídeo: ${esc(t.vf || 'órgão oficial')}. Direitos reservados ao órgão.</p></section>`;
 }
 const urlOk = (v) => { try { const u = new URL(v); return /^https?:$/.test(u.protocol) ? u.href : ''; } catch { return ''; } };

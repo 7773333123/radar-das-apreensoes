@@ -19,6 +19,11 @@ casos = [
      'outro fato não liga'),
     (_video_do_canal(dict(item, d='2026-11-20T10:00'), [v], [outra]) is None, 'mais de 2 dias de distância não liga'),
 ]
+# Instagram oficial (26/11/2026): o vídeo liga do mesmo jeito e vai em 'ig' (reel/CODIGO), com o @ no crédito.
+ig = dict(video('A Polícia Federal deflagrou a Operação Narcisus contra tráfico de drogas em Aracaju', '2026-11-25T17:04:00'),
+          yt='', ig='reel/DgLBZ4BBthx', orgao='Polícia Federal (@pfsergipe)')
+r = _video_do_canal({'t': 'PF deflagra Operação Narcisus contra tráfico de drogas em Aracaju', 'd': '2026-11-25T09:00'}, [ig])
+casos.append((r == {'ig': ['reel/DgLBZ4BBthx'], 'vf': 'Polícia Federal (@pfsergipe)'}, 'Instagram: liga e usa a chave ig'))
 erros = [m for ok, m in casos if not ok]
 for m in erros:
     print('FALHOU:', m)

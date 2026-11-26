@@ -462,8 +462,17 @@ def _videos_oficiais_youtube():
         lista = json.loads((Path(__file__).resolve().parent / 'videos_oficiais.json').read_text(encoding='utf-8')).get('videos', [])
     except (OSError, ValueError):
         return []
-    return [dict(v, _p=_palavras_video(v.get('t')), _n=set(re.findall(r'\d+', str(v.get('t'))))) for v in lista
-            if re.fullmatch(r'[\w-]{11}', str(v.get('yt', '')))]
+    videos = [dict(v, _p=_palavras_video(v.get('t')), _n=set(re.findall(r'\d+', str(v.get('t'))))) for v in lista
+              if re.fullmatch(r'[\w-]{11}', str(v.get('yt', '')))]
+    # Instagram oficial dos órgãos (videos_instagram.py, API da Meta, 26/11/2026): mesmo critério de ligação.
+    try:
+        insta = json.loads((Path(__file__).resolve().parent / 'videos_instagram.json').read_text(encoding='utf-8')).get('videos', [])
+    except (OSError, ValueError):
+        insta = []
+    videos += [dict(v, orgao=f"{v.get('orgao', '')} (@{v.get('conta', '')})", _p=_palavras_video(v.get('t')),
+                    _n=set(re.findall(r'\d+', str(v.get('t'))))) for v in insta
+               if re.fullmatch(r'(?:reel|p)/[\w-]{5,40}', str(v.get('ig', '')))]
+    return videos
 
 
 def _video_do_canal(item, videos, outros_titulos=()):
@@ -483,7 +492,7 @@ def _video_do_canal(item, videos, outros_titulos=()):
         for pt, nt in alvos:
             comum = pt & v['_p']
             if len(comum) >= 3 and ((nt & v['_n']) or len(comum) >= max(3, len(v['_p']) // 2)):
-                return {'yt': [v['yt']], 'vf': v.get('orgao', '')}
+                return {('ig' if v.get('ig') else 'yt'): [v.get('ig') or v['yt']], 'vf': v.get('orgao', '')}
     return None
 
 
