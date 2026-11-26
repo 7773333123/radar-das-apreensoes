@@ -232,8 +232,9 @@ def _valor(texto):
 
 
 # "Substância análoga à maconha", "material semelhante à cocaína": o Radar registra como a
-# própria droga (é como a polícia descreve antes do laudo), no texto e nas somas.
-ANALOGA = re.compile(r'\b(?:(?:subst[âa]ncias?|materia(?:l|is)|entorpecentes?|produtos?|ervas?|tabletes?|por[çc][õo]es)\s+)?'
+# própria droga (é como a polícia descreve antes do laudo), no texto e nas somas. Regra do dono (26/11/2026):
+# "semelhante a maconha", "análogo a maconha" contam como MACONHA (e o mesmo para as outras drogas).
+ANALOGA = re.compile(r'\b(?:(?:subst[âa]ncias?|materia(?:l|is)|entorpecentes?|produtos?|ervas?|tabletes?|por[çc][õo]es|drogas?)\s+)?'
                      r'(?:an[áa]log[oa]s?|semelhantes?|similar(?:es)?|parecid[oa]s?|com caracter[íi]sticas? de)\s+(?:[àa]s?|ao?s?|de|com)?\s*'
                      r'(maconha|coca[íi]na|crack|skunk|haxixe)\b', re.I)
 

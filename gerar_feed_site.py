@@ -1062,6 +1062,8 @@ def main():
         # Ajuste à mão pedido pelo dono (ajustes_manuais.json, 26/11/2026): capa tirada do vídeo, vídeo do Instagram.
         aj = next((AJUSTES[str(x)] for x in [item['i']] + [o[2] for o in item.get('o', [])] if str(x) in AJUSTES), None)
         if aj:
+            if aj.get('t'):
+                item['t'] = aj['t']
             if aj.get('img'):
                 item['img'], item['pm'] = aj['img'], 1
                 if aj.get('fc'):
