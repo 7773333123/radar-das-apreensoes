@@ -228,7 +228,14 @@ function renderInicio() {
   const candPrinc = pool.filter((n) => elegivel(n) && !fora(n));
   const comMaterial = candPrinc.filter((n) => n.fotoMaterial);
   const basePrinc = comMaterial.length >= 2 ? comMaterial : candPrinc.length ? candPrinc : pool;
-  const [manchete, segunda0] = [...basePrinc].sort(porVolume);
+  // RODÍZIO DOS DESTAQUES (dono do site, 26/11/2026: "está muito tempo as mesmas fotos"): a cada 2 horas
+  // os 2 primeiros destaques giram, em pares, entre as 6 maiores do dia (mesmas regras: foto do material,
+  // sem morte, sem desdobramento); a maior volta ao topo a cada ciclo. A Fronteira gira entre as 3 primeiras.
+  const RODIZIO = Math.floor(agora / (2 * 3600e3));
+  const top6 = [...basePrinc].sort(porVolume).slice(0, 6);
+  const parRod = top6.length > 2 ? (RODIZIO % Math.ceil(top6.length / 2)) * 2 : 0;
+  const manchete = top6[parRod];
+  const segunda0 = top6[parRod + 1] || top6.find((n) => n !== manchete);
   // Cocaína sempre entre as principais (dono do site, 24/11/2026): vale muito mais por quilo que a
   // maconha. Se nenhuma das duas é de cocaína/pasta base/crack, a 2ª vira a maior de cocaína do dia (com foto).
   const kgCoca = (n) => (n.q?.coc || 0) + (n.q?.cra || 0);
@@ -254,7 +261,9 @@ function renderInicio() {
   const candFr = (h) => ns.filter((n) => n.polo && elegivel(n) && !usados.has(n) && !fora(n) && n.data && horas(n) <= h && n.data.getTime() <= agora + 3600000)
     .sort((a, b) => Boolean(b.fotoMaterial) - Boolean(a.fotoMaterial));
   const poolFr = candFr(24).filter(ehHoje).length ? candFr(24).filter(ehHoje) : candFr(48);
-  const terceira = [...poolFr].sort((a, b) => nivelFr(a) - nivelFr(b) || (Boolean(b.fotoMaterial) - Boolean(a.fotoMaterial)) || kgDroga(b) - kgDroga(a) || nota(b) - nota(a) || b.data - a.data)[0];
+  const ordFr = [...poolFr].sort((a, b) => nivelFr(a) - nivelFr(b) || (Boolean(b.fotoMaterial) - Boolean(a.fotoMaterial)) || kgDroga(b) - kgDroga(a) || nota(b) - nota(a) || b.data - a.data);
+  const topFr = ordFr.filter((n) => nivelFr(n) === nivelFr(ordFr[0] || {})).slice(0, 3);  // gira só dentro do nível mais alto
+  const terceira = topFr.length ? topFr[RODIZIO % topFr.length] : ordFr[0];
   if (terceira) { principais.push(terceira); usados.add(terceira); }
   // Faixa abaixo das principais (24/11/2026): maior quantidade de droga primeiro, depois as de mais
   // repercussão (importância: tamanho da apreensão + veículos que publicaram).

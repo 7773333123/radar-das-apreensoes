@@ -252,7 +252,10 @@ OUTRO_FATO = re.compile(
     r'(?:uma|a|da|outra|na|numa)?\s*apreens'
     r'|\banterior(?:mente|es)?\b|\boutra apreens|\b(?:semana|m[êe]s|ano) passad|\bdias antes\b|\bh[áa] (?:\w+ )?(?:dias|semanas|meses|anos)\b'
     r'|\bem (?:janeiro|fevereiro|mar[çc]o|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro|19\d\d|20\d\d)\b'
-    r'|\bdesde (?:o in[íi]cio|janeiro)\b|\bno total,? (?:em|neste|este) ano\b', re.I)
+    r'|\bdesde (?:o in[íi]cio|janeiro)\b|\bno total,? (?:em|neste|este) ano\b'
+    # Origem da investigação (26/11/2026: "teve início após uma prisão em flagrante no ano de 2023, que resultou
+    # na apreensão de 579 kg" virou 579 kg de hoje e foi parar no topo da capa).
+    r'|\b(?:no|do|naquele) ano de (?:19|20)\d\d\b|\bteve in[íi]cio\b|\b(?:come[çc]ou|come[çc]aram|iniciou|iniciaram|iniciad[ao]s?) (?:ap[óo]s|a partir|com|em|no|na)\b', re.I)
 
 
 def sem_outros_fatos(texto):
