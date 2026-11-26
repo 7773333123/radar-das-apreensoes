@@ -30,6 +30,8 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   no texto e nas somas (`resumo_fatos.ANALOGA`, `droga_pelo_nome`); testes em `testes/test_analoga.py`.
 - **Quantidade é só do fato noticiado** (21/11/2026): frases do resumo/texto sobre OUTRO fato ("após a apreensão
   de…", "anteriormente", "em março", "semana passada") não contam (`resumo_fatos.sem_outros_fatos`).
+  Origem da investigação também não (26/11/2026: "teve início após uma prisão no ano de 2023, que resultou na apreensão
+  de 579 kg" ia para o topo da capa como apreensão do dia); teste em `testes/test_outro_fato.py`.
 - **Três principais no topo** (24/11/2026, substitui a manchete única): 1ª e 2ª = maiores apreensões do dia
   COM FOTO, pelo volume de droga (kg); empate pelos critérios antigos (fonte oficial +3, instituição no título +1,
   tamanho e repercussão; desdobramentos fora). 3ª = Fronteira: PRF em Foz do Iguaçu/Santa Terezinha de Itaipu;
@@ -40,6 +42,8 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   desdobramento. Enquanto o dia não tiver 3 notícias assim, os destaques vêm das MAIORES de ontem inteiro (nunca das
   últimas da noite): depois da meia-noite a capa continua com as mais relevantes até o novo dia ter as suas
   (`assets/central.js`: `elegivel`, `MORTE`, `pool`). A Fronteira (3ª) também segue `elegivel` e prefere foto do material.
+  **Rodízio dos destaques** (26/11/2026, "muito tempo as mesmas fotos"): a cada 2 h a 1ª e a 2ª giram, em pares, entre as
+  6 maiores elegíveis do dia; a Fronteira gira entre as 3 primeiras do nível mais alto (`RODIZIO` em `assets/central.js`).
   **Cocaína sempre entre as principais** (24/11/2026): vale muito mais por quilo; se nem a 1ª nem a 2ª é de
   cocaína/pasta base/crack, a 2ª vira a maior de cocaína do dia com foto (`kgCoca`).
   Faixa abaixo delas, Fronteira e listas das editorias: COM FOTO antes de sem foto (26/11/2026; ter link não é ter
