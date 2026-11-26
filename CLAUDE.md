@@ -40,8 +40,8 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   (`assets/central.js`: `elegivel`, `MORTE`, `pool`). A Fronteira (3ª) também segue `elegivel` e prefere foto do material.
   **Cocaína sempre entre as principais** (24/11/2026): vale muito mais por quilo; se nem a 1ª nem a 2ª é de
   cocaína/pasta base/crack, a 2ª vira a maior de cocaína do dia com foto (`kgCoca`).
-  Faixa abaixo delas, Fronteira e listas das editorias: maior quantidade de droga primeiro, depois repercussão
-  (`porPrioridade`). Celular: só as 3 principais com foto grande; o resto com foto pequena ao lado; painel "Hoje no
+  Faixa abaixo delas, Fronteira e listas das editorias: COM FOTO antes de sem foto (26/11/2026; ter link não é ter
+  foto), depois maior quantidade de droga, depois repercussão (`porPrioridade`, `temFoto`). Celular: só as 3 principais com foto grande; o resto com foto pequena ao lado; painel "Hoje no
   Brasil" compacto; editoria termina com o botão vermelho "Ver mais notícias" (24/11/2026).
 - **Capa = foto do material apreendido** (24/11/2026): na capa vai a foto que mostra o que foi apreendido (drogas,
   armas, dinheiro, mercadorias), não a de policial, viatura ou fachada. `capas_ia.py` (Claude Haiku, todas as notícias, teto próprio US$ 8/mês,

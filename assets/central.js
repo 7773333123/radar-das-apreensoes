@@ -258,7 +258,8 @@ function renderInicio() {
   if (terceira) { principais.push(terceira); usados.add(terceira); }
   // Faixa abaixo das principais (24/11/2026): maior quantidade de droga primeiro, depois as de mais
   // repercussão (importância: tamanho da apreensão + veículos que publicaram).
-  const porPrioridade = (a, b) => (fora(a) - fora(b)) || (kgDroga(b) - kgDroga(a)) || (importancia(b) - importancia(a)) || (b.data - a.data);
+  // Com foto antes de sem foto em toda lista (26/11/2026: notícia sem foto abria a Fronteira).
+  const porPrioridade = (a, b) => (fora(a) - fora(b)) || (Boolean(b.img) - Boolean(a.img)) || (kgDroga(b) - kgDroga(a)) || (importancia(b) - importancia(a)) || (b.data - a.data);
   const lado = destaques.filter((n) => !usados.has(n)).sort(porPrioridade).slice(0, 4);
   lado.forEach((n) => usados.add(n));
 
@@ -281,14 +282,15 @@ function renderInicio() {
   // Primeiro o dia (hoje antes de ontem); dentro do dia, a ordem regional (Foz primeiro) e a relevância.
   const ordemFr = [...janelaFr, ...itaipu48].sort((a, b) => diaBR(b.data).localeCompare(diaBR(a.data)) ||
     (soPessoa(a) - soPessoa(b)) || a.prioridadeFr - b.prioridadeFr || nota(b) - nota(a) || b.data - a.data);
-  // Destaque só com foto: a foto do próprio item ou a que o servidor busca no link original (sem link,
-  // não há foto). Na ordem acima; sem nenhuma com foto, vale a ordem pura.
-  const temFoto = (n) => Boolean(n.img || n.temLink);
+  // Destaque só com foto do próprio item (26/11/2026: ter link não é ter foto; o site não busca a foto no
+  // link original, e a notícia sem foto abria a Fronteira com o brasão). Sem nenhuma com foto, vale a ordem pura.
+  const temFoto = (n) => Boolean(n.img);
   const frPrincipais = [...ordemFr.filter(temFoto), ...ordemFr.filter((n) => !temFoto(n))].slice(0, 2);
   // Menores: apreensão de adolescente sem material (moto roubada etc.) só entra se faltar notícia.
   const restoFr = ordemFr.filter((n) => !frPrincipais.includes(n));
   // Até 6 visíveis; mais até 8 aparecem no botão "Ver mais notícias" (24/11/2026).
-  const frTodas = [...restoFr.filter((n) => !soPessoa(n)), ...restoFr.filter(soPessoa)].slice(0, 14);
+  const frTodas = [...restoFr.filter((n) => !soPessoa(n) && n.img), ...restoFr.filter((n) => !soPessoa(n) && !n.img),
+    ...restoFr.filter(soPessoa)].slice(0, 14);
   const frMenores = frTodas.slice(0, 6).sort(porPrioridade);
   const frExtras = frTodas.slice(6).sort(porPrioridade);
   [...frPrincipais, ...frMenores, ...frExtras].forEach((n) => usados.add(n));

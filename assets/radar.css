@@ -721,3 +721,5 @@ a.ed-qtd:hover { background: var(--accent); color: #fff; text-decoration: none; 
 .reader-video video { width: 100%; max-height: 70vh; background: #000; border-radius: 10px; display: block; margin-bottom: 8px; }
 .reader-video .yt { position: relative; width: 100%; aspect-ratio: 16 / 9; margin-bottom: 8px; }
 .reader-video .yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 10px; }
+.reader-video .ig { width: 100%; max-width: 400px; margin: 0 auto 8px; }
+.reader-video .ig iframe { display: block; width: 100%; height: 720px; max-height: 85vh; border: 0; border-radius: 10px; background: #fff; }

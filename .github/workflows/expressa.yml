@@ -40,6 +40,8 @@ jobs:
           key: orb2-${{ github.run_id }}
           restore-keys: orb2-
       - name: Notícias novas a cada ~8 minutos
+        env:
+          RADAR_META: ${{ secrets.RADAR_META }}
         run: |
           set -uo pipefail
           comeco=$(date +%s)
@@ -69,8 +71,11 @@ jobs:
                 # Vídeos dos canais oficiais no YouTube (26/11/2026): a cada rodada, pois o agendamento de hora
                 # em hora do GitHub falhava (só leitura do feed público; nada é baixado).
                 timeout 60 python videos_youtube.py || true
+                # Vídeos das contas oficiais no Instagram (26/11/2026): API oficial da Meta, só leitura, 15 contas
+                # por rodada em rodízio (limite da Meta). Token: segredo RADAR_META.
+                timeout 90 python videos_instagram.py || true
                 if python testes/test_duplicatas.py >/dev/null; then
-                  python acervo.py salvar "Coleta expressa (rodada $ciclo)" feeds_saude.json duplicatas_suspeitas.json marcas_dagua.json capas_ia.json revisao_titulos.json videos_oficiais.json youtube_canais.json \
+                  python acervo.py salvar "Coleta expressa (rodada $ciclo)" feeds_saude.json duplicatas_suspeitas.json marcas_dagua.json capas_ia.json revisao_titulos.json videos_oficiais.json youtube_canais.json videos_instagram.json instagram_cursor.json \
                     && gh workflow run juiz_claude.yml --ref main && gh workflow run publicar_dados.yml --ref main || echo 'Falha ao salvar; a próxima rodada tenta de novo.'
                 else
                   echo 'Testes de duplicatas falharam: nada gravado nesta rodada.'

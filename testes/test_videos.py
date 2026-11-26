@@ -19,6 +19,17 @@ casos = [
      'outro fato não liga'),
     (_video_do_canal(dict(item, d='2026-11-20T10:00'), [v], [outra]) is None, 'mais de 2 dias de distância não liga'),
 ]
+# Instagram oficial (26/11/2026): o vídeo liga do mesmo jeito e vai em 'ig' (reel/CODIGO), com o @ no crédito.
+ig = dict(video('A Polícia Federal deflagrou a Operação Narcisus contra tráfico de drogas em Aracaju', '2026-11-25T17:04:00'),
+          yt='', ig='reel/DgLBZ4BBthx', orgao='Polícia Federal (@pfsergipe)')
+ig['uf'] = 'SE'
+r = _video_do_canal({'t': 'PF deflagra Operação Narcisus contra tráfico de drogas em Aracaju', 'd': '2026-11-25T09:00', 'uf': 'SE'}, [ig])
+casos.append((r == {'ig': ['reel/DgLBZ4BBthx'], 'vf': 'Polícia Federal (@pfsergipe)'}, 'Instagram: liga e usa a chave ig'))
+# Conta estadual não liga notícia de outro estado (vídeo da PF/MA ligava a notícia de SP e do Acre).
+ma = dict(video('A Polícia Federal realizou a incineração de aproximadamente 1,25 tonelada de drogas apreendidas', '2026-11-23T14:17:00'),
+          yt='', ig='reel/DgFkv16R4Xg', orgao='Polícia Federal (@pf.maranhao)', uf='MA')
+casos.append((_video_do_canal({'t': 'PM Rodoviária apreende mais de 1,2 tonelada de drogas entre carga de móveis', 'd': '2026-11-24T12:00',
+                               'uf': 'SP'}, [ma]) is None, 'Instagram: conta do MA não liga notícia de SP'))
 erros = [m for ok, m in casos if not ok]
 for m in erros:
     print('FALHOU:', m)
