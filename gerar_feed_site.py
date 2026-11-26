@@ -457,9 +457,11 @@ def _palavras_video(t):
 
 
 try:
-    AJUSTES = json.loads((Path(__file__).resolve().parent / 'ajustes_manuais.json').read_text(encoding='utf-8')).get('noticias', {})
+    _AJ = json.loads((Path(__file__).resolve().parent / 'ajustes_manuais.json').read_text(encoding='utf-8'))
+    AJUSTES = _AJ.get('noticias', {})
+    NOVAS = _AJ.get('novas', [])  # matérias feitas à mão a partir do vídeo oficial (Instagram), aprovadas pelo dono
 except (OSError, ValueError):
-    AJUSTES = {}
+    AJUSTES, NOVAS = {}, []
 
 
 def _videos_oficiais_youtube():
@@ -997,6 +999,20 @@ def main():
             del detalhes[lote][chave]
         if not detalhes[lote]:
             del detalhes[lote]
+    # Matérias feitas a partir do vídeo oficial do órgão no Instagram (dono, 26/11/2026: "transformar em notícias
+    # no site"): texto da legenda oficial (fonte primária, texto integral), capa tirada do vídeo e o vídeo embutido.
+    ja = {it['i'] for it in saida}
+    for nv in NOVAS:
+        i = int(nv['i'])
+        if i in ja or i in removidas:
+            continue
+        item = {k: nv[k] for k in ('i', 't', 'f', 'd', 'u', 'img', 'r', 'uf', 'c', 'q', 'vq', 'pm') if k in nv}
+        item['i'], item['vd'] = i, 1
+        saida.append(item)
+        detalhes.setdefault(i % LOTES, {})[str(i)] = {'tr': nv.get('tr', ''), 'fc': nv.get('fc', ''),
+                                                      'ig': [nv['ig']], 'vf': nv.get('vf', '')}
+        if nv.get('fatos'):
+            fatos_por_i[i] = nv['fatos']  # ficha e resumo (apreendido, órgãos, presos) da legenda oficial
     # Quantidades, órgãos e rodovia só depois de agrupar as duplicatas: a versão
     # exibida usa os próprios fatos ou, se não tiver, os da fonte mais completa.
     for item in saida:
