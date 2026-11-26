@@ -80,6 +80,27 @@ module.exports = async (req, res) => {
     res.statusCode = 204;
     return res.end();
   }
+  const url = new URL(req.url || '/', 'https://x');
+  const num = (k, max) => { const n = Number(url.searchParams.get(k)); return Number.isFinite(n) ? Math.max(-1, Math.min(max, Math.round(n))) : undefined; };
+  const idAnon = /^[a-z0-9]{12}$/.test(url.searchParams.get('id') || '') ? url.searchParams.get('id') : '';
+  // Uso da visita (26/11/2026): quantas páginas e notícias e quanto tempo na tela, pelo código anônimo do navegador
+  // (assets/visita.js). Vai à parte em uso/AAAA-MM-DD.jsonl; robôs não mandam isto (não rodam o script).
+  if (url.searchParams.get('ev') === 'uso') {
+    let corpo = {};
+    try { corpo = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {}); } catch { corpo = {}; }
+    const n = (v, max) => (Number.isFinite(Number(v)) ? Math.max(0, Math.min(max, Math.round(Number(v)))) : 0);
+    if (!/^[a-z0-9]{12}$/.test(String(corpo.id || '')) || nomeRobo(String(req.headers['user-agent'] || ''))) {
+      res.statusCode = 204;
+      return res.end();
+    }
+    const agoraU = new Date();
+    const uso = { id: corpo.id, v: n(corpo.v, 99), pags: n(corpo.pags, 999), nots: n(corpo.nots, 999), seg: n(corpo.seg, 86400),
+      ini: /^\d{4}-\d\d-\d\dT\d\d:\d\dZ$/.test(String(corpo.ini || '')) ? corpo.ini : '', quando: agoraU.toISOString().slice(0, 16) + 'Z' };
+    const diaU = new Date(agoraU.getTime() - 3 * 3600e3).toISOString().slice(0, 10);
+    try { await acrescentar(token, `uso/${diaU}.jsonl`, JSON.stringify(uso) + '\n', `Uso ${uso.quando}`); } catch { /* sem registro */ }
+    res.statusCode = 204;
+    return res.end();
+  }
   const h = (k) => { try { return decodeURIComponent(req.headers[k] || ''); } catch { return req.headers[k] || ''; } };
   const codigo = h('x-vercel-ip-country');
   let pais = codigo;
@@ -95,6 +116,8 @@ module.exports = async (req, res) => {
   if (robo) { visita.tipo = 'robo'; visita.robo = robo; } else {
     visita.tipo = 'pessoa';
     visita.navegador = navegador(ua);
+    // Código anônimo do navegador, nº da visita no dia, dias diferentes em que já veio e dias desde a vez anterior.
+    if (idAnon) Object.assign(visita, { id: idAnon, v: num('v', 99), dias: num('dias', 999), desde: num('desde', 999) });
     if (CENTRO_DE_DADOS.has(`${visita.cidade}/${visita.estado}`) && visita.codigo_pais === 'US') {
       visita.tipo = 'provavel_robo';  // navegador comum, mas saindo de centro de dados
     }
