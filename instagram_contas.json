@@ -1,381 +1,475 @@
 {
- "sobre": "Contas oficiais dos órgãos no Instagram (conferidas pela API da Meta em 26/11/2026: existem e são comerciais). Só leitura.",
+ "sobre": "Contas oficiais dos órgãos no Instagram (conferidas pela API da Meta em 26/11/2026: existem e são comerciais). Só leitura. \"uf\": estado da conta (vazio = nacional); o vídeo só liga a notícia do mesmo estado.",
  "contas": {
   "bope.oficial": {
    "orgao": "Polícia Militar",
-   "nome": "Batalhão de Operações Policiais Especiais"
+   "nome": "Batalhão de Operações Policiais Especiais",
+   "uf": "RJ"
   },
   "bope.pmmt": {
    "orgao": "Polícia Militar",
-   "nome": "Homens De Preto"
+   "nome": "Homens De Preto",
+   "uf": "MT"
   },
   "bope.pmpr": {
    "orgao": "Polícia Militar",
-   "nome": "Batalhão de Operações Especiais | PMPR"
+   "nome": "Batalhão de Operações Especiais | PMPR",
+   "uf": "PR"
   },
   "bopepmdf.oficial": {
    "orgao": "Polícia Militar",
-   "nome": "BOPE/PMDF OFICIAL"
+   "nome": "BOPE/PMDF OFICIAL",
+   "uf": "DF"
   },
   "bopepmpe": {
    "orgao": "Polícia Militar",
-   "nome": "BOPE PERNAMBUCO"
+   "nome": "BOPE PERNAMBUCO",
+   "uf": "PE"
   },
   "brigada_militaroficial": {
    "orgao": "Brigada Militar",
-   "nome": "brigada_militaroficial"
+   "nome": "brigada_militaroficial",
+   "uf": "RS"
   },
   "cavpm_pmesp": {
    "orgao": "Polícia Militar",
-   "nome": "Comando de Aviação da Polícia Militar do Estado SP - Águia"
+   "nome": "Comando de Aviação da Polícia Militar do Estado SP - Águia",
+   "uf": "SP"
   },
   "choquepmesp": {
    "orgao": "Polícia Militar",
-   "nome": "CPChoque PMESP"
+   "nome": "CPChoque PMESP",
+   "uf": "SP"
   },
   "coe_oficial": {
    "orgao": "Polícia Militar",
-   "nome": "COE Oficial"
+   "nome": "COE Oficial",
+   "uf": "SP"
   },
   "core_oficial": {
    "orgao": "Polícia Civil",
-   "nome": "CORE_OFICIAL"
+   "nome": "CORE_OFICIAL",
+   "uf": "RJ"
   },
   "corepcrsoficial": {
    "orgao": "Polícia Civil",
-   "nome": "corepcrsoficial"
+   "nome": "corepcrsoficial",
+   "uf": "RS"
   },
   "cpraio": {
    "orgao": "Polícia Militar",
-   "nome": "CPRAIO"
+   "nome": "CPRAIO",
+   "uf": "CE"
   },
   "dhpp_pcsp": {
    "orgao": "Polícia Civil",
-   "nome": "DHPP_PCSP"
+   "nome": "DHPP_PCSP",
+   "uf": "SP"
   },
   "doe_pcdf": {
    "orgao": "Polícia Civil",
-   "nome": "D.O.E"
+   "nome": "D.O.E",
+   "uf": "DF"
   },
   "gate.oficial.sp": {
    "orgao": "Polícia Militar",
-   "nome": "GATE PMESP"
+   "nome": "GATE PMESP",
+   "uf": "SP"
   },
   "nepom.pf.gra": {
    "orgao": "Polícia Federal",
-   "nome": "𝗡𝗘𝗣𝗢𝗠 - 𝗣𝗢𝗟Í𝗖𝗜𝗔 𝗙𝗘𝗗𝗘𝗥𝗔𝗟"
+   "nome": "𝗡𝗘𝗣𝗢𝗠 - 𝗣𝗢𝗟Í𝗖𝗜𝗔 𝗙𝗘𝗗𝗘𝗥𝗔𝗟",
+   "uf": ""
   },
   "pcdf_oficial": {
    "orgao": "Polícia Civil",
-   "nome": "Polícia Civil do DF | PCDF"
+   "nome": "Polícia Civil do DF | PCDF",
+   "uf": "DF"
   },
   "pcmg.oficial": {
    "orgao": "Polícia Civil",
-   "nome": "Polícia Civil de Minas Gerais"
+   "nome": "Polícia Civil de Minas Gerais",
+   "uf": "MG"
   },
   "pf.maranhao": {
    "orgao": "Polícia Federal",
-   "nome": "Polícia Federal no Maranhão"
+   "nome": "Polícia Federal no Maranhão",
+   "uf": "MA"
   },
   "pfalagoas": {
    "orgao": "Polícia Federal",
-   "nome": "Polícia Federal de Alagoas"
+   "nome": "Polícia Federal de Alagoas",
+   "uf": "AL"
   },
   "pfamapa": {
    "orgao": "Polícia Federal",
-   "nome": "Polícia Federal - Amapá"
+   "nome": "Polícia Federal - Amapá",
+   "uf": "AP"
   },
   "pfamazonas": {
    "orgao": "Polícia Federal",
-   "nome": "Polícia Federal no Amazonas"
+   "nome": "Polícia Federal no Amazonas",
+   "uf": "AM"
   },
   "pfcanilcentral": {
    "orgao": "Polícia Federal",
-   "nome": "Canil Central Polícia Federal"
+   "nome": "Canil Central Polícia Federal",
+   "uf": ""
   },
   "pfdistritofederal": {
    "orgao": "Polícia Federal",
-   "nome": "Polícia Federal no Distrito Federal"
+   "nome": "Polícia Federal no Distrito Federal",
+   "uf": "DF"
   },
   "pfespiritosanto": {
    "orgao": "Polícia Federal",
-   "nome": "POLÍCIA FEDERAL - ES"
+   "nome": "POLÍCIA FEDERAL - ES",
+   "uf": "ES"
   },
   "pfmatogrosso": {
    "orgao": "Polícia Federal",
-   "nome": "Polícia Federal em Mato Grosso"
+   "nome": "Polícia Federal em Mato Grosso",
+   "uf": "MT"
   },
   "pfminasgerais": {
    "orgao": "Polícia Federal",
-   "nome": "Policia Federal Minas Gerais"
+   "nome": "Policia Federal Minas Gerais",
+   "uf": "MG"
   },
   "pfparaiba": {
    "orgao": "Polícia Federal",
-   "nome": "Perfil oficial da Polícia Federal na Paraíba"
+   "nome": "Perfil oficial da Polícia Federal na Paraíba",
+   "uf": "PB"
   },
   "pfpernambuco": {
    "orgao": "Polícia Federal",
-   "nome": "Perfil Oficial da Polícia Federal em Pernambuco"
+   "nome": "Perfil Oficial da Polícia Federal em Pernambuco",
+   "uf": "PE"
   },
   "pfriograndedonorte": {
    "orgao": "Polícia Federal",
-   "nome": "pfriograndedonorte"
+   "nome": "pfriograndedonorte",
+   "uf": "RN"
   },
   "pfriograndedosul": {
    "orgao": "Polícia Federal",
-   "nome": "Polícia Federal - RS"
+   "nome": "Polícia Federal - RS",
+   "uf": "RS"
   },
   "pfsantacatarina": {
    "orgao": "Polícia Federal",
-   "nome": "Perfil Oficial da Polícia Federal em Santa Catarina"
+   "nome": "Perfil Oficial da Polícia Federal em Santa Catarina",
+   "uf": "SC"
   },
   "pfsaopaulo": {
    "orgao": "Polícia Federal",
-   "nome": "Polícia Federal em São Paulo"
+   "nome": "Polícia Federal em São Paulo",
+   "uf": "SP"
   },
   "pfsergipe": {
    "orgao": "Polícia Federal",
-   "nome": "Polícia Federal em Sergipe"
+   "nome": "Polícia Federal em Sergipe",
+   "uf": "SE"
   },
   "pftocantins": {
    "orgao": "Polícia Federal",
-   "nome": "Superintendência Regional de Polícia Federal no Tocantins"
+   "nome": "Superintendência Regional de Polícia Federal no Tocantins",
+   "uf": "TO"
   },
   "pmal.oficial": {
    "orgao": "Polícia Militar",
-   "nome": "Polícia Militar de Alagoas 🚔👮‍♂️👮‍♀️"
+   "nome": "Polícia Militar de Alagoas 🚔👮‍♂️👮‍♀️",
+   "uf": "AL"
   },
   "pmdabahia": {
    "orgao": "Polícia Militar",
-   "nome": "Polícia Militar da Bahia"
+   "nome": "Polícia Militar da Bahia",
+   "uf": "BA"
   },
   "pmdfoficial": {
    "orgao": "Polícia Militar",
-   "nome": "Polícia Militar do DF • Perfil Oficial"
+   "nome": "Polícia Militar do DF • Perfil Oficial",
+   "uf": "DF"
   },
   "pmesp": {
    "orgao": "Polícia Militar",
-   "nome": "Polícia Militar do Estado SP"
+   "nome": "Polícia Militar do Estado SP",
+   "uf": "SP"
   },
   "pmmg.oficial": {
    "orgao": "Polícia Militar",
-   "nome": "PMMG"
+   "nome": "PMMG",
+   "uf": "MG"
   },
   "pmmsoficial": {
    "orgao": "Polícia Militar",
-   "nome": "Polícia Militar do Estado de Mato Grosso do Sul - PMMS"
+   "nome": "Polícia Militar do Estado de Mato Grosso do Sul - PMMS",
+   "uf": "MS"
   },
   "pmmt_oficial": {
    "orgao": "Polícia Militar",
-   "nome": "Polícia Militar de Mato Grosso"
+   "nome": "Polícia Militar de Mato Grosso",
+   "uf": "MT"
   },
   "pmpboficial": {
    "orgao": "Polícia Militar",
-   "nome": "POLÍCIA MILITAR DA PARAÍBA"
+   "nome": "POLÍCIA MILITAR DA PARAÍBA",
+   "uf": "PB"
   },
   "pmpeoficial": {
    "orgao": "Polícia Militar",
-   "nome": "Polícia Militar de Pernambuco"
+   "nome": "Polícia Militar de Pernambuco",
+   "uf": "PE"
   },
   "pmproficial": {
    "orgao": "Polícia Militar",
-   "nome": "Polícia Militar do Paraná | PMPR Oficial"
+   "nome": "Polícia Militar do Paraná | PMPR Oficial",
+   "uf": "PR"
   },
   "pmrnoficial": {
    "orgao": "Polícia Militar",
-   "nome": "Polícia Militar do Rio Grande do Norte"
+   "nome": "Polícia Militar do Rio Grande do Norte",
+   "uf": "RN"
   },
   "pmrroficial": {
    "orgao": "Polícia Militar",
-   "nome": "POLÍCIA MILITAR DE RORAIMA | PMRR"
+   "nome": "POLÍCIA MILITAR DE RORAIMA | PMRR",
+   "uf": "RR"
   },
   "pmscbope": {
    "orgao": "Polícia Militar",
-   "nome": "BOPE - PMSC"
+   "nome": "BOPE - PMSC",
+   "uf": "SC"
   },
   "pmscoficial": {
    "orgao": "Polícia Militar",
-   "nome": "Polícia Militar - PMSC"
+   "nome": "Polícia Militar - PMSC",
+   "uf": "SC"
   },
   "pmto_oficial": {
    "orgao": "Polícia Militar",
-   "nome": "Polícia Militar do Tocantins"
+   "nome": "Polícia Militar do Tocantins",
+   "uf": "TO"
   },
   "policiacivil_go": {
    "orgao": "Polícia Civil",
-   "nome": "Polícia Civil de Goiás"
+   "nome": "Polícia Civil de Goiás",
+   "uf": "GO"
   },
   "policiacivil_rj": {
    "orgao": "Polícia Civil",
-   "nome": "Secretaria de Polícia Civil RJ"
+   "nome": "Secretaria de Polícia Civil RJ",
+   "uf": "RJ"
   },
   "policiacivil_sp": {
    "orgao": "Polícia Civil",
-   "nome": "Policia Civil do Estado de São Paulo"
+   "nome": "Policia Civil do Estado de São Paulo",
+   "uf": "SP"
   },
   "policiacivilba": {
    "orgao": "Polícia Civil",
-   "nome": "Polícia Civil da Bahia"
+   "nome": "Polícia Civil da Bahia",
+   "uf": "BA"
   },
   "policiacivilma": {
    "orgao": "Polícia Civil",
-   "nome": "Polícia Civil do Maranhão"
+   "nome": "Polícia Civil do Maranhão",
+   "uf": "MA"
   },
   "policiacivilms": {
    "orgao": "Polícia Civil",
-   "nome": "Policia Civil"
+   "nome": "Policia Civil",
+   "uf": "MS"
   },
   "policiacivilpiaui": {
    "orgao": "Polícia Civil",
-   "nome": "Polícia Civil do Estado do Piauí"
+   "nome": "Polícia Civil do Estado do Piauí",
+   "uf": "PI"
   },
   "policiacivilrn": {
    "orgao": "Polícia Civil",
-   "nome": "Polícia Civil do Rio Grande do Norte"
+   "nome": "Polícia Civil do Rio Grande do Norte",
+   "uf": "RN"
   },
   "policiafederal": {
    "orgao": "Polícia Federal",
-   "nome": "Policia Federal"
+   "nome": "Policia Federal",
+   "uf": ""
   },
   "policiamilitar.pmes": {
    "orgao": "Polícia Militar",
-   "nome": "Polícia Militar - PMES"
+   "nome": "Polícia Militar - PMES",
+   "uf": "ES"
   },
   "policiamilitar_rj": {
    "orgao": "Polícia Militar",
-   "nome": "PMERJ"
+   "nome": "PMERJ",
+   "uf": "RJ"
   },
   "policiamilitargo": {
    "orgao": "Polícia Militar",
-   "nome": "Polícia Militar do Estado de Goiás | PMGO | Segurança Pública"
+   "nome": "Polícia Militar do Estado de Goiás | PMGO | Segurança Pública",
+   "uf": "GO"
   },
   "prf": {
    "orgao": "PRF",
-   "nome": "PRF Brasil"
+   "nome": "PRF Brasil",
+   "uf": ""
   },
   "prf_ac": {
    "orgao": "PRF",
-   "nome": "PRF AC"
+   "nome": "PRF AC",
+   "uf": "AC"
   },
   "prf_al": {
    "orgao": "PRF",
-   "nome": "PRF em Alagoas"
+   "nome": "PRF em Alagoas",
+   "uf": "AL"
   },
   "prf_am": {
    "orgao": "PRF",
-   "nome": "PRF no Amazonas"
+   "nome": "PRF no Amazonas",
+   "uf": "AM"
   },
   "prf_ap": {
    "orgao": "PRF",
-   "nome": "PRF no Amapá"
+   "nome": "PRF no Amapá",
+   "uf": "AP"
   },
   "prf_ba": {
    "orgao": "PRF",
-   "nome": "PRF na Bahia"
+   "nome": "PRF na Bahia",
+   "uf": "BA"
   },
   "prf_ce": {
    "orgao": "PRF",
-   "nome": "PRF no Ceará"
+   "nome": "PRF no Ceará",
+   "uf": "CE"
   },
   "prf_df": {
    "orgao": "PRF",
-   "nome": "PRF DF"
+   "nome": "PRF DF",
+   "uf": "DF"
   },
   "prf_ensino": {
    "orgao": "PRF",
-   "nome": "UNIPRF"
+   "nome": "UNIPRF",
+   "uf": ""
   },
   "prf_es": {
    "orgao": "PRF",
-   "nome": "PRF no Espírito Santo"
+   "nome": "PRF no Espírito Santo",
+   "uf": "ES"
   },
   "prf_go": {
    "orgao": "PRF",
-   "nome": "Prf Goiás"
+   "nome": "Prf Goiás",
+   "uf": "GO"
   },
   "prf_ma": {
    "orgao": "PRF",
-   "nome": "PRF no Maranhão"
+   "nome": "PRF no Maranhão",
+   "uf": "MA"
   },
   "prf_mg": {
    "orgao": "PRF",
-   "nome": "PRF em Minas Gerais"
+   "nome": "PRF em Minas Gerais",
+   "uf": "MG"
   },
   "prf_ms": {
    "orgao": "PRF",
-   "nome": "PRF MS"
+   "nome": "PRF MS",
+   "uf": "MS"
   },
   "prf_mt": {
    "orgao": "PRF",
-   "nome": "PRF em Mato Grosso"
+   "nome": "PRF em Mato Grosso",
+   "uf": "MT"
   },
   "prf_pa": {
    "orgao": "PRF",
-   "nome": "PRF Pará"
+   "nome": "PRF Pará",
+   "uf": "PA"
   },
   "prf_pb": {
    "orgao": "PRF",
-   "nome": "PRF PB"
+   "nome": "PRF PB",
+   "uf": "PB"
   },
   "prf_pe": {
    "orgao": "PRF",
-   "nome": "PRF em Pernambuco"
+   "nome": "PRF em Pernambuco",
+   "uf": "PE"
   },
   "prf_pi": {
    "orgao": "PRF",
-   "nome": "PRF no Piauí"
+   "nome": "PRF no Piauí",
+   "uf": "PI"
   },
   "prf_pr": {
    "orgao": "PRF",
-   "nome": "PRF no Paraná"
+   "nome": "PRF no Paraná",
+   "uf": "PR"
   },
   "prf_rj": {
    "orgao": "PRF",
-   "nome": "PRF RJ"
+   "nome": "PRF RJ",
+   "uf": "RJ"
   },
   "prf_ro": {
    "orgao": "PRF",
-   "nome": "PRF em Rondônia"
+   "nome": "PRF em Rondônia",
+   "uf": "RO"
   },
   "prf_rr": {
    "orgao": "PRF",
-   "nome": "PRF em Roraima"
+   "nome": "PRF em Roraima",
+   "uf": "RR"
   },
   "prf_rs": {
    "orgao": "PRF",
-   "nome": "PRF no Rio Grande do Sul"
+   "nome": "PRF no Rio Grande do Sul",
+   "uf": "RS"
   },
   "prf_sc": {
    "orgao": "PRF",
-   "nome": "PRF em Santa Catarina"
+   "nome": "PRF em Santa Catarina",
+   "uf": "SC"
   },
   "prf_se": {
    "orgao": "PRF",
-   "nome": "PRF em Sergipe"
+   "nome": "PRF em Sergipe",
+   "uf": "SE"
   },
   "prf_sp": {
    "orgao": "PRF",
-   "nome": "PRF em São Paulo"
+   "nome": "PRF em São Paulo",
+   "uf": "SP"
   },
   "prf_to": {
    "orgao": "PRF",
-   "nome": "PRF no Tocantins"
+   "nome": "PRF no Tocantins",
+   "uf": "TO"
   },
   "recom_pmerj": {
    "orgao": "Polícia Militar",
-   "nome": "RECOM PMERJ"
+   "nome": "RECOM PMERJ",
+   "uf": "RJ"
   },
   "rone.pmpr": {
    "orgao": "Polícia Militar",
-   "nome": "𝑹𝑶𝑵𝑬 𝑶𝑭𝑰𝑪𝑰𝑨𝑳"
+   "nome": "𝑹𝑶𝑵𝑬 𝑶𝑭𝑰𝑪𝑰𝑨𝑳",
+   "uf": "PR"
   },
   "rota_bta": {
    "orgao": "Polícia Militar",
-   "nome": "ROTA Oficial"
+   "nome": "ROTA Oficial",
+   "uf": "SP"
   },
   "rotampmdf.oficial": {
    "orgao": "Polícia Militar",
-   "nome": "ROTAM PMDF"
+   "nome": "ROTAM PMDF",
+   "uf": "DF"
   }
  }
 }

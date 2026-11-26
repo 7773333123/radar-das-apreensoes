@@ -469,7 +469,13 @@ def _videos_oficiais_youtube():
         insta = json.loads((Path(__file__).resolve().parent / 'videos_instagram.json').read_text(encoding='utf-8')).get('videos', [])
     except (OSError, ValueError):
         insta = []
-    videos += [dict(v, orgao=f"{v.get('orgao', '')} (@{v.get('conta', '')})", _p=_palavras_video(v.get('t')),
+    try:  # estado de cada conta: o vídeo de conta estadual só liga a notícia do mesmo estado
+        uf_conta = {u: c.get('uf', '') for u, c in json.loads((Path(__file__).resolve().parent / 'instagram_contas.json')
+                                                              .read_text(encoding='utf-8'))['contas'].items()}
+    except (OSError, ValueError, KeyError):
+        uf_conta = {}
+    videos += [dict(v, orgao=f"{v.get('orgao', '')} (@{v.get('conta', '')})", uf=uf_conta.get(v.get('conta'), ''),
+                    _p=_palavras_video(v.get('t')),
                     _n=set(re.findall(r'\d+', str(v.get('t'))))) for v in insta
                if re.fullmatch(r'(?:reel|p)/[\w-]{5,40}', str(v.get('ig', '')))]
     return videos
@@ -489,8 +495,15 @@ def _video_do_canal(item, videos, outros_titulos=()):
                 continue
         except ValueError:
             continue
+        if v.get('ig'):
+            # Instagram (26/11/2026): a legenda é longa e genérica ("toneladas de drogas"); conta estadual só liga
+            # notícia do mesmo estado, e conta nacional exige 4+ palavras e o mesmo número.
+            if v.get('uf') and v['uf'] != item.get('uf'):
+                continue
         for pt, nt in alvos:
             comum = pt & v['_p']
+            if v.get('ig') and not v.get('uf') and not (len(comum) >= 4 and nt & v['_n']):
+                continue
             if len(comum) >= 3 and ((nt & v['_n']) or len(comum) >= max(3, len(v['_p']) // 2)):
                 return {('ig' if v.get('ig') else 'yt'): [v.get('ig') or v['yt']], 'vf': v.get('orgao', '')}
     return None
