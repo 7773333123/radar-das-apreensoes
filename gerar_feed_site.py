@@ -1071,7 +1071,18 @@ def main():
             if aj.get('ig'):
                 alvo.update({'ig': [aj['ig']], 'vf': aj.get('vf', '')})
                 item['vd'] = 1
-        vid = next((videos_por_id[x] for x in [item['i']] + [o[2] for o in item.get('o', [])] if x in videos_por_id), None)
+            # Quantidade lida errado (dono, 26/11/2026: "50 kg de cocaína e maconha" virou 50 kg de cocaína).
+            if 'q' in aj:
+                if aj['q']:
+                    item['q'] = aj['q']
+                else:
+                    item.pop('q', None)
+            if aj.get('ap'):
+                fatos = dict(fatos or {})
+                fatos['apreendido'] = list(aj['ap'])
+                if isinstance(alvo.get('f'), dict):
+                    alvo['f'] = dict(alvo['f'], apreendido=list(aj['ap']))
+        vid =next((videos_por_id[x] for x in [item['i']] + [o[2] for o in item.get('o', [])] if x in videos_por_id), None)
         if aj and aj.get('ig'):
             vid = None
         if not vid and not (aj and aj.get('ig')):
