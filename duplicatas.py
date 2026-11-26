@@ -1273,7 +1273,9 @@ def agrupar(itens, motivos=None):
         if dec.get('v') == 'mesmo' and '-' in chave_r:
             x, y = chave_r.split('-', 1)
             if x in por_id and y in por_id:
-                unir(por_id[x], por_id[y], 'revisao-manual')
+                # Une mesmo com estados diferentes: a revisão leu as duas (operação dos fuzis de Rio Claro/SP
+                # com rota para SC, 25/11/2026, tinha versões em SP, SC e RJ e seguia em 6 notícias).
+                unir(por_id[x], por_id[y], 'revisao-manual', forcar=True)
 
     # Candidatos: pares a até 7 dias que dividem palavra informativa, trecho de
     # abertura ou foto parecida (índices invertidos; evita comparar todos com todos).
