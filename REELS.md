@@ -38,3 +38,17 @@ sex: Ranking da semana · sáb: Esconderijos · dom: Semana em números. Capa do
 - Vídeos: só de fontes oficiais ou indicadas pelo dono, com crédito; nunca baixar do YouTube nem usar ferramenta
   de terceiros para baixar do Instagram; não remover marca d'água.
 - Fotos de terceiros: baixar pelo workflow `reels_fotos.yml` (release "reels"); este ambiente não acessa a maioria dos sites.
+
+## Reels diário das 9h (dono, 26/11/2026)
+- Todo dia, pronto às 9h: as notícias do **dia anterior inteiro** (0h-24h, horário de Brasília), 6 a 7 notícias,
+  na ordem de relevância acima, com **quantidades** conferidas, **variação** (estados, órgãos e tipos diferentes)
+  e **vídeos**.
+- **Vídeos oficiais primeiro** (dono: "as @ que passei são boas e mais confiáveis"): rodar antes o workflow
+  `instagram_agora.yml` e usar os vídeos de `videos_instagram.json` (contas de `instagram_contas.json`), com crédito
+  na tela, sem o áudio original e sem cortar marca d'água. Baixar só pela API oficial da Meta (campo media_url,
+  via workflow `reels_fotos.yml`); nunca ferramenta de terceiros.
+- **Sempre buscar mais informação**: ler o texto inteiro (det/, nota oficial, legenda do órgão) antes de escrever;
+  conferir que a quantidade é do fato do dia (nada de origem da investigação, balanço ou caso antigo) e que a foto
+  é da mesma apreensão.
+- Entregar o vídeo e a legenda pronta (texto puro, 5 hashtags) para o dono **aprovar antes de postar**. Se pedir
+  mudança, uma rodada de ajuste.
