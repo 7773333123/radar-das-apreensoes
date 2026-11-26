@@ -35,7 +35,7 @@ APREENSAO = re.compile(r'apreen|cocaína|cocaina|maconha|skunk|haxixe|crack|drog
 
 def consultar(usuario, token):
     campos = (f'business_discovery.username({usuario})'
-              '{media.limit(12){media_type,media_product_type,timestamp,permalink,caption}}')
+              '{media.limit(12){media_type,media_product_type,timestamp,permalink,caption,thumbnail_url}}')
     url = API + NOSSA_CONTA + '?' + urllib.parse.urlencode({'fields': campos})
     req = urllib.request.Request(url, headers={'Authorization': f'Bearer {token}'})
     with urllib.request.urlopen(req, timeout=20) as r:
@@ -83,7 +83,8 @@ def main():
                     continue
                 novos[cod] = {'ig': cod, 't': titulo(m.get('caption')), 'd': quando, 'conta': usuario,
                               'orgao': contas[usuario]['orgao'],
-                              'leg': (m.get('caption') or '')[:3000]}  # legenda inteira: base das matérias do Instagram
+                              'leg': (m.get('caption') or '')[:3000],
+                              'capa': m.get('thumbnail_url', '')}  # capa do vídeo (endereço temporário da Meta)  # legenda inteira: base das matérias do Instagram
         except urllib.error.HTTPError as erro:
             corpo = erro.read().decode('utf-8', 'replace')
             if '"code":4,' in corpo or '"code":17,' in corpo or '"code":32,' in corpo:
