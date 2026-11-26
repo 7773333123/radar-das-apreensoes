@@ -179,8 +179,17 @@ def exterior(titulo):
     return bool(_EXTERIOR.search(titulo)) and not _BRASIL.search(titulo)
 
 
+# Debate eleitoral/jurídico que só cita arma ("O TSE e a fronteira do fuzil: quem o artigo 17...", 26/11/2026):
+# sem verbo de apreensão no título, não é notícia de apreensão.
+_DEBATE = re.compile(r'\bTSE\b|Tribunal Superior Eleitoral|\belei[çc](?:ão|ões)\b|eleitoral|\bartigo \d+', re.I)
+_APREENDE = re.compile(r'apreend|apreens|confisc|\bpren(?:de|dem|deu)\b|\bpres[oa]s?\b|\bpris(?:ão|ões)\b|'
+                       r'\bopera[çc](?:ão|ões)\b|deflagra|flagrante|cumpre mandado', re.I)
+
+
 def relevante(titulo):
     if apreensao_sentimento(titulo) or aviso_funebre(titulo) or sem_apreensao(titulo) or exterior(titulo):
+        return False
+    if _DEBATE.search(titulo) and not _APREENDE.search(titulo):
         return False
     if FORTE.search(titulo):
         return True
@@ -276,6 +285,8 @@ if __name__ == '__main__':
         ('PF apreende cocaína em navio que seguiria pelo Mediterrâneo a partir do Porto de Santos', 0),
         ('Polícia paraguaia apreende maconha em Pedro Juan Caballero', 0),
         ('PM flagra rinha de galo e apreende aves', 5),
+        ('O TSE e a fronteira do fuzil: quem o artigo 17 deixou de fora', None),
+        ('PF apreende fuzis e prende candidato durante eleição em cidade do interior', 1),
         # "Encontro Municipal" não é "munição"; "recuperação da Amazônia" não é ação policial (25/11/2026).
         ('Prefeitura realiza nesta quinta-feira o II Encontro Municipal de Educação Permanente em Saúde', None),
         ('Extração planejada de madeira reduz danos e acelera recuperação da Amazônia', None),
