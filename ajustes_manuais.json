@@ -1,5 +1,5 @@
 {
- "sobre": "Ajustes à mão pedidos pelo dono do site (gerar_feed_site.AJUSTES). Chave = id da notícia (feed \"i\"). Campos: t (título), img (capa), fc (crédito da foto), ig (reel/CÓDIGO do Instagram), vf (crédito do vídeo).",
+ "sobre": "Ajustes à mão pedidos pelo dono do site (gerar_feed_site.AJUSTES). Chave = id da notícia (feed \"i\"). Campos: t (título), img (capa), fc (crédito da foto), ig (reel/CÓDIGO do Instagram), vf (crédito do vídeo), q (quantidades no lugar das lidas do texto), ap (lista \"apreendido\" da ficha e do resumo).",
  "noticias": {
   "752187651151967": {
    "ig": "reel/DgDjU30mWNl",
@@ -8,6 +8,16 @@
    "img": "https://radardasapreensoes.com.br/assets/fotos/receita-guarulhos-90kg-cocaina.jpg",
    "fc": "Receita Federal / Band Jornalismo",
    "t": "Receita Federal apreende mais de 90 kg de cocaína e prende dois após invasão de área restrita em Guarulhos"
+  },
+  "474612851584161": {
+   "q": {
+    "dro": 50.0
+   },
+   "ap": [
+    "42 tabletes de maconha",
+    "8 tabletes de cocaína"
+   ],
+   "obs": "PRF em Araranguá (SC), 25/11/2026: cerca de 50 kg SOMANDO 42 tabletes de maconha e 8 de cocaína; o site tinha lido 50 kg de cocaína. Pedido do dono em 26/11/2026."
   }
  }
 }
