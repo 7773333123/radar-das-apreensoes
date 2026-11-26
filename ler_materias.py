@@ -529,7 +529,7 @@ def main():
     lote = pendentes[:max(0, args.limite)]
     print(f'Notícias com link original ainda não lidas: {len(pendentes)}; lendo agora: {len(lote)}', flush=True)
     fotos = textos = resumos = falhas = galerias = datas = 0
-    with ThreadPoolExecutor(max_workers=max(1, min(args.trabalhadores, 10))) as pool:
+    with ThreadPoolExecutor(max_workers=max(1, min(args.trabalhadores, 20))) as pool:  # 26/11/2026: teto 10 -> 20
         tarefas = {pool.submit(ler, url, args.timeout): n for n, url in lote}
         for futuro in as_completed(tarefas):
             n = tarefas[futuro]
