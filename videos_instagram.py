@@ -82,7 +82,8 @@ def main():
                 if not APREENSAO.search(m.get('caption') or ''):
                     continue
                 novos[cod] = {'ig': cod, 't': titulo(m.get('caption')), 'd': quando, 'conta': usuario,
-                              'orgao': contas[usuario]['orgao']}
+                              'orgao': contas[usuario]['orgao'],
+                              'leg': (m.get('caption') or '')[:3000]}  # legenda inteira: base das matérias do Instagram
         except urllib.error.HTTPError as erro:
             corpo = erro.read().decode('utf-8', 'replace')
             if '"code":4,' in corpo or '"code":17,' in corpo or '"code":32,' in corpo:
