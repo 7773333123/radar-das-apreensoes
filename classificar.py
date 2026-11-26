@@ -62,7 +62,7 @@ MEDIO = re.compile(
     r'tr[aá]fic|\bdrogas?\b|\barmas?\b|armament|opera[çc][ãa]o|mandados?|flagrante|fac[çc][ãa]o|quadrilha|'
     r'organiza[çc][ãa]o criminosa|cigarros?|medicamentos?|anabolizante|madeira|pescado|animais silvestres|'
     r'garimpo|merc[uú]rio|ve[ií]culos? (?:roubad|furtad|clonad|adulterad)|receptação|explosiv|'
-    r'mercadorias?|ouro|dinheiro', re.I)
+    r'mercadorias?|\bouro\b|dinheiro', re.I)
 ACAO = re.compile(
     r'combat|\bpren(?:de|dem|deu|deram)\b|\bpres[oa]s?\b|\bpris[ãa]o|\bpris[õo]es|\bdetid|cumpr|deflagr|desarticul|'
     r'flagr|captur|apreend|apreens|\bfecha\b|\bfecham\b|desmont|estour|intercept|localiz|encontr|recuper(?!a[çc][ãa]o d[aoe] (?:Amaz|flores|[áa]rea|mata|bioma|solo|nascente|rio))|'
@@ -218,6 +218,8 @@ def categorias(titulo, texto=''):
 if __name__ == '__main__':
     casos = [
         ('Uma tonelada de substâncias proibidas escondidas em laranjas é apreendida em Londres', None),
+        ('ESTOURO! Catarina Miranda ‘rasga’ produção do «BB All Stars» em pleno direto no ‘Especial’', None),
+        ('PF apreende ouro de garimpo ilegal no Amapá', 4),
         ('Polícia prende traficante e apreende drogas em Lima Duarte', 0),
         ('Fórum em SP discute soluções urbanas e o futuro das cidades inteligentes', None),
         ('Semana começa com alerta de tempestade e ventos para 19 estados e o DF', None),
