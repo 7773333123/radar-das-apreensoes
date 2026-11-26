@@ -1,0 +1,36 @@
+name: Instagram agora (todas as contas de uma vez)
+# Acionada à mão (dono, 26/11/2026): lê de uma vez os vídeos de apreensão das contas oficiais
+# (instagram_contas.json) pela API oficial da Meta e grava videos_instagram.json, sem esperar o
+# rodízio da coleta expressa (15 contas por rodada). Útil logo depois de trocar o token RADAR_META.
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: instagram-agora
+  cancel-in-progress: false
+jobs:
+  instagram:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v5
+      - name: Preparar Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Ler todas as contas
+        env:
+          RADAR_META: ${{ secrets.RADAR_META }}
+          IG_LOTE: '100'
+        run: python videos_instagram.py
+      - name: Guardar
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add videos_instagram.json instagram_cursor.json
+          git diff --cached --quiet && exit 0
+          git commit -q -m 'Instagram: todas as contas de uma vez'
+          for k in 1 2 3 4 5 6; do git pull -q --rebase -X theirs origin main && git push -q origin HEAD:main && exit 0; sleep $((k*5)); done
+          exit 1

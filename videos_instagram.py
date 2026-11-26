@@ -26,7 +26,9 @@ SAIDA = RAIZ / 'videos_instagram.json'
 CURSOR = RAIZ / 'instagram_cursor.json'
 NOSSA_CONTA = '17841452435152748'  # Instagram do Radar (dono do app); a consulta parte dela
 API = 'https://graph.facebook.com/v21.0/'
-HORAS, LOTE = 72, 15  # ~4 rodadas/h x 15 = 60 consultas/h (o app tem ~100/h)
+HORAS = 72
+# ~4 rodadas/h x 15 = 60 consultas/h (o app tem ~100/h); instagram_agora.yml lê todas de uma vez (IG_LOTE).
+LOTE = int(os.environ.get('IG_LOTE') or 15)
 APREENSAO = re.compile(r'apreen|cocaína|cocaina|maconha|skunk|haxixe|crack|droga|entorpecente|fuzil|fuzis|arma|'
                        r'munição|munições|contrabando|descaminho|cigarro|tráfico|trafico|flagrante', re.I)
 
