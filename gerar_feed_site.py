@@ -450,8 +450,10 @@ FOTO_INACESSIVEL = re.compile(r'^https?://i\.s3\.glbimg\.com/|midia-de-distribui
 def _palavras_video(t):
     import unicodedata
     t = ''.join(ch for ch in unicodedata.normalize('NFKD', str(t or '').lower()) if not unicodedata.combining(ch))
-    return {w for w in re.findall(r'[a-z0-9]{4,}', t)} - {'apreende', 'apreendem', 'apreensao', 'policia', 'durante',
-                                                        'militar', 'federal', 'civil', 'rodoviaria', 'operacao'}
+    vazias = {'apreende', 'apreendem', 'apreensao', 'policia', 'durante', 'militar', 'federal', 'civil', 'rodoviaria',
+              'operacao'}
+    # Radical de 6 letras (26/11/2026): "desarticula"/"desarticulação" e "fábrica"/"fabricação" são a mesma palavra.
+    return {w[:6] for w in re.findall(r'[a-z0-9]{4,}', t) if w not in vazias}
 
 
 def _videos_oficiais_youtube():
@@ -464,21 +466,24 @@ def _videos_oficiais_youtube():
             if re.fullmatch(r'[\w-]{11}', str(v.get('yt', '')))]
 
 
-def _video_do_canal(item, videos):
-    """Vídeo do canal oficial que trata do mesmo fato: até 2 dias de distância, 3+ palavras em comum e o mesmo
-    número (ou metade das palavras do título do vídeo em comum)."""
+def _video_do_canal(item, videos, outros_titulos=()):
+    """Vídeo do canal oficial que trata do mesmo fato: até 2 dias de distância e, com o título da versão exibida
+    OU de outra versão da mesma notícia (26/11/2026: o vídeo da PRF da fábrica de fuzis só batia com outra versão),
+    3+ palavras em comum e o mesmo número (ou metade das palavras do título do vídeo em comum)."""
     if not videos or not item.get('d'):
         return None
-    pt, nt = _palavras_video(item.get('t')), set(re.findall(r'\d+', str(item.get('t'))))
+    titulos = [item.get('t')] + [t for t in outros_titulos if t]
+    alvos = [(_palavras_video(t), set(re.findall(r'\d+', str(t)))) for t in titulos]
     for v in videos:
         try:
             if abs((_dt.fromisoformat(v.get('d', '')[:16]) - _dt.fromisoformat(item['d'][:16])).total_seconds()) > 2 * 86400:
                 continue
         except ValueError:
             continue
-        comum = pt & v['_p']
-        if len(comum) >= 3 and ((nt & v['_n']) or len(comum) >= max(3, len(v['_p']) // 2)):
-            return {'yt': [v['yt']], 'vf': v.get('orgao', '')}
+        for pt, nt in alvos:
+            comum = pt & v['_p']
+            if len(comum) >= 3 and ((nt & v['_n']) or len(comum) >= max(3, len(v['_p']) // 2)):
+                return {'yt': [v['yt']], 'vf': v.get('orgao', '')}
     return None
 
 
@@ -1028,7 +1033,7 @@ def main():
         # Vídeo do órgão: da versão exibida ou de outra versão da mesma notícia (a nota oficial).
         vid = next((videos_por_id[x] for x in [item['i']] + [o[2] for o in item.get('o', [])] if x in videos_por_id), None)
         if not vid:
-            vid = _video_do_canal(item, videos_yt)
+            vid = _video_do_canal(item, videos_yt, [textos_por_i.get(o[2], ('',))[0] for o in item.get('o', [])])
         if vid:
             alvo.update({k: v for k, v in vid.items() if v})
             item['vd'] = 1
