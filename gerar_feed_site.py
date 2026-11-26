@@ -456,6 +456,12 @@ def _palavras_video(t):
     return {w[:6] for w in re.findall(r'[a-z0-9]{4,}', t) if w not in vazias}
 
 
+try:
+    AJUSTES = json.loads((Path(__file__).resolve().parent / 'ajustes_manuais.json').read_text(encoding='utf-8')).get('noticias', {})
+except (OSError, ValueError):
+    AJUSTES = {}
+
+
 def _videos_oficiais_youtube():
     """Vídeos de apreensão dos canais oficiais no YouTube (videos_oficiais.json, 25/11/2026)."""
     try:
@@ -1053,8 +1059,22 @@ def main():
         # delegacia, da moradia ou da origem/destino da carga.
         alvo = detalhes[item['i'] % LOTES][str(item['i'])]
         # Vídeo do órgão: da versão exibida ou de outra versão da mesma notícia (a nota oficial).
+        # Ajuste à mão pedido pelo dono (ajustes_manuais.json, 26/11/2026): capa tirada do vídeo, vídeo do Instagram.
+        aj = next((AJUSTES[str(x)] for x in [item['i']] + [o[2] for o in item.get('o', [])] if str(x) in AJUSTES), None)
+        if aj:
+            if aj.get('t'):
+                item['t'] = aj['t']
+            if aj.get('img'):
+                item['img'], item['pm'] = aj['img'], 1
+                if aj.get('fc'):
+                    alvo['fc'] = aj['fc']
+            if aj.get('ig'):
+                alvo.update({'ig': [aj['ig']], 'vf': aj.get('vf', '')})
+                item['vd'] = 1
         vid = next((videos_por_id[x] for x in [item['i']] + [o[2] for o in item.get('o', [])] if x in videos_por_id), None)
-        if not vid:
+        if aj and aj.get('ig'):
+            vid = None
+        if not vid and not (aj and aj.get('ig')):
             vid = _video_do_canal(item, videos_yt, [textos_por_i.get(o[2], ('',))[0] for o in item.get('o', [])])
         if vid:
             alvo.update({k: v for k, v in vid.items() if v})

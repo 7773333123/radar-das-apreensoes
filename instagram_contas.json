@@ -1,5 +1,5 @@
 {
- "sobre": "Contas oficiais dos órgãos no Instagram (conferidas pela API da Meta em 26/11/2026: existem e são comerciais). Só leitura. \"uf\": estado da conta (vazio = nacional); o vídeo só liga a notícia do mesmo estado.",
+ "sobre": "Contas oficiais dos órgãos no Instagram (conferidas pela API da Meta em 26/11/2026: existem e são comerciais). Só leitura. \"uf\": estado da conta (vazio = nacional); o vídeo só liga a notícia do mesmo estado. \"tipo\": \"imprensa\" = veículo indicado pelo dono (26/11/2026), crédito ao veículo.",
  "contas": {
   "bope.oficial": {
    "orgao": "Polícia Militar",
@@ -470,6 +470,12 @@
    "orgao": "Polícia Militar",
    "nome": "ROTAM PMDF",
    "uf": "DF"
+  },
+  "bandjornalismo": {
+   "orgao": "Band Jornalismo",
+   "nome": "Band Jornalismo",
+   "uf": "",
+   "tipo": "imprensa"
   }
  }
 }
