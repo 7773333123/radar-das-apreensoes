@@ -20,6 +20,8 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from classificar import exterior
+
 RAIZ = Path(__file__).resolve().parent
 CONTAS = RAIZ / 'instagram_contas.json'
 SAIDA = RAIZ / 'videos_instagram.json'
@@ -81,6 +83,12 @@ def main():
                     continue
                 if not APREENSAO.search(m.get('caption') or ''):
                     continue
+                # Perfil de imprensa (dono, 26/11/2026) posta de tudo (clima, futebol, exterior): só entra vídeo que fala
+                # em apreensão de fato e não é do exterior (classificar.exterior, mesma regra do site).
+                if contas[usuario].get('tipo') == 'imprensa':
+                    leg = m.get('caption') or ''
+                    if not re.search(r'\bapreen|\bapreendid', leg, re.I) or exterior(titulo(leg)):
+                        continue
                 novos[cod] = {'ig': cod, 't': titulo(m.get('caption')), 'd': quando, 'conta': usuario,
                               'orgao': contas[usuario]['orgao'],
                               'leg': (m.get('caption') or '')[:3000],
