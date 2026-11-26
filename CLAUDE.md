@@ -56,7 +56,8 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   (`resumo_fatos.numerais_por_extenso`, `_idade_dos_presos`). Títulos das fontes: `revisar_titulos.py` (Claude Haiku,
   teto US$ 2/mês, na coleta expressa) corrige só erros claros; trava mantém números e nomes (`aceitavel`);
   registro em `revisao_titulos.json`. Roteiro dos Reels passa pela mesma revisão.
-- Presos identificados só por iniciais e idade (no texto). **Foto com rosto pode** (24/11/2026): se o veículo
+- Presos: o texto do Radar usa iniciais e idade; **se a fonte original publicou o nome, ele pode ficar** (dono, 26/11/2026)
+  — o monitoramento não trata isso como erro. **Foto com rosto pode** (24/11/2026): se o veículo
   original publicou a foto, ela entra como veio (no site e nos Reels); não se esconde nem desfoca rosto.
 - Duplicatas: não tolerar. Correções à mão vão em `juiz_decisoes_revisao.json` (valem como veto do grupo);
   padrões viram regra + teste em `testes/test_duplicatas.py`.
