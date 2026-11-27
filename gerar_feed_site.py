@@ -482,11 +482,20 @@ def _videos_oficiais_youtube():
                                                               .read_text(encoding='utf-8'))['contas'].items()}
     except (OSError, ValueError, KeyError):
         uf_conta = {}
+    # Legenda inteira (27/11/2026: com só a 1ª linha, 6 de 32 vídeos ligavam): palavras e números dos primeiros
+    # 700 caracteres e o "cabeçalho" (260) para comparar com o título da notícia.
+    def _leg(v, n):
+        return re.sub(r'\s+', ' ', str(v.get('leg') or v.get('t') or ''))[:n]
     videos += [dict(v, orgao=f"{v.get('orgao', '')} (@{v.get('conta', '')})", uf=uf_conta.get(v.get('conta'), ''),
-                    _p=_palavras_video(v.get('t')),
-                    _n=set(re.findall(r'\d+', str(v.get('t'))))) for v in insta
+                    _p=_palavras_video(_leg(v, 700)), _cab=_palavras_video(_leg(v, 260)),
+                    _n=_numeros_video(_leg(v, 700))) for v in insta
                if re.fullmatch(r'(?:reel|p)/[\w-]{5,40}', str(v.get('ig', '')))]
     return videos
+
+
+def _numeros_video(t):
+    """Números distintivos (quantidades, valores): sem anos e sem números de 1-2 dígitos (dia, mês, idade)."""
+    return {x.replace(',', '.') for x in re.findall(r'\d+(?:[.,]\d+)?', str(t or '')) if not re.fullmatch(r'(?:19|20)\d\d|\d{1,2}', x)}
 
 
 def _video_do_canal(item, videos, outros_titulos=()):
@@ -505,9 +514,20 @@ def _video_do_canal(item, videos, outros_titulos=()):
             continue
         if v.get('ig'):
             # Instagram (26/11/2026): a legenda é longa e genérica ("toneladas de drogas"); conta estadual só liga
-            # notícia do mesmo estado, e conta nacional exige 4+ palavras e o mesmo número.
+            # notícia do mesmo estado (27/11: notícia sem estado também não).
             if v.get('uf') and v['uf'] != item.get('uf'):
                 continue
+            # 27/11/2026: compara com a legenda inteira. Liga com o mesmo número distintivo (137 kg, R$ 547 mil) e 4+
+            # palavras em comum, ou com o título da notícia quase todo no começo da legenda (60%+ e 4+ palavras).
+            for t in titulos:
+                pt = _palavras_video(t)
+                txt = f"{t} {item.get('r') or ''}"
+                comum = len(_palavras_video(txt) & v['_p'])
+                mesmo_num = _numeros_video(txt) & v['_n']
+                cab = len(pt & v.get('_cab', set()))
+                if (mesmo_num and comum >= 4) or (cab >= 4 and cab >= 0.6 * len(pt)):
+                    return {'ig': [v['ig']], 'vf': v.get('orgao', '')}
+            continue
         for pt, nt in alvos:
             comum = pt & v['_p']
             if v.get('ig') and not v.get('uf') and not (len(comum) >= 4 and nt & v['_n']):
