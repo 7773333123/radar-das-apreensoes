@@ -206,8 +206,13 @@ function renderInicio() {
   const MORTE = /\b(morre|morreu|morrem|mort[oa]s?|[óo]bito|assassinad|executad|homic[íi]dio|cad[áa]ver|corpos?\s+(?:[ée]|s[ãa]o|foi|foram)\s+encontrad|carbonizad|latroc[íi]nio)/i;
   const desdobra0 = (n) => /\b(solta|soltura|liberad[oa]|absolvid|julgament|condenad|habeas|den[uú]ncia|audi[êe]ncia|foragid|incinera|destr[oó]i|queima)/i.test(n.titulo);
   const elegivel = (n) => Boolean(n.img) && !desdobra0(n) && !MORTE.test(n.titulo);
-  const elegivelHoje = doDia.filter((n) => elegivel(n) && n.fotoMaterial);
-  const pool = elegivelHoje.length >= 3 ? doDia : [...doDia, ...comFoto.filter((n) => diaBR(n.data) === ontem)];
+  // RELEVÂNCIA MÍNIMA para o topo (dono, 27/11/2026: medicamentos na PRC-280 e tráfico pequeno em Cascavel "têm pouca
+  // relevância para estar no principal"): 10 kg+ de droga (cocaína/crack: 2 kg+), fuzil, 3+ armas, 100+ munições ou R$ 100 mil+. Enquanto o dia
+  // não tiver 2 assim, os destaques continuam com as maiores de ontem.
+  const kgD = (n) => ['coc', 'mac', 'skh', 'cra', 'dro'].reduce((t, k) => t + (n.q?.[k] || 0), 0);
+  const relevante = (n) => kgD(n) >= 10 || (n.q?.coc || 0) + (n.q?.cra || 0) >= 2 || (n.q?.fuz || 0) >= 1 || (n.q?.arm || 0) >= 3 || (n.q?.mun || 0) >= 100 || (n.vq || 0) >= 100000;
+  const elegivelHoje = doDia.filter((n) => elegivel(n) && n.fotoMaterial && relevante(n));
+  const pool = elegivelHoje.length >= 2 ? doDia : [...doDia, ...comFoto.filter((n) => diaBR(n.data) === ontem)];
   // Ordem dos destaques: por TIPO (drogas, armas, contrabando, veículos,
   // dinheiro, ambientais, medicamentos, patrimoniais, outras) e, dentro de cada
   // tipo, da maior apreensão para a menor. Desdobramentos (soltura, condenação,
@@ -232,7 +237,9 @@ function renderInicio() {
   // os 2 primeiros destaques giram, em pares, entre as 6 maiores do dia (mesmas regras: foto do material,
   // sem morte, sem desdobramento); a maior volta ao topo a cada ciclo. A Fronteira gira entre as 3 primeiras.
   const RODIZIO = Math.floor(agora / (2 * 3600e3));
-  const top6 = [...basePrinc].sort(porVolume).slice(0, 6);
+  const ordPrinc = [...basePrinc].sort(porVolume);
+  const ordRelev = ordPrinc.filter(relevante);
+  const top6 = (ordRelev.length >= 2 ? ordRelev : ordPrinc).slice(0, 6);
   const parRod = top6.length > 2 ? (RODIZIO % Math.ceil(top6.length / 2)) * 2 : 0;
   const manchete = top6[parRod];
   const segunda0 = top6[parRod + 1] || top6.find((n) => n !== manchete);
@@ -260,7 +267,10 @@ function renderInicio() {
   };
   const candFr = (h) => ns.filter((n) => n.polo && elegivel(n) && !usados.has(n) && !fora(n) && n.data && horas(n) <= h && n.data.getTime() <= agora + 3600000)
     .sort((a, b) => Boolean(b.fotoMaterial) - Boolean(a.fotoMaterial));
-  const poolFr = candFr(24).filter(ehHoje).length ? candFr(24).filter(ehHoje) : candFr(48);
+  // Fronteira no topo também com relevância mínima; sem nenhuma relevante em 48 h, vale a regra antiga.
+  const frHoje = candFr(24).filter(ehHoje);
+  const frRelev = frHoje.filter(relevante).length ? frHoje.filter(relevante) : candFr(48).filter(relevante);
+  const poolFr = frRelev.length ? frRelev : (frHoje.length ? frHoje : candFr(48));
   const ordFr = [...poolFr].sort((a, b) => nivelFr(a) - nivelFr(b) || (Boolean(b.fotoMaterial) - Boolean(a.fotoMaterial)) || kgDroga(b) - kgDroga(a) || nota(b) - nota(a) || b.data - a.data);
   const topFr = ordFr.filter((n) => nivelFr(n) === nivelFr(ordFr[0] || {})).slice(0, 3);  // gira só dentro do nível mais alto
   const terceira = topFr.length ? topFr[RODIZIO % topFr.length] : ordFr[0];

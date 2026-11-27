@@ -44,6 +44,8 @@ Regras definidas pelo dono do site. Valem para a coleta, a geração do site e q
   (`assets/central.js`: `elegivel`, `MORTE`, `pool`). A Fronteira (3ª) também segue `elegivel` e prefere foto do material.
   **Rodízio dos destaques** (26/11/2026, "muito tempo as mesmas fotos"): a cada 2 h a 1ª e a 2ª giram, em pares, entre as
   6 maiores elegíveis do dia; a Fronteira gira entre as 3 primeiras do nível mais alto (`RODIZIO` em `assets/central.js`).
+  **Relevância mínima no topo** (27/11/2026): 10 kg+ de droga (cocaína/crack 2 kg+), fuzil, 3+ armas, 100+ munições ou
+  R$ 100 mil+; enquanto o dia não tiver 2 assim, os destaques ficam com as maiores de ontem (`relevante` em `assets/central.js`).
   **Cocaína sempre entre as principais** (24/11/2026): vale muito mais por quilo; se nem a 1ª nem a 2ª é de
   cocaína/pasta base/crack, a 2ª vira a maior de cocaína do dia com foto (`kgCoca`).
   Faixa abaixo delas, Fronteira e listas das editorias: COM FOTO antes de sem foto (26/11/2026; ter link não é ter
